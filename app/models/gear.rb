@@ -4,7 +4,8 @@ require 'open-uri'
 
 class Gear < ApplicationRecord
   belongs_to :maintainer
-  belongs_to :package
+
+  has_many :spkgs, primary_key: :repo, foreign_key: :name, class_name: 'Package::Src'
 
   validates_presence_of :repo, :lastchange
 
@@ -27,17 +28,16 @@ class Gear < ApplicationRecord
       time = Time.at(line.split[1].to_i)
 
       maintainer = Maintainer.where(login: login).first
-      srpm = Package.where(name: package.gsub(/\.git/, ''), branch_id: branch).first
+      name = package.gsub(/\.git/, '')
 
       # puts "#{ Time.now }: maintainer not found '#{ login }'" unless maintainer
       # puts "#{ Time.now }: srpm not found '#{ package.gsub(/\.git/, '') }'" unless srpm
 
-      if maintainer && srpm
+      if maintainer && name
         Gear.create!(
-          repo: package.gsub(/\.git/, ''),
+          repo: name,
           maintainer_id: maintainer.id,
           lastchange: time,
-          srpm_id: srpm.id
         )
       end
     end

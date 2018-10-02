@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_02_133300) do
+ActiveRecord::Schema.define(version: 2018_10_02_175600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -127,9 +127,8 @@ ActiveRecord::Schema.define(version: 2018_10_02_133300) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "maintainer_id"
-    t.bigint "package_id", comment: "Ссылка на пакет"
     t.index ["maintainer_id"], name: "index_gitrepos_on_maintainer_id"
-    t.index ["package_id"], name: "index_gears_on_package_id"
+    t.index ["repo", "maintainer_id"], name: "index_gears_on_repo_and_maintainer_id", unique: true
   end
 
   create_table "groups", id: :serial, force: :cascade do |t|
@@ -389,7 +388,6 @@ ActiveRecord::Schema.define(version: 2018_10_02_133300) do
   add_foreign_key "branch_paths", "branches", on_delete: :cascade
   add_foreign_key "changelogs", "packages", on_delete: :restrict
   add_foreign_key "ftbfs", "branches", on_delete: :cascade
-  add_foreign_key "gears", "packages", on_delete: :restrict
   add_foreign_key "groups", "branches", on_delete: :cascade
   add_foreign_key "mirrors", "branches", on_delete: :cascade
   add_foreign_key "packages", "maintainers", column: "builder_id", on_delete: :restrict
