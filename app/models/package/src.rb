@@ -13,9 +13,7 @@ class Package::Src < Package
                        primary_key: :name,
                        foreign_key: :srcname,
                        dependent: :destroy
-   has_many :gears, -> { order(lastchange: :desc) },
-                    primary_key: :name,
-                    foreign_key: :repo
+   has_many :gears, -> { order(lastchange: :desc) }, primary_key: :name, foreign_key: :repo
 
    scope :top_rebuilds_after, ->(date) do
       where("buildtime > ?", date)
