@@ -14,12 +14,13 @@ class SrpmsController < ApplicationController
     if @spkg.name[0..4] == 'perl-' && @spkg.name != 'perl'
       @perl_watch = PerlWatch.where(name: @spkg.name[5..-1].gsub('-', '::')).first
     end
-    if Redis.current.exists("#{ @branch.name }:#{ @spkg.name }:acls")
-      @maintainers = Maintainer.where(login: Redis.current.smembers("#{ @branch.name }:#{ @spkg.name }:acls").reject { |acl| acl[0] == '@' }).order(:name)
-      @teams = MaintainerTeam.where(login: Redis.current.smembers("#{ @branch.name }:#{ @spkg.name }:acls").reject { |acl| acl[0] != '@' }).order(:name)
-    end
-    if Redis.current.exists("#{ @branch.name }:#{ @spkg.name }:leader")
-      login = Redis.current.get("#{ @branch.name }:#{ @spkg.name }:leader")
+
+    @acls = @spkg.acls.in_branch(@branch)
+    if @acls.present?
+      @maintainers = Maintainer.where(login: @acls.people.maintainer_slugs).order(:name)
+      @teams = MaintainerTeam.where(login: @acls.teams.maintainer_slugs).order(:name)
+
+      login = @acls.owner.first.maintainer_slug
       if login[0] == '@'
         @leader = MaintainerTeam.where(login: login).first
       else

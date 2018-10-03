@@ -167,8 +167,6 @@ GEM
       railties (>= 3.0.0)
     faker (1.9.1)
       i18n (>= 0.7)
-    fakeredis (0.7.0)
-      redis (>= 3.2, < 5.0)
     fast_gettext (1.7.0)
     ffi (1.9.25)
     get_process_mem (0.2.2)
@@ -324,8 +322,6 @@ GEM
       virtus (~> 1.0.5)
       wisper (>= 1.6.1)
     redis (4.0.1)
-    redis-objects (1.4.0)
-      redis (~> 4.0)
     request_store (1.4.1)
       rack (>= 1.4)
     responders (2.4.0)
@@ -498,7 +494,6 @@ DEPENDENCIES
   exception_notification
   factory_bot_rails
   faker
-  fakeredis
   fast_gettext
   gettext
   gettext_i18n_rails
@@ -529,8 +524,6 @@ DEPENDENCIES
   rails-controller-testing
   rails-i18n
   rectify
-  redis
-  redis-objects
   rouge
   rspec-activemodel-mocks
   rspec-its

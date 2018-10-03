@@ -19,6 +19,9 @@ class MaintainerTeam < ApplicationRecord
 
   # has_many :ftbfs, class_name: 'Ftbfs'
 
+   has_many :acls, primary_key: 'login', foreign_key: 'maintainer_slug'
+   has_many :acl_names, -> { select(:package_name).distinct }
+
   def to_param
     login
   end

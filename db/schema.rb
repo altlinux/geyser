@@ -10,12 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_02_175600) do
+ActiveRecord::Schema.define(version: 2018_10_03_104034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
+
+  create_table "acls", force: :cascade do |t|
+    t.bigint "branch_path_id", comment: "Ссылка на путь ветви"
+    t.string "maintainer_slug", comment: "Имя сопровождающего пакета"
+    t.string "package_name", comment: "Имя пакета"
+    t.boolean "owner", default: false, comment: "Владелец ли пакета?"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["branch_path_id"], name: "index_acls_on_branch_path_id"
+    t.index ["maintainer_slug"], name: "index_acls_on_maintainer_slug"
+    t.index ["package_name", "maintainer_slug", "branch_path_id"], name: "index_acls_on_three_fields", unique: true
+    t.index ["package_name"], name: "index_acls_on_package_name"
+  end
 
   create_table "branch_paths", force: :cascade do |t|
     t.string "arch", comment: "Архитектура, используемая для ветви"
@@ -28,6 +41,7 @@ ActiveRecord::Schema.define(version: 2018_10_02_175600) do
     t.string "name", comment: "Имя пути ветви"
     t.integer "srpms_count", default: 0, comment: "Счётчик именованных исходных пакетов для пути ветви"
     t.datetime "imported_at", default: "1970-01-01 00:00:00", null: false, comment: "Время последнего импорта пакетов для пути ветви"
+    t.string "acl_url", comment: "Внешняя ссылка на список прав на доступ"
     t.index ["arch", "branch_id", "source_path_id"], name: "index_branch_paths_on_arch_and_branch_id_and_source_path_id", unique: true
     t.index ["arch", "path"], name: "index_branch_paths_on_arch_and_path", unique: true
     t.index ["arch"], name: "index_branch_paths_on_arch", using: :gin
@@ -384,6 +398,7 @@ ActiveRecord::Schema.define(version: 2018_10_02_175600) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "acls", "branch_paths"
   add_foreign_key "branch_paths", "branch_paths", column: "source_path_id", on_delete: :cascade
   add_foreign_key "branch_paths", "branches", on_delete: :cascade
   add_foreign_key "changelogs", "packages", on_delete: :restrict

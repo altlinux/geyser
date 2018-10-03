@@ -1,30 +1,15 @@
 # frozen_string_literal: true
 
-require 'open-uri'
+class Acl < ApplicationRecord
+   belongs_to :branch_path
+   belongs_to :maintainer, primary_key: :maintainer_slug, foreign_key: :login, optional: true
 
-class Acl
-  class << self
-    def update_redis_cache(branch, url)
-      file = open(URI.escape(url)).read
-      Redis.current.multi
-      Maintainer.select('login').each do |maintainer|
-        Redis.current.del("#{ branch.name }:maintainers:#{ maintainer.login }")
-      end
-      file.each_line do |line|
-        package = line.split[0]
-        Redis.current.del("#{ branch.name }:#{ package }:acls")
-        for i in 1..line.split.count-1
-          login = line.split[i]
-          login = 'php-coder' if login == 'php_coder'
-          login = 'p_solntsev' if login == 'psolntsev'
-          login = '@vim-plugins' if login == '@vim_plugins'
-          Redis.current.sadd("#{ branch.name }:#{ package }:acls", login)
-          Redis.current.sadd("#{ branch.name }:maintainers:#{ login }", package)
-        end
-      end
-      Redis.current.exec
-    rescue OpenURI::HTTPError
-      nil
-    end
-  end
+   has_one :branch, through: :branch_path
+
+   scope :in_branch, ->(branch) { joins(:branch).where(branches: {id: branch}) }
+   scope :people, -> { where("maintainer_slug !~ '^@.*'", ) }
+   scope :teams, -> { where("maintainer_slug ~ '^@.*'", ) }
+   scope :owner, -> { where(owner: true) }
+
+   scope :maintainer_slugs, -> { select(:maintainer_slug).distinct }
 end

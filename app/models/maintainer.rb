@@ -24,6 +24,11 @@ class Maintainer < ApplicationRecord
    has_many :gears
    has_many :ftbfs, class_name: 'Ftbfs'
    has_many :srpm_names, -> { src.select(:name).distinct }, through: :packages, source: :rpms
+   has_many :acls, primary_key: 'login', foreign_key: 'maintainer_slug'
+   has_many :acl_names, -> { select(:package_name).distinct },
+                        primary_key: 'login',
+                        foreign_key: 'maintainer_slug',
+                        class_name: :Acl
 
    scope :top, ->(limit) { order(srpms_count: :desc).limit(limit) }
 
