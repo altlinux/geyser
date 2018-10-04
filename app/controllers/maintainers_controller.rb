@@ -1,103 +1,86 @@
 # frozen_string_literal: true
 
 class MaintainersController < ApplicationController
-  def index
-    @branches = Branch.order('order_id')
-    @maintainers = Maintainer.order(:name)
-  end
+   before_action :set_srpms, only: %i(srpms bugs allbugs repocop)
+   before_action :set_bug_lists, except: %i(index)
+   before_action :set_branches, only: %i(index show srpms)
 
-  def show
-    @maintainer = Maintainer.find_by!(login: params[:id].downcase).decorate
-    @branches = Branch.order('order_id')
-    # TODO: move @acls to maintainer or branch...
-    @acls = Redis.current.smembers("#{ @branch.name }:maintainers:#{ params[:id].downcase }").count
-    @all_bugs = AllBugsForMaintainer.new(@branch, @maintainer).decorate
-    @opened_bugs = OpenedBugsForMaintainer.new(@branch, @maintainer).decorate
-  end
+   def index
+      @maintainers = Maintainer.order(:name)
+   end
 
-  def srpms
-    @maintainer = Maintainer.find_by!(login: params[:id].downcase)
-    @branches = Branch.order('order_id')
-
-    order  = ''
-    order += 'LOWER(srpms.name)' if sort_column == 'name'
-    order += 'buildtime' if sort_column == 'age'
-
-    if sort_column == 'status'
-      order += "CASE repocop
-                WHEN 'skip'         THEN 1
-                WHEN 'ok'           THEN 2
-                WHEN 'experimental' THEN 3
-                WHEN 'info'         THEN 4
-                WHEN 'warn'         THEN 5
-                WHEN 'fail'         THEN 6
-                END"
-    end
-
-    order += ' ' + sort_order
-
-    @srpms = @branch.srpms.where(name: Redis.current.smembers("#{ @branch.name }:maintainers:#{ @maintainer.login }"))
-                    .includes(:repocop_patch)
-                    .order(order)
-                    .page(params[:page])
-                    .per(100)
-                    .decorate
-
-    @all_bugs = AllBugsForMaintainer.new(@branch, @maintainer).decorate
-    @opened_bugs = OpenedBugsForMaintainer.new(@branch, @maintainer).decorate
-  end
+   def show
+      @acl_count = maintainer.acl_names.count
+   end
 
 #  def acls
-#    @branch = Branch.where(:name => params[:branch], :vendor => "ALT Linux").first
-#    @maintainer = Maintainer.first :conditions => {
-#                                     :login => params[:id].downcase }
 #    @acls = Acl.all :conditions => {
-#                      :login => params[:login],
+#                      :maintainer_slug => params[:login],
 #                      :branch_id => @branch.id }
-#    if @maintainer == nil
-#      render :status => 404, :action => "nosuchmaintainer"
-#    end
 #  end
 
-  def gear
-    @branch = Branch.find_by!(slug: 'sisyphus')
-    @maintainer = Maintainer.find_by!(login: params[:id].downcase)
-    @gears = Gear.where(maintainer_id: @maintainer).includes(:maintainer).order('LOWER(repo)')
-    @all_bugs = AllBugsForMaintainer.new(@branch, @maintainer).decorate
-    @opened_bugs = OpenedBugsForMaintainer.new(@branch, @maintainer).decorate
-  end
+   def gear
+      @gears = Gear.where(maintainer_id: maintainer).includes(:maintainer).order('LOWER(repo)')
+   end
 
-  def bugs
-    # TODO: add Branch support
-    # @branch = Branch.find_by!(name: params[:branch])
-    @branch = Branch.find_by!(slug: 'sisyphus')
-    @maintainer = Maintainer.find_by!(login: params[:id].downcase)
-    @srpms = @branch.srpms.where(name: Redis.current.smembers("#{ @branch.name }:maintainers:#{ @maintainer.login }")).includes(:packages)
-    @all_bugs = AllBugsForMaintainer.new(@branch, @maintainer).decorate
-    @opened_bugs = OpenedBugsForMaintainer.new(@branch, @maintainer).decorate
-  end
+   def bugs
+   end
 
-  def allbugs
-    # TODO: add Branch support
-    # @branch = Branch.find_by!(name: params[:branch])
-    @branch = Branch.find_by!(slug: 'sisyphus')
-    @maintainer = Maintainer.find_by!(login: params[:id].downcase)
-    @srpms = @branch.srpms.where(name: Redis.current.smembers("#{ @branch.name }:maintainers:#{ @maintainer.login }")).includes(:packages)
-    @all_bugs = AllBugsForMaintainer.new(@branch, @maintainer).decorate
-    @opened_bugs = OpenedBugsForMaintainer.new(@branch, @maintainer).decorate
-  end
+   def allbugs
+   end
 
-  def ftbfs
-    @maintainer = Maintainer.find_by!(login: params[:id].downcase)
-    @ftbfs = Ftbfs.where(maintainer_id: @maintainer).includes(:branch)
-    @all_bugs = AllBugsForMaintainer.new(@branch, @maintainer).decorate
-    @opened_bugs = OpenedBugsForMaintainer.new(@branch, @maintainer).decorate
-  end
+   def ftbfs
+      @ftbfs = Ftbfs.where(maintainer_id: maintainer).includes(:branch)
+   end
 
-  def repocop
-    @maintainer = Maintainer.find_by!(login: params[:id].downcase)
-    @srpms = @branch.srpms.where(name: Redis.current.smembers("#{ @branch.name }:maintainers:#{ @maintainer.login }")).includes(:repocops).order('LOWER(srpms.name)')
-    @all_bugs = AllBugsForMaintainer.new(@branch, @maintainer).decorate
-    @opened_bugs = OpenedBugsForMaintainer.new(@branch, @maintainer).decorate
-  end
+   def repocop
+   end
+
+   protected
+
+   def acl_names
+      @acl_names ||= maintainer.acl_names
+   end
+
+   def maintainer
+      @maintainer ||= Maintainer.find_by!(login: params[:id].downcase).decorate
+   end
+
+   def order
+      order  = ''
+      order += 'LOWER(packages.name)' if sort_column == 'name'
+      order += 'buildtime' if sort_column == 'age'
+
+      if sort_column == 'status'
+         order += "CASE repocop
+                   WHEN 'skip'         THEN 1
+                   WHEN 'ok'           THEN 2
+                   WHEN 'experimental' THEN 3
+                   WHEN 'info'         THEN 4
+                   WHEN 'warn'         THEN 5
+                   WHEN 'fail'         THEN 6
+                   END"
+      end
+
+      order += ' ' + sort_order
+   end
+
+   def set_bug_lists
+      @all_bugs = Bug.for_maintainer_and_branch(maintainer, @branch).decorate
+      @opened_bugs = @all_bugs.object.opened.decorate
+   end
+
+   def set_srpms
+      @srpms = @branch.spkgs.where(name: acl_names)
+                      .includes(:repocop_patch)
+                      .order(order)
+                      .page(params[:page])
+                      .per(100)
+                      .select('DISTINCT(packages.*), LOWER(packages.name)')
+                      .decorate
+   end
+
+   def set_branches
+      @branches = Branch.order('order_id')
+   end
 end

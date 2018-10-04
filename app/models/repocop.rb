@@ -3,6 +3,8 @@
 require 'open-uri'
 
 class Repocop < ApplicationRecord
+  WELL_STATUSES = %i(skip ok)
+
   belongs_to :branch
 
   validates :name, presence: true
@@ -20,6 +22,8 @@ class Repocop < ApplicationRecord
   validates :srcrel, presence: true
 
   validates :testname, presence: true
+
+  scope :buggy, -> { where.not(status: WELL_STATUSES) }
 
   class << self
     def update_repocop

@@ -10,12 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_02_175600) do
+ActiveRecord::Schema.define(version: 2018_10_04_141500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
+
+  create_table "acls", force: :cascade do |t|
+    t.bigint "branch_path_id", comment: "Ссылка на путь ветви"
+    t.string "maintainer_slug", comment: "Имя сопровождающего для пакета"
+    t.string "package_name", comment: "Имя пакета"
+    t.boolean "owner", default: false, comment: "Владелец ли пакета?"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["branch_path_id"], name: "index_acls_on_branch_path_id"
+    t.index ["maintainer_slug"], name: "index_acls_on_maintainer_slug"
+    t.index ["package_name", "maintainer_slug", "branch_path_id"], name: "index_acls_on_three_fields", unique: true
+    t.index ["package_name"], name: "index_acls_on_package_name"
+  end
 
   create_table "branch_paths", force: :cascade do |t|
     t.string "arch", comment: "Архитектура, используемая для ветви"
@@ -28,6 +41,8 @@ ActiveRecord::Schema.define(version: 2018_10_02_175600) do
     t.string "name", comment: "Имя пути ветви"
     t.integer "srpms_count", default: 0, comment: "Счётчик именованных исходных пакетов для пути ветви"
     t.datetime "imported_at", default: "1970-01-01 00:00:00", null: false, comment: "Время последнего импорта пакетов для пути ветви"
+    t.string "acl_url", comment: "Внешняя ссылка на список прав на доступ"
+    t.string "team_url", comment: "Внешняя ссылка на список групп ветви"
     t.index ["arch", "branch_id", "source_path_id"], name: "index_branch_paths_on_arch_and_branch_id_and_source_path_id", unique: true
     t.index ["arch", "path"], name: "index_branch_paths_on_arch_and_path", unique: true
     t.index ["arch"], name: "index_branch_paths_on_arch", using: :gin
@@ -144,14 +159,6 @@ ActiveRecord::Schema.define(version: 2018_10_02_175600) do
     t.index ["parent_id"], name: "index_groups_on_parent_id"
   end
 
-  create_table "maintainer_teams", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255, null: false
-    t.string "email", limit: 255, null: false
-    t.string "login", limit: 255, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "maintainers", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "email", limit: 255
@@ -164,6 +171,9 @@ ActiveRecord::Schema.define(version: 2018_10_02_175600) do
     t.string "website", limit: 255, default: ""
     t.string "location", limit: 255, default: ""
     t.integer "srpms_count", default: 0, comment: "Счётчик уникальных исходных пакетов, собранных поставщиком"
+    t.string "type", comment: "Вид сопровождающего: человек или команда"
+    t.index ["email"], name: "index_maintainers_on_email", unique: true
+    t.index ["login"], name: "index_maintainers_on_login", unique: true
   end
 
   create_table "mirrors", id: :serial, force: :cascade do |t|
@@ -350,6 +360,16 @@ ActiveRecord::Schema.define(version: 2018_10_02_175600) do
     t.index ["package_id"], name: "index_specfiles_on_package_id"
   end
 
+  create_table "team_people", id: :serial, force: :cascade do |t|
+    t.string "person_slug", null: false, comment: "Ссылка на сопровождающего в команде"
+    t.string "team_slug", null: false, comment: "Ссылка на сопровождающую команду"
+    t.bigint "branch_path_id", null: false, comment: "Ссылка на путь ветви"
+    t.index ["branch_path_id"], name: "index_team_people_on_branch_path_id"
+    t.index ["person_slug"], name: "index_team_people_on_person_slug"
+    t.index ["team_slug", "person_slug", "branch_path_id"], name: "index_team_people_on_three_fields", unique: true
+    t.index ["team_slug"], name: "index_team_people_on_team_slug"
+  end
+
   create_table "teams", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
     t.boolean "leader"
@@ -384,6 +404,7 @@ ActiveRecord::Schema.define(version: 2018_10_02_175600) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "acls", "branch_paths"
   add_foreign_key "branch_paths", "branch_paths", column: "source_path_id", on_delete: :cascade
   add_foreign_key "branch_paths", "branches", on_delete: :cascade
   add_foreign_key "changelogs", "packages", on_delete: :restrict
@@ -398,5 +419,6 @@ ActiveRecord::Schema.define(version: 2018_10_02_175600) do
   add_foreign_key "rpms", "packages", on_delete: :cascade
   add_foreign_key "sources", "packages", on_delete: :restrict
   add_foreign_key "specfiles", "packages", on_delete: :restrict
+  add_foreign_key "team_people", "branch_paths", on_delete: :cascade
   add_foreign_key "teams", "branches", on_delete: :cascade
 end

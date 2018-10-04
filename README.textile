@@ -22,7 +22,6 @@ h3. Install:
 * /usr/bin/md5sum from coreutils
 * git
 * memcached
-* redis
 * graphviz
 * rpm
 * rpm2cpio
@@ -34,13 +33,12 @@ or with the single line:
 
     apt-get install postgresql9.6-server postgresql9.6-contrib postgresql9.6 bzip2 \
                     gettext graphviz memcached /usr/bin/md5sum npm nodejs curl sphinx \
-                    libruby-devel ruby redis zlib-devel postgresql9.6-devel
+                    libruby-devel ruby zlib-devel postgresql9.6-devel
 
 h3. Then:
 
 * @bundle install@
 * @service postgresql start@
-* @service redis start@
 * @memcached -d -m 128@ (as a user)
 
 * @bin/rake secret@
@@ -69,8 +67,6 @@ h3. Import data:
 
 * @bundle exec rake update:branches@
 
-* @bundle exec rake redis:cache@
-
 h2. Deploy
 
 * @bundle exec cap production deploy@
@@ -78,7 +74,6 @@ h2. Deploy
 h2. Run on production
 
 * @bundle exec rake assets:precompile@
-* @redis-server redis.conf@
 
 h2. Tests
 

@@ -90,13 +90,13 @@ describe Maintainer do
   it 'should create new Maintainer team' do
     expect {
       Maintainer.import('Ruby Maintainers Team <ruby@packages.altlinux.org>')
-    }.to change(MaintainerTeam, :count).by(1)
+    }.to change(Maintainer::Team, :count).by(1)
   end
 
   it 'should not create new Maintainer team' do
     Maintainer.import('Ruby Maintainers Team <ruby@packages.altlinux.org>')
     expect {
       Maintainer.import('Ruby Maintainers Team <ruby@packages.altlinux.org>')
-    }.not_to change(MaintainerTeam, :count)
+    }.not_to change(Maintainer::Team, :count)
   end
 end

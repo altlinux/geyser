@@ -18,7 +18,6 @@ gem 'kaminari'
 gem 'kaminari-i18n'
 gem 'rack-mini-profiler', require: false
 gem 'dotenv-rails'
-gem 'redis-objects'
 gem 'pghero'
 gem 'pg_query'
 # gem 'maily'
@@ -35,7 +34,6 @@ gem 'rouge'
 # gem 'github-linguist'
 gem 'swagger-blocks'
 gem 'rack-cors', require: 'rack/cors'
-gem 'sidekiq', require: false
 # gem 'oink'
 gem 'rectify'
 gem 'posix-spawn', require: false
@@ -55,10 +53,6 @@ gem 'factory_bot_rails'
 
 # serialization
 gem 'active_model_serializers'
-
-group :production, :development, :staging do
-  gem 'redis'
-end
 
 group :production do
   gem 'newrelic_rpm'
@@ -128,6 +122,5 @@ group :test do
   gem 'launchy'
   gem 'database_rewinder'
   gem 'webmock', require: false
-  gem 'fakeredis'
   gem 'simplecov', require: false
 end

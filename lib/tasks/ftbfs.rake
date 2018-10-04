@@ -6,22 +6,7 @@ namespace :ftbfs do
     require 'open-uri'
 
     puts "#{ Time.zone.now }: import ftbfs list for i586 and x86_64"
-    if Redis.current.get('__SYNC__')
-      exist = begin
-                Process.kill(0, Redis.current.get('__SYNC__').to_i)
-                true
-              rescue
-                false
-              end
-      if exist
-        puts "#{ Time.zone.now }: update is locked by another cron script"
-        Process.exit!(true)
-      else
-        puts "#{ Time.zone.now }: dead lock found and deleted"
-        Redis.current.del('__SYNC__')
-      end
-    end
-    Redis.current.set('__SYNC__', Process.pid)
+    # TODO add lock
     Ftbfs.transaction do
       Ftbfs.delete_all
 
@@ -38,6 +23,5 @@ namespace :ftbfs do
       Ftbfs.update_ftbfs('ALT Linux', 't6', 'http://git.altlinux.org/beehive/stats/t6-x86_64/ftbfs-joined', 'x86_64')
     end
     puts "#{ Time.zone.now }: end"
-    Redis.current.del('__SYNC__')
   end
 end

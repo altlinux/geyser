@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Maintainer < ApplicationRecord
-  # include Redis::Objects
-
    validates :name, presence: true
 
    validates :email, presence: true
@@ -20,15 +18,25 @@ class Maintainer < ApplicationRecord
    has_many :branch_paths, -> { distinct }, through: :rpms
    has_many :branches, -> { distinct }, through: :branch_paths
    has_many :branching_maintainers, dependent: :delete_all
-   has_many :teams
    has_many :gears
    has_many :ftbfs, class_name: 'Ftbfs'
    has_many :srpm_names, -> { src.select(:name).distinct }, through: :packages, source: :rpms
+   has_many :acls, primary_key: 'login', foreign_key: 'maintainer_slug'
+   has_many :acl_names, -> { select(:package_name).distinct },
+                        primary_key: 'login',
+                        foreign_key: 'maintainer_slug',
+                        class_name: :Acl
 
    scope :top, ->(limit) { order(srpms_count: :desc).limit(limit) }
+   scope :people, -> { where("maintainers.login !~ '^@.*'", ) }
+   scope :teams, -> { where("maintainers.login ~ '^@.*'", ) }
 
-   def to_param
-      login
+   def has_supported?
+      acl_names.present?
+   end
+
+   def support_count
+      acl_names.count
    end
 
   class << self
@@ -49,8 +57,8 @@ class Maintainer < ApplicationRecord
           Maintainer.create(login: login, name: name, email: email)
         end
       elsif domain == 'packages.altlinux.org'
-        unless MaintainerTeam.team_exists?(login)
-          MaintainerTeam.create(login: login, name: name, email: email)
+        unless Maintainer::Team.team_exists?(login)
+          Maintainer::Team.create!(login: login, name: name, email: email)
         end
       else
         raise 'Broken domain in Packager: tag'

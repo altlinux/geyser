@@ -3,17 +3,18 @@
 class TeamsController < ApplicationController
   def index
     @branches = Branch.order('order_id')
-    @teams = MaintainerTeam.order(:name)
+    @teams = Maintainer::Team.order(:name)
   end
 
   def show
     @branches = Branch.order('order_id')
-    @team = MaintainerTeam.find_by!(login: "@#{ params[:id] }")
-    @srpms_counter = @branch.srpms.where(name: Redis.current.smembers("#{ @branch.name }:maintainers:@#{ params[:id] }")).count
-    @srpms = @branch.srpms.where(name: Redis.current.smembers("#{ @branch.name }:maintainers:@#{ params[:id] }"))
+    @team = Maintainer::Team.find_by!(login: "@#{ params[:id] }")
+    acl_names = @team.acls.in_branch(@branch).select(:package_name).distinct
+    @srpms_counter = @branch.spkgs.where(name: acl_names).count
+    @srpms = @branch.spkgs.where(name: acl_names)
                     .includes(:repocop_patch)
-                    .select('repocop, srpms.name, srpms.epoch, srpms.version, srpms.release, srpms.buildtime, srpms.url, srpms.summary')
-                    .order('LOWER(srpms.name)')
+                    .select('repocop, packages.name, packages.epoch, packages.version, packages.release, packages.buildtime, packages.url, packages.summary')
+                    .order('LOWER(packages.name)')
                     .page(params[:page])
                     .per(100)
                     .decorate

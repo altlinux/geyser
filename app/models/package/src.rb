@@ -15,6 +15,8 @@ class Package::Src < Package
                        dependent: :destroy
    has_many :gears, -> { order(lastchange: :desc) }, primary_key: :name, foreign_key: :repo
 
+   has_many :acls, primary_key: :name, foreign_key: :package_name
+
    scope :top_rebuilds_after, ->(date) do
       where("buildtime > ?", date)
          .select(:name, 'count(packages.name) as id')
@@ -30,10 +32,5 @@ class Package::Src < Package
          logins << changelog.login
       end
       Maintainer.where(login: logins.sort.uniq).order(:name)
-   end
-
-   def acls
-      return unless Redis.current.exists("#{ branch.name }:#{ name }:acls")
-      Maintainer.where(login: Redis.current.smembers("#{ branch.name }:#{ name }:acls")).order(:name).select('login').map(&:login).join(',')
    end
 end

@@ -22,8 +22,6 @@ class Rpm < ApplicationRecord
    after_create    :update_branching_maintainer_counter
 
    after_destroy   :update_branching_maintainer_counter
-   after_destroy   :remove_acls_from_cache
-   after_destroy   :remove_leader_from_cache
 
    validates_presence_of :branch_path, :filename
 
@@ -42,14 +40,6 @@ class Rpm < ApplicationRecord
 
    def increment_branch_path_counter
       BranchPath.increment_counter(:srpms_count, branch_path.id)
-   end
-
-   def remove_acls_from_cache
-      Redis.current.del("#{ branch.name }:#{ filename }:acls")
-   end
-
-   def remove_leader_from_cache
-      Redis.current.del("#{ branch.name }:#{ filename }:leader")
    end
 
    def fill_name_in
