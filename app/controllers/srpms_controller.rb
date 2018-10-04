@@ -18,14 +18,10 @@ class SrpmsController < ApplicationController
     @acls = @spkg.acls.in_branch(@branch)
     if @acls.present?
       @maintainers = Maintainer.where(login: @acls.people.maintainer_slugs).order(:name)
-      @teams = MaintainerTeam.where(login: @acls.teams.maintainer_slugs).order(:name)
+      @teams = Maintainer::Team.where(login: @acls.teams.maintainer_slugs).order(:name)
 
       login = @acls.owner.first.maintainer_slug
-      if login[0] == '@'
-        @leader = MaintainerTeam.where(login: login).first
-      else
-        @leader = Maintainer.where(login: login).first
-      end
+      @leader = Maintainer.where(login: login).first
     end
 
     @all_bugs = AllBugsForSrpm.new(@spkg).decorate

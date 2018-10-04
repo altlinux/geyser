@@ -76,11 +76,7 @@
 
 <% if @leader %>
 <div class="maintainer"><b><%= _('Current maintainer:') %></b>
-<% if @leader.class.to_s == 'MaintainerTeam' %>
-  <%= link_to @leader.name, team_path(@branch, @leader.login[1..-1]), class: 'news', title: _('information about maintainer') %>
-<% else %>
-  <%= link_to _(@leader.name), maintainer_path(@branch, @leader), class: 'news', title: _('information about maintainer') %>
-<% end %>
+<%= link_to @leader.name, team_path(@branch, @leader.to_param), class: 'news', title: _('information about maintainer') %>
 </div><br>
 <% end %>
 

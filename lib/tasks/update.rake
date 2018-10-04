@@ -16,6 +16,9 @@ namespace :update do
 
       puts "#{ Time.zone.now }: import all acls for #{branch.name} branch to database"
       ImportAcls.new(branch: branch).do
+
+      puts "#{ Time.zone.now }: import all groups for #{branch.name} branch to database"
+      ImportTeams.new(branch: branch).do
     end
   end
 

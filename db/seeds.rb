@@ -1271,12 +1271,12 @@ Mirror.create!(
 #               :rsync => 'rsync://mirror.yandex.ru/altlinux')
 
 # packager list
-MaintainerTeam.create!(
+Maintainer::Team.create!(
   name: 'Nobody',
   email: 'noboby@altlinux.org',
   login: '@nobody'
 )
-MaintainerTeam.create!(
+Maintainer::Team.create!(
   name: 'Eve R. Ybody',
   email: 'everybody@altlinux.org',
   login: '@everybody'
@@ -1535,77 +1535,77 @@ Maintainer.create!(
 
 # TODO: add @xen and @ha-cluster'
 
-MaintainerTeam.create!(
-  name: 'TeX Development Team',
+Maintainer::Team.create!(
+  name: 'TeX Development ::Team',
   email: 'tex@packages.altlinux.org',
   login: '@tex'
 )
-MaintainerTeam.create!(
-  name: 'Connexion Development Team',
+Maintainer::Team.create!(
+  name: 'Connexion Development ::Team',
   email: 'connexion@packages.altlinux.org',
   login: '@connexion'
 )
-MaintainerTeam.create!(
-  name: 'EVMS Development Team',
+Maintainer::Team.create!(
+  name: 'EVMS Development ::Team',
   email: 'evms@packages.altlinux.org',
   login: '@evms'
 )
-MaintainerTeam.create!(
-  name: 'QA Team',
+Maintainer::Team.create!(
+  name: 'QA ::Team',
   email: 'qa@packages.altlinux.org',
   login: '@qa'
 )
-MaintainerTeam.create!(
-  name: 'CPAN Team',
+Maintainer::Team.create!(
+  name: 'CPAN ::Team',
   email: 'cpan@packages.altlinux.org',
   login: '@cpan'
 )
-MaintainerTeam.create!(
-  name: 'Xfce Team',
+Maintainer::Team.create!(
+  name: 'Xfce ::Team',
   email: 'xfce@packages.altlinux.org',
   login: '@xfce'
 )
-MaintainerTeam.create!(
-  name: 'VIm Plugins Development Team',
+Maintainer::Team.create!(
+  name: 'VIm Plugins Development ::Team',
   email: 'vim-plugins@packages.altlinux.org',
   login: '@vim-plugins'
 )
-MaintainerTeam.create!(
-  name: 'FreeRadius Development Team',
+Maintainer::Team.create!(
+  name: 'FreeRadius Development ::Team',
   email: 'freeradius@packages.altlinux.org',
   login: '@freeradius'
 )
-MaintainerTeam.create!(
-  name: 'FTN Development Team',
+Maintainer::Team.create!(
+  name: 'FTN Development ::Team',
   email: 'ftn@packages.altlinux.org',
   login: '@ftn'
 )
-MaintainerTeam.create!(
-  name: 'Java Team',
+Maintainer::Team.create!(
+  name: 'Java ::Team',
   email: 'java@packages.altlinux.org',
   login: '@java'
 )
-MaintainerTeam.create!(
-  name: 'Kernel Team',
+Maintainer::Team.create!(
+  name: 'Kernel ::Team',
   email: 'kernel@packages.altlinux.org',
   login: '@kernel'
 )
-MaintainerTeam.create!(
-  name: 'Ruby Team',
+Maintainer::Team.create!(
+  name: 'Ruby ::Team',
   email: 'ruby@packages.altlinux.org',
   login: '@ruby'
 )
-MaintainerTeam.create!(
-  name: 'Python Team',
+Maintainer::Team.create!(
+  name: 'Python ::Team',
   email: 'python@packages.altlinux.org',
   login: '@python'
 )
-MaintainerTeam.create!(
+Maintainer::Team.create!(
   name: 'QA p6',
   email: 'qa_p6@packages.altlinux.org',
   login: '@qa_p6'
 )
-MaintainerTeam.create!(
+Maintainer::Team.create!(
   name: 'QA p5',
   email: 'qa_p5@packages.altlinux.org',
   login: '@qa_p5'

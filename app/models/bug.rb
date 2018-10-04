@@ -9,7 +9,7 @@ class Bug < ApplicationRecord
 
    scope :opened, -> { where(bug_status: OPEN_STATUSES) }
    scope :for_maintainer_and_branch, ->(maintainer, branch) do
-      names = branch.spkgs.where(name: maintainer.acl_names)
+      names = branch.spkgs.where(name: maintainer.acl_names).select(:name).distinct
 
       where(component: names)
          .or(where(assigned_to: maintainer.email))

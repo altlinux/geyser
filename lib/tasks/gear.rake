@@ -5,7 +5,9 @@ namespace :gear do
   task import: :environment do
     puts "#{ Time.zone.now }: import gitrepos"
     #TODO add lock
-    Gear.import_gitrepos('http://git.altlinux.org/people-packages-list')
+    Gear.transaction do
+      Gear.import_gitrepos('http://git.altlinux.org/people-packages-list')
+    end
     puts "#{ Time.zone.now }: end"
   end
 
@@ -13,7 +15,9 @@ namespace :gear do
   task update: :environment do
     puts "#{ Time.zone.now }: update gitrepos"
     #TODO add lock
-    Gear.update_gitrepos('http://git.altlinux.org/people-packages-list')
+    Gear.transaction do
+      Gear.update_gitrepos('http://git.altlinux.org/people-packages-list')
+    end
     puts "#{ Time.zone.now }: end"
   end
 end

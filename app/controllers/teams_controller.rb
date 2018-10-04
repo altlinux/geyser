@@ -3,12 +3,12 @@
 class TeamsController < ApplicationController
   def index
     @branches = Branch.order('order_id')
-    @teams = MaintainerTeam.order(:name)
+    @teams = Maintainer::Team.order(:name)
   end
 
   def show
     @branches = Branch.order('order_id')
-    @team = MaintainerTeam.find_by!(login: "@#{ params[:id] }")
+    @team = Maintainer::Team.find_by!(login: "@#{ params[:id] }")
     acl_names = @team.acls.in_branch(@branch).select(:package_name).distinct
     @srpms_counter = @branch.spkgs.where(name: acl_names).count
     @srpms = @branch.spkgs.where(name: acl_names)

@@ -18,7 +18,6 @@ class Maintainer < ApplicationRecord
    has_many :branch_paths, -> { distinct }, through: :rpms
    has_many :branches, -> { distinct }, through: :branch_paths
    has_many :branching_maintainers, dependent: :delete_all
-   has_many :teams
    has_many :gears
    has_many :ftbfs, class_name: 'Ftbfs'
    has_many :srpm_names, -> { src.select(:name).distinct }, through: :packages, source: :rpms
@@ -29,10 +28,8 @@ class Maintainer < ApplicationRecord
                         class_name: :Acl
 
    scope :top, ->(limit) { order(srpms_count: :desc).limit(limit) }
-
-   def to_param
-      login
-   end
+   scope :people, -> { where("maintainers.login !~ '^@.*'", ) }
+   scope :teams, -> { where("maintainers.login ~ '^@.*'", ) }
 
    def has_supported?
       acl_names.present?
@@ -60,8 +57,8 @@ class Maintainer < ApplicationRecord
           Maintainer.create(login: login, name: name, email: email)
         end
       elsif domain == 'packages.altlinux.org'
-        unless MaintainerTeam.team_exists?(login)
-          MaintainerTeam.create(login: login, name: name, email: email)
+        unless Maintainer::Team.team_exists?(login)
+          Maintainer::Team.create!(login: login, name: name, email: email)
         end
       else
         raise 'Broken domain in Packager: tag'

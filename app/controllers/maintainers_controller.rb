@@ -66,8 +66,8 @@ class MaintainersController < ApplicationController
    end
 
    def set_bug_lists
-      @all_bugs = Bug.for_maintainer_and_branch(maintainer, @branch)
-      @opened_bugs = @all_bugs.opened
+      @all_bugs = Bug.for_maintainer_and_branch(maintainer, @branch).decorate
+      @opened_bugs = @all_bugs.object.opened.decorate
    end
 
    def set_srpms
@@ -76,6 +76,7 @@ class MaintainersController < ApplicationController
                       .order(order)
                       .page(params[:page])
                       .per(100)
+                      .select('DISTINCT(packages.*), LOWER(packages.name)')
                       .decorate
    end
 
