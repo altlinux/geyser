@@ -8,10 +8,6 @@ namespace :migrate do
       branch.recount!
     end
 
-    Branch.all.each do |branch|
-      Redis.current.del("#{ branch.name }:srpms:counter")
-    end
-
   end
 
   desc 'Migrate :size string to :size integer'

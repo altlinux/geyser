@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2018_10_03_104034) do
 
   create_table "acls", force: :cascade do |t|
     t.bigint "branch_path_id", comment: "Ссылка на путь ветви"
-    t.string "maintainer_slug", comment: "Имя сопровождающего пакета"
+    t.string "maintainer_slug", comment: "Имя сопровождающего для пакета"
     t.string "package_name", comment: "Имя пакета"
     t.boolean "owner", default: false, comment: "Владелец ли пакета?"
     t.datetime "created_at", null: false

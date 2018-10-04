@@ -2,8 +2,7 @@
 
 class MaintainersController < ApplicationController
    before_action :set_srpms, only: %i(srpms bugs allbugs repocop)
-   before_action :set_all_bugs, except: %i(index)
-   before_action :set_opened_bugs, except: %i(index)
+   before_action :set_bug_lists, except: %i(index)
    before_action :set_branches, only: %i(index show srpms)
 
    def index
@@ -16,7 +15,7 @@ class MaintainersController < ApplicationController
 
 #  def acls
 #    @acls = Acl.all :conditions => {
-#                      :login => params[:login],
+#                      :maintainer_slug => params[:login],
 #                      :branch_id => @branch.id }
 #  end
 
@@ -66,12 +65,9 @@ class MaintainersController < ApplicationController
       order += ' ' + sort_order
    end
 
-   def set_all_bugs
-      @all_bugs = AllBugsForMaintainer.new(@branch, maintainer).decorate
-   end
-
-   def set_opened_bugs
-      @opened_bugs = OpenedBugsForMaintainer.new(@branch, maintainer).decorate
+   def set_bug_lists
+      @all_bugs = Bug.for_maintainer_and_branch(maintainer, @branch)
+      @opened_bugs = @all_bugs.opened
    end
 
    def set_srpms

@@ -8,6 +8,13 @@ namespace :update do
   desc 'Update all the branches'
   task branches: %i(environment) do
     Branch.all.each do |branch|
+      puts "#{ Time.zone.now }: import all src rpms from #{branch.name} branch to database"
+      Package::Src.import_all(branch)
+
+      puts "#{ Time.zone.now }: import all built rpms from #{branch.name} branch to database"
+      Package::Built.import_all(branch)
+
+      puts "#{ Time.zone.now }: import all acls for #{branch.name} branch to database"
       ImportAcls.new(branch: branch).do
     end
   end

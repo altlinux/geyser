@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class Maintainer < ApplicationRecord
-  # include Redis::Objects
-
    validates :name, presence: true
 
    validates :email, presence: true
@@ -34,6 +32,14 @@ class Maintainer < ApplicationRecord
 
    def to_param
       login
+   end
+
+   def has_supported?
+      acl_names.present?
+   end
+
+   def support_count
+      acl_names.count
    end
 
   class << self
