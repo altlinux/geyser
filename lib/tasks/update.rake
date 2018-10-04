@@ -40,6 +40,8 @@ namespace :update do
           puts "#{count} source packages are to remove for #{branch_path.name}"
         end
       end
+
+      RemoveOldRpms.new.do
     end
   end
 
