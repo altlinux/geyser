@@ -5,7 +5,7 @@
   <div class="header" style="letter-spacing: 1px;"><%= _('Search') %></div>
   <p class="break"></p>
 
-  <%= render partial: "shared/search_form", locals: { branches: @branches, branch: @branch, arch: @arches.first, arches: @branch.arches, query: @query || params[:query]} %>
+  <%= render partial: "shared/search_form", locals: { branches: @branches, branch: @branch, arch: @arches&.first, arches: @branch.arches, query: @query || params[:query]} %>
 
   <br>
   <br>
