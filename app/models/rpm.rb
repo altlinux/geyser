@@ -19,9 +19,8 @@ class Rpm < ApplicationRecord
    before_create   :increment_branch_path_counter
    before_destroy  :decrement_branch_path_counter
 
-   after_create    :update_branching_maintainer_counter
-
-   after_destroy   :update_branching_maintainer_counter
+#   after_create    :update_branching_maintainer_counter
+#   after_update    :update_branching_maintainer_counter, if: :is_obsoleted?
 
    validates_presence_of :branch_path, :filename
 
@@ -29,10 +28,13 @@ class Rpm < ApplicationRecord
 
    protected
 
-   def update_branching_maintainer_counter
-      srpms_count = builder.srpm_names.joins(:branch_path).where(branch_paths: { branch_id: branch }).count
-      BranchingMaintainer.where(maintainer_id: builder, branch_id: branch).update_all(srpms_count: srpms_count)
+   def is_obsoleted?
+      obsoleted_at.present?
    end
+
+#   def update_branching_maintainer_counter
+#      BranchingMaintainer.find_or_initialize_by(maintainer_id: builder, branch_id: branch).update_count!
+#   end
 
    def decrement_branch_path_counter
       BranchPath.decrement_counter(:srpms_count, branch_path.id)

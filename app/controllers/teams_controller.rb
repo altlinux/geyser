@@ -3,7 +3,11 @@
 class TeamsController < ApplicationController
   def index
     @branches = Branch.order('order_id')
-    @teams = Maintainer::Team.order(:name)
+    @branching_teams = BranchingMaintainer.team
+                                          .useful
+                                          .for_branch(@branch)
+                                          .includes(:maintainer, :branch)
+                                          .order("maintainers.name")
   end
 
   def show

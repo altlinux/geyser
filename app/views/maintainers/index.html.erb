@@ -31,17 +31,15 @@
     </tr>
     <tr>
       <td valign='top'>
-        <%- @maintainers.each do |maintainer| %>
-          <%- if maintainer.has_supported? %>
+        <%- @branching_people.each do |maintainer| %>
           <div style='margin-bottom: 2px; text-align: left; border-bottom: 1px gray dotted; width: 95%; font-size: 9pt; height: 10pt;'>
             <div style='float: left;'>
-              <%= link_to _(maintainer.name), maintainer_path(@branch, maintainer),
+              <%= link_to _(maintainer.name), maintainer_path(maintainer.branch, maintainer.maintainer),
                           class: 'news', title: _('information about maintainer') %>
-              <%= link_to " (#{ maintainer.login })", maintainer_path(@branch, maintainer), style: 'text-decoration: none; color: black;' %>
+              <%= link_to " (#{ maintainer.login })", maintainer_path(maintainer.branch, maintainer.maintainer), style: 'text-decoration: none; color: black;' %>
             </div>
-            <div style='float: right;'><%= maintainer.support_count %></div>
+            <div style='float: right;'><%= maintainer.srpms_count %></div>
           </div>
-          <%- end %>
         <%- end %>
       </td>
     </tr>

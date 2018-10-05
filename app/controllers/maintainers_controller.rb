@@ -6,7 +6,11 @@ class MaintainersController < ApplicationController
    before_action :set_branches, only: %i(index show srpms)
 
    def index
-      @maintainers = Maintainer.order(:name)
+      @branching_people = BranchingMaintainer.person
+                                             .useful
+                                             .for_branch(@branch)
+                                             .includes(:maintainer, :branch)
+                                             .order("maintainers.name")
    end
 
    def show

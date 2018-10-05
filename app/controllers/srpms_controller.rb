@@ -17,8 +17,8 @@ class SrpmsController < ApplicationController
 
     @acls = @spkg.acls.in_branch(@branch)
     if @acls.present?
-      @maintainers = Maintainer.where(login: @acls.people.maintainer_slugs).order(:name)
-      @teams = Maintainer::Team.where(login: @acls.teams.maintainer_slugs).order(:name)
+      @maintainers = Maintainer.where(login: @acls.person.maintainer_slugs).order(:name)
+      @teams = Maintainer::Team.where(login: @acls.team.maintainer_slugs).order(:name)
 
       login = @acls.owner.first.maintainer_slug
       @leader = Maintainer.where(login: login).first

@@ -20,7 +20,7 @@ class Maintainer < ApplicationRecord
    has_many :branching_maintainers, dependent: :delete_all
    has_many :gears
    has_many :ftbfs, class_name: 'Ftbfs'
-   has_many :srpm_names, -> { src.select(:name).distinct }, through: :packages, source: :rpms
+   has_many :built_names, -> { src.select(:name).distinct }, through: :packages, source: :rpms
    has_many :acls, primary_key: 'login', foreign_key: 'maintainer_slug'
    has_many :acl_names, -> { select(:package_name).distinct },
                         primary_key: 'login',
@@ -28,8 +28,14 @@ class Maintainer < ApplicationRecord
                         class_name: :Acl
 
    scope :top, ->(limit) { order(srpms_count: :desc).limit(limit) }
-   scope :people, -> { where("maintainers.login !~ '^@.*'", ) }
-   scope :teams, -> { where("maintainers.login ~ '^@.*'", ) }
+   scope :person, -> { where("maintainers.login !~ '^@.*'", ) }
+   scope :team, -> { where("maintainers.login ~ '^@.*'", ) }
+
+   alias_method(:srpms_names, :built_names) #TODO remove of compat
+
+   def slug
+      to_param
+   end
 
    def has_supported?
       acl_names.present?
