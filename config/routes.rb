@@ -80,7 +80,7 @@ Rails.application.routes.draw do
     end
 
     resource :maintainer_profile, only: [:edit, :update]
-    resource :search, only: :show, id: /[^\/]+/
+    resource :search, only: :show
     resources :rebuild, controller: :rebuild, only: :index
     resources :rsync, controller: :rsync, only: :new
 

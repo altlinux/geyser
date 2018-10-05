@@ -18,7 +18,7 @@ class Package < ApplicationRecord
    scope :by_name, ->(name) { where(name: name) }
    scope :src, -> { where(arch: 'src') }
    scope :built, -> { where.not(arch: 'src') }
-   scope :by_branch_slug, ->(slug) { joins(:branches).where(branches: { slug: slug }) }
+   scope :by_branch_slug, ->(slug) { slug.blank? && all || joins(:branches).where(branches: { slug: slug }) }
    scope :by_arch, ->(arch) { arch.blank? && all || where(arch: arch) }
    scope :by_evr, ->(evr) do
       if evr.blank?

@@ -21,4 +21,9 @@ class BranchDecorator < Draper::Decorator
     h.content_tag(:option, _("All arches"), value: '') +
       options_from_collection_for_select(arches, :freeze, :freeze, arch)
   end
+
+  def branches_as_options branches, branch_slug
+    h.content_tag(:option, _("All branches"), value: '') +
+      options_from_collection_for_select(branches, :slug, :name, branch_slug)
+  end
 end

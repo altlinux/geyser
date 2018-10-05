@@ -28,12 +28,11 @@
     </div>
     <div id='top-auth'>
       <div id='div1' style='display: block; margin-top: 20px'>
-        <%= form_tag search_path(branch: @branch.slug), method: :get do %>
-          <%= hidden_field_tag('branch', @branch.slug) %>
+        <%= form_tag search_path, method: :get do %>
           <table>
             <tr>
               <td>
-                <%= text_field_tag :query, params[:query] ? params[:query] : "", placeholder: _('Search...'), class: 'top-name', size: '18' %>
+                <%= text_field_tag :query, params[:query] ? params[:query] : "", placeholder: _('Search over all branches...'), class: 'top-name', size: '25' %>
               </td>
               <td valign='middle'>
                 <input type='submit' class='top-go' id='sub1' value="<%= _('find') %>" />

@@ -780,6 +780,9 @@ msgstr "Поиск не доступен."
 msgid "Search..."
 msgstr "Поиск..."
 
+msgid "Search over all branches..."
+msgstr "Поиск по всем ветвям..."
+
 msgid "Security"
 msgstr "Безопасность"
 
@@ -1211,6 +1214,9 @@ msgstr ""
 
 msgid "All arches"
 msgstr "Все архитектуры"
+
+msgid "All branches"
+msgstr "Все ветви"
 
 msgid "Branch paths"
 msgstr "Пути к ветвям"
