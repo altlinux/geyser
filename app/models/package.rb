@@ -19,7 +19,14 @@ class Package < ApplicationRecord
    scope :src, -> { where(arch: 'src') }
    scope :built, -> { where.not(arch: 'src') }
    scope :by_branch_slug, ->(slug) { slug.blank? && all || joins(:branches).where(branches: { slug: slug }) }
-   scope :by_arch, ->(arch) { arch.blank? && all || where(arch: arch) }
+   scope :by_arch, ->(arch) do
+      if arch.blank?
+         all
+      else
+         subquery = "SELECT DISTINCT src_id FROM packages WHERE packages.arch IN (?)"
+         where("packages.id IN (#{subquery})", arch)
+      end
+   end
    scope :by_evr, ->(evr) do
       if evr.blank?
          all
@@ -39,10 +46,10 @@ class Package < ApplicationRecord
       else
          subquery = "
             SELECT DISTINCT src_id FROM (SELECT src_id, tsv, ts_rank_cd(tsv, plainto_tsquery('#{text}'))
-            FROM packages, plainto_tsquery('#{text}') AS q
+            FROM packages, plainto_tsquery(?) AS q
             WHERE (tsv @@ q)
-            ORDER BY ts_rank_cd(tsv, plainto_tsquery('#{text}')) DESC) as t1"
-         where("packages.id IN (#{subquery})")
+            ORDER BY ts_rank_cd(tsv, plainto_tsquery(?)) DESC) as t1"
+         where("packages.id IN (#{subquery})", text, text)
       end
    end
    singleton_class.send(:alias_method, :q, :query)
