@@ -30,6 +30,11 @@ namespace :update do
       puts "#{ Time.zone.now }: remove lost *.src.rpm from #{branch.name} branch"
 
       branch.branch_paths.src.active.each do |branch_path|
+        if !File.directory?(branch_path.path)
+          puts "Folder #{branch_path.path} doesn't exist"
+          next
+        end
+
         if remove
           RemoveOldSrpms.call(branch_path) do
             on(:ok) { puts "#{ Time.zone.now }: Old srpms removed" }

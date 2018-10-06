@@ -93,7 +93,7 @@ class Rpm::Base
       end
 
       def no_signature_key
-         @@no_signature_key ||= exec('--nosignature').present? && '--nosignature' || '--nogpg'
+         @@no_signature_key ||= exec('--nosignature --usage').present? && '--nosignature' || '--nogpg'
       end
 
       def use_common_signature?

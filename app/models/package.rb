@@ -154,6 +154,8 @@ class Package < ApplicationRecord
       Rails.logger.info "IMPORT: at #{time} for #{branch.name} in"
 
       branch.branch_paths.send(source.downcase).active.each do |branch_path|
+         next if !File.directory?(branch_path.path)
+
          Rails.logger.info "IMPORT: Branch path #{branch_path.path}"
 
          mins = (time - branch_path.imported_at + 59).to_i / 60
