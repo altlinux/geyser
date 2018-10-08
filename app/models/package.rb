@@ -149,9 +149,12 @@ class Package < ApplicationRecord
          if package.branch_paths.include?(branch_path)
             raise AlreadyExistError
          else
-            Rpm.create!(branch_path: branch_path,
-                        filename: rpm.filename,
-                        package: package)
+            rpm = Rpm.new(branch_path_id: branch_path.id,
+                          filename: rpm.filename,
+                          package_id: package.id)
+
+            rpm.save! if !rpm.exists?
+
             raise AttachedNewBranchError
          end
       end

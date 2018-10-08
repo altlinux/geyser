@@ -38,6 +38,15 @@ class Rpm < ApplicationRecord
       self.name ||= filename.split(/-/)[0...-2].join('-')
    end
 
+   def exists?
+      scope = self.class.unscoped.where(branch_path_id: branch_path_id,
+                                        filename: filename,
+                                        package_id: package_id,
+                                        obsoleted_at: obsoleted_at)
+
+      scope.present?
+   end
+
    protected
 
 #   def update_branching_maintainer_counter

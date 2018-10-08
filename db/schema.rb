@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_04_141500) do
+ActiveRecord::Schema.define(version: 2018_10_08_174600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -333,8 +333,7 @@ ActiveRecord::Schema.define(version: 2018_10_04_141500) do
     t.datetime "obsoleted_at", comment: "Время устаревания пакета, если установлено, то пакет более не находится в ветви"
     t.string "name", null: false, comment: "Имя исходного пакета"
     t.bigint "package_id", null: false, comment: "Ссылка на пакет"
-    t.index ["branch_path_id", "filename"], name: "index_rpms_on_branch_path_id_and_filename", unique: true
-    t.index ["branch_path_id", "package_id"], name: "index_rpms_on_branch_path_id_and_package_id", unique: true
+    t.index ["branch_path_id", "filename", "package_id", "obsoleted_at"], name: "index_rpms_on_branch_path_id_filename_package_id_obsoleted_at", unique: true
     t.index ["branch_path_id"], name: "index_rpms_on_branch_path_id"
     t.index ["filename"], name: "index_rpms_on_filename"
     t.index ["name"], name: "index_rpms_on_name"
