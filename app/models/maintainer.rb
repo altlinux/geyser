@@ -45,40 +45,17 @@ class Maintainer < ApplicationRecord
       acl_names.count
    end
 
-  class << self
-    def login_exists?(login)
-      Maintainer.where(login: login.downcase).count > 0
-    end
+   class << self
+      def import_from_changelogname(changelogname)
+         email = FixMaintainerEmail.new(changelogname.chop.split('<')[1].split('>')[0].downcase).execute
+         (login, domain) = email.split('@')
+         kls = (domain == 'packages.altlinux.org' && 'Maintainer::Team' || 'Maintainer::Person').constantize
+         name = changelogname.split('<')[0].chomp.strip
 
-    def import(maintainer)
-      name = maintainer.split('<')[0].chomp
-      name.strip!
-      email = maintainer.chop.split('<')[1].split('>')[0]
-      email.downcase!
-      email = FixMaintainerEmail.new(email).execute
-      login = email.split('@')[0]
-      domain = email.split('@')[1]
-      if domain == 'altlinux.org'
-        unless login_exists?(login)
-          Maintainer.create(login: login, name: name, email: email)
-        end
-      elsif domain == 'packages.altlinux.org'
-        unless Maintainer::Team.team_exists?(login)
-          Maintainer::Team.create!(login: login, name: name, email: email)
-        end
-      else
-        raise 'Broken domain in Packager: tag'
+         kls.find_or_create_by!(email: email) do |m|
+            m.name = name
+            m.login = login
+         end
       end
-    end
-
-    def import_from_changelogname(changelogname)
-      pre_email = changelogname.chop.split('<')[1].split('>')[0].downcase
-      email = FixMaintainerEmail.new(pre_email).execute
-
-      Maintainer.find_or_create_by!(login: email.split('@')[0]) do |maintainer|
-        maintainer.name = changelogname.split('<')[0].chomp.strip
-        maintainer.email = email
-      end
-    end
-  end
+   end
 end

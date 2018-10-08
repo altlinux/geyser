@@ -7,4 +7,8 @@ class Maintainer::Team < Maintainer
    def to_param
       login[1..-1]
    end
+
+   def login= value
+      super(/^@/ =~ value && value || '@' + value)
+   end
 end

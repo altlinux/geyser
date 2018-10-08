@@ -2,7 +2,7 @@
 
 class RemoveOldRpms
    def do
-      Package.transaction do
+      Branch.transaction do
          [
             "UPDATE rpms as a 
                 SET obsoleted_at = NOW()
@@ -12,7 +12,7 @@ class RemoveOldRpms
                 AND b.package_id = c.src_id
                 AND a.obsoleted_at IS NULL
                 AND b.obsoleted_at IS NOT NULL"
-         ].each { |q| Package.connection.execute(q) }
+         ].each { |q| Branch.connection.execute(q) }
       end
    end
 end
