@@ -29,7 +29,7 @@ class SrpmsController < ApplicationController
   end
 
   def changelog
-    @changelogs = @spkg.changelogs.order('changelogs.created_at ASC')
+    @changelogs = @spkg.changelogs.order('changelogs.changelogtime DESC, changelogs.created_at DESC') #TODO makeonly created_at when migrate from time to created_at_time
     @all_bugs = AllBugsForSrpm.new(@spkg).decorate
     @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
   end
