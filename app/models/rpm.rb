@@ -26,11 +26,19 @@ class Rpm < ApplicationRecord
 
    before_save :fill_name_in, on: :create
 
-   protected
+   def filepath
+      File.join(branch_path.path, self.filename)
+   end
 
    def is_obsoleted?
       obsoleted_at.present?
    end
+
+   def fill_name_in
+      self.name ||= filename.split(/-/)[0...-2].join('-')
+   end
+
+   protected
 
 #   def update_branching_maintainer_counter
 #      BranchingMaintainer.find_or_initialize_by(maintainer_id: builder, branch_id: branch).update_count!
@@ -42,9 +50,5 @@ class Rpm < ApplicationRecord
 
    def increment_branch_path_counter
       BranchPath.increment_counter(:srpms_count, branch_path.id)
-   end
-
-   def fill_name_in
-      self.name ||= filename.split(/-/)[0...-2].join('-')
    end
 end

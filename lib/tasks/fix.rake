@@ -3,4 +3,9 @@ namespace :fix do
    task branching_maintainers: %i(environment) do
       FixBranchingMaintainers.new.do
    end
+
+   desc 'Fix lost sources'
+   task lost_sources: %i(environment) do
+      FixLostSources.new.do
+   end
 end

@@ -62,6 +62,12 @@ class Package < ApplicationRecord
       name
    end
 
+   def first_presented_filepath
+      rpms.map do |rpm|
+         File.file?(filepath = rpm.filepath) && filepath || nil
+      end.compact.first
+   end
+
    def self.source
       @source ||= self.to_s.split('::').last
    end
@@ -133,7 +139,7 @@ class Package < ApplicationRecord
             Changelog.import_from(rpm, package)
             Specfile.import(rpm, package)
             Patch.import(rpm, package)
-            Source.import(rpm, package)
+            Source.import_from(rpm, package)
          end
       else
          if package.changed?
