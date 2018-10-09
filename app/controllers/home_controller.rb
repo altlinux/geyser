@@ -4,7 +4,7 @@ class HomeController < ApplicationController
   def index
     @branches = Branch.filled.order('order_id')
     @spkg_builds = @branch.all_spkgs.top_rebuilds_after(Time.zone.now - 6.months).limit(16)
-    @branches_s = BranchPathsToBranchesSerializer.new(BranchPath.includes(:branch).for_branch(@branches).unanonimous.src.order("branches.order_id, branch_paths.id"))
+    @branches_s = BranchPathsToBranchesSerializer.new(BranchPath.includes(:branch).for_branch(@branches).unanonimous.src.order("branches.order_id DESC, branch_paths.id"))
     @maintainers_s = ActiveModel::Serializer::CollectionSerializer.new(BranchingMaintainer.includes(:maintainer).top(15, @branch), serializer: BranchingMaintainerAsMaintainerSerializer).as_json
     @spkgs = @branch.spkgs.includes(:builder).ordered.page(params[:page]).per(40).decorate
   end

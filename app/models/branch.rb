@@ -22,7 +22,7 @@ class Branch < ApplicationRecord
   has_many :branching_maintainers, dependent: :delete_all
   has_many :maintainers, through: :branching_maintainers
 
-  default_scope -> { order(:order_id) }
+  default_scope -> { order(order_id: :desc) }
 
   scope :filled, -> { where.not(srpms_count: 0) }
 
