@@ -2,7 +2,7 @@
 
 class TeamsController < ApplicationController
   def index
-    @branches = Branch.order('order_id')
+    @branches = Branch.all
     @branching_teams = BranchingMaintainer.team
                                           .useful
                                           .for_branch(@branch)
@@ -11,7 +11,7 @@ class TeamsController < ApplicationController
   end
 
   def show
-    @branches = Branch.order('order_id')
+    @branches = Branch.all
     @team = Maintainer::Team.find_by!(login: "@#{ params[:id] }")
     acl_names = @team.acls.in_branch(@branch).select(:package_name).distinct
     @srpms_counter = @branch.spkgs.where(name: acl_names).count

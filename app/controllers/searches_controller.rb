@@ -4,7 +4,7 @@ class SearchesController < ApplicationController
   before_action :fix_arches
 
   def show
-    @branches = Branch.order('order_id')
+    @branches = Branch.all
     if params[:query].blank? and params[:arch].blank?
       redirect_to controller: 'home', action: 'index'
     else
