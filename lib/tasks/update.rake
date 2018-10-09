@@ -19,7 +19,7 @@ namespace :update do
    end
 
    desc 'Remove lost srpms'
-   task :lost, %i(remove) => %i(environment lock) do |t, args|
+   task :lost, %i(remove) => %i(environment) do |t, args|
       remove = args[:remove] == "true"
 
       Branch.find_each do |branch|

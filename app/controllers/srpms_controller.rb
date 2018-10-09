@@ -69,14 +69,14 @@ class SrpmsController < ApplicationController
        gear: [gears: :maintainer],
     }[action_name.to_sym]
 
-    spkgs = @branch.spkgs.where(name: params[:id]).by_evr(params[:version])
+    spkgs = @branch.spkgs.where(name: params[:id]).by_evr(params[:version]).order(buildtime: :desc)
     spkgs = spkgs.includes(*includes) if includes
     
     @spkg = spkgs.first!.decorate
   end
 
   def fetch_srpms_by_name
-    @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.by_name(params[:id]).includes(:branch_path, :branch, :package).order('branches.order_id'))
+    @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src.by_name(params[:id]).includes(:branch_path, :branch, :package).order('branches.order_id'))
   end
 
   def set_version
