@@ -62,6 +62,10 @@ class Package < ApplicationRecord
       name
    end
 
+   def evr
+      [epoch, "#{version}-#{release}"].compact.join(":")
+   end
+
    def first_presented_filepath
       rpms.map do |rpm|
          File.file?(filepath = rpm.filepath) && filepath || nil

@@ -1,6 +1,6 @@
 <% @changelogs.each do |changelog| %>
   <span class="news-date-new">
-    <%= link_to "#{ changelog.package.name }-#{ changelog.changelogname.split('>')[1].strip rescue nil }",
+    <%= link_to "#{ changelog.package.filename }",
                 srpm_path(@branch, changelog.package.name),
                 class: 'news',
                 title: _('detailed information about the package') %>

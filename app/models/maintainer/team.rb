@@ -9,6 +9,10 @@ class Maintainer::Team < Maintainer
    end
 
    def login= value
-      super(/^@/ =~ value && value || '@' + value)
+      if value
+         super(/^@/ =~ value && value || '@' + value)
+      else
+         super
+      end
    end
 end

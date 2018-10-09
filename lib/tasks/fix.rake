@@ -8,4 +8,9 @@ namespace :fix do
    task lost_sources: %i(environment) do
       FixLostSources.new.do
    end
+
+   desc 'Fix changelogs'
+   task changelogs: %i(environment) do
+      FixChangelogs.new.do
+   end
 end
