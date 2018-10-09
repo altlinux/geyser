@@ -85,6 +85,6 @@ class MaintainersController < ApplicationController
    end
 
    def set_branches
-      @branches = Branch.order('order_id')
+      @branches = Branch.all
    end
 end

@@ -32,7 +32,7 @@ class PatchesController < ApplicationController
   end
 
   def fetch_srpms_by_name
-    @srpms_by_name = SrpmBranchesSerializer.new(Rpm.by_name(params[:srpm_id]).includes(:branch_path, :package, :branch).order('branches.order_id'))
+    @srpms_by_name = SrpmBranchesSerializer.new(Rpm.by_name(params[:srpm_id]).includes(:branch_path, :package, :branch).order('branches.order_id DESC'))
   end
 
   def set_version
