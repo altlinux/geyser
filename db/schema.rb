@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_08_174600) do
+ActiveRecord::Schema.define(version: 2018_10_09_114800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -99,6 +99,11 @@ ActiveRecord::Schema.define(version: 2018_10_08_174600) do
     t.datetime "updated_at"
     t.boolean "delta", default: true, null: false
     t.bigint "package_id", comment: "Ссылка на пакет"
+    t.bigint "maintainer_id", comment: "Автор изменения в логе"
+    t.string "evr", comment: "Эпоха, версия и релиз"
+    t.text "text", comment: "Текст изменений"
+    t.datetime "at", comment: "Время создания записи в логе"
+    t.index ["maintainer_id"], name: "index_changelogs_on_maintainer_id"
     t.index ["package_id"], name: "index_changelogs_on_package_id"
   end
 

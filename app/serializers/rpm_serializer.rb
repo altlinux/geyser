@@ -10,10 +10,6 @@ class RpmSerializer < RecordSerializer
    end
 
    def evr
-      if object.package.epoch
-         "#{object.package.epoch}:#{object.package.version}-#{object.package.release}"
-      else
-         "#{object.package.version}-#{object.package.release}"
-      end
+      object.package.evr
    end
 end

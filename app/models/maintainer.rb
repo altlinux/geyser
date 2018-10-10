@@ -5,13 +5,9 @@ class Maintainer < ApplicationRecord
 
    validates :email, presence: true
 
-   validates :login, presence: true, uniqueness: true
-
    validates :name, immutable: true
 
    validates :email, immutable: true
-
-   validates :login, immutable: true
 
    has_many :packages, foreign_key: :builder_id, inverse_of: :builder
    has_many :rpms, through: :packages
@@ -28,7 +24,7 @@ class Maintainer < ApplicationRecord
                         class_name: :Acl
 
    scope :top, ->(limit) { order(srpms_count: :desc).limit(limit) }
-   scope :person, -> { where("maintainers.login !~ '^@.*'", ) }
+   scope :person, -> { where("maintainers.login ~ '^[^@].*'", ) }
    scope :team, -> { where("maintainers.login ~ '^@.*'", ) }
 
    alias_method(:srpms_names, :built_names) #TODO remove of compat
@@ -47,14 +43,33 @@ class Maintainer < ApplicationRecord
 
    class << self
       def import_from_changelogname(changelogname)
-         email = FixMaintainerEmail.new(changelogname.chop.split('<')[1].split('>')[0].downcase).execute
-         (login, domain) = email.split('@')
-         kls = (domain == 'packages.altlinux.org' && 'Maintainer::Team' || 'Maintainer::Person').constantize
-         name = changelogname.split('<')[0].chomp.strip
+         emails = changelogname.scan(/[^<>@ ]+@[^<>@ ]+/)
+         if emails.present?
+            email = FixMaintainerEmail.new(emails.last).execute
+         end
 
-         kls.find_or_create_by!(email: email) do |m|
-            m.name = name
-            m.login = login
+         if email
+            (login, domain) = email.split('@')
+            kls = (domain == 'packages.altlinux.org' && 'Maintainer::Team' || 'Maintainer::Person').constantize
+
+            pre_name = changelogname.split('<')[0].chomp.strip
+            name = if pre_name.encoding == "UTF-8"
+               pre_name
+            else
+               if pre_name.ascii_only?
+                  pre_name.encode("UTF-8")
+               else
+                  pre_name.force_encoding("ISO-8859-1").encode("UTF-8", replace: nil)
+               end
+            end
+
+            kls.find_or_create_by!(email: email) do |m|
+               m.name = name.blank? && email || name
+
+               if /altlinux.org$/ =~ email
+                  m.login = login
+               end
+            end
          end
       end
    end
