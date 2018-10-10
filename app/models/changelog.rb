@@ -3,6 +3,7 @@
 class Changelog < ApplicationRecord
    PROPS = %i(changelogtime changelogname changelogtext)
 
+   belongs_to :maintainer, optional: true
    belongs_to :package, class_name: 'Package::Src'
 
    validates_presence_of :changelogtime, :changelogname, :changelogtext
