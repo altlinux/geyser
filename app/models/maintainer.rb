@@ -41,6 +41,18 @@ class Maintainer < ApplicationRecord
       acl_names.count
    end
 
+   def has_login?
+      login.present?
+   end
+
+   def locked_email
+      email.gsub('@', ' аt ').gsub('.', ' dоt ')
+   end
+
+   def shown_name
+      name || locked_email
+   end
+
    class << self
       def import_from_changelogname(changelogname)
          emails = changelogname.scan(/[^<>@ ]+(?:@| at )[^<>@ ]+/)

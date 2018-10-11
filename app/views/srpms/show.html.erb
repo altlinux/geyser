@@ -86,8 +86,12 @@
   <ul>
     <% @spkg.contributors.each do |contributor| %>
       <li>
-        <%= link_to _(contributor.name), maintainer_path(@branch, contributor), class: 'news',
-            title: _('information about maintainer') %>
+        <%- if contributor.has_login? %>
+          <%= link_to _(contributor.shown_name), maintainer_path(@branch, contributor), class: 'news',
+              title: _('information about maintainer') %>
+        <%- else %>
+          <%= _(contributor.shown_name) %>
+        <%- end %>
       </li>
     <% end %>
   </ul>
@@ -113,7 +117,7 @@
 </div>
 <% end %>
 
-<% if @spkg.packages %>
+<% if @spkg.packages.present? %>
 <b><%= _('List of rpms provided by this srpm:') %></b>
 <div class="para" style="margin-left: 0em;">
   <ul>
@@ -125,15 +129,19 @@
 <% end %>
 
 <b><%= _('Recent changes (last three changelog entries):') %></b>
-<% @changelogs.each do |changelog| %>
+<% @changelogs.limit(3).each do |changelog| %>
   <p class="news" />
-  <b><%= changelog.date %> <%= changelog.locked_email %></b> <br>
+  <b><%= changelog.date %>
+     <%- if changelog.maintainer.has_login? %>
+       <%= link_to _(changelog.maintainer_shown_name), maintainer_path(@branch, changelog.maintainer), class: 'news',
+          title: _('information about maintainer') %>
+     <%- else %>
+       <%= _(changelog.maintainer_shown_name) %>
+     <%- end %>
+  </b> <br>
   <ul class="change">
     <%= simple_format(changelog.text) %>
   </ul>
-  <% else %>
-    <p class="news" />
-    <b><%= _('Broken changelog entry.') %></b>
 <% end %>
 
 </div>

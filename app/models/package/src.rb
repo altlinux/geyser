@@ -16,6 +16,7 @@ class Package::Src < Package
    has_many :gears, -> { order(lastchange: :desc) }, primary_key: :name, foreign_key: :repo
 
    has_many :acls, primary_key: :name, foreign_key: :package_name
+   has_many :contributors, ->{ distinct.order(:name) }, through: :changelogs, source: :maintainer, class_name: :Maintainer
 
    scope :top_rebuilds_after, ->(date) do
       where("buildtime > ?", date)
@@ -23,14 +24,5 @@ class Package::Src < Package
          .group(:name)
          .having('count(packages.name) > 5')
          .order('id DESC', :name)
-   end
-
-   def contributors
-      logins = []
-      changelogs.each do |changelog|
-         next unless changelog.email
-         logins << changelog.login
-      end
-      Maintainer.where(login: logins.sort.uniq).order(:name)
    end
 end

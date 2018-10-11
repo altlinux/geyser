@@ -6,12 +6,10 @@ class Changelog < ApplicationRecord
 
    validates_presence_of :at, :text
 
+   delegate :shown_name, :locked_email, to: :maintainer, allow_nil: true, prefix: true
+
    def date
       at.to_date
-   end
-
-   def locked_email
-      maintainer && maintainer.email.gsub('@', ' аt ').gsub('.', ' dоt')
    end
 
    class << self

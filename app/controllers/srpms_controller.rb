@@ -4,13 +4,13 @@ class SrpmsController < ApplicationController
   before_action :set_version
   before_action :fetch_srpm
   before_action :fetch_srpms_by_name, only: %i(show changelog spec get)
+  before_action :fetch_changelogs, only: %i(show changelog)
 
   def show
     @ftbfs = @branch.ftbfs.where(name: @spkg.name,
                                  version: @spkg.version,
                                  release: @spkg.release,
                                  epoch: @spkg.epoch).select('DISTINCT id, arch, weeks')
-    @changelogs = @spkg.changelogs.order(created_at: :asc).limit(3)
     if @spkg.name[0..4] == 'perl-' && @spkg.name != 'perl'
       @perl_watch = PerlWatch.where(name: @spkg.name[5..-1].gsub('-', '::')).first
     end
@@ -29,7 +29,6 @@ class SrpmsController < ApplicationController
   end
 
   def changelog
-    @changelogs = @spkg.changelogs.order('changelogs.at, changelogs.created_at') #TODO makeonly created_at when migrate from time to created_at_time
     @all_bugs = AllBugsForSrpm.new(@spkg).decorate
     @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
   end
@@ -61,6 +60,11 @@ class SrpmsController < ApplicationController
   end
 
   protected
+
+  #TODO makeonly created_at when migrate from time to created_at_time
+  def fetch_changelogs
+    @changelogs = @spkg.changelogs.includes(:maintainer).order('changelogs.at DESC, changelogs.created_at DESC')
+  end
 
   def fetch_srpm
     includes = {
