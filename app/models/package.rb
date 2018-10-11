@@ -76,6 +76,10 @@ class Package < ApplicationRecord
       changelogs&.last&.text
    end
 
+   def first_branch
+      branches.first
+   end
+
    def self.source
       @source ||= self.to_s.split('::').last
    end

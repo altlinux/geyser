@@ -10,7 +10,11 @@
   <br>
   <br>
   <%= _('On your query &quot;').html_safe %><b><%= params[:query] %></b>
-  <%= (_('&quot; in branch <b>%s</b> were found') % @branch.name).html_safe %>
+  <%- if @branch.persisted? %>
+    <%= (_('&quot; in branch <b>%s</b> were found') % @branch.name).html_safe %>
+  <%- else %>
+    <%= _('&quot; in all branches were found').html_safe %>
+  <%- end %>
   <b><%= @spkgs.total_count %></b>
   <%= n_('RPM:', 'RPMs:', @spkgs.total_count) %>
 
@@ -18,9 +22,12 @@
   <br>
   <table id='bugs' cellspacing='0' cellpadding='3'>
     <tr>
-      <% if @branch.perpetual? %>
+      <%- if @branch.perpetual? %>
         <th><%= raw _('repo<br>cop') %></th>
-      <% end %>
+      <%- end %>
+      <%- if @branch.new_record? %>
+        <th><%= raw _('branch') %></th>
+      <%- end %>
       <th><%= _('package') %></th>
       <th><%= raw _('current<br>version') %></th>
       <th><%= _('build time') %></th>
@@ -29,27 +36,34 @@
       <th><%= _('summary') %></th>
     </tr>
 
-    <% @spkgs.each do |srpm| %>
-      <% if srpm %>
-        <%- srpm = srpm.decorate %>
+    <% @spkgs.each do |spkg| %>
+      <% if spkg %>
+        <%- spkg = spkg.decorate %>
         <tr>
-          <% if @branch.perpetual? %>
+          <%- if @branch.perpetual? %>
             <td>
-              <%= link_to image_tag("#{ srpm.repocop }.png", size: '20x20', alt: srpm.repocop), repocop_srpm_path(@branch, srpm), class: 'repocoplink', title: _('repocop') %>
+              <%= link_to image_tag("#{ spkg.repocop }.png", size: '20x20', alt: spkg.repocop), repocop_srpm_path(@branch, spkg), class: 'repocoplink', title: _('repocop') %>
             </td>
-          <% end %>
+          <%- end %>
+          <%- if @branch.new_record? %>
+            <td>
+              <%- if spkg.first_branch %>
+                <%= link_to spkg.first_branch.name, home_path(branch: spkg.first_branch.slug), title: _('site home page') %>
+            <%- end %>
+            </td>
+          <%- end %>
           <td class="strange">
-            <%- if srpm.branches.first %>
-              <%= link_to srpm.name, versioned_srpm_path(srpm.branches.first, srpm, version: srpm.evr), class: 'news' %>
+            <%- if spkg.first_branch %>
+              <%= link_to spkg.name, versioned_srpm_path(spkg.branches.first, spkg, version: spkg.evr), class: 'news' %>
             <%- else %>
-              <b class="news"><%= srpm.name %></b>
+              <b class="news"><%= spkg.name %></b>
             <%- end %>
           </td>
-          <td><%= srpm.evr %></td>
-          <td><%= srpm.buildtime %></td>
-          <td><%= "#{ time_ago_in_words(srpm.buildtime) } #{ _('ago') }" %></td>
-          <td><%= srpm.short_url %></td>
-          <td><%= srpm.summary %></td>
+          <td><%= spkg.evr %></td>
+          <td><%= spkg.buildtime %></td>
+          <td><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>
+          <td><%= spkg.short_url %></td>
+          <td><%= spkg.summary %></td>
         <% end %>
       </tr>
     <% end %>

@@ -17,9 +17,13 @@ class BranchDecorator < Draper::Decorator
     }
   end
 
+  def default_arches
+    %w(i586 x86_64 aarch64 mipsel armh arm)
+  end
+
   def options_for arch
     h.content_tag(:option, _("All arches"), value: '') +
-      options_from_collection_for_select(arches, :freeze, :freeze, arch)
+      options_from_collection_for_select(default_arches, :freeze, :freeze, arch)
   end
 
   def branches_as_options branches, branch_slug
