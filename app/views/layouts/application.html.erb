@@ -46,7 +46,7 @@
 
   <div id='top-line'>
     <div id='vinfo'>
-      <b><%= _('Last update:') %> </b> <%= @branch.imported_at %> | <b><%= _('SRPMs:') %> </b> <%= @branch.srpms_count %> |
+      <b><%= _('Last update:') %> </b> <%= @default_branch.imported_at %> | <b><%= _('SRPMs:') %> </b> <%= @default_branch.srpms_count %> |
       <% if user_signed_in? %>
         <b><%= "Welcome, #{ current_user.email }! | " %></b>
         <%= link_to _('Sign out'), destroy_user_session_path, method: :delete %>
@@ -66,29 +66,29 @@
     </div>
   </div>
 
-  <%- if @branch.persisted? %>
+  <%- if @default_branch.persisted? %>
   <div id='menu' style='text-align: center'>
     <ul>
       <li>
-        <%= link_to_unless_current _('Home'), home_path(branch: @branch.slug), title: _('site home page') %>
+        <%= link_to_unless_current _('Home'), home_path(branch: @default_branch.slug), title: _('site home page') %>
       </li>
       <li>
-        <%= link_to_unless_current _('Packages'), packages_path(branch: @branch.slug), title: _('packages information') %>
+        <%= link_to_unless_current _('Packages'), packages_path(branch: @default_branch.slug), title: _('packages information') %>
       </li>
       <li>
-        <%= link_to_unless_current _('Maintainers'), maintainers_path(branch: @branch.slug), title: _('maintainers information') %>
+        <%= link_to_unless_current _('Maintainers'), maintainers_path(branch: @default_branch.slug), title: _('maintainers information') %>
       </li>
       <li>
-        <%= link_to_unless_current _('Teams'), teams_path(branch: @branch.slug), title: _('teams information') %>
+        <%= link_to_unless_current _('Teams'), teams_path(branch: @default_branch.slug), title: _('teams information') %>
       </li>
       <li>
-        <%= link_to_unless_current _('Security'), security_path(branch: @branch.slug), title: _('security fixes') %>
+        <%= link_to_unless_current _('Security'), security_path(branch: @default_branch.slug), title: _('security fixes') %>
       </li>
       <li>
         <%= link_to_unless_current _('About'), project_path, title: _('about Prometheus project') %>
       </li>
       <li>
-        <%= link_to_unless_current _('RSS'), rss_path(branch: @branch.slug), title: _('RSS') %>
+        <%= link_to_unless_current _('RSS'), rss_path(branch: @default_branch.slug), title: _('RSS') %>
       </li>
       <li>
         <%= link_to _('Wiki'), _('http://en.altlinux.org/Sisyphus'), title: _('sisyphus public site') %>

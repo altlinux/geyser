@@ -20,7 +20,10 @@ msgid " or "
 msgstr " или "
 
 msgid "&quot; in branch <b>%s</b> were found"
-msgstr "&quot; в бранче <b>%s</b> было найдено"
+msgstr "&quot; во ветви <b>%s</b> было найдено"
+
+msgid "&quot; in all branches were found"
+msgstr "&quot; во всех ветвях было найдено"
 
 msgid "<abbr title=\"Fails To Build From Source\">FTBFS:</abbr>"
 msgstr ""
@@ -565,7 +568,7 @@ msgid "New password"
 msgstr "Новый пароль"
 
 msgid "No such branch!"
-msgstr "Нет такого бранча!"
+msgstr "Нет такой ветви!"
 
 msgid "No such file."
 msgstr "Нет такого файла."
@@ -796,7 +799,7 @@ msgid "Security/Networking"
 msgstr "Безопасность/Сети"
 
 msgid "Select branch:"
-msgstr "Выберите бранч:"
+msgstr "Выберите ветвь:"
 
 msgid "Send me reset password instructions"
 msgstr "Отправить инструкцию по сбросу пароля"
@@ -1036,7 +1039,7 @@ msgid "blog"
 msgstr "блог о sisyphus"
 
 msgid "branch"
-msgstr "бранч"
+msgstr "ветвь"
 
 msgid "build"
 msgstr "сборка"

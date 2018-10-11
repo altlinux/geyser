@@ -72,6 +72,10 @@ class Package < ApplicationRecord
       end.compact.first
    end
 
+   def first_branch
+      branches.first
+   end
+
    def self.source
       @source ||= self.to_s.split('::').last
    end
