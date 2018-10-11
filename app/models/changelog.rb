@@ -1,29 +1,49 @@
 # frozen_string_literal: true
 
 class Changelog < ApplicationRecord
-   PROPS = %i(changelogtime changelogname changelogtext)
-
    belongs_to :package, class_name: 'Package::Src'
+   belongs_to :maintainer, optional: true
 
-   validates_presence_of :changelogtime, :changelogname, :changelogtext
+   validates_presence_of :at, :text
 
-  def email
-    # TODO: add test for this
-    FixMaintainerEmail.new(changelogname.slice(/<.+>/)[1..-2]).execute
-  rescue
-    nil
-  end
+   def date
+      at.to_date
+   end
 
-  def login
-    return unless email
-    email.split('@').first
-  end
+   def locked_email
+      maintainer && maintainer.email.gsub('@', ' аt ').gsub('.', ' dоt')
+   end
 
-  def self.import_from rpm, package
-    changelogs = rpm.change_log
+   class << self
+      def import_from rpm, package
+         attrs =
+         rpm.change_log.map do |changelog|
+            /(?<name>.*)[ <>]*(?<pre_email>[^<>@ ]+(?:@| at )[^<>@ ]+)[ <>]*(?<evr>.*)/ =~ changelog[1]
 
-    attrs = changelogs.map { |line| [ PROPS, line ].transpose.to_h.merge(package_id: package.id) }
+            if pre_email
+               maintainer = Maintainer.find_or_create_by!(email: FixMaintainerEmail.new(pre_email).execute) do |m|
+                  m.name = name
+               end
+            end
 
-    Changelog.import(attrs)
-  end
+            text = if changelog[2].encoding == "UTF-8"
+                  changelog[2]
+               elsif changelog[2].ascii_only?
+                  changelog[2].encode("UTF-8")
+               else
+                  changelog[2].dup.force_encoding("ISO-8859-1").encode("UTF-8", replace: nil)
+               end
+
+            attrs = {
+               at: Time.at(changelog[0].to_i),
+               text: text,
+               evr: evr.to_s,
+               maintainer_id: maintainer&.id,
+               package_id: package.id
+            }
+         end.compact
+
+         Changelog.import!(attrs)
+      end
+   end
 end

@@ -72,6 +72,10 @@ class Package < ApplicationRecord
       end.compact.first
    end
 
+   def last_changelog_text
+      changelogs&.last&.text
+   end
+
    def self.source
       @source ||= self.to_s.split('::').last
    end
@@ -100,8 +104,6 @@ class Package < ApplicationRecord
          package.arch = rpm.arch
          package.buildhost = rpm.buildhost
 
-         m = Maintainer.import_from_changelogname(rpm.packager)
-
          package.summary = rpm.summary
          package.license = rpm.license
          package.url = rpm.url
@@ -115,6 +117,9 @@ class Package < ApplicationRecord
 
          BranchingMaintainer.find_or_create_by!(maintainer: package.builder,
                                                 branch: branch_path.branch)
+
+         m = Maintainer.import_from_changelogname(rpm.packager)
+
          BranchingMaintainer.find_or_create_by!(maintainer: m,
                                                 branch: branch_path.branch)
 
@@ -203,7 +208,7 @@ class Package < ApplicationRecord
                   [ :error, "has invalid MD5 sum" ]
                rescue => e
                   time = time < rpm.buildtime && time || rpm.buildtime
-                  [ :error, "failed to update, reason: #{e.message}" ]
+                  [ :error, "failed to update, reason: #{e.message} at #{e.backtrace[0]}" ]
                end
 
                Rails.logger.send(method, info + state)

@@ -16,7 +16,7 @@
   <div id="pkg-<%= spkg.name %>" style="display:block;margin-top:1em;">
     <b><%= _('Group:') %></b> <span class="news-text"><%= _(spkg.groupname) %></span><br>
     <b><%= _('Summary:') %></b> <span class="news-text"><%= spkg.summary %></span><br>
-    <b><%= _('Changes:') %></b> <div class="para"><%= simple_format(spkg.changelogs.last.changelogtext) %></div>
+    <b><%= _('Changes:') %></b> <div class="para"><%= simple_format(spkg.last_changelog_text) %></div>
   </div>
   <p class="news" />
 

@@ -7,9 +7,9 @@ class ChangelogDecorator < Draper::Decorator
     {
       id: id,
       package_id: package_id,
-      changelogtime: changelogtime,
-      changelogname: changelogname,
-      changelogtext: changelogtext,
+      at: at,
+      name: name,
+      text: text,
       created_at: created_at.iso8601,
       updated_at: updated_at.iso8601
     }

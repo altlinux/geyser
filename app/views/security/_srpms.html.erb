@@ -7,13 +7,13 @@
   </span>
 
   <span class="news-text" style="border-bottom: dotted 1px #f0f0f0">&nbsp;<%= _('build') %>
-    <%= Time.at(changelog.changelogtime.to_i).to_date %>
+    <%= changelog.date %>
   </span>
 
   <div id="pkg-<%= changelog.package.name %>" style="display:block;margin-top:1em;">
     <b><%= _('Group:') %></b> <span class="news-text"><%= _(changelog.package.groupname) %></span><br>
     <b><%= _('Summary:') %></b> <span class="news-text"><%= changelog.package.summary %></span><br>
-    <b><%= _('Changes:') %></b> <div class="para"><%= simple_format(changelog.changelogtext) %></div>
+    <b><%= _('Changes:') %></b> <div class="para"><%= simple_format(changelog.text) %></div>
   </div>
   <p class="news" />
 

@@ -29,7 +29,7 @@ class SrpmsController < ApplicationController
   end
 
   def changelog
-    @changelogs = @spkg.changelogs.order('changelogs.changelogtime DESC, changelogs.created_at DESC') #TODO makeonly created_at when migrate from time to created_at_time
+    @changelogs = @spkg.changelogs.order('changelogs.at, changelogs.created_at') #TODO makeonly created_at when migrate from time to created_at_time
     @all_bugs = AllBugsForSrpm.new(@spkg).decorate
     @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
   end
@@ -76,7 +76,7 @@ class SrpmsController < ApplicationController
   end
 
   def fetch_srpms_by_name
-    @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src.by_name(params[:id]).includes(:branch_path, :branch, :package).order('branches.order_id DESC'))
+    @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src.by_name(params[:id]).includes(:branch_path, :branch, :package).order('branches.order_id'))
   end
 
   def set_version

@@ -1,7 +1,7 @@
 class FixChangelogs
    def do
       Changelog.where(package_id: nil).delete_all
-      Changelog.find_each do |changelog|
+      Changelog.where(at: nil).find_each do |changelog|
          evr = changelog.changelogname.split(/>/, -1).last.strip
          maintainer = Maintainer.import_from_changelogname(changelog.changelogname)
          text = if changelog.changelogtext.encoding == "UTF-8"

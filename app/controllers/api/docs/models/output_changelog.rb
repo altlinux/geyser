@@ -8,8 +8,8 @@ module Api
         include Swagger::Blocks
 
         swagger_schema :OutputChangelog do
-          key :required, [:id, :srpm_id, :changelogtime, :changelogname,
-                          :changelogext, :created_at, :updated_at]
+          key :required, [:id, :srpm_id, :at, :name,
+                          :text, :created_at, :updated_at]
           property :id do
             key :type, :integer
             key :format, :int64
@@ -20,16 +20,16 @@ module Api
             key :format, :int64
             key :description, 'Srpm ID'
           end
-          property :changelogtime do
+          property :at do
             key :type, :string
-            key :description, 'Changelog time'
+            key :description, 'Changed at'
           end
-          property :changelogname do
+          property :name do
             key :type, :string
             key :format, :binary
             key :description, 'Changelog name'
           end
-          property :changelogext do
+          property :text do
             key :type, :string
             key :format, :binary
             key :description, 'Changelog text'

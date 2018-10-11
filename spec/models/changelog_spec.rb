@@ -10,11 +10,11 @@ describe Changelog do
   end
 
   context 'Validation' do
-    it { should validate_presence_of(:changelogtime) }
+    it { should validate_presence_of(:at) }
 
-    it { should validate_presence_of(:changelogname) }
+    it { should validate_presence_of(:name) }
 
-    it { should validate_presence_of(:changelogtext) }
+    it { should validate_presence_of(:text) }
   end
 
   context '#email' do

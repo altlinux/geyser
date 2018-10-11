@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_09_114800) do
+ActiveRecord::Schema.define(version: 2018_10_10_140500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -92,17 +92,16 @@ ActiveRecord::Schema.define(version: 2018_10_09_114800) do
   end
 
   create_table "changelogs", id: :serial, force: :cascade do |t|
-    t.string "changelogtime", limit: 255
-    t.binary "changelogname"
     t.binary "changelogtext"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "delta", default: true, null: false
-    t.bigint "package_id", comment: "Ссылка на пакет"
+    t.bigint "package_id", null: false, comment: "Ссылка на пакет"
     t.bigint "maintainer_id", comment: "Автор изменения в логе"
-    t.string "evr", comment: "Эпоха, версия и релиз"
+    t.string "evr", null: false, comment: "Эпоха, версия и релиз"
     t.text "text", comment: "Текст изменений"
-    t.datetime "at", comment: "Время создания записи в логе"
+    t.datetime "at", null: false, comment: "Время создания записи в логе"
+    t.binary "changelogname"
     t.index ["maintainer_id"], name: "index_changelogs_on_maintainer_id"
     t.index ["package_id"], name: "index_changelogs_on_package_id"
   end
@@ -411,6 +410,7 @@ ActiveRecord::Schema.define(version: 2018_10_09_114800) do
   add_foreign_key "acls", "branch_paths"
   add_foreign_key "branch_paths", "branch_paths", column: "source_path_id", on_delete: :cascade
   add_foreign_key "branch_paths", "branches", on_delete: :cascade
+  add_foreign_key "changelogs", "maintainers", on_delete: :nullify
   add_foreign_key "changelogs", "packages", on_delete: :restrict
   add_foreign_key "ftbfs", "branches", on_delete: :cascade
   add_foreign_key "groups", "branches", on_delete: :cascade
