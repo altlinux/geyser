@@ -38,6 +38,7 @@
 <b><%= _('Email:') %></b> <%= @maintainer.email %><br>
 <b><%= _('Jabber ID:') %></b> <%= @maintainer.jabber %><br>
 <b><%= _('Time Zone:') %></b> <%= @maintainer.time_zone %><br>
+<b><%= _('Seen on building') %></b> <%= time_ago_in_words(@maintainer.last_built_at) %> <%= _('back') %><br>
 <b><%= _('Information:') %></b>
 <div class="para"><%= simple_format(@maintainer.info) %></div>
 

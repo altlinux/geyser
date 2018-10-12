@@ -19,6 +19,9 @@ msgstr ""
 msgid " or "
 msgstr " или "
 
+msgid "back"
+msgstr "назад"
+
 msgid "&quot; in branch <b>%s</b> were found"
 msgstr "&quot; во ветви <b>%s</b> было найдено"
 
@@ -98,6 +101,9 @@ msgstr ""
 
 msgid "ACL:"
 msgstr ""
+
+msgid "Seen on building"
+msgstr "Замечен за сборкою"
 
 msgid "ALT Linux Planet"
 msgstr "Планета ALT Linux"

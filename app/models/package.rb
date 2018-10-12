@@ -92,7 +92,7 @@ class Package < ApplicationRecord
       package = Package.find_or_initialize_by(md5: rpm.md5) do |package|
          if rpm.sourcerpm
             spkg_id = Rpm.where(filename: rpm.sourcerpm,
-                                branch_path_id: branch_path.branch.branch_paths.src.select(:id)).first&.package_id
+                                branch_path_id: branch_path.branch.branch_paths.src.select(:id)).src.first&.package_id
 
             if spkg_id
                package.src_id = spkg_id

@@ -15,6 +15,7 @@ class Maintainer < ApplicationRecord
    has_many :branches, -> { distinct }, through: :branch_paths
    has_many :branching_maintainers, dependent: :delete_all
    has_many :gears
+   has_many :changelogs, -> { order(at: :desc) }
    has_many :ftbfs, class_name: 'Ftbfs'
    has_many :built_names, -> { src.select(:name).distinct }, through: :packages, source: :rpms
    has_many :acls, primary_key: 'login', foreign_key: 'maintainer_slug'
@@ -37,12 +38,12 @@ class Maintainer < ApplicationRecord
       acl_names.present?
    end
 
-   def support_count
-      acl_names.count
-   end
-
    def has_login?
       login.present?
+   end
+
+   def support_count
+      acl_names.count
    end
 
    def locked_email
@@ -51,6 +52,10 @@ class Maintainer < ApplicationRecord
 
    def shown_name
       name || locked_email
+   end
+
+   def last_built_at
+      changelogs.limit(1).first&.at
    end
 
    class << self
