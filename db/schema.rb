@@ -361,7 +361,10 @@ ActiveRecord::Schema.define(version: 2018_10_09_114800) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.bigint "package_id", comment: "Ссылка на пакет"
+    t.text "text"
+    t.tsvector "tsv"
     t.index ["package_id"], name: "index_specfiles_on_package_id"
+    t.index ["tsv"], name: "index_specfiles_on_tsv", using: :gin
   end
 
   create_table "team_people", id: :serial, force: :cascade do |t|

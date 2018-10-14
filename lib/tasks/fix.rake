@@ -13,4 +13,9 @@ namespace :fix do
    task changelogs: %i(environment) do
       FixChangelogs.new.do
    end
+
+   desc 'Fix lost rpms'
+   task lost_rpms: %i(environment) do
+      FixLostRpms.new.do
+   end
 end
