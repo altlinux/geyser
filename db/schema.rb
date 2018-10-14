@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_10_140500) do
+ActiveRecord::Schema.define(version: 2018_10_12_132000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -360,7 +360,10 @@ ActiveRecord::Schema.define(version: 2018_10_10_140500) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.bigint "package_id", comment: "Ссылка на пакет"
+    t.text "text"
+    t.tsvector "tsv"
     t.index ["package_id"], name: "index_specfiles_on_package_id"
+    t.index ["tsv"], name: "index_specfiles_on_tsv", using: :gin
   end
 
   create_table "team_people", id: :serial, force: :cascade do |t|
