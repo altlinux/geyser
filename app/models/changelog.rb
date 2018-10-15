@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Changelog < ApplicationRecord
-   belongs_to :package, class_name: 'Package::Src'
+   belongs_to :package, class_name: 'Package::Src', optional: true
    belongs_to :maintainer, optional: true
 
    validates_presence_of :at, :text
@@ -16,7 +16,7 @@ class Changelog < ApplicationRecord
       def import_from rpm, package
          attrs =
          rpm.change_log.map do |changelog|
-            /(?<name>.*)[ <>]*(?<pre_email>[^<>@ ]+(?:@| at )[^<>@ ]+)[ <>]*(?<evr>.*)/ =~ changelog[1]
+            /(?<name>.*?)[ <>]*(?<pre_email>[^<>@ ]+(?:@| at )[^<>@ ]+)[ <>]*(?<evr>.*)/ =~ changelog[1]
 
             if pre_email
                maintainer = Maintainer.find_or_create_by!(email: FixMaintainerEmail.new(pre_email).execute) do |m|
