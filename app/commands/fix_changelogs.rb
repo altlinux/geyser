@@ -1,5 +1,5 @@
 class FixChangelogs
-   def do
+   def stage1
       Changelog.where(package_id: nil).delete_all
       Changelog.where(at: nil).find_each do |changelog|
          evr = changelog.changelogname.split(/>/, -1).last.strip
@@ -17,5 +17,16 @@ class FixChangelogs
                            text: text,
                            evr: evr)
       end
+   end
+
+   def stage2
+      # selects the only first changelog record for each package src
+      id_first_cl_ids = Changelog.where(spkg_id: nil).order(package_id: :asc, at: :desc, id: :asc).select("DISTINCT ON (package_id) id")
+      Changelog.where(id: id_first_cl_ids).update_all("spkg_id = package_id")
+   end
+
+   def do
+      stage1
+      stage2
    end
 end

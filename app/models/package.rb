@@ -173,6 +173,14 @@ class Package < ApplicationRecord
       end
    end
 
+   def self.info *text
+      Rails.logger.info(text.join)
+   end
+
+   def self.error *text
+      Rails.logger.error(text.join)
+   end
+
    def self.import_all branch
       time = Time.zone.now
       Rails.logger.info "IMPORT: at #{time} for #{branch.name} in"
@@ -193,29 +201,31 @@ class Package < ApplicationRecord
          Rails.logger.info "IMPORT: will be imported #{nonexist_list.size} files"
 
          nonexist_list.each do |file|
-            self.transaction do
-               filepath = File.join(branch_path.path, file)
-               Rails.logger.info "IMPORT: file #{filepath}"
-               rpm = Rpm::Base.new(filepath)
+            text = nil
 
-               info = "IMPORT: file '#{ filepath }' "
-               (method, state) = begin
-                  Package.import(branch_path, rpm)
-                  [ :info, "imported to branch #{branch_path.branch.name}" ]
-               rescue AttachedNewBranchError
-                  [ :info, "added to branch #{branch_path.branch.name}" ]
-               rescue AlreadyExistError
-                  [ :info, "exists in #{branch_path.branch.name}... skipping" ]
-               rescue SourceIsntFound => e
-                  [ :error, "#{e.message} source isn't found for #{branch_path.branch.name}" ]
-               rescue InvalidMd5SumError => e
-                  [ :error, "has invalid MD5 sum" ]
-               rescue => e
-                  time = time < rpm.buildtime && time || rpm.buildtime
-                  [ :error, "failed to update, reason: #{e.message} at #{e.backtrace[0]}" ]
+            begin
+               ApplicationRecord.transaction do
+                  filepath = File.join(branch_path.path, file)
+                  Rails.logger.info "IMPORT: file #{filepath}"
+                  rpm = Rpm::Base.new(filepath)
+
+                  text = "IMPORT: file '#{ filepath }' "
+                  method = begin
+                     Package.import(branch_path, rpm)
+                     info text, "imported to branch #{branch_path.branch.name}"
+                  rescue AttachedNewBranchError
+                     info text, "added to branch #{branch_path.branch.name}"
+                  rescue AlreadyExistError
+                     info text, "exists in #{branch_path.branch.name}... skipping"
+                  end
                end
-
-               Rails.logger.send(method, info + state)
+            rescue SourceIsntFound => e
+               error text, "#{e.message} source isn't found for #{branch_path.branch.name}"
+            rescue InvalidMd5SumError => e
+               error text, "has invalid MD5 sum"
+            rescue => e
+               time = time < rpm.buildtime && time || rpm.buildtime
+               error text, "failed to update, reason: #{e.message} at #{e.backtrace[0]}"
             end
          end
 

@@ -3,6 +3,7 @@
 class Package::Src < Package
    has_one :repocop_patch, primary_key: 'name', foreign_key: 'name', dependent: :destroy
    has_one :specfile, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
+   has_one :changelog, foreign_key: :spkg_id, inverse_of: :spkg, dependent: :destroy
 
    has_many :packages, foreign_key: :src_id, class_name: 'Package::Built', dependent: :destroy
    has_many :built_rpms, through: :packages, source: :rpms, class_name: 'Rpm'
