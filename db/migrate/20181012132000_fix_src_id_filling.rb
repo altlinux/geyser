@@ -8,14 +8,6 @@ class FixSrcIdFilling < ActiveRecord::Migration[5.2]
       end
 
       [
-        "CREATE OR REPLACE FUNCTION packages_fillin_src_id() RETURNS trigger AS $$
-                begin
-                   IF new.type = 'Package::Src' THEN
-                      new.src_id := new.id;
-                   END IF;
-                   return new;
-                end
-          $$ LANGUAGE plpgsql",
         "UPDATE specfiles
             SET text = encode(specfiles.spec, 'escape')",
         "UPDATE specfiles
