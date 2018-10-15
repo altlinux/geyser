@@ -21,8 +21,8 @@ class FixChangelogs
 
    def stage2
       # selects the only first changelog record for each package src
-      id_first_cl_ids = Changelog.where(spkg_id: nil).order(package_id: :asc, at: :desc, id: :asc).select("DISTINCT ON (package_id) id")
-      Changelog.where(id: id_first_cl_ids).update_all("spkg_id = package_id")
+      id_first_cl_ids = Changelog.order(package_id: :asc, at: :desc, id: :asc).select("DISTINCT ON (package_id) id")
+      Changelog.where(spkg_id: nil, id: id_first_cl_ids).update_all("spkg_id = package_id")
    end
 
    def do
