@@ -72,10 +72,6 @@ class Package < ApplicationRecord
       end.compact.first
    end
 
-   def last_changelog_text
-      changelogs&.last&.text
-   end
-
    def first_branch
       branches.first
    end

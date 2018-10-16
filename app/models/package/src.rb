@@ -26,4 +26,8 @@ class Package::Src < Package
          .having('count(packages.name) > 5')
          .order('id DESC', :name)
    end
+
+   def last_changelog_text
+      changelog&.text
+   end
 end
