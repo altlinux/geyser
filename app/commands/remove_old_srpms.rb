@@ -39,12 +39,7 @@ class RemoveOldSrpms < Rectify::Command
 
          branch_path.builders.where(id: builder_ids).find_each do |maintainer|
             maintainer.branching_maintainers.where(branch_id: branch_path.branch).each do |branching_maintainer|
-               srpms_count = maintainer.srpms_names.joins(:branch_path).where(branch_paths: { branch_id: branch_path.branch }).count
-               if srpms_count != branching_maintainer.srpms_count
-                  Rails.logger.info "IMPORT: difference for counter for #{branch_path.name} in #{srpms_count - branching_maintainer.srpms_count}"
-
-                  branching_maintainer.update!(srpms_count: srpms_count)
-               end
+               branching_maintainer.update_count!
             end
          end
       end
