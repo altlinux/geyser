@@ -25,9 +25,9 @@
 
 <%= render partial: 'srpms', locals: { current_branch: @branch } %>
 
-<div id="bottom-offset-l"><div id="bottom-offset-r">&nbsp;</div></div><div id="rightbar">
+<div id="bottom-offset-l"><div id="bottom-offset-r">&nbsp;</div></div><div class="rightbar">
     <%= render partial: "shared/tables/maintainers", locals: { maintainers: @maintainers_s.as_json, branch: @branch } %>
-    <%= render partial: "shared/tables/top_srpms", locals: { srpms: @srpm_builds.as_json, branch: @branch } %>
+    <%= render partial: "shared/tables/top_srpms", locals: { srpms: @spkg_builds.as_json, branch: @branch } %>
     <%= render partial: "shared/tables/hints" %>
     <%= render partial: "shared/tables/branches", locals: { branches: @branches_s.as_json } %>
 </div>
