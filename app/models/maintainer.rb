@@ -60,16 +60,18 @@ class Maintainer < ApplicationRecord
 
    class << self
       def import_from_changelogname(changelogname)
-         emails = changelogname.scan(/[^<>@ ]+(?:@| at )[^<>@ ]+(?:\.| dot )[^<>@ ]+/)
+         emails = changelogname&.scan(/[^<>@ ]+(?:@| at )[^<>@ ]+(?:\.| dot )[^<>@ ]+/)
          if emails.present?
             email = FixMaintainerEmail.new(emails.last).execute
+         else
+            email = 'somebody@somewhere.example'
          end
 
          if email
             (login, domain) = email.split('@')
             kls = (domain == 'packages.altlinux.org' && 'Maintainer::Team' || 'Maintainer::Person').constantize
 
-            pre_name = changelogname.split('<')[0].chomp.strip
+            pre_name = (changelogname && changelogname.split('<')[0].chomp.strip).to_s
             name = if pre_name.encoding == "UTF-8"
                pre_name
             else
