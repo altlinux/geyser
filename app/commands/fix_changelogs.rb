@@ -25,8 +25,17 @@ class FixChangelogs
       Changelog.where(spkg_id: nil, id: id_first_cl_ids).update_all("spkg_id = package_id")
    end
 
+   def stage3
+      Changelog.where(maintainer_id: nil).find_each do |changelog|
+         maintainer = Maintainer.import_from_changelogname(changelog.changelogname)
+
+         changelog.update!(maintainer: maintainer)
+      end
+   end
+
    def do
       stage1
       stage2
+      stage3
    end
 end

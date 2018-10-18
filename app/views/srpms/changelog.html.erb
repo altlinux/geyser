@@ -20,7 +20,7 @@
 <% @changelogs.each do |changelog| %>
   <p class="news" />
   <b><%= changelog.date %>
-     <%- if changelog.maintainer.has_login? %>
+     <%- if changelog.maintainer&.has_login? %>
        <%= link_to _(changelog.maintainer_shown_name), maintainer_path(@branch, changelog.maintainer), class: 'news',
           title: _('information about maintainer') %>
      <%- else %>

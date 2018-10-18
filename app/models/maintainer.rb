@@ -60,7 +60,7 @@ class Maintainer < ApplicationRecord
 
    class << self
       def import_from_changelogname(changelogname)
-         emails = changelogname.scan(/[^<>@ ]+(?:@| at )[^<>@ ]+/)
+         emails = changelogname.scan(/[^<>@ ]+(?:@| at )[^<>@ ]+(?:\.| dot )[^<>@ ]+/)
          if emails.present?
             email = FixMaintainerEmail.new(emails.last).execute
          end
