@@ -21,6 +21,9 @@
 *~
 *.sw*
 *.patch
+*.log
+*.out
+*.sql
 config/newrelic.yml
 public/sitemap*.xml.gz
 spec/examples.txt

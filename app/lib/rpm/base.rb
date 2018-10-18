@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'cocaine'
+require 'terrapin'
 
 class Rpm::Base
    include Draper::Decoratable
@@ -117,15 +117,15 @@ class Rpm::Base
       def exec args
          a_hash = hash_of(args)
 
-         wrapper = Cocaine::CommandLine.new('rpm', a_hash[:line], environment: { 'LANG' => 'C', 'LC_ALL' => 'en_US.UTF-8' })
+         wrapper = Terrapin::CommandLine.new('rpm', a_hash[:line], environment: { 'LANG' => 'C', 'LC_ALL' => 'en_US.UTF-8' })
 
          result = wrapper.run(a_hash)
          result !~ /\A(\(none\)|)\z/ && result.force_encoding('utf-8') || nil
-      rescue Cocaine::CommandNotFoundError
+      rescue Terrapin::CommandNotFoundError
          Rails.logger.info('rpm command not found')
 
          nil
-      rescue Cocaine::ExitStatusError
+      rescue Terrapin::ExitStatusError
          Rails.logger.info('rpm exit status non zero')
 
          nil

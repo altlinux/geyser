@@ -37,7 +37,7 @@ gem 'rack-cors', require: 'rack/cors'
 # gem 'oink'
 gem 'rectify'
 gem 'posix-spawn', require: false
-gem 'cocaine', require: false
+gem 'terrapin', require: false
 gem 'browser'
 gem 'http_accept_language'
 # gem 'molinillo', require: false

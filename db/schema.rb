@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_15_150600) do
+ActiveRecord::Schema.define(version: 2018_10_16_144700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -92,6 +92,7 @@ ActiveRecord::Schema.define(version: 2018_10_15_150600) do
   end
 
   create_table "changelogs", id: :serial, force: :cascade do |t|
+    t.binary "changelogname"
     t.binary "changelogtext"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -101,7 +102,6 @@ ActiveRecord::Schema.define(version: 2018_10_15_150600) do
     t.string "evr", null: false, comment: "Эпоха, версия и релиз"
     t.text "text", comment: "Текст изменений"
     t.datetime "at", null: false, comment: "Время создания записи в логе"
-    t.binary "changelogname"
     t.bigint "spkg_id", comment: "Ссылка на исходный пакет, в котором проведены изменения"
     t.index ["maintainer_id"], name: "index_changelogs_on_maintainer_id"
     t.index ["package_id"], name: "index_changelogs_on_package_id"
@@ -142,14 +142,15 @@ ActiveRecord::Schema.define(version: 2018_10_15_150600) do
     t.index ["maintainer_id"], name: "index_ftbfs_on_maintainer_id"
   end
 
-  create_table "gears", id: :serial, force: :cascade do |t|
-    t.string "repo", limit: 255
-    t.datetime "lastchange"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer "maintainer_id"
-    t.index ["maintainer_id"], name: "index_gitrepos_on_maintainer_id"
-    t.index ["repo", "maintainer_id"], name: "index_gears_on_repo_and_maintainer_id", unique: true
+  create_table "gears", force: :cascade do |t|
+    t.string "reponame", null: false, comment: "Имя пакета"
+    t.string "url", null: false, comment: "Внешняя ссылка к ресурсу на сервере"
+    t.string "kind", null: false, comment: "Вид ресурса gear или srpm"
+    t.datetime "changed_at", null: false, comment: "Время изменения"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["reponame"], name: "index_gears_on_reponame"
+    t.index ["url"], name: "index_gears_on_url", unique: true
   end
 
   create_table "groups", id: :serial, force: :cascade do |t|

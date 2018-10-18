@@ -43,7 +43,6 @@ Rails.application.routes.draw do
           get 'spec'
           get 'rawspec'
           get 'get'
-          get 'gear'
         end
 
         resources :patches, only: [:index, :show] do
@@ -60,7 +59,6 @@ Rails.application.routes.draw do
       get 'srpms/:id/:version/spec' => 'srpms#spec', id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_spec_srpm'
       get 'srpms/:id/:version/rawspec' => 'srpms#rawspec', id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_rawspec_srpm'
       get 'srpms/:id/:version/get' => 'srpms#get', id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_get_srpm'
-      get 'srpms/:id/:version/gear' => 'srpms#gear', id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_gear_srpm'
       get 'patches/:srpm_id/:version/index' => 'patches#index', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patches'
       get 'patches/:srpm_id/:version/show' => 'patches#show', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patch'
       get 'patches/:srpm_id/:version/download' => 'patches#download', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patch_download'
