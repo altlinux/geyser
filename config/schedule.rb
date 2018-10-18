@@ -8,7 +8,7 @@
 # end
 
 every 2.hours do
-  rake 'update:branches gear:update update:lost[true]'
+  rake 'update:branches update:lost[true] gear:update'
 end
 
 every 1.day, at: '05:00' do

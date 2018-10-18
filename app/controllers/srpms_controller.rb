@@ -54,11 +54,6 @@ class SrpmsController < ApplicationController
     @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
   end
 
-  def gear
-    @all_bugs = AllBugsForSrpm.new(@spkg).decorate
-    @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
-  end
-
   protected
 
   #TODO makeonly created_at when migrate from time to created_at_time

@@ -24,7 +24,7 @@ class MaintainersController < ApplicationController
 #  end
 
    def gear
-      @gears = Gear.where(maintainer_id: maintainer).includes(:maintainer).order('LOWER(repo)')
+      @gears = Gear.none #TODO replace for updates GEARS
    end
 
    def bugs

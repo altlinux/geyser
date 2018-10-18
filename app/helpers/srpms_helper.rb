@@ -77,11 +77,6 @@ module SrpmsHelper
          args: [branch, srpm],
          popup: 'download latest version',
       },
-      gear: {
-         path: 'gear_srpm_path',
-         args: [branch, srpm],
-         popup: 'this package in gear repositories',
-      },
       bugs: {
          title: _('Bugs and FR (%s/%s)') % [opened_bugs.count, all_bugs.count],
          path: 'bugs_srpm_path',
