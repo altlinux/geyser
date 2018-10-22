@@ -25,11 +25,11 @@
       <%- if @branch.perpetual? %>
         <th><%= raw _('repo<br>cop') %></th>
       <%- end %>
-      <%- if @branch.new_record? %>
-        <th><%= raw _('branch') %></th>
-      <%- end %>
       <th><%= _('package') %></th>
       <th><%= raw _('current<br>version') %></th>
+      <%- if @branch.new_record? %>
+        <th><%= raw _('branches') %></th>
+      <%- end %>
       <th><%= _('build time') %></th>
       <th><%= _('age') %></th>
       <th><%= _('Url') %></th>
@@ -45,13 +45,6 @@
               <%= link_to image_tag("#{ spkg.repocop }.png", size: '20x20', alt: spkg.repocop), repocop_srpm_path(@branch, spkg), class: 'repocoplink', title: _('repocop') %>
             </td>
           <%- end %>
-          <%- if @branch.new_record? %>
-            <td>
-              <%- if spkg.first_branch %>
-                <%= link_to spkg.first_branch.name, home_path(branch: spkg.first_branch.slug), title: _('site home page') %>
-            <%- end %>
-            </td>
-          <%- end %>
           <td class="strange">
             <%- if spkg.first_branch %>
               <%= link_to spkg.name, versioned_srpm_path(spkg.branches.first, spkg, version: spkg.evr), class: 'news' %>
@@ -60,6 +53,15 @@
             <%- end %>
           </td>
           <td><%= spkg.evr %></td>
+          <%- if @branch.new_record? %>
+            <td>
+              <%- if spkg.branches.present? %>
+                <%- spkg.branches.each do |b| %>
+                  <%= link_to b.name, home_path(branch: b.slug), title: _('site home page') %>
+                <%- end %>
+              <%- end %>
+            </td>
+          <%- end %>
           <td><%= spkg.buildtime %></td>
           <td><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>
           <td><%= spkg.short_url %></td>

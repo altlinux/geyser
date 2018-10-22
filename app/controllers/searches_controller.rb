@@ -13,6 +13,7 @@ class SearchesController < ApplicationController
                            .a(@arches)
                            .q(params[:query])
                            .reorder("packages.name, packages.epoch DESC, packages.version DESC, packages.release DESC")
+                           .includes(:branches, :rpms)
                            .distinct
                            .page(params[:page])
 

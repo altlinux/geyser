@@ -1047,6 +1047,9 @@ msgstr "блог о sisyphus"
 msgid "branch"
 msgstr "ветвь"
 
+msgid "branches"
+msgstr "ветви"
+
 msgid "build"
 msgstr "сборка"
 
