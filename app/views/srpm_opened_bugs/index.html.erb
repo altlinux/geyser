@@ -41,11 +41,11 @@
       <td>
         <%= bug.link_to_bugzilla %>
       </td>
-      <td><%= bug.bug_severity %></td>
-      <td><%= bug.bug_status %></td>
+      <td><%= bug.severity %></td>
+      <td><%= bug.status %></td>
       <td><%= bug.reporter.gsub('@', ' at ') %></td>
       <td style="text-align: left">
-        <%= bug.short_desc %>
+        <%= bug.description %>
       </td>
     </tr>
   <% end %>

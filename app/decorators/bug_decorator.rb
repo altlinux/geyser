@@ -20,10 +20,10 @@ class BugDecorator < Draper::Decorator
   end
 
   def bugzilla_url
-    "https://bugzilla.altlinux.org/#{ bug_id }"
+    "https://bugzilla.altlinux.org/#{ no }"
   end
 
   def link_to_bugzilla
-    h.link_to(bug_id, bugzilla_url, class: 'news')
+    h.link_to(no, bugzilla_url, class: 'news')
   end
 end

@@ -70,8 +70,8 @@ class MaintainersController < ApplicationController
    end
 
    def set_bug_lists
-      @all_bugs = Bug.for_maintainer_and_branch(maintainer, @branch).decorate
-      @opened_bugs = @all_bugs.object.opened.decorate
+      @all_bugs = BugDecorator.decorate_collection(Issue::Bug.for_maintainer_and_branch(maintainer, @branch))
+      @opened_bugs =  BugDecorator.decorate_collection(@all_bugs.object.opened)
    end
 
    def set_srpms

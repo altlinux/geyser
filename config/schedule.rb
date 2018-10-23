@@ -8,11 +8,11 @@
 # end
 
 every 2.hours do
-  rake 'update:branches update:lost[true] gear:update'
+   rake 'update:branches update:lost[true] gear:update'
 end
 
-every 1.day, at: '05:00' do
-#  rake 'sisyphus:bugs'
+every 3.hours, at: '05:05' do
+   rake 'bugs:update'
 end
 
 every 1.day, at: '06:45' do

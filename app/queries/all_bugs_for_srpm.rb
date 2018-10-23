@@ -8,11 +8,11 @@ class AllBugsForSrpm < Rectify::Query
   end
 
   def query
-    Bug.where(component: components).order(bug_id: :desc)
+    Issue::Bug.where(component: components).order(no: :desc)
   end
 
   def decorate
-    query.decorate
+    BugDecorator.decorate_collection(query)
   end
 
   private

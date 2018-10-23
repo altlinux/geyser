@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_16_144700) do
+ActiveRecord::Schema.define(version: 2018_10_22_150800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -71,24 +71,6 @@ ActiveRecord::Schema.define(version: 2018_10_16_144700) do
     t.integer "srpms_count", default: 0, null: false, comment: "Счётчик уникальных исходных пакетов, собранных поставщиком для ветви"
     t.index ["branch_id"], name: "index_branching_maintainers_on_branch_id"
     t.index ["maintainer_id"], name: "index_branching_maintainers_on_maintainer_id"
-  end
-
-  create_table "bugs", id: :serial, force: :cascade do |t|
-    t.integer "bug_id"
-    t.string "bug_status", limit: 255
-    t.string "resolution", limit: 255
-    t.string "bug_severity", limit: 255
-    t.string "product", limit: 255
-    t.string "component", limit: 255
-    t.string "assigned_to", limit: 255
-    t.string "reporter", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.text "short_desc"
-    t.index ["assigned_to"], name: "index_bugs_on_assigned_to"
-    t.index ["bug_status"], name: "index_bugs_on_bug_status"
-    t.index ["component"], name: "index_bugs_on_component"
-    t.index ["product"], name: "index_bugs_on_product"
   end
 
   create_table "changelogs", id: :serial, force: :cascade do |t|
@@ -164,6 +146,29 @@ ActiveRecord::Schema.define(version: 2018_10_16_144700) do
     t.integer "srpms_count", default: 0, comment: "Счётчик именованных исходных пакетов для группы"
     t.index ["branch_id"], name: "index_groups_on_branch_id"
     t.index ["parent_id"], name: "index_groups_on_parent_id"
+  end
+
+  create_table "issues", force: :cascade do |t|
+    t.string "type", null: false, comment: "Тип проблемы"
+    t.string "no", null: false, comment: "Номер проблемы, уникальный в паре с типом"
+    t.string "status", null: false, comment: "Статус проблемы: новая, разрешена и т.п."
+    t.string "resolution", comment: "Описание разрешенности проблемы"
+    t.string "severity", null: false, comment: "Серьезность проблемы"
+    t.bigint "branch_id", null: false, comment: "Ветвь, которой относится проблема"
+    t.string "repo_name", comment: "RPM-пакет, к которому относится проблема"
+    t.string "assigned_to", null: false, comment: "Почта назначенного для решения проблемы"
+    t.string "reporter", null: false, comment: "Почта отчитавшегося о решении проблемы"
+    t.text "description", comment: "Описание проблемы"
+    t.index ["assigned_to"], name: "index_issues_on_assigned_to"
+    t.index ["branch_id"], name: "index_issues_on_branch_id"
+    t.index ["no"], name: "index_issues_on_no"
+    t.index ["repo_name"], name: "index_issues_on_repo_name"
+    t.index ["reporter"], name: "index_issues_on_reporter"
+    t.index ["resolution"], name: "index_issues_on_resolution"
+    t.index ["severity"], name: "index_issues_on_severity"
+    t.index ["status"], name: "index_issues_on_status"
+    t.index ["type", "no"], name: "index_issues_on_type_and_no", unique: true
+    t.index ["type"], name: "index_issues_on_type"
   end
 
   create_table "maintainers", id: :serial, force: :cascade do |t|
@@ -421,6 +426,7 @@ ActiveRecord::Schema.define(version: 2018_10_16_144700) do
   add_foreign_key "changelogs", "packages", on_delete: :restrict
   add_foreign_key "ftbfs", "branches", on_delete: :cascade
   add_foreign_key "groups", "branches", on_delete: :cascade
+  add_foreign_key "issues", "branches", on_delete: :cascade
   add_foreign_key "mirrors", "branches", on_delete: :cascade
   add_foreign_key "packages", "maintainers", column: "builder_id", on_delete: :restrict
   add_foreign_key "patches", "packages", on_delete: :restrict
