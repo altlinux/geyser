@@ -203,7 +203,7 @@ class Package < ApplicationRecord
          Rails.logger.info "IMPORT: will be imported #{nonexist_list.size} files"
 
          nonexist_list.each do |file|
-            text = nil
+            text = rpm = nil
 
             begin
                ApplicationRecord.transaction do

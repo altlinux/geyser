@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_22_150800) do
+ActiveRecord::Schema.define(version: 2018_10_23_142800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(version: 2018_10_22_150800) do
     t.string "website", limit: 255, default: ""
     t.string "location", limit: 255, default: ""
     t.integer "srpms_count", default: 0, comment: "Счётчик уникальных исходных пакетов, собранных поставщиком"
-    t.string "type", comment: "Вид сопровождающего: человек или команда"
+    t.string "type", null: false, comment: "Вид сопровождающего: человек или команда"
     t.index ["email"], name: "index_maintainers_on_email", unique: true
     t.index ["login"], name: "index_maintainers_on_login", unique: true
   end
@@ -227,7 +227,7 @@ ActiveRecord::Schema.define(version: 2018_10_22_150800) do
     t.integer "group_id"
     t.string "md5", limit: 255, null: false
     t.string "groupname", limit: 255
-    t.integer "size"
+    t.bigint "size"
     t.integer "epoch"
     t.tsvector "tsv"
     t.string "repocop", default: "skip", comment: "Статус проверки репокопом"

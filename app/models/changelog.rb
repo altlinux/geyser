@@ -19,11 +19,7 @@ class Changelog < ApplicationRecord
             rpm.change_log.map.with_index do |changelog, index|
                /(?<name>.*?)[ <>]*(?<pre_email>[^<>@ ]+(?:@| at )[^<>@ ]+)[ <>]*(?<evr>.*)/ =~ changelog[1]
 
-               if pre_email
-                  maintainer = Maintainer.find_or_create_by!(email: FixMaintainerEmail.new(pre_email).execute) do |m|
-                     m.name = name
-                  end
-               end
+               maintainer = Maintainer.import_from_changelogname(changelog[1])
 
                text = if changelog[2].encoding == "UTF-8"
                      changelog[2]
