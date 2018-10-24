@@ -35,6 +35,10 @@ class Package::Src < Package
          .order('id DESC', :name)
    end
 
+   def filename
+      "#{name}-#{evr}.#{arch}.rpm"
+   end
+
    def last_changelog_text
       changelog&.text
    end
