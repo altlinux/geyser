@@ -8,7 +8,7 @@ class AllBugsForSrpm < Rectify::Query
   end
 
   def query
-    Issue::Bug.where(component: components).order(no: :desc)
+    Issue::Bug.where(repo_name: components).order(no: :desc)
   end
 
   def decorate
