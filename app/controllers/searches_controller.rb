@@ -17,8 +17,8 @@ class SearchesController < ApplicationController
                            .distinct
                            .page(params[:page])
 
-      if @spkgs.total_count == 1
-        redirect_to(srpm_path(@branch, @spkgs.first), status: 302)
+      if @spkgs.total_count == 1 && @spkgs.first.branches.first
+        redirect_to(srpm_path(@spkgs.first.branches.first, @spkgs.first), status: 302)
       end
     end
   end
