@@ -67,6 +67,10 @@ group :production, :staging do
   gem 'puma_worker_killer'
 end
 
+group :staging, :development, :test do
+  gem 'pry-rails'
+end
+
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'spring'
@@ -105,7 +109,6 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'pry-rails'
   gem 'awesome_print', require: 'ap'
   gem 'faker'
 end
