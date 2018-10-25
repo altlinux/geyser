@@ -48,7 +48,7 @@
      <%- about_ftbfs = ftbfses.map { |ftbfs| ftbfs.arch }.join(", ") %>
      <%- "#{about_ftbfs} #{_('reported at')} #{time}" %>
   <%- end %>
-  <%= _('about') %> <%= ftbfs_show.join(", ") %><br />
+  <%= _('about') %> <%= ftbfs_show.join(", ") %> <%= _('ago') %><br />
 <%- end %>
 
 <b><%= _('Size:') %></b> <%= number_to_human_size(@spkg.size) %><br>
