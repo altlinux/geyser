@@ -12,16 +12,16 @@
     <th><%= _('package') %></th>
     <th><%= raw _('current<br>version') %></th>
     <th><%= _('arch') %></th>
-    <th><%= _('weeks') %></th>
+    <th><%= _('reported at') %></th>
   </tr>
 
   <% @ftbfs.each do |f| %>
     <tr>
       <td><%= f.branch.name %></td>
-      <td><%= link_to f.name, srpm_path(f.branch, f.name), class: 'news' %></td>
-      <td><%= "#{ f.version }-#{ f.release }" %></td>
+      <td><%= link_to f.repo_name, srpm_path(f.branch, f.repo_name), class: 'news' %></td>
+      <td><%= "#{ f.evr }" %></td>
       <td><%= f.arch %></td>
-      <td><%= f.weeks %></td>
+      <td><%= time_ago_in_words(f.reported_at) %> <%= _('back') %></td>
     </tr>
   <% end %>
 </table>

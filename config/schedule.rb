@@ -15,12 +15,12 @@ every 3.hours, at: '05:05' do
    rake 'bugs:update'
 end
 
-every 1.day, at: '06:45' do
-#  rake 'sisyphus:repocops sisyphus:repocop_patches'
+every 3.hours, at: '5:15' do
+  rake 'ftbfs:update'
 end
 
-every 1.day, at: '12:50' do
-#  rake 'ftbfs:update'
+every 1.day, at: '06:45' do
+#  rake 'sisyphus:repocops sisyphus:repocop_patches'
 end
 
 every :sunday, at: '03:30' do

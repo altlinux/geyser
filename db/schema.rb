@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_23_142800) do
+ActiveRecord::Schema.define(version: 2018_10_23_150100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(version: 2018_10_23_142800) do
     t.datetime "imported_at", default: "1970-01-01 00:00:00", null: false, comment: "Время последнего импорта пакетов для пути ветви"
     t.string "acl_url", comment: "Внешняя ссылка на список прав на доступ"
     t.string "team_url", comment: "Внешняя ссылка на список групп ветви"
+    t.string "ftbfs_url", comment: "Ссылка в пучине на ftbfs для источника ветви"
+    t.boolean "primary", default: false, null: false, comment: "Первичный источник пакетов для ветви"
     t.index ["arch", "branch_id", "source_path_id"], name: "index_branch_paths_on_arch_and_branch_id_and_source_path_id", unique: true
     t.index ["arch", "path"], name: "index_branch_paths_on_arch_and_path", unique: true
     t.index ["arch"], name: "index_branch_paths_on_arch", using: :gin
@@ -148,19 +150,28 @@ ActiveRecord::Schema.define(version: 2018_10_23_142800) do
     t.index ["parent_id"], name: "index_groups_on_parent_id"
   end
 
+  create_table "issue_assignees", force: :cascade do |t|
+    t.bigint "issue_id", null: false, comment: "Ссылка на вопрос"
+    t.bigint "maintainer_id", null: false, comment: "Ссылка на сопроводителя вопроса"
+    t.index ["issue_id", "maintainer_id"], name: "index_issue_assignees_on_issue_id_and_maintainer_id", unique: true
+    t.index ["issue_id"], name: "index_issue_assignees_on_issue_id"
+    t.index ["maintainer_id"], name: "index_issue_assignees_on_maintainer_id"
+  end
+
   create_table "issues", force: :cascade do |t|
     t.string "type", null: false, comment: "Тип проблемы"
     t.string "no", null: false, comment: "Номер проблемы, уникальный в паре с типом"
     t.string "status", null: false, comment: "Статус проблемы: новая, разрешена и т.п."
     t.string "resolution", comment: "Описание разрешенности проблемы"
     t.string "severity", null: false, comment: "Серьезность проблемы"
-    t.bigint "branch_id", null: false, comment: "Ветвь, которой относится проблема"
     t.string "repo_name", comment: "RPM-пакет, к которому относится проблема"
-    t.string "assigned_to", null: false, comment: "Почта назначенного для решения проблемы"
     t.string "reporter", null: false, comment: "Почта отчитавшегося о решении проблемы"
     t.text "description", comment: "Описание проблемы"
-    t.index ["assigned_to"], name: "index_issues_on_assigned_to"
-    t.index ["branch_id"], name: "index_issues_on_branch_id"
+    t.string "evr", comment: "Эпоха, справа, выпуск пакета"
+    t.datetime "resolved_at", comment: "Время разрешения вопроса"
+    t.bigint "branch_path_id", null: false, comment: "Ссылка на источник ветви, к которой относится вопрос"
+    t.datetime "reported_at", comment: "Время, когда был получен отчет об ошибке"
+    t.index ["branch_path_id"], name: "index_issues_on_branch_path_id"
     t.index ["no"], name: "index_issues_on_no"
     t.index ["repo_name"], name: "index_issues_on_repo_name"
     t.index ["reporter"], name: "index_issues_on_reporter"
@@ -173,7 +184,7 @@ ActiveRecord::Schema.define(version: 2018_10_23_142800) do
 
   create_table "maintainers", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "email", limit: 255
+    t.string "email", limit: 255, null: false
     t.string "login", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -426,7 +437,8 @@ ActiveRecord::Schema.define(version: 2018_10_23_142800) do
   add_foreign_key "changelogs", "packages", on_delete: :restrict
   add_foreign_key "ftbfs", "branches", on_delete: :cascade
   add_foreign_key "groups", "branches", on_delete: :cascade
-  add_foreign_key "issues", "branches", on_delete: :cascade
+  add_foreign_key "issue_assignees", "issues", on_delete: :cascade
+  add_foreign_key "issues", "branch_paths", on_delete: :cascade
   add_foreign_key "mirrors", "branches", on_delete: :cascade
   add_foreign_key "packages", "maintainers", column: "builder_id", on_delete: :restrict
   add_foreign_key "patches", "packages", on_delete: :restrict

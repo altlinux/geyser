@@ -7,6 +7,7 @@ class BranchPath < ApplicationRecord
   has_many :builders, -> { distinct }, through: :packages
   has_many :build_paths, foreign_key: :source_path_id, class_name: :BranchPath
   has_many :srpm_filenames, -> { src.select(:filename).distinct }, through: :rpms, source: :branch_path
+  has_many :ftbfs, class_name: 'Issue::Ftbfs'
 
   scope :src, -> { where(arch: "src") }
   scope :built, -> { where.not(arch: "src") }
@@ -15,6 +16,7 @@ class BranchPath < ApplicationRecord
   scope :unanonimous, -> { where.not(name: nil) }
   scope :for_branch, ->(branch) { where(branch_id: branch) }
   scope :with_arch, ->(arch) { where(arch: arch) }
+  scope :primary, -> { where(primary: true) }
 
   validates_presence_of :branch, :arch, :path
   validates_presence_of :source_path, if: -> { arch != "src" }

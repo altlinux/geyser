@@ -9,8 +9,8 @@ class Issue::Bug < Issue
    scope :for_maintainer_and_branch, ->(maintainer, branch) do
       names = branch.spkgs.where(name: maintainer.acl_names).select(:name).distinct
 
-      where(repo_name: names)
-         .or(where(assigned_to: maintainer.email))
+      joins(:assignees).where(repo_name: names)
+         .or(where(maintainers: {email: maintainer.email}))
          .order(no: :desc)
    end
 end

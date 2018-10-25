@@ -1665,7 +1665,7 @@ if BranchPath.all.blank?
    end
 end
 
-if BranchPath.source.blank?
+if BranchPath.src.blank?
    scheme = { "Sisyphus"      => %w(/ALT/Sisyphus/files/SRPMS/ true),
               "Sisyphus_MIPS" => %w(/ALTmips/files/SRPMS/ true),
               "SisyphusARM"   => %w(/ALT/Sisyphus-armh/files/armh/SRPMS/ false),
@@ -1696,7 +1696,7 @@ if BranchPath.source.blank?
    branch_id = Branch.where(name: %w(Sisyphus)).pluck(:id).first
    branches = Branch.where(name: %w(SisyphusARM Sisyphus_MIPS))
    BranchPath.where(branch: branches).update_all(branch_id: branch_id)
-   BranchPath.where(source_path_id: BranchPath.source.where(active: false).first).update_all(active: false)
+   BranchPath.where(source_path_id: BranchPath.src.where(active: false).first).update_all(active: false)
    branches.delete_all
 end
 
@@ -1725,7 +1725,7 @@ BranchPath.transaction do
    end
 end
 
-if BranchPath.source.blank?
+if BranchPath.src.blank?
    Branch.transaction do
       {
          'c8.1' => {
@@ -1798,6 +1798,45 @@ if BranchPath.source.blank?
 
                BranchPath.create!(attrs)
             end
+         end
+      end
+   end
+end
+
+if BranchPath.where.not(ftbfs_url: nil).blank?
+   BranchPath.transaction do
+      urls = {
+         'Sisyphus' => [
+            %w(http://git.altlinux.org/beehive/stats/Sisyphus-i586/ftbfs-joined i586),
+            %w(http://git.altlinux.org/beehive/stats/Sisyphus-x86_64/ftbfs-joined x86_64),
+         ],
+         'p8' => [
+            %w(http://git.altlinux.org/beehive/stats/p8-i586/ftbfs-joined i586),
+            %w(http://git.altlinux.org/beehive/stats/p8-x86_64/ftbfs-joined x86_64),
+         ],
+         'c7' => [
+            %w(http://git.altlinux.org/beehive/stats/c7-i586/ftbfs-joined i586),
+            %w(http://git.altlinux.org/beehive/stats/c7-x86_64/ftbfs-joined x86_64),
+         ],
+         'p7' => [
+            %w(http://git.altlinux.org/beehive/stats/p7-i586/ftbfs-joined i586),
+            %w(http://git.altlinux.org/beehive/stats/p7-x86_64/ftbfs-joined x86_64),
+         ],
+         'p6' => [
+            %w(http://git.altlinux.org/beehive/stats/p6-i586/ftbfs-joined i586),
+            %w(http://git.altlinux.org/beehive/stats/p6-x86_64/ftbfs-joined x86_64),
+         ],
+         't6' => [
+            %w(http://git.altlinux.org/beehive/stats/t6-i586/ftbfs-joined i586),
+            %w(http://git.altlinux.org/beehive/stats/t6-x86_64/ftbfs-joined x86_64),
+         ]
+      }
+
+      urls.each do |branch_name, arches|
+         arches.each do |(url, arch)|
+            branch_paths = BranchPath.joins(:branch).where(arch: arch, branches: { name: branch_name})
+            branch_path = branch_paths.find {|bp| bp.source_path.primary }
+            branch_path.update_attribute(:ftbfs_url, url)
          end
       end
    end

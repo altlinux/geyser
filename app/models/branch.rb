@@ -16,7 +16,7 @@ class Branch < ApplicationRecord
   has_many :mirrors, dependent: :destroy
 #  has_many :patches, through: :packages # rubocop:disable Rails/InverseOf (false positive)
 #  has_many :sources, through: :packages # rubocop:disable Rails/InverseOf (false positive)
-  has_many :ftbfs, class_name: 'Ftbfs', dependent: :destroy
+  has_many :ftbfs, class_name: 'Issue::Ftbfs', through: :branch_paths
   has_many :repocops, dependent: :destroy
   has_many :repocop_patches, dependent: :destroy
   has_many :branching_maintainers, dependent: :delete_all

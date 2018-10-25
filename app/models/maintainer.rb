@@ -16,7 +16,9 @@ class Maintainer < ApplicationRecord
    has_many :branching_maintainers, dependent: :delete_all
    has_many :gears
    has_many :changelogs, -> { order(at: :desc) }
-   has_many :ftbfs, class_name: 'Ftbfs'
+   has_many :issue_assignees
+   has_many :ftbfs, class_name: 'Issue::Ftbfs', through: :issue_assignees, source: :issue
+   has_many :bugs, class_name: 'Issue::Bug', through: :issue_assignees, source: :issue
    has_many :built_names, -> { src.select(:name).distinct }, through: :packages, source: :rpms
    has_many :acls, primary_key: 'login', foreign_key: 'maintainer_slug'
    has_many :acl_names, -> { select(:package_name).distinct },

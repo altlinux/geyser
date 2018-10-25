@@ -16,8 +16,14 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<="
 "4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-msgid " or "
+msgid "on"
+msgstr "на"
+
+mmsgid " or "
 msgstr " или "
+
+msgid "about"
+msgstr "о"
 
 msgid "back"
 msgstr "назад"
@@ -1142,6 +1148,12 @@ msgstr "информация о пакетах"
 
 msgid "packages which was built by this maintainer"
 msgstr "просмотреть пакеты, собранные майнтейнером"
+
+msgid "arch"
+msgstr "арх"
+
+msgid "reported at"
+msgstr "сообщено"
 
 msgid "patches"
 msgstr "просмотреть патчи пакета"

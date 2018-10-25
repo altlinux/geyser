@@ -42,18 +42,15 @@
 
 <b><%= _('Current version:') %></b> <%= @spkg.evr %><br>
 <b><%= _('Built:') %></b> <abbr title="<%= @spkg.buildtime %>" style="border-bottom: 1px dotted gray;"><%= time_ago_in_words(@spkg.buildtime) %> <%= _('ago') %></abbr><br>
-<% unless @ftbfs.empty? %>
+<% if @ftbfs.present? %>
   <b><%= _('<abbr title="Fails To Build From Source">FTBFS:</abbr>').html_safe %></b>
-  <% if @ftbfs.size == 2 %>
-    <% if @ftbfs.first.weeks == @ftbfs.last.weeks %>
-      <%= @ftbfs.first.weeks %> weeks on <%= @ftbfs.first.arch %>, <%= @ftbfs.last.arch %><br>
-    <% else %>
-      <%= @ftbfs.first.weeks %> weeks on <%= @ftbfs.first.arch %> and <%= @ftbfs.last.weeks %> weeks on <%= @ftbfs.last.arch %><br>
-    <% end %>
-  <% else %>
-    <%= @ftbfs.last.weeks %> weeks on <%= @ftbfs.last.arch %><br>
-  <% end %>
-<% end %>
+  <%- ftbfs_show = @ftbfs.group_by {|f| time_ago_in_words(f.reported_at) }.map do |time, ftbfses| %>
+     <%- about_ftbfs = ftbfses.map { |ftbfs| ftbfs.arch }.join(", ") %>
+     <%- "#{about_ftbfs} #{_('reported at')} #{time}" %>
+  <%- end %>
+  <%= _('about') %> <%= ftbfs_show.join(", ") %><br />
+<%- end %>
+
 <b><%= _('Size:') %></b> <%= number_to_human_size(@spkg.size) %><br>
 <b><%= _('Repocop status:') %></b> <%= image_tag("#{ @spkg.repocop }.png", size: '20x20', alt: @spkg.repocop) %>
 <% if @spkg.repocop_patch %>

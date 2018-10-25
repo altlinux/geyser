@@ -15,27 +15,59 @@ class ImportBugs
    def do
       Rails.logger.info("#{ Time.zone.now }: IMPORT.BUGS")
 
-      parsed = CSV.parse(data, headers: true).to_a
-      attrs = parsed[1..-1].map do |l|
-         attrs = [ATTR_NAMES, l].transpose.to_h
-         if branch = branch_for(attrs.delete(:product))
-            attrs.merge(type: 'Issue::Bug', branch_id: branch.id)
-         end
-      end.compact
-
-      Issue.import!(attrs, on_duplicate_key_update:
-                    { conflict_target: %i(type no),
-                      columns: %i(status resolution severity branch_id repo_name assigned_to reporter description)})
+      ApplicationRecord.transaction do
+         import_maintainers
+         import_issues
+      end
    end
 
    protected
 
-   def branch_for product
-      /Branch (?<branch_name>.*)|(?<sisyphus>Sisyphus)/ =~ product
-
-      if branch_name || sisyphus
-         Branch.where(name: branch_name || sisyphus).first
+   def import_maintainers
+      attrs = parsed[1..-1].map do |l|
+         [ATTR_NAMES, l].transpose.to_h[:assigned_to]
+      end.compact.uniq.map do |email|
+         {
+            email: email,
+            name: email,
+            type: 'Maintainer::Person'
+         }
       end
+
+      Maintainer.import!(attrs, on_duplicate_key_ignore: true)
+   end
+
+   def import_issues
+      (assigned_tos, attrs) = parsed[1..-1].map do |l|
+         attrs = [ATTR_NAMES, l].transpose.to_h
+         if branch_path = branch_path_for(attrs.delete(:product))
+            [ attrs.delete(:assigned_to), attrs.merge(type: 'Issue::Bug', branch_path_id: branch_path.id) ]
+         end
+      end.compact.transpose
+
+      result = Issue.import!(attrs,
+                    on_duplicate_key_update: {
+                       conflict_target: %i(type no),
+                       columns: %i(status resolution severity branch_path_id repo_name reporter description)})
+      issue_assignee_attrs = [ assigned_tos, result.ids ].transpose.map do |(assigned_to, id)|
+         {
+            maintainer_id: Maintainer.find_by_email(assigned_to).id,
+            issue_id: id
+         }
+      end
+
+      IssueAssignee.import!(issue_assignee_attrs, on_duplicate_key_ignore: true)
+   end
+
+   def parsed
+      @parsed ||= CSV.parse(data, headers: true).to_a
+   end
+
+   def branch_path_for repo_name
+      /Branch (?<branch_r_name>.*)|(?<sisyphus>Sisyphus)/ =~ repo_name
+
+      branch_name = branch_r_name || sisyphus
+      BranchPath.joins(:branch).where(primary: true, branches: { name: branch_name}).first
    end
 
    def uri

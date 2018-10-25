@@ -7,10 +7,9 @@ class SrpmsController < ApplicationController
   before_action :fetch_changelogs, only: %i(show changelog)
 
   def show
-    @ftbfs = @branch.ftbfs.where(name: @spkg.name,
-                                 version: @spkg.version,
-                                 release: @spkg.release,
-                                 epoch: @spkg.epoch).select('DISTINCT id, arch, weeks')
+    @ftbfs = @branch.ftbfs.where(repo_name: @spkg.name, evr: @spkg.evr)
+                          .order(reported_at: :desc)
+                          .includes(:branch_path)
     if @spkg.name[0..4] == 'perl-' && @spkg.name != 'perl'
       @perl_watch = PerlWatch.where(name: @spkg.name[5..-1].gsub('-', '::')).first
     end
