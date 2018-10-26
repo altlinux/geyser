@@ -29,12 +29,10 @@
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
-en:
-   hello: "Hello world"
-
+ru:
    errors:
       messages:
-         not_saved: Not saved
+         not_saved: Не сохранена
 
    activerecord:
       errors:
@@ -42,4 +40,5 @@ en:
             user:
                attributes:
                   email:
-                     already_confirmed: The email is already confirmed
+                     already_confirmed: Почтовый адрес уже подтверждён
+                     not_found: Почтовый адрес не обнаружен
