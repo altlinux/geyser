@@ -162,8 +162,8 @@ msgstr "Вы уверены?"
 msgid "Back"
 msgstr "Назад"
 
-msgid "Blog"
-msgstr "Блог"
+msgid "Telegram channel"
+msgstr "Канал в телеграме"
 
 msgid "Books/Computer books"
 msgstr "Документация/Компьютерная литература"
@@ -627,8 +627,11 @@ msgstr "Патч слишком велик."
 msgid "Patches"
 msgstr "Патчи"
 
-msgid "Planet"
-msgstr "Планета"
+msgid "Wiki"
+msgstr "Вики"
+
+msgid "Altlinux public wiki"
+msgstr "Публичный вики Altlinux"
 
 msgid "Project Prometheus"
 msgstr "Проект Prometheus"
@@ -745,10 +748,10 @@ msgid "Raw spec file"
 msgstr ""
 
 msgid "Repocop"
-msgstr ""
+msgstr "Репокоп"
 
 msgid "Repocop messages:"
-msgstr "Сообщения от repocop:"
+msgstr "Сообщения от репокопа:"
 
 msgid "Resend confirmation instructions"
 msgstr ""
@@ -1020,8 +1023,11 @@ msgstr "Владимир Диденко"
 msgid "Website/Blog:"
 msgstr "Сайт/Блог:"
 
-msgid "Wiki"
-msgstr "Вики"
+msgid "Forum"
+msgstr "Форум"
+
+msgid "Discussion forum"
+msgstr "Форум обсуждений"
 
 msgid "You can confirm your account email through the link below:"
 msgstr "Вы можете подтвердить ваш электронный адрес через ссылку ниже:"

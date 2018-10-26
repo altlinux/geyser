@@ -90,21 +90,16 @@
         <%= link_to_unless_current _('RSS'), rss_path(branch: @default_branch.slug), title: _('RSS') %>
       </li>
       <li>
-        <%= link_to _('Wiki'), _('http://en.altlinux.org/Sisyphus'), title: _('sisyphus public site') %>
-      </li>
-      <% if I18n.locale == :ru %>
-        <li>
-          <%= link_to _('Blog'), _('http://www.livejournal.com/userinfo.bml?user=ru_sisyphus'), title: _('blog') %>
-        </li>
-        <li>
-          <%= link_to _('Planet'), _('http://planet.altlinux.org/'), title: _('ALT Linux Planet') %>
-        </li>
-      <% end %>
-      <li>
-        <%= link_to _('Mailing list'), _('http://lists.altlinux.org/mailman/listinfo/community-en/'), title: _('community-en@') %>
+        <%= link_to _('Wiki'), _('https://altlinux.org'), title: _('Altlinux public wiki') %>
       </li>
       <li>
-        <%= link_to _('API'), 'http://petstore.swagger.io/?url=https://packages.altlinux.org/api/docs', title: _('API') %>
+        <%= link_to _('Forum'), _('https://forum.altlinux.org'), title: _('Discussion forum') %>
+      </li>
+      <li>
+        <%= link_to _('Telegram channel'), _('http://t-do.ru/alt_linux'), title: _('Telegram channel') %>
+      </li>
+      <li>
+        <%= link_to _('Mailing list'), _('https://lists.altlinux.org/mailman/listinfo/'), title: _('Mailing list') %>
       </li>
     </ul>
 
