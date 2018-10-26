@@ -78,7 +78,7 @@ module SrpmsHelper
          popup: 'download latest version',
       },
       bugs: {
-         title: _('Bugs and FR (%s/%s)') % [opened_bugs.count, all_bugs.count],
+         title: _('Bugs and FR') + ' (%s/%s)' % [opened_bugs.count, all_bugs.count],
          path: 'bugs_srpm_path',
          args: [branch, srpm],
          popup: 'list of bugs and feature requests',

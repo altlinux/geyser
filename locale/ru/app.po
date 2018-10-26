@@ -184,7 +184,7 @@ msgid "Broken changelog entry."
 msgstr ""
 
 msgid "Bugs and FR"
-msgstr ""
+msgstr "Ошибки"
 
 msgid "Bugs/FR statistics assigned to this maintainer"
 msgstr "статистика по кол-ву bugs/FR, адресованных данному майнтейнеру"
