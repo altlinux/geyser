@@ -573,8 +573,8 @@ msgstr "Сети/Удаленный доступ"
 msgid "Networking/WWW"
 msgstr "Сети/WWW"
 
-msgid "New SRPMs"
-msgstr "Новые пакеты"
+msgid "Last changes"
+msgstr "Последние изменения"
 
 msgid "New password"
 msgstr "Новый пароль"
