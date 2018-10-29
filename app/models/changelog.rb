@@ -5,6 +5,10 @@ class Changelog < ApplicationRecord
    belongs_to :maintainer, optional: true
    belongs_to :spkg, class_name: 'Package::Src', optional: true
 
+   has_many :branches, through: :spkg
+
+   scope :fix, -> { where("changelogs.text LIKE '%CVE%'") }
+
    validates_presence_of :at, :text
 
    delegate :shown_name, :locked_email, to: :maintainer, allow_nil: true, prefix: true

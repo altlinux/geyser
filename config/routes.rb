@@ -75,6 +75,7 @@ Rails.application.routes.draw do
 
       get 'packages/:group(/:group2(/:group3))' => 'group#show', as: 'group'
       get 'packages' => 'group#index', as: 'packages'
+      get 'security' => 'security#index', as: 'security'
     end
 
     resource :maintainer_profile, only: [:edit, :update]
@@ -105,9 +106,6 @@ Rails.application.routes.draw do
   end
 
   get '(/:locale)/misc/bugs' => 'misc#bugs', locale: SUPPORTED_LOCALES_RE
-
-  get '(/:locale)/:branch/security' => 'security#index', as: 'security',
-                                                         locale: SUPPORTED_LOCALES_RE
 
   # TODO: drop this later
   # get '/repocop' => 'repocop#index'

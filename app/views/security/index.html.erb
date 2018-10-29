@@ -6,10 +6,14 @@
 
   <%= render partial: 'srpms' %>
 
-</div>
 
 <div id='bottom-offset-l'>
   <div id='bottom-offset-r'>
-    &nbsp;
+     &nbsp;
   </div>
+</div>
+
+<div class="rightbar">
+   <%= render partial: "shared/tables/counted_branches", locals: { branches: @branches_s.as_json } %>
+</div>
 </div>
