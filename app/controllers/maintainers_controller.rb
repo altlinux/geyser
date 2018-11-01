@@ -34,7 +34,8 @@ class MaintainersController < ApplicationController
    end
 
    def ftbfs
-      @ftbfs = Issue::Ftbfs.joins(:issue_assignees)
+      @ftbfs = Issue::Ftbfs.active
+                           .joins(:issue_assignees)
                            .where(issue_assignees: { maintainer_id: maintainer })
                            .includes(:branch)
                            .order(reported_at: :asc, repo_name: :asc)

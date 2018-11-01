@@ -37,7 +37,7 @@ class ImportFtbfses
          end
       end.flatten
 
-      Issue::Ftbfs.where.not(no: noes).where(resolution: nil).update_all(resolution: "FIXED", resolved_at: Time.zone.now)
+      Issue::Ftbfs.where.not(no: noes).active.update_all(resolution: "FIXED", resolved_at: Time.zone.now)
    end
 
    def maintainer_from login

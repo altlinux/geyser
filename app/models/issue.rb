@@ -8,6 +8,8 @@ class Issue < ApplicationRecord
    has_many :issue_assignees, dependent: :delete_all
    has_many :assignees, class_name: :Maintainer, through: :issue_assignees, source: :maintainer
 
+   scope :active, -> { where(resolution: nil) }
+
    accepts_nested_attributes_for :issue_assignees, reject_if: :all_blank, allow_destroy: true
 
    delegate :arch, to: :branch_path
