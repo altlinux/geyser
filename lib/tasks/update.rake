@@ -56,4 +56,9 @@ namespace :update do
        BranchPath.where(name: args[:branch_path]).update_all(imported_at: Time.at(0))
     end
   end
+
+  desc 'Update branch groups'
+  task :branch_groups, %i(environment) do
+    UpdateBranchGroups.new.do
+  end
 end

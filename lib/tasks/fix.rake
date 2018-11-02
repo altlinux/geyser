@@ -18,4 +18,9 @@ namespace :fix do
    task lost_rpms: %i(environment) do
       FixLostRpms.new.do
    end
+
+   desc 'Fix branch groups'
+   task branch_groups: %i(environment) do
+      FixBranchGroups.new.do
+   end
 end

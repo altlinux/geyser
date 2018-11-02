@@ -10,10 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_23_150100) do
+ActiveRecord::Schema.define(version: 2018_11_01_095700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
+  enable_extension "btree_gist"
+  enable_extension "ltree"
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
@@ -28,6 +30,22 @@ ActiveRecord::Schema.define(version: 2018_10_23_150100) do
     t.index ["maintainer_slug"], name: "index_acls_on_maintainer_slug"
     t.index ["package_name", "maintainer_slug", "branch_path_id"], name: "index_acls_on_three_fields", unique: true
     t.index ["package_name"], name: "index_acls_on_package_name"
+  end
+
+  create_table "branch_groups", id: :serial, force: :cascade do |t|
+    t.string "name", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer "branch_id"
+    t.integer "parent_id"
+    t.integer "lft"
+    t.integer "rgt"
+    t.integer "srpms_count", default: 0, comment: "Счётчик именованных исходных пакетов для группы"
+    t.bigint "group_id", null: false, comment: "Ссылка на группу"
+    t.index ["branch_id", "group_id"], name: "index_branch_groups_on_branch_id_and_group_id", unique: true
+    t.index ["branch_id"], name: "index_branch_groups_on_branch_id"
+    t.index ["group_id"], name: "index_branch_groups_on_group_id"
+    t.index ["parent_id"], name: "index_branch_groups_on_parent_id"
   end
 
   create_table "branch_paths", force: :cascade do |t|
@@ -137,17 +155,14 @@ ActiveRecord::Schema.define(version: 2018_10_23_150100) do
     t.index ["url"], name: "index_gears_on_url", unique: true
   end
 
-  create_table "groups", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.integer "branch_id"
-    t.integer "parent_id"
-    t.integer "lft"
-    t.integer "rgt"
-    t.integer "srpms_count", default: 0, comment: "Счётчик именованных исходных пакетов для группы"
-    t.index ["branch_id"], name: "index_groups_on_branch_id"
-    t.index ["parent_id"], name: "index_groups_on_parent_id"
+  create_table "groups", force: :cascade do |t|
+    t.ltree "path", null: false, comment: "Полный путь группы"
+    t.string "slug", null: false, comment: "Плашка группы"
+    t.string "name", null: false, comment: "Наименование группы"
+    t.string "name_en", null: false
+    t.index ["path"], name: "gist_index_groups_on_path", using: :gist
+    t.index ["path"], name: "index_groups_on_path"
+    t.index ["slug"], name: "index_groups_on_slug", unique: true
   end
 
   create_table "issue_assignees", force: :cascade do |t|
@@ -235,7 +250,7 @@ ActiveRecord::Schema.define(version: 2018_10_23_150100) do
     t.datetime "buildtime"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer "group_id"
+    t.integer "group_id", null: false
     t.string "md5", limit: 255, null: false
     t.string "groupname", limit: 255
     t.bigint "size"
@@ -430,16 +445,18 @@ ActiveRecord::Schema.define(version: 2018_10_23_150100) do
   end
 
   add_foreign_key "acls", "branch_paths"
+  add_foreign_key "branch_groups", "branches", on_delete: :cascade
+  add_foreign_key "branch_groups", "groups", on_delete: :cascade
   add_foreign_key "branch_paths", "branch_paths", column: "source_path_id", on_delete: :cascade
   add_foreign_key "branch_paths", "branches", on_delete: :cascade
   add_foreign_key "changelogs", "maintainers", on_delete: :nullify
   add_foreign_key "changelogs", "packages", column: "spkg_id"
   add_foreign_key "changelogs", "packages", on_delete: :restrict
   add_foreign_key "ftbfs", "branches", on_delete: :cascade
-  add_foreign_key "groups", "branches", on_delete: :cascade
   add_foreign_key "issue_assignees", "issues", on_delete: :cascade
   add_foreign_key "issues", "branch_paths", on_delete: :cascade
   add_foreign_key "mirrors", "branches", on_delete: :cascade
+  add_foreign_key "packages", "groups", on_delete: :restrict
   add_foreign_key "packages", "maintainers", column: "builder_id", on_delete: :restrict
   add_foreign_key "patches", "packages", on_delete: :restrict
   add_foreign_key "repocop_patches", "branches", on_delete: :cascade

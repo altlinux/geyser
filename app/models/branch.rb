@@ -11,7 +11,8 @@ class Branch < ApplicationRecord
   has_many :srpm_filenames, -> { src.select(:filename).distinct }, through: :branch_paths, source: :rpms
   has_many :all_packages, -> { distinct }, through: :all_rpms, class_name: :Package, source: :package
   has_many :changelogs, through: :spkgs, source: :changelog
-  has_many :groups, dependent: :destroy
+  has_many :branch_groups, dependent: :destroy
+  has_many :groups, through: :spkgs
   has_many :teams, dependent: :destroy
   has_many :mirrors, dependent: :destroy
 #  has_many :patches, through: :packages # rubocop:disable Rails/InverseOf (false positive)

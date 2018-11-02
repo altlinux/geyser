@@ -137,9 +137,8 @@ class Package < ApplicationRecord
 
       if !package.group
          group_name = rpm.group
-         Group.import(branch_path.branch, group_name)
-         group = Group.in_branch(branch_path.branch, group_name)
-         package.group = group
+         branch_group = ImportBranchGroup.new(branch: branch_path.branch, group_name: group_name).do
+         package.group = branch_group.group
          package.groupname = group_name
       end
 
@@ -173,6 +172,14 @@ class Package < ApplicationRecord
             raise AttachedNewBranchError
          end
       end
+
+      info(text, "imported to branch #{branch_path.branch.name}")
+   rescue AttachedNewBranchError
+      info(text, "added to branch #{branch_path.branch.name}")
+   rescue AlreadyExistError
+      info(text, "exists in #{branch_path.branch.name}... skipping")
+   ensure
+      package
    end
 
    def self.info *text
@@ -186,6 +193,11 @@ class Package < ApplicationRecord
    def self.import_all branch
       time = Time.zone.now
       Rails.logger.info "IMPORT: at #{time} for #{branch.name} in"
+
+      affected = {
+         branches: [],
+         groups: [],
+      }
 
       branch.branch_paths.send(source.downcase).active.each do |branch_path|
          next if !File.directory?(branch_path.path)
@@ -212,14 +224,10 @@ class Package < ApplicationRecord
                   rpm = Rpm::Base.new(filepath)
 
                   text = "IMPORT: file '#{ filepath }' "
-                  method = begin
-                     Package.import(branch_path, rpm)
-                     info text, "imported to branch #{branch_path.branch.name}"
-                  rescue AttachedNewBranchError
-                     info text, "added to branch #{branch_path.branch.name}"
-                  rescue AlreadyExistError
-                     info text, "exists in #{branch_path.branch.name}... skipping"
-                  end
+                  package = Package.import(branch_path, rpm)
+
+                  affected[:branches] |= [ branch_path.branch.id ]
+                  affected[:groups] |= [ package.group.id ]
                end
             rescue SourceIsntFound => e
                error text, "#{e.message} source isn't found for #{branch_path.branch.name}"
@@ -233,14 +241,13 @@ class Package < ApplicationRecord
 
          branch_path.update(imported_at: time, srpms_count: branch_path.rpms.count)
       end
-    
+
       if source.downcase == 'src'
          branch.update(srpms_count: branch.srpm_filenames.count)
-
-         Group.find_each do |group|
-            group.update!(srpms_count: group.srpms.count)
-         end
       end
+
+      UpdateBranchGroups.new(branch_ids: affected[:branches],
+                             group_ids: affected[:groups]).do
    end
 
    class ActiveRecord_Relation

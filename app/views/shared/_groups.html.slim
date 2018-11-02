@@ -1,0 +1,8 @@
+- branch_groups.includes(:group).with_parent(parent).each do |branch_group|
+   .group
+      .group-title
+         = link_to _(branch_group.name_for(I18n.locale)), group_path(slug: branch_group.group.slug), class: 'name'
+         = " (#{branch_group.srpms_count})"
+      - if !branch_group.leaf?
+         .group-content
+            = render partial: "shared/groups", locals: { parent: branch_group, branch_groups: branch_groups }

@@ -1,18 +1,25 @@
 # frozen_string_literal: true
 
 class GroupController < ApplicationController
-  def index
-    @groups = @branch.groups.where(parent_id: nil).includes(:children).includes(children: [:children]).order('LOWER(name)')
-  end
+   before_action :fetch_branch_group, only: :show
 
-  def show
-    @group = @branch.groups.find_by!(name: params[:group], parent_id: nil)
-    if params[:group2].present?
-      @group = @branch.groups.find_by!(name: params[:group2], parent_id: @group.id)
-      if params[:group3].present?
-        @group = @branch.groups.find_by!(name: params[:group3], parent_id: @group.id)
-      end
-    end
-    @srpms = @group.srpms.order('LOWER(name)').page(params[:page]).per(1_000).decorate
-  end
+   def index
+      @branch_groups = @branch.branch_groups.order('groups.slug')
+   end
+
+   def show
+      @spkgs = @branch_group.spkgs
+                            .includes(:changelog)
+                            .select("packages.*, LOWER(packages.name)")
+                            .reorder('LOWER(packages.name)')
+                            .page(params[:page])
+                            .per(1_000)
+                            .decorate
+   end
+
+   protected
+
+   def fetch_branch_group
+      @branch_group = @branch.branch_groups.with_slug(params[:slug]).first || raise(ActiveRecord::RecordNotFound)
+   end
 end

@@ -5,50 +5,7 @@
   <p class='break'></p>
 
   <div style='font-size: 12pt;'>
-    <% @groups.each do |group| %>
-      <div class='group'>
-        <% if group.leaf? %>
-          <div class='group-title'>
-            <%= link_to _(group.name), group_path(group: group.name), class: 'name' %>
-            (<%= group.srpms_count %>)
-          </div>
-        <% else %>
-          <div class='group-title name'>
-            <%= _(group.name) %>
-          </div>
-          <div class='group-content'>
-            <% group.children.each do |child| %>
-              <div class='group'>
-                <% if child.leaf? %>
-                  <div class='group-title'>
-                    <%= link_to _(child.name), group_path(group: group.name, group2: child.name), class: 'name' %>
-                    (<%= child.srpms_count %>)
-                  </div>
-                <% else %>
-                  <div class='group-title name'>
-                    <%= _(child.name) %>
-                  </div>
-                  <div class='group-content'>
-                    <% child.children.each do |c| %>
-                      <div class='group'>
-                        <% if c.leaf? %>
-                          <div class='group-title'>
-                            <%= link_to _(c.name), group_path(group: group.name, group2: child.name, group3: c.name), class: 'name' %>
-                            (<%= c.srpms_count %>)
-                          </div>
-                        <% else %>
-                          TODO
-                        <% end %>
-                      </div>
-                    <% end %>
-                  </div>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
+    <%= render partial: "shared/groups", locals: { parent: nil, branch_groups: @branch_groups } %>
   </div>
 </div>
 

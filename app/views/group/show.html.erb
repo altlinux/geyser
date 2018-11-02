@@ -1,31 +1,31 @@
-<% title _('Prometheus 2.0 - Group &laquo;%s&raquo;') % @group.full_name %>
+<% title _('Prometheus 2.0 - Group &laquo;%s&raquo;') % @branch_group.full_name %>
 
 <div id='main-content'>
   <div class='header'>
-    <%= _('Group') %> :: <%= _(@group.full_name) %>
+    <%= _('Group') %> :: <%= _(@branch_group.full_name) %>
   </div>
 
   <p class='news'></p>
 
-  <% @srpms.each do |srpm| %>
+  <% @spkgs.each do |spkg| %>
     <p class='news'>
       <span class='news-date-new'>
-        <%= link_to srpm.name, srpm_path(@branch, srpm), class: 'news', title: _('detailed information about the package') %>
+        <%= link_to spkg.name, srpm_path(@branch, spkg), class: 'news', title: _('detailed information about the package') %>
       </span>
       <br>
       <br>
       <b><%= _('Current version:') %></b>
-      <span class='news-text'><%= srpm.evr %></span>
+      <span class='news-text'><%= spkg.evr %></span>
       <br>
       <b><%= _('Build time:') %></b>
-      <span class='news-text'><%= "#{ srpm.buildtime } (#{ time_ago_in_words(srpm.buildtime) } #{_('ago')})" %></span>
+      <span class='news-text'><%= "#{ spkg.buildtime } (#{ time_ago_in_words(spkg.buildtime) } #{_('ago')})" %></span>
       <br>
       <b><%= _('Summary:') %></b>
-      <span class='news-text'><%= srpm.summary %></span>
+      <span class='news-text'><%= spkg.summary %></span>
       <br>
       <b><%= _('Changes:') %></b>
       <div class='para'>
-        <%= simple_format(srpm.last_changelog_text) %>
+        <%= simple_format(spkg.last_changelog_text) %>
       </div>
     </p>
   <% end %>
@@ -33,7 +33,7 @@
   <p class="break" />
 
   <div style="text-align:center">
-    <%= paginate @srpms %>
+    <%= paginate @spkgs %>
   </div>
 </div>
 
