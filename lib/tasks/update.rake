@@ -58,7 +58,7 @@ namespace :update do
   end
 
   desc 'Update branch groups'
-  task :branch_groups, %i(environment) do
+  task branch_groups: %i(environment) do
     UpdateBranchGroups.new.do
   end
 end

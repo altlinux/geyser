@@ -59,7 +59,7 @@ class CreateBranchGroups < ActiveRecord::Migration[5.2]
       add_foreign_key :packages, :groups, on_delete: :restrict
       change_column_null :branch_groups, :group_id, false
 
-      FixBranchGroups.new.do
+      UpdateBranchGroups.new.do
 
       # TODO remove groupname of packages
       # TODO remove name, parent_id, lft, rgt of branch_groups

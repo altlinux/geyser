@@ -91,6 +91,7 @@ class Package < ApplicationRecord
          raise InvalidMd5SumError
       end
 
+      filepath = File.join(branch_path.path, rpm.file)
       package = Package.find_or_initialize_by(md5: rpm.md5) do |package|
          if rpm.sourcerpm
             spkg_id = Rpm.where(filename: rpm.sourcerpm,
@@ -173,12 +174,15 @@ class Package < ApplicationRecord
          end
       end
 
-      info(text, "imported to branch #{branch_path.branch.name}")
+      info("IMPORT: file '#{ filepath }' imported to branch #{branch_path.branch.name}")
+      package
+
    rescue AttachedNewBranchError
-      info(text, "added to branch #{branch_path.branch.name}")
+      info("IMPORT: file '#{ filepath }' added to branch #{branch_path.branch.name}")
+      package
+
    rescue AlreadyExistError
-      info(text, "exists in #{branch_path.branch.name}... skipping")
-   ensure
+      info("IMPORT: file '#{ filepath }' exists in #{branch_path.branch.name}... skipping")
       package
    end
 
@@ -215,7 +219,7 @@ class Package < ApplicationRecord
          Rails.logger.info "IMPORT: will be imported #{nonexist_list.size} files"
 
          nonexist_list.each do |file|
-            text = rpm = nil
+            filepath = rpm = nil
 
             begin
                ApplicationRecord.transaction do
@@ -223,19 +227,18 @@ class Package < ApplicationRecord
                   Rails.logger.info "IMPORT: file #{filepath}"
                   rpm = Rpm::Base.new(filepath)
 
-                  text = "IMPORT: file '#{ filepath }' "
                   package = Package.import(branch_path, rpm)
 
                   affected[:branches] |= [ branch_path.branch.id ]
                   affected[:groups] |= [ package.group.id ]
                end
             rescue SourceIsntFound => e
-               error text, "#{e.message} source isn't found for #{branch_path.branch.name}"
+               error "IMPORT: file '#{ filepath }' #{e.message} source isn't found for #{branch_path.branch.name}"
             rescue InvalidMd5SumError => e
-               error text, "has invalid MD5 sum"
+               error "IMPORT: file '#{ filepath }' has invalid MD5 sum"
             rescue => e
                time = time < rpm.buildtime && time || rpm.buildtime
-               error text, "failed to update, reason: #{e.message} at #{e.backtrace[0]}"
+               error "IMPORT: file '#{ filepath }' failed to update, reason: #{e.message} at #{e.backtrace[0]}"
             end
          end
 

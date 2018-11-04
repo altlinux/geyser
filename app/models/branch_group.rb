@@ -5,6 +5,7 @@ class BranchGroup < ApplicationRecord
    belongs_to :group
 
    has_many :spkgs, ->(this) { where(group_id: this.group_id).distinct }, class_name: 'Package::Src', through: :branch
+   has_many :srpms, through: :spkgs, source: :rpms
 
    scope :root, -> { joins(:group).merge(Group.root) }
    scope :with_parent, ->(parent) { parent && self.merge(parent.children) || root }
