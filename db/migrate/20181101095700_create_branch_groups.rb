@@ -1,4 +1,6 @@
 class CreateBranchGroups < ActiveRecord::Migration[5.2]
+   require 'csv'
+
    NAMES_RU = CSV.read('db/seed/groups.csv', headers: false).to_a.to_h
 
    def change

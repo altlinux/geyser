@@ -1,14 +1,17 @@
 class FixGroups
+   require 'csv'
+
    NAMES_RU = CSV.read('db/seed/groups.csv', headers: false).to_a.to_h
 
    def do
       Package.where("groupname ~ '[А-Яа-я]'").find_each do |package|
          package_full_path(package)
       end
-#      Group.import!(group_attrs, on_duplicate_key_ignore: true)
-#      BranchGroup.import!(branch_group_attrs, on_duplicate_key_update: {
-#                                                  conflict_target: %i(id),
-#                                                  columns: %i(group_id branch_id) })
+
+      Group.import!(group_attrs, on_duplicate_key_ignore: true)
+      BranchGroup.import!(branch_group_attrs, on_duplicate_key_update: {
+                                                  conflict_target: %i(id),
+                                                  columns: %i(group_id branch_id) })
    end
 
    protected
