@@ -1803,9 +1803,9 @@ if BranchPath.src.blank?
    end
 end
 
-if BranchPath.where.not(ftbfs_url: nil).blank?
+if BranchPath.where.not(ftbfs_stat_uri: nil).blank?
    BranchPath.transaction do
-      urls = {
+      uris = {
          'Sisyphus' => [
             %w(http://git.altlinux.org/beehive/stats/Sisyphus-i586/ftbfs-joined i586),
             %w(http://git.altlinux.org/beehive/stats/Sisyphus-x86_64/ftbfs-joined x86_64),
@@ -1832,11 +1832,50 @@ if BranchPath.where.not(ftbfs_url: nil).blank?
          ]
       }
 
+      uris.each do |branch_name, arches|
+         arches.each do |(uri, arch)|
+            branch_paths = BranchPath.joins(:branch).where(arch: arch, branches: { name: branch_name})
+            branch_path = branch_paths.find {|bp| bp.source_path.primary }
+            branch_path.update_attribute(:ftbfs_stat_uri, uri)
+         end
+      end
+   end
+end
+
+if BranchPath.where.not(ftbfs_uri: nil).blank?
+   BranchPath.transaction do
+      urls = {
+         'Sisyphus' => [
+            %w(/beehive/logs/Sisyphus-i586/latest/error/ i586),
+            %w(/beehive/logs/Sisyphus-x86_64/latest/error/ x86_64),
+         ],
+         'p8' => [
+            %w(/beehive/logs/p8-i586/latest/error/ i586),
+            %w(/beehive/logs/p8-x86_64/latest/error/ x86_64),
+         ],
+         'c7' => [
+            %w(/beehive/logs/c7-i586/latest/error/ i586),
+            %w(/beehive/logs/c7-x86_64/latest/error/ x86_64),
+         ],
+         'p7' => [
+            %w(/beehive/logs/p7-i586/latest/error/ i586),
+            %w(/beehive/logs/p7-x86_64/latest/error/ x86_64),
+         ],
+         'p6' => [
+            %w(/beehive/logs/p6-i586/latest/error/ i586),
+            %w(/beehive/logs/p6-x86_64/latest/error/ x86_64),
+         ],
+         't6' => [
+            %w(/beehive/logs/t6-i586/latest/error/ i586),
+            %w(/beehive/logs/t6-x86_64/latest/error/ x86_64),
+         ]
+      }
+
       urls.each do |branch_name, arches|
          arches.each do |(url, arch)|
             branch_paths = BranchPath.joins(:branch).where(arch: arch, branches: { name: branch_name})
             branch_path = branch_paths.find {|bp| bp.source_path.primary }
-            branch_path.update_attribute(:ftbfs_url, url)
+            branch_path.update_attribute(:ftbfs_uri, url)
          end
       end
    end

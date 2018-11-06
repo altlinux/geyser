@@ -8,6 +8,7 @@ class ImportFtbfses
    }
 
    ATTR_NAMES = %i(type no status severity branch_path_id repo_name evr reported_at reporter)
+   LOG_ATTR_NAMES = %i(type no status severity branch_path_id repo_name evr reporter updated_at log_url)
 
    attr_reader :url
 
@@ -15,29 +16,34 @@ class ImportFtbfses
       Rails.logger.info("#{ Time.zone.now }: IMPORT.FTBFS")
 
       ApplicationRecord.transaction do
-         append
-         remove
+         append_stat
+         remove_stat
+
+         Issue.import!(issue_attrs, on_duplicate_key_update: {
+                     conflict_target: %i(type no),
+                     columns: %i(status severity branch_path_id evr repo_name reporter updated_at log_url)})
       end
    end
 
    protected
 
-   def data_from url
-      open(URI.escape(url)).read
-   rescue OpenURI::HTTPError
-      ""
-   end
+   def file_list_from uri
+      open(URI.escape(uri)).read.split("\n")
+   rescue Errno::EISDIR
+      res = []
 
-   def remove
-      noes = BranchPath.where.not(ftbfs_url: nil).map do |bp|
-         data_from(bp.ftbfs_url).split("\n").map do |line|
-            (name, evr, weeks, acls) = line.split
+      Dir.foreach(uri) do |file|
+         next if /^\.\.?$/ =~ file
 
-            "#{bp.branch.slug}-#{bp.arch}-#{name}-#{evr}"
-         end
-      end.flatten
+         res << {
+            name: file,
+            time: File.mtime(File.join(uri, file))
+         }
+      end
 
-      Issue::Ftbfs.where.not(no: noes).active.update_all(resolution: "FIXED", resolved_at: Time.zone.now)
+      res
+   rescue OpenURI::HTTPError, Errno::ENOENT
+      []
    end
 
    def maintainer_from login
@@ -53,10 +59,22 @@ class ImportFtbfses
       acls.split(',').map { |t| MAP[t] || t }.map { |l| maintainer_from(l).id }
    end
 
-   def append
+   def remove_stat
+      noes = BranchPath.where.not(ftbfs_stat_uri: nil).map do |bp|
+         file_list_from(bp.ftbfs_stat_uri).map do |line|
+            (name, evr, weeks, acls) = line.split
+
+            "#{bp.branch.slug}-#{bp.arch}-#{name}-#{evr}"
+         end
+      end.flatten
+
+      Issue::Ftbfs.where.not(no: noes).active.update_all(resolution: "FIXED", resolved_at: Time.zone.now)
+   end
+
+   def append_stat
       now = Time.zone.now
-      (attrs, assignees) = BranchPath.where.not(ftbfs_url: nil).map do |bp|
-         data_from(bp.ftbfs_url).split("\n").map do |line|
+      (attrs, assignees) = BranchPath.where.not(ftbfs_stat_uri: nil).map do |bp|
+         file_list_from(bp.ftbfs_stat_uri).map do |line|
             (name, evr, weeks, acls) = line.split
 
             no = "#{bp.branch.slug}-#{bp.arch}-#{name}-#{evr}"
@@ -86,5 +104,30 @@ class ImportFtbfses
       end.flatten(1)
 
       IssueAssignee.import!(issue_assignee_attrs, on_duplicate_key_ignore: true)
+   end
+
+   def issue_attrs
+      BranchPath.where.not(ftbfs_uri: nil).map do |bp|
+         file_list_from(bp.ftbfs_uri).map do |file|
+            /(?<name>.*)-(?:(?<epoch>\d+):)?(?<version>[^-]+)-(?<release>[^-]+)$/ =~ file[:name]
+
+            evr = [ epoch, [ version, release ].join('-') ].compact.join(':')
+            no = "#{bp.branch.slug}-#{bp.arch}-#{name}-#{evr}"
+
+            [ LOG_ATTR_NAMES,
+                [ 'Issue::Ftbfs',
+                  no,
+                  'NEW',
+                  'normal',
+                  bp.id,
+                  name,
+                  evr,
+                  'hiver@altlinux.org',
+                  file[:time],
+                  File.join("http://git.altlinux.org", bp.ftbfs_uri, file[:name])
+                ]
+            ].transpose.to_h
+         end
+      end.flatten
    end
 end

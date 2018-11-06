@@ -1155,6 +1155,9 @@ msgstr "информация о пакетах"
 msgid "packages which was built by this maintainer"
 msgstr "просмотреть пакеты, собранные майнтейнером"
 
+msgid "log url"
+msgstr "url лога"
+
 msgid "arch"
 msgstr "арх"
 

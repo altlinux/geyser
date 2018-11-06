@@ -13,6 +13,7 @@
     <th><%= raw _('current<br>version') %></th>
     <th><%= _('arch') %></th>
     <th><%= _('reported at') %></th>
+    <th><%= _('log url') %></th>
   </tr>
 
   <% @ftbfs.each do |f| %>
@@ -22,6 +23,7 @@
       <td><%= "#{ f.evr }" %></td>
       <td><%= f.arch %></td>
       <td><%= time_ago_in_words(f.reported_at) %> <%= _('back') %></td>
+      <td><%= f.log_url && link_to(f.repo_name, f.log_url, class: "news") %></td>
     </tr>
   <% end %>
 </table>

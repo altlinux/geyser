@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_01_095700) do
+ActiveRecord::Schema.define(version: 2018_11_06_103800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -61,8 +61,9 @@ ActiveRecord::Schema.define(version: 2018_11_01_095700) do
     t.datetime "imported_at", default: "1970-01-01 00:00:00", null: false, comment: "Время последнего импорта пакетов для пути ветви"
     t.string "acl_url", comment: "Внешняя ссылка на список прав на доступ"
     t.string "team_url", comment: "Внешняя ссылка на список групп ветви"
-    t.string "ftbfs_url", comment: "Ссылка в пучине на ftbfs для источника ветви"
+    t.string "ftbfs_stat_uri", comment: "Ссылка в пучине на ftbfs для источника ветви"
     t.boolean "primary", default: false, null: false, comment: "Первичный источник пакетов для ветви"
+    t.string "ftbfs_uri", comment: "Внешная изворная ссылка на ftbfs для источника ветви"
     t.index ["arch", "branch_id", "source_path_id"], name: "index_branch_paths_on_arch_and_branch_id_and_source_path_id", unique: true
     t.index ["arch", "path"], name: "index_branch_paths_on_arch_and_path", unique: true
     t.index ["arch"], name: "index_branch_paths_on_arch", using: :gin
@@ -186,6 +187,8 @@ ActiveRecord::Schema.define(version: 2018_11_01_095700) do
     t.datetime "resolved_at", comment: "Время разрешения вопроса"
     t.bigint "branch_path_id", null: false, comment: "Ссылка на источник ветви, к которой относится вопрос"
     t.datetime "reported_at", comment: "Время, когда был получен отчет об ошибке"
+    t.string "log_url", comment: "Пучинная ссылка на лог сборки пакета или иной лог"
+    t.datetime "updated_at", comment: "Время последней пересборки пакета"
     t.index ["branch_path_id"], name: "index_issues_on_branch_path_id"
     t.index ["no"], name: "index_issues_on_no"
     t.index ["repo_name"], name: "index_issues_on_repo_name"
