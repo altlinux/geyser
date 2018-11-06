@@ -33,6 +33,14 @@ class MaintainersController < ApplicationController
    def allbugs
    end
 
+   def feature_requests
+      @frs = Issue::FeatureRequest.active
+                                  .joins(:issue_assignees)
+                                  .where(issue_assignees: { maintainer_id: maintainer })
+                                  .includes(:branch)
+                                  .order(reported_at: :asc, repo_name: :asc)
+   end
+
    def ftbfs
       @ftbfs = Issue::Ftbfs.active
                            .joins(:issue_assignees)

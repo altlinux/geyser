@@ -1164,6 +1164,9 @@ msgstr "арх"
 msgid "reported at"
 msgstr "сообщено"
 
+msgid "new version"
+msgstr "новая версия"
+
 msgid "patches"
 msgstr "просмотреть патчи пакета"
 

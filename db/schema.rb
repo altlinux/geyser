@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_06_103800) do
+ActiveRecord::Schema.define(version: 2018_11_06_133200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -189,6 +189,7 @@ ActiveRecord::Schema.define(version: 2018_11_06_103800) do
     t.datetime "reported_at", comment: "Время, когда был получен отчет об ошибке"
     t.string "log_url", comment: "Пучинная ссылка на лог сборки пакета или иной лог"
     t.datetime "updated_at", comment: "Время последней пересборки пакета"
+    t.string "source_url", comment: "Внешеняя ссылка на пакет-источник вопроса"
     t.index ["branch_path_id"], name: "index_issues_on_branch_path_id"
     t.index ["no"], name: "index_issues_on_no"
     t.index ["repo_name"], name: "index_issues_on_repo_name"

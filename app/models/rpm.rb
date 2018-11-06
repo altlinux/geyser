@@ -14,7 +14,7 @@ class Rpm < ApplicationRecord
    scope :names, -> { select(:name).distinct }
    scope :src, -> { joins(:package).where(packages: { arch: 'src' })}
 
-   delegate :arch, to: :package
+   delegate :evr, :arch, to: :package
 
    before_create   :increment_branch_path_counter
    before_destroy  :decrement_branch_path_counter

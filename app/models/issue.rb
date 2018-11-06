@@ -14,5 +14,5 @@ class Issue < ApplicationRecord
 
    delegate :arch, to: :branch_path
 
-   validates_presence_of :no
+   validates_presence_of :no, :reporter, :status, :severity, :branch_path
 end
