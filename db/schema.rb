@@ -10,12 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_07_120400) do
+ActiveRecord::Schema.define(version: 2018_10_23_150100) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
-  enable_extension "btree_gist"
-  enable_extension "ltree"
   enable_extension "pg_stat_statements"
   enable_extension "plpgsql"
 
@@ -250,7 +248,6 @@ ActiveRecord::Schema.define(version: 2018_11_07_120400) do
     t.string "type", null: false, comment: "Вид пакета: исходник или двояк"
     t.bigint "builder_id", null: false, comment: "Собиратель пакета"
     t.integer "src_id", null: false, comment: "Ссылка на исходный пакет, может указывать на самого себя"
-    t.string "keys", comment: "Ключи найденные в имени пакета"
     t.index ["arch"], name: "index_packages_on_arch"
     t.index ["builder_id"], name: "index_packages_on_builder_id"
     t.index ["group_id"], name: "index_packages_on_group_id"
