@@ -1248,6 +1248,11 @@ msgstr "Пути к ветвям"
 msgid "SRPMs in branches"
 msgstr "Исходные пакеты в ветвях"
 
-
 msgid "Branches"
 msgstr "Ветви"
+
+msgid "_ru"
+msgstr "Русский"
+
+msgid "_en"
+msgstr "Английский"

@@ -5,32 +5,12 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  before_action :redirect_to_localized
-  before_action :set_default_locale
+  before_action :redirect_to_localized, unless: -> { params[:locale] }
+  before_action :set_locale
   before_action :set_default_branch
   before_action :authorizer_for_profiler
 
   helper_method :sort_column, :sort_order, :sort_order_next
-
-  helper_method :change_current_page_lang
-
-  def set_default_locale
-    params[:locale] ||= 'en'
-    I18n.locale = FastGettext.locale = params[:locale]
-  end
-
-  def redirect_to_localized
-    locale = prefered_locale
-
-    redirect_to(change_current_page_lang(request.fullpath, locale)) if request.fullpath == '/' && locale
-  end
-
-  def set_default_branch
-     @branch = Branch.find_by!(slug: params[:branch].blank? && 'sisyphus' || params[:branch]).decorate
-     @default_branch = @branch
-  rescue ActiveRecord::RecordNotFound
-    redirect_to root_path
-  end
 
   def default_url_options(_options = {})
     { locale: I18n.locale }
@@ -64,12 +44,21 @@ class ApplicationController < ActionController::Base
     redirect_to root_url
   end
 
-  private
+  protected
 
-  def change_current_page_lang(url, lang)
-    return "/#{ lang }" if url == '/'
-    url[1, 2] = lang
-    url
+  def redirect_to_localized
+    redirect_to(url_for(request.query_parameters.merge(locale: prefered_locale)))
+  end
+
+  def set_locale
+    I18n.locale = FastGettext.locale = params[:locale]
+  end
+
+  def set_default_branch
+     @branch = Branch.find_by!(slug: params[:branch].blank? && 'sisyphus' || params[:branch]).decorate
+     @default_branch = @branch
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path
   end
 
   def prefered_locale

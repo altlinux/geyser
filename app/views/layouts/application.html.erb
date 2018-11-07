@@ -59,10 +59,9 @@
       <% end %>
     </div>
     <div style='text-align: right'>
-      <%= link_to_unless_current 'en', change_current_page_lang(request.fullpath, 'en'), title: 'English' %>
-      <%= link_to_unless_current 'ru', change_current_page_lang(request.fullpath, 'ru'), title: 'Russian' %>
-      <%= link_to_unless_current 'uk', change_current_page_lang(request.fullpath, 'uk'), title: 'Ukrainian' %>
-      <%= link_to_unless_current 'br', change_current_page_lang(request.fullpath, 'br'), title: 'Portuguese (Brasilian)' %>
+       <%- I18n.available_locales.each do |lang| %>
+         <%= link_to_unless_current lang, request.query_parameters.merge(locale: lang), lanlangtitle: _("_#{lang}") %>
+      <%- end %>
     </div>
   </div>
 

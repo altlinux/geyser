@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resources :maintainers, only: [:index, :show]
   end
 
-  scope '(:locale)', locale: SUPPORTED_LOCALES do
+  scope '(:locale)', locale: SUPPORTED_LOCALES_RE do
     devise_for :users
 
     root to: 'home#index'
@@ -98,16 +98,16 @@ Rails.application.routes.draw do
     end
   end
 
-  scope ':locale', locale: SUPPORTED_LOCALES do
+  scope ':locale', locale: SUPPORTED_LOCALES_RE do
     scope ':branch' do
       get 'home' => 'home#index'
     end
   end
 
-  get '(/:locale)/misc/bugs' => 'misc#bugs', locale: SUPPORTED_LOCALES
+  get '(/:locale)/misc/bugs' => 'misc#bugs', locale: SUPPORTED_LOCALES_RE
 
   get '(/:locale)/:branch/security' => 'security#index', as: 'security',
-                                                         locale: SUPPORTED_LOCALES
+                                                         locale: SUPPORTED_LOCALES_RE
 
   # TODO: drop this later
   # get '/repocop' => 'repocop#index'
