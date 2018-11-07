@@ -145,6 +145,16 @@ ActiveRecord::Schema.define(version: 2018_11_06_133200) do
     t.index ["maintainer_id"], name: "index_ftbfs_on_maintainer_id"
   end
 
+  create_table "gear_maintainers", force: :cascade do |t|
+    t.bigint "gear_id"
+    t.bigint "maintainer_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["gear_id", "maintainer_id"], name: "index_gear_maintainers_on_gear_id_and_maintainer_id", unique: true
+    t.index ["gear_id"], name: "index_gear_maintainers_on_gear_id"
+    t.index ["maintainer_id"], name: "index_gear_maintainers_on_maintainer_id"
+  end
+
   create_table "gears", force: :cascade do |t|
     t.string "reponame", null: false, comment: "Имя пакета"
     t.string "url", null: false, comment: "Внешняя ссылка к ресурсу на сервере"
@@ -457,6 +467,8 @@ ActiveRecord::Schema.define(version: 2018_11_06_133200) do
   add_foreign_key "changelogs", "packages", column: "spkg_id"
   add_foreign_key "changelogs", "packages", on_delete: :restrict
   add_foreign_key "ftbfs", "branches", on_delete: :cascade
+  add_foreign_key "gear_maintainers", "gears", on_delete: :cascade
+  add_foreign_key "gear_maintainers", "maintainers", on_delete: :cascade
   add_foreign_key "issue_assignees", "issues", on_delete: :cascade
   add_foreign_key "issues", "branch_paths", on_delete: :cascade
   add_foreign_key "mirrors", "branches", on_delete: :cascade

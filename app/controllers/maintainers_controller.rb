@@ -24,7 +24,7 @@ class MaintainersController < ApplicationController
 #  end
 
    def gear
-      @gears = Gear.none #TODO replace for updates GEARS
+      @gears = Gear.joins(:gear_maintainers).for_maintainer(@maintainer).order(changed_at: :desc)
    end
 
    def bugs

@@ -172,6 +172,7 @@ GEM
       text (>= 1.3.0)
     gettext_i18n_rails (1.8.0)
       fast_gettext (>= 0.9.0)
+    git (1.5.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
     hashdiff (0.3.7)
@@ -487,6 +488,7 @@ DEPENDENCIES
   fast_gettext
   gettext
   gettext_i18n_rails
+  git
   http_accept_language
   http_logger
   kaminari

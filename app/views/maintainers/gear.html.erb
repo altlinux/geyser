@@ -15,12 +15,9 @@
   <% @gears.each do |gear| %>
     <tr>
       <td style="text-align: left">
-        <% login = gear.maintainer.login %>
-        <% login = 'php_coder' if gear.maintainer.login == 'php-coder' %>
-        <% login = 'psolntsev' if gear.maintainer.login == 'p_solntsev' %>
-        <%= link_to gear.repo, "http://git.altlinux.org/people/#{ login }/packages/?p=#{ gear.repo }.git", class: 'news' %>
+        <%= link_to gear.reponame, gear.url, class: 'news' %>
       </td>
-      <td><%= gear.lastchange %></td>
+      <td><%= gear.changed_at %></td>
     </tr>
   <% end %>
 </table>

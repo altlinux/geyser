@@ -1,14 +1,6 @@
 # frozen_string_literal: true
 
 class Maintainer < ApplicationRecord
-   validates :name, presence: true
-
-   validates :email, presence: true
-
-   validates :name, immutable: true
-
-   validates :email, immutable: true
-
    has_many :packages, foreign_key: :builder_id, inverse_of: :builder
    has_many :rpms, through: :packages
    has_many :branch_paths, -> { distinct }, through: :rpms
@@ -31,6 +23,10 @@ class Maintainer < ApplicationRecord
    scope :team, -> { where("maintainers.login ~ '^@.*'", ) }
 
    alias_method(:srpms_names, :built_names) #TODO remove of compat
+
+   validates_presence_of :name, :email
+   validates :name, immutable: true
+   validates :email, immutable: true
 
    def slug
       to_param
@@ -87,7 +83,7 @@ class Maintainer < ApplicationRecord
             kls.find_or_create_by!(email: email) do |m|
                m.name = name.blank? && email || name
 
-               if /altlinux.org$/ =~ email
+               if /@(packages\.)?altlinux\.org$/ =~ email
                   m.login = login
                end
             end

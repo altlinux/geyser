@@ -54,6 +54,9 @@ gem 'factory_bot_rails'
 # serialization
 gem 'active_model_serializers'
 
+# git
+gem 'git', require: false
+
 group :production do
   gem 'newrelic_rpm'
 end
