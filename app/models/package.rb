@@ -50,12 +50,13 @@ class Package < ApplicationRecord
       if text.blank?
          all
       else
+         retext = text.split(/[^a-zA-Zа-яА-Я0-9]+/).join(" ")
          subquery = "
-            SELECT DISTINCT src_id FROM (SELECT src_id, tsv, ts_rank_cd(tsv, plainto_tsquery('#{text}'))
+            SELECT DISTINCT src_id FROM (SELECT src_id, tsv, ts_rank_cd(tsv, plainto_tsquery('#{retext}'))
             FROM packages, plainto_tsquery(?) AS q
             WHERE (tsv @@ q)
             ORDER BY ts_rank_cd(tsv, plainto_tsquery(?)) DESC) as t1"
-         where("packages.id IN (#{subquery})", text, text)
+         where("packages.id IN (#{subquery})", retext, retext)
       end
    end
    singleton_class.send(:alias_method, :q, :query)
@@ -63,6 +64,8 @@ class Package < ApplicationRecord
    singleton_class.send(:alias_method, :b, :by_branch_slug)
 
    validates_presence_of :buildtime, :md5, :groupname, :builder
+
+   before_save :keys_fillin
 
    def to_param
       name
@@ -80,6 +83,10 @@ class Package < ApplicationRecord
 
    def first_branch
       branches.first
+   end
+
+   def keys_fillin
+      self.keys = (name.split(/[^a-zA-Z]+/) | name.split(/[^a-zA-Z0-9]+/)).join(' ')
    end
 
    def self.source
