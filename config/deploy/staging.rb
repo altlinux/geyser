@@ -6,6 +6,8 @@ set :deploy_to, '/var/www/prometheus2.0'
 
 set :rails_env, 'staging'
 
+set :branch, ENV['BRANCH'] || "staging"
+
 server '10.10.3.49', user: 'apache', roles: ['app', 'db', 'web']
 
 set :ssh_options, port: 22
