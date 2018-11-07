@@ -183,11 +183,11 @@ msgstr "Документация/Прочее"
 msgid "Broken changelog entry."
 msgstr ""
 
-msgid "Bugs and FR"
+msgid "Bugs"
 msgstr "Ошибки"
 
 msgid "Bugs/FR statistics assigned to this maintainer"
-msgstr "статистика по кол-ву bugs/FR, адресованных данному майнтейнеру"
+msgstr "статистика по кол-ву ошибок/запросов, адресованных данному сопроводителю"
 
 msgid "Build time:"
 msgstr "Время сборки:"
@@ -660,11 +660,11 @@ msgstr "Prometheus 2.0 - Майнтейнер &laquo;%s&raquo;"
 msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - ACL"
 msgstr "Prometheus 2.0 - Майнтейнер &laquo;%s&raquo; - ACL"
 
-msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - Bugs and FR"
-msgstr "Prometheus 2.0 - Майнтейнер &laquo;%s&raquo; - Bugs and FR"
+msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - Bugs"
+msgstr "Prometheus 2.0 - Майнтейнер &laquo;%s&raquo; - Bugs"
 
-msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - Bugs and FR (All)"
-msgstr "Prometheus 2.0 - Майнтейнер &laquo;%s&raquo; - Bugs and FR (All)"
+msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - Bugs (All)"
+msgstr "Prometheus 2.0 - Майнтейнер &laquo;%s&raquo; - Bugs (All)"
 
 msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - FTBFS"
 msgstr "Prometheus 2.0 - Майнтейнер &laquo;%s&raquo; - FTBFS"

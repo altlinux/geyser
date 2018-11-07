@@ -2,8 +2,8 @@
 
 class SrpmsController < ApplicationController
   before_action :set_version
-  before_action :fetch_srpm
-  before_action :fetch_srpms_by_name, only: %i(show changelog spec get)
+  before_action :fetch_spkg
+  before_action :fetch_spkgs_by_name, only: %i(show changelog spec get)
   before_action :fetch_changelogs, only: %i(show changelog)
 
   def show
@@ -61,20 +61,20 @@ class SrpmsController < ApplicationController
     @changelogs = @spkg.changelogs.includes(:maintainer).order('changelogs.at DESC, changelogs.created_at DESC')
   end
 
-  def fetch_srpm
+  def fetch_spkg
     includes = {
        index: %i(packages),
        rawspec: %i(group branch),
        gear: [gears: :maintainer],
     }[action_name.to_sym]
 
-    spkgs = @branch.spkgs.where(name: params[:id]).by_evr(params[:version]).order(buildtime: :desc)
+    spkgs = @branch.spkgs.by_name(params[:id]).by_evr(params[:version]).order(buildtime: :desc)
     spkgs = spkgs.includes(*includes) if includes
     
     @spkg = spkgs.first!.decorate
   end
 
-  def fetch_srpms_by_name
+  def fetch_spkgs_by_name
     @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src.by_name(params[:id]).includes(:branch_path, :branch, :package).order('packages.buildtime DESC, branches.order_id'))
   end
 

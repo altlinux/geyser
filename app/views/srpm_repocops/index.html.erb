@@ -1,18 +1,21 @@
-<% title _('Prometheus 2.0 - Package &laquo;%s&raquo; - Repocop') % @srpm.name %>
-<% description "#{ @srpm.name } - #{ @srpm.summary }" %>
-<% keywords @srpm.summary %>
+<% title _('Prometheus 2.0 - Package &laquo;%s&raquo; - Repocop') % @spkg.name %>
+<% description "#{ @spkg.name } - #{ @spkg.summary }" %>
+<% keywords @spkg.summary %>
 
 <div id='main-content'>
+   <div class="rightbar fat">
+      <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
+   </div>
 
 <div style="height:3em;">
   <div id="rpmtop">
-    <b style="font-size:9pt;"><%= _('Group') %> :: <%= _(@srpm.groupname) %></b><br>
-    <div class="header" style="letter-spacing:1px;"><%= _('Source RPM:') %> <%= @srpm.name %></div>
+    <b style="font-size:9pt;"><%= _('Group') %> :: <%= _(@spkg.groupname) %></b><br>
+    <div class="header" style="letter-spacing:1px;"><%= _('Source RPM:') %> <%= @spkg.name %></div>
   </div>
 </div>
 
 <div>
-<%= render partial: "shared/srpms_menu", locals: { current_page: :repocop, branch: @branch, srpm: @srpm, opened_bugs: @opened_bugs, all_bugs: @all_bugs, version: @version } %>
+<%= render partial: "shared/srpms_menu", locals: { current_page: :repocop, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, version: @version } %>
 
 </div>
 <table id="bugs" cellspacing="0" cellpadding="3">
@@ -23,7 +26,7 @@
     <th><%= _('message') %></th>
   </tr>
 
-<% @srpm.repocops.each do |repocop| %>
+<% @spkg.repocops.each do |repocop| %>
   <% if repocop.status != 'skip' %>
   <tr>
     <td><%= "#{ repocop.name }-#{ repocop.version }-#{ repocop.release }.#{ repocop.arch }" %></td>

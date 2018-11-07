@@ -6,19 +6,21 @@ class SourcesController < ApplicationController
   before_action :fetch_spkgs_by_name, only: %i(index)
 
   def index
-    @sources = Source.where(package: @srpm).select('filename, size, source')
-    @all_bugs = AllBugsForSrpm.new(@srpm).decorate
-    @opened_bugs = OpenedBugsForSrpm.new(@srpm).decorate
+    @sources = Source.where(package: @spkg).select('filename, size, source')
+    @all_bugs = AllBugsForSrpm.new(@spkg).decorate
+    @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
   end
 
   protected
 
   def fetch_spkg
-    @srpm = @branch.spkgs.by_name(params[:srpm_id]).by_evr(params[:version]).first!
+    spkgs = @branch.spkgs.by_name(params[:srpm_id]).by_evr(params[:version]).order(buildtime: :desc)
+
+    @spkg = spkgs.first!.decorate
   end
 
   def fetch_spkgs_by_name
-    @srpms_by_name = SrpmBranchesSerializer.new(Rpm.by_name(params[:srpm_id]).includes(:branch_path, :package, :branch).order('branches.order_id DESC'))
+    @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src.by_name(params[:srpm_id]).includes(:branch_path, :branch, :package).order('packages.buildtime DESC, branches.order_id'))
   end
 
   def set_version
