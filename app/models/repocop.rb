@@ -41,11 +41,10 @@ class Repocop < ApplicationRecord
 
     def update_repocop_cache
       branch = Branch.where(vendor: 'ALT Linux').first
-      srpms = branch.srpms.all
-      srpms.each do |srpm|
-        repocops = Repocop.where(srcname: srpm.name,
-                                 srcversion: srpm.version,
-                                 srcrel: srpm.release).all
+      branch.spkgs.find_each do |spkg|
+        repocops = Repocop.where(srcname: spkg.name,
+                                 srcversion: spkg.version,
+                                 srcrel: spkg.release).all
 
         repocop_status = 'skip'
         repocops.each do |repocop|
@@ -67,8 +66,10 @@ class Repocop < ApplicationRecord
           end
           repocop_status = 'fail' if repocop.status == 'fail'
         end
-        srpm.update_column(:repocop, repocop_status)
+        spkg.update_column(:repocop, repocop_status)
       end
+
+      raise
     end
   end
 end

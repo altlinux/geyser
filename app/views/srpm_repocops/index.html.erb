@@ -20,23 +20,25 @@
 </div>
 <table id="bugs" cellspacing="0" cellpadding="3">
   <tr>
-    <th><%= _('package id') %></th>
+    <th><%= _('package') %></th>
+    <th><%= _('arch') %></th>
     <th><%= _('status') %></th>
     <th><%= _('test') %></th>
     <th><%= _('message') %></th>
   </tr>
 
-<% @spkg.repocops.each do |repocop| %>
-  <% if repocop.status != 'skip' %>
+<% @spkg.repocop_notes.each do |repocop_note| %>
+  <% if !repocop_note.skip? %>
   <tr>
-    <td><%= "#{ repocop.name }-#{ repocop.version }-#{ repocop.release }.#{ repocop.arch }" %></td>
-    <td><%= image_tag("#{ repocop.status }.png", size: '20x20') %><br><%= repocop.status %></td>
-    <td><%= repocop.testname %></td>
+    <td><%= "#{ repocop_note.package_fullname }" %></td>
+    <td><%= "#{ repocop_note.package_arch }" %></td>
+    <td><%= image_tag("#{ repocop_note.status }.png", size: '20x20') %><br><%= repocop_note.status %></td>
+    <td><%= repocop_note.kind %></td>
     <td style="text-align:left">
-      <% if repocop.message.empty? %>
+      <% if repocop_note.description.empty? %>
         &nbsp;
       <% else %>
-        <%= repocop.message %>
+        <%= repocop_note.description %>
       <% end %>
     </td>
   </tr>

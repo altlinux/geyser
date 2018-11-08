@@ -14,14 +14,11 @@ class Package::Src < Package
                         class_name: :Gear
 
    has_many :packages, foreign_key: :src_id, class_name: 'Package::Built', dependent: :destroy
+   has_many :all_packages, foreign_key: :src_id, class_name: 'Package', dependent: :destroy
    has_many :built_rpms, through: :packages, source: :rpms, class_name: 'Rpm'
    has_many :changelogs, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
    has_many :patches, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
    has_many :sources, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
-   has_many :repocops, -> { order(name: :asc) },
-                       primary_key: :name,
-                       foreign_key: :srcname,
-                       dependent: :destroy
    has_many :gears, -> { order(changed_at: :desc) }, primary_key: :name, foreign_key: :reponame
 
    has_many :acls, primary_key: :name, foreign_key: :package_name
@@ -33,6 +30,10 @@ class Package::Src < Package
          .group(:name)
          .having('count(packages.name) > 5')
          .order('id DESC', :name)
+   end
+
+   def repocop_notes
+      RepocopNote.where(package_id: all_packages.select(:id))
    end
 
    def filename

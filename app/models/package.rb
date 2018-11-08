@@ -6,6 +6,8 @@ class Package < ApplicationRecord
    class AttachedNewBranchError < StandardError; end
    class InvalidMd5SumError < StandardError; end
 
+   enum repocop_status: RepocopNote.statuses.keys
+
    belongs_to :group
    belongs_to :builder, class_name: 'Maintainer', inverse_of: :rpms, counter_cache: :srpms_count
    has_many :rpms, inverse_of: :package, dependent: :destroy
@@ -66,6 +68,10 @@ class Package < ApplicationRecord
 
    def to_param
       name
+   end
+
+   def fullname
+      [ name, evr ].join('-')
    end
 
    def evr

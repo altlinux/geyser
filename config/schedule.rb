@@ -24,7 +24,7 @@ every 3.hours, at: '5:25' do
 end
 
 every 1.day, at: '06:45' do
-#  rake 'sisyphus:repocops sisyphus:repocop_patches'
+  rake 'sisyphus:repocops sisyphus:repocop_patches'
 end
 
 every :sunday, at: '03:30' do

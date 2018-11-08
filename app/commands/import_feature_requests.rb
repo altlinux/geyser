@@ -32,7 +32,7 @@ class ImportFeatureRequests
 
    def data
       doc = Nokogiri::HTML(open(URI.escape(url)))
-      doc.css("pre a")
+      doc.css("pre a[href$=txt]")
    rescue OpenURI::HTTPError, Errno::ENOENT
       []
    end
@@ -52,8 +52,6 @@ class ImportFeatureRequests
    def append_watches
       data.each do |a|
          /(?<login>.*)\.txt$/ =~ a.text
-
-         next if !login
 
          maintainer = maintainer_from(login)
          attrs = issue_attrs_for(File.join(url, a.attributes["href"].text).gsub(/%40/, '@'))

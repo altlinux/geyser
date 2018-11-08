@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_06_133200) do
+ActiveRecord::Schema.define(version: 2018_11_08_115400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -270,18 +270,19 @@ ActiveRecord::Schema.define(version: 2018_11_06_133200) do
     t.bigint "size"
     t.integer "epoch"
     t.tsvector "tsv"
-    t.string "repocop", default: "skip", comment: "Статус проверки репокопом"
     t.string "vendor", comment: "Распространитель пакета"
     t.string "distribution", comment: "Срез набора пакетов"
     t.string "buildhost", comment: "Место сборки пакета"
     t.string "type", null: false, comment: "Вид пакета: исходник или двояк"
     t.bigint "builder_id", null: false, comment: "Собиратель пакета"
     t.integer "src_id", null: false, comment: "Ссылка на исходный пакет, может указывать на самого себя"
+    t.integer "repocop_status", default: 0, comment: "Статус проверки репокопом"
     t.index ["arch"], name: "index_packages_on_arch"
     t.index ["builder_id"], name: "index_packages_on_builder_id"
     t.index ["group_id"], name: "index_packages_on_group_id"
     t.index ["md5"], name: "index_packages_on_md5", unique: true
     t.index ["name"], name: "index_packages_on_name"
+    t.index ["src_id"], name: "index_packages_on_src_id"
     t.index ["tsv"], name: "index_packages_on_tsv", using: :gin
     t.index ["type"], name: "index_packages_on_type"
   end
@@ -337,6 +338,19 @@ ActiveRecord::Schema.define(version: 2018_11_06_133200) do
     t.integer "flags"
     t.integer "epoch"
     t.index ["package_id"], name: "index_provides_on_package_id"
+  end
+
+  create_table "repocop_notes", force: :cascade do |t|
+    t.bigint "package_id", null: false, comment: "Ссылка на архитектурный пакет, к которому применима заметка"
+    t.integer "status", null: false, comment: "Короткий статус заметки: заметка, ошибка, предупреждение или опыт"
+    t.string "kind", null: false, comment: "Короткое описание заметки"
+    t.string "description", null: false, comment: "Описание заметки"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["kind"], name: "index_repocop_notes_on_kind"
+    t.index ["package_id", "kind"], name: "index_repocop_notes_on_package_id_and_kind", unique: true
+    t.index ["package_id"], name: "index_repocop_notes_on_package_id"
+    t.index ["status"], name: "index_repocop_notes_on_status"
   end
 
   create_table "repocop_patches", id: :serial, force: :cascade do |t|
@@ -475,6 +489,7 @@ ActiveRecord::Schema.define(version: 2018_11_06_133200) do
   add_foreign_key "packages", "groups", on_delete: :restrict
   add_foreign_key "packages", "maintainers", column: "builder_id", on_delete: :restrict
   add_foreign_key "patches", "packages", on_delete: :restrict
+  add_foreign_key "repocop_notes", "packages", on_delete: :cascade
   add_foreign_key "repocop_patches", "branches", on_delete: :cascade
   add_foreign_key "repocops", "branches", on_delete: :cascade
   add_foreign_key "rpms", "branch_paths", on_delete: :cascade
