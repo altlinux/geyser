@@ -189,6 +189,9 @@ msgstr "Надзор"
 msgid "Bugs"
 msgstr "Ошибки"
 
+msgid "Bugs and FR (%s/%s)"
+msgstr "Ошибки (%s/%s)"
+
 msgid "Bugs/FR statistics assigned to this maintainer"
 msgstr "статистика по кол-ву ошибок/запросов, адресованных данному сопроводителю"
 
