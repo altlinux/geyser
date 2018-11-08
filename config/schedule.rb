@@ -7,19 +7,23 @@
 #   rake 'ts:index'
 # end
 
-every 2.hours do
-   rake 'update:branches update:lost[true] gear:update'
+every 1.hour do
+   rake 'update:branches update:lost[true]'
 end
 
-every 3.hours, at: '05:05' do
+every 3.hours, at: '0:35' do
+   rake 'gear:update'
+end
+
+every 3.hours, at: '2:05' do
    rake 'bugs:update'
 end
 
-every 3.hours, at: '5:15' do
+every 3.hours, at: '2:15' do
   rake 'ftbfs:update'
 end
 
-every 3.hours, at: '5:25' do
+every 3.hours, at: '2:25' do
   rake 'feature_request:update'
 end
 
