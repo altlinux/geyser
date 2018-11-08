@@ -1,0 +1,12 @@
+- if branches.present?
+   .table
+      .headleft
+         .headright { title=_('Branches') } = _('Branches') + ":"
+         = image_tag('collapse.gif', id: 'top-branches', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9')
+      .frame#counted-branches
+         table
+            - branches.each do |branch|
+               ul
+                  li
+                     .line
+                        .left.float = link_to "#{ branch[:name] }", url_for(params.merge(branch: branch[:slug])), class: 'b'

@@ -2,6 +2,8 @@
 
 class GroupController < ApplicationController
    before_action :fetch_branch_group, only: :show
+   before_action :fetch_branches
+   before_action :permit
 
    def index
       @branch_groups = @branch.branch_groups.order('groups.slug')
@@ -21,5 +23,14 @@ class GroupController < ApplicationController
 
    def fetch_branch_group
       @branch_group = @branch.branch_groups.with_slug(params[:slug]).first || raise(ActiveRecord::RecordNotFound)
+   end
+
+   def permit
+      @params = params.permit(:controller, :action, :locale, :branch)
+   end
+
+   def fetch_branches
+      @branches_s = ActiveModel::Serializer::CollectionSerializer.new(Branch.all,
+                                                                      serializer: BranchSerializer)
    end
 end
