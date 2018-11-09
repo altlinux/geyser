@@ -35,10 +35,14 @@
   <div style="text-align:center">
     <%= paginate @spkgs %>
   </div>
-</div>
 
 <div id='bottom-offset-l'>
   <div id='bottom-offset-r'>
     &nbsp;
   </div>
+</div>
+
+<div class="rightbar">
+   <%= render partial: "shared/tables/pure_branches", locals: { params: @params, branches: @branches_s.as_json } %>
+</div>
 </div>

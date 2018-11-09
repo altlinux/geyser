@@ -7,8 +7,12 @@
 #   rake 'ts:index'
 # end
 
-every 2.hours do
-   rake 'update:branches update:lost[true] gear:update'
+every 1.hour do
+   rake 'update:branches update:lost[true]'
+end
+
+every 3.hours, at: '0:35' do
+   rake 'gear:update'
 end
 
 every 3.hours, at: '2:05' do

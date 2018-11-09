@@ -3,3 +3,9 @@ msgstr "Russian"
 
 msgid "_en"
 msgstr "English"
+
+msgid "FRs"
+msgstr "Watch"
+
+msgid "Bugs and FR (%s/%s)"
+msgstr "Bugs (%s/%s)"

@@ -7,10 +7,14 @@
   <div style='font-size: 12pt;'>
     <%= render partial: "shared/groups", locals: { parent: nil, branch_groups: @branch_groups } %>
   </div>
-</div>
 
 <div id='bottom-offset-l'>
   <div id='bottom-offset-r'>
     &nbsp;
   </div>
+</div>
+
+<div class="rightbar">
+   <%= render partial: "shared/tables/pure_branches", locals: { params: @params, branches: @branches_s.as_json } %>
+</div>
 </div>

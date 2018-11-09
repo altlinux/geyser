@@ -53,14 +53,14 @@
         <% if current_user.member? %>
          | <b><%= link_to _('Edit my maintainer profile'), edit_maintainer_profile_path %></b>
         <% end %>
-      <% else %>
-        <%#= link_to _('Sign in'), new_user_session_path %><%=# _(' or ') %>
-        <%#= link_to _('Sign up'), new_user_registration_path %>
+      <% elsif false %>
+         <%= link_to _('Sign in'), new_user_session_path %><%= _(' or ') %>
+         <%= link_to _('Sign up'), new_user_registration_path %>
       <% end %>
     </div>
     <div style='text-align: right'>
-       <%- I18n.available_locales.each do |lang| %>
-         <%= link_to_unless_current lang, request.query_parameters.merge(locale: lang), lanlangtitle: _("_#{lang}") %>
+      <%- I18n.available_locales.each do |lang| %>
+        <%= link_to_unless_current lang, request.query_parameters.merge(locale: lang), lanlangtitle: _("_#{lang}") %>
       <%- end %>
     </div>
   </div>
