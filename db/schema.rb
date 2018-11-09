@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_09_113400) do
+ActiveRecord::Schema.define(version: 2018_11_09_144600) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -363,32 +363,6 @@ ActiveRecord::Schema.define(version: 2018_11_09_113400) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "repocop_patches_old", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "version", limit: 255
-    t.string "release", limit: 255
-    t.string "url", limit: 255
-    t.integer "branch_id"
-    t.index ["name"], name: "index_repocop_patches_old_on_name"
-  end
-
-  create_table "repocops", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "version", limit: 255
-    t.string "release", limit: 255
-    t.string "arch", limit: 255
-    t.string "srcname", limit: 255
-    t.string "srcversion", limit: 255
-    t.string "srcrel", limit: 255
-    t.string "testname", limit: 255
-    t.string "status", limit: 255
-    t.text "message"
-    t.integer "branch_id"
-    t.index ["srcname"], name: "index_repocops_on_srcname"
-    t.index ["srcrel"], name: "index_repocops_on_srcrel"
-    t.index ["srcversion"], name: "index_repocops_on_srcversion"
-  end
-
   create_table "requires", id: :serial, force: :cascade do |t|
     t.integer "package_id"
     t.string "name", limit: 255
@@ -501,8 +475,6 @@ ActiveRecord::Schema.define(version: 2018_11_09_113400) do
   add_foreign_key "patches", "packages", on_delete: :restrict
   add_foreign_key "repocop_notes", "packages", on_delete: :cascade
   add_foreign_key "repocop_patches", "packages", on_delete: :cascade
-  add_foreign_key "repocop_patches_old", "branches", on_delete: :cascade
-  add_foreign_key "repocops", "branches", on_delete: :cascade
   add_foreign_key "rpms", "branch_paths", on_delete: :cascade
   add_foreign_key "rpms", "packages", on_delete: :cascade
   add_foreign_key "sources", "packages", on_delete: :restrict

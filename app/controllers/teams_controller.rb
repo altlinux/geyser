@@ -17,7 +17,14 @@ class TeamsController < ApplicationController
     @srpms_counter = @branch.spkgs.where(name: acl_names).count
     @srpms = @branch.spkgs.where(name: acl_names)
                     .includes(:repocop_patch)
-                    .select('repocop, packages.name, packages.epoch, packages.version, packages.release, packages.buildtime, packages.url, packages.summary')
+                    .select('repocop_status,
+                             packages.name,
+                             packages.epoch,
+                             packages.version,
+                             packages.release,
+                             packages.buildtime,
+                             packages.url,
+                             packages.summary')
                     .order('LOWER(packages.name)')
                     .page(params[:page])
                     .per(100)

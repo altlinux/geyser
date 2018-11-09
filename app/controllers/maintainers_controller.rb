@@ -65,20 +65,8 @@ class MaintainersController < ApplicationController
    def order
       order  = ''
       order += 'LOWER(packages.name)' if sort_column == 'name'
-      order += 'buildtime' if sort_column == 'age'
-
-      if sort_column == 'status'
-         order += "CASE repocop
-                   WHEN 'skip'         THEN 1
-                   WHEN 'ok'           THEN 2
-                   WHEN 'experimental' THEN 3
-                   WHEN 'info'         THEN 4
-                   WHEN 'warn'         THEN 5
-                   WHEN 'fail'         THEN 6
-                   END"
-      end
-
-      order += ' ' + sort_order
+      order += ' buildtime' if sort_column == 'age'
+      order += ' repocop_status' if sort_column == 'status'
    end
 
    def set_bug_lists

@@ -13,6 +13,11 @@
       border-bottom: dotted #e0e0e0 1px;
       text-align: left;
 
+      &.strange {
+         background-color: #e0e0e0;
+         border-bottom-color: white;
+      }
+
       &.repocop-status {
          text-align: center;
       }

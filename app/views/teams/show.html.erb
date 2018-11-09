@@ -76,10 +76,10 @@
       <tr>
         <% if @branch.perpetual? %>
           <td>
-            <%= link_to image_tag("#{ srpm.repocop }.png", size: '20x20', alt: srpm.repocop), repocop_srpm_path(srpm), class: 'repocoplink', title: _('repocop') %>
+            <%= link_to image_tag("#{ srpm.repocop_status }.png", size: '20x20', alt: srpm.repocop_status), repocop_srpm_path(srpm), class: 'repocoplink', title: _('repocop') %>
             <% if srpm.repocop_patch %>
               <br>
-              <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), srpm.repocop_patch.url, class: 'repocoplink', title: _('repocop patch for the package') %>
+              <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), repocop_patch_download_url(srpm.repocop_patch), class: 'repocoplink', title: _('repocop patchset for the package') %>
             <% end %>
           </td>
         <% end %>

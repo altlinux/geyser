@@ -8,9 +8,10 @@
 <span class="vkladka">&nbsp;<%= link_to _('Information'), maintainer_path('sisyphus', @maintainer), class: 'news', title: _('information about maintainer') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('Packages'), srpms_maintainer_path('sisyphus', @maintainer), class: 'news', title: _('packages which was built by this maintainer') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('Gear'), gear_maintainer_path(@maintainer), class: 'news', title: _('gear') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('Bugs and FR (%s/%s)') % [@opened_bugs.count, @all_bugs.count], bugs_maintainer_path(@maintainer), class: 'news', title: _('Bugs/FR statistics assigned to this maintainer') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('FTBFS'), ftbfs_maintainer_path(@maintainer), class: 'news', title: _('FTBFS') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('FRs'), feature_requests_maintainer_path(@maintainer), class: 'news', title: _('FRs') %></b>&nbsp;</span><span class="underl">&nbsp;</span><span class="current">&nbsp;<b><%= _('Repocop') %></b>&nbsp;</span><p class="break" />
 <b><%= _('Repocop messages:') %></b><br><br>
 
-<table id="bugs" cellspacing="0" cellpadding="3">
+<table class='list' cellspacing="0" cellpadding="3">
   <tr>
     <th><%= _('package') %></th>
+    <th><%= _('arch') %></th>
     <th><%= _('status') %></th>
     <th><%= _('test') %></th>
     <th><%= _('message') %></th>
@@ -18,15 +19,18 @@
 
 <% if @srpms %>
   <% @srpms.each do |srpm| %>
-    <% srpm.repocops.buggy.each do |repocop| %>
+    <% srpm.repocop_notes.buggy.each do |repocop_note| %>
       <!-- Optimize!!! -->
         <tr>
           <td class="strange">
-            <%= link_to "#{ repocop.name }-#{ repocop.version }-#{ repocop.release }.#{ repocop.arch }", srpm_path('sisyphus', srpm), class: 'news', title: _('detailed information about RPM') %>
+             <%= link_to "#{ repocop_note.package_fullname }", srpm_path(@branch, srpm), class: 'news', title: _('detailed information about RPM') %>
           </td>
-          <td><%= image_tag("#{ repocop.status }.png", size: '20x20') %><br><%= repocop.status %></td>
-          <td><%= repocop.testname %></td>
-          <td style="text-align:left"><%= repocop.message %></td>
+          <td>
+            <%= repocop_note.package_arch %>
+          </td>
+          <td class='repocop-status'><%= image_tag("#{ repocop_note.status }.png", size: '20x20') %><br><%= repocop_note.status %></td>
+          <td><%= repocop_note.kind %></td>
+          <td style="text-align:left"><%= repocop_note.description %></td>
         </tr>
     <% end %>
   <% end %>

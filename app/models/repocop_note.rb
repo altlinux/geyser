@@ -3,7 +3,7 @@ class RepocopNote < ApplicationRecord
 
    WELL_STATUSES = self.statuses.keys[0..1]
 
-   belongs_to :package, class_name: 'Package::Built', optional: true
+   belongs_to :package, optional: true
 
    scope :buggy, -> { where.not(status: WELL_STATUSES) }
 
