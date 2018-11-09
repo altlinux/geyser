@@ -106,6 +106,10 @@ Rails.application.routes.draw do
     end
   end
 
+   resources :repocop_patches, only: [], param: 'package_id' do
+      get :download
+   end
+
   get '(/:locale)/misc/bugs' => 'misc#bugs', locale: SUPPORTED_LOCALES_RE
 
   # TODO: drop this later

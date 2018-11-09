@@ -9,7 +9,6 @@ class ImportRepocopReports
    def do
       log :info
 
-      package_ids = nil
       ApplicationRecord.transaction do
          attrs = repocop_note_attrs
          RepocopNote.import!(attrs, on_duplicate_key_update: {

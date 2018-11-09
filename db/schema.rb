@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_08_115400) do
+ActiveRecord::Schema.define(version: 2018_11_09_113400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -281,6 +281,10 @@ ActiveRecord::Schema.define(version: 2018_11_08_115400) do
     t.index ["builder_id"], name: "index_packages_on_builder_id"
     t.index ["group_id"], name: "index_packages_on_group_id"
     t.index ["md5"], name: "index_packages_on_md5", unique: true
+    t.index ["name", "epoch", "version", "release", "arch"], name: "packages_name_epoch_version_release_arch_index"
+    t.index ["name", "epoch", "version", "release", "buildtime", "arch"], name: "packages_name_epoch_version_release_buildtime_arch_index"
+    t.index ["name", "epoch", "version", "release", "buildtime"], name: "packages_name_epoch_version_release_buildtime_index"
+    t.index ["name", "epoch", "version", "release"], name: "packages_name_epoch_version_release_index"
     t.index ["name"], name: "index_packages_on_name"
     t.index ["src_id"], name: "index_packages_on_src_id"
     t.index ["tsv"], name: "index_packages_on_tsv", using: :gin
@@ -353,13 +357,19 @@ ActiveRecord::Schema.define(version: 2018_11_08_115400) do
     t.index ["status"], name: "index_repocop_notes_on_status"
   end
 
-  create_table "repocop_patches", id: :serial, force: :cascade do |t|
+  create_table "repocop_patches", primary_key: "package_id", force: :cascade do |t|
+    t.text "text", null: false, comment: "Текст заплатки"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "repocop_patches_old", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "version", limit: 255
     t.string "release", limit: 255
     t.string "url", limit: 255
     t.integer "branch_id"
-    t.index ["name"], name: "index_repocop_patches_on_name"
+    t.index ["name"], name: "index_repocop_patches_old_on_name"
   end
 
   create_table "repocops", id: :serial, force: :cascade do |t|
@@ -490,7 +500,8 @@ ActiveRecord::Schema.define(version: 2018_11_08_115400) do
   add_foreign_key "packages", "maintainers", column: "builder_id", on_delete: :restrict
   add_foreign_key "patches", "packages", on_delete: :restrict
   add_foreign_key "repocop_notes", "packages", on_delete: :cascade
-  add_foreign_key "repocop_patches", "branches", on_delete: :cascade
+  add_foreign_key "repocop_patches", "packages", on_delete: :cascade
+  add_foreign_key "repocop_patches_old", "branches", on_delete: :cascade
   add_foreign_key "repocops", "branches", on_delete: :cascade
   add_foreign_key "rpms", "branch_paths", on_delete: :cascade
   add_foreign_key "rpms", "packages", on_delete: :cascade

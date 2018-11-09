@@ -18,7 +18,7 @@
 <%= render partial: "shared/srpms_menu", locals: { current_page: :repocop, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, version: @version } %>
 
 </div>
-<table id="bugs" cellspacing="0" cellpadding="3">
+<table class="list" cellspacing="0" cellpadding="3">
   <tr>
     <th><%= _('package') %></th>
     <th><%= _('arch') %></th>
@@ -27,12 +27,12 @@
     <th><%= _('message') %></th>
   </tr>
 
-<% @spkg.repocop_notes.each do |repocop_note| %>
+<% @spkg.repocop_notes.includes(:package).each do |repocop_note| %>
   <% if !repocop_note.skip? %>
   <tr>
     <td><%= "#{ repocop_note.package_fullname }" %></td>
     <td><%= "#{ repocop_note.package_arch }" %></td>
-    <td><%= image_tag("#{ repocop_note.status }.png", size: '20x20') %><br><%= repocop_note.status %></td>
+    <td class="repocop-status"><%= image_tag("#{ repocop_note.status }.png", size: '20x20') %><br><%= repocop_note.status %></td>
     <td><%= repocop_note.kind %></td>
     <td style="text-align:left">
       <% if repocop_note.description.empty? %>

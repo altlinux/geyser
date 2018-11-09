@@ -1174,16 +1174,16 @@ msgid "repo<br>cop"
 msgstr ""
 
 msgid "repocop"
-msgstr ""
+msgstr "репокоп"
 
 msgid "repocop bugreports"
 msgstr "отчёты repocop о найденных ошибках и замечаниях"
 
 msgid "repocop patch"
-msgstr ""
+msgstr "репокопова заплатка"
 
-msgid "repocop patch for the package"
-msgstr ""
+msgid "repocop patchset for the package"
+msgstr "сведённый набор репокоповых заплаток для пакета"
 
 msgid "reporter"
 msgstr "сообщено"

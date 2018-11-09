@@ -4,9 +4,6 @@ namespace :repocop do
    desc 'Import repocop reports to database'
    task update: :environment do
       ImportRepocopReports.new(url: 'http://repocop.altlinux.org/pub/repocop/reports/txt/by-srpm/').do
-   end
-
-   desc 'Import repocop patches list to database'
-   task patches: :environment do
+      ImportRepocopPatches.new(url: 'http://repocop.altlinux.org/pub/repocop/reports/diff/by-srpm/').do
    end
 end

@@ -11,20 +11,20 @@ every 2.hours do
    rake 'update:branches update:lost[true] gear:update'
 end
 
-every 3.hours, at: '05:05' do
+every 3.hours, at: '2:05' do
    rake 'bugs:update'
 end
 
-every 3.hours, at: '5:15' do
-  rake 'ftbfs:update'
+every 3.hours, at: '2:15' do
+   rake 'ftbfs:update'
 end
 
-every 3.hours, at: '5:25' do
-  rake 'feature_request:update'
+every 3.hours, at: '2:25' do
+   rake 'feature_request:update'
 end
 
-every 1.day, at: '06:45' do
-  rake 'sisyphus:repocops sisyphus:repocop_patches'
+every 1.day, at: '3:25' do # takes about 20 min
+   rake 'repocop:update'
 end
 
 every :sunday, at: '03:30' do
