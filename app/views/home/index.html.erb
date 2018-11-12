@@ -25,7 +25,7 @@
 <div class="header"><%= _('Last changes') %></div>
 <p class="news" />
 
-<%= render partial: 'srpms', locals: { current_branch: @branch } %>
+<%= render partial: 'srpms', locals: { current_branch: @branch, get_params: @get_params } %>
 
 <div id="bottom-offset-l"><div id="bottom-offset-r">&nbsp;</div></div><div class="rightbar">
     <%= render partial: "shared/tables/branches", locals: { branches: @branches_s.as_json } %>

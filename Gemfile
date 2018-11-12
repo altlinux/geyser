@@ -57,6 +57,9 @@ gem 'active_model_serializers'
 # git
 gem 'git', require: false
 
+# caching
+gem 'dalli'
+
 group :production do
   gem 'newrelic_rpm'
 end
@@ -64,7 +67,6 @@ end
 group :production, :staging do
   gem 'lograge'
   gem 'rack-timeout'
-  gem 'dalli'
   gem 'rack-force_domain'
   gem 'exception_notification'
   gem 'puma_worker_killer'

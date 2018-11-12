@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_action :redirect_to_localized, unless: -> { params[:locale] }
+  before_action :set_params_hash
   before_action :set_locale
   before_action :redirect_to_slug_if_name
   before_action :set_default_branch
@@ -72,5 +73,9 @@ class ApplicationController < ActionController::Base
     return if browser.bot?
 
     http_accept_language.compatible_language_from(I18n.available_locales) || 'en'
+  end
+
+  def set_params_hash
+     @get_params = params.permit(:controller, :action, :locale, :branch, :page).to_h
   end
 end

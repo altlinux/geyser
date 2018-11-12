@@ -16,6 +16,8 @@ namespace :update do
          puts "#{ Time.zone.now }: import all groups for #{branch.name} branch to database"
          ImportTeams.new(branch: branch).do
       end
+
+      ActionController::Base.cache_store.clear
    end
 
    desc 'Remove lost srpms'
@@ -46,7 +48,9 @@ namespace :update do
 
          RemoveOldRpms.new.do
       end
-  end
+
+      ActionController::Base.cache_store.clear
+   end
 
   desc 'Drop imported at counter for specific branch'
   task :drop_counter, %i(branch_path) => %i(environment) do |t, args|

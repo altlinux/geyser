@@ -1,3 +1,4 @@
+<%- cache(get_params) do %>
 <% @spkgs.each do |spkg| %>
   <span class="news-date-new">
     <%= link_to "#{ spkg.name }-#{ spkg.evr }", srpm_path(current_branch, spkg.name), class: 'news', title: _('detailed information about the package') %>
@@ -19,7 +20,6 @@
     <b><%= _('Changes:') %></b> <div class="para"><%= simple_format(spkg.last_changelog_text) %></div>
   </div>
   <p class="news" />
-
 <% end %>
 
 <p class="break" />
@@ -27,3 +27,4 @@
     <%= paginate @spkgs %>
   </div>
 </div>
+<%- end %>
