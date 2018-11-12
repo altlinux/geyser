@@ -6,7 +6,8 @@ class Maintainer < ApplicationRecord
    has_many :branch_paths, -> { distinct }, through: :rpms
    has_many :branches, -> { distinct }, through: :branch_paths
    has_many :branching_maintainers, dependent: :delete_all
-   has_many :gears
+   has_many :gear_maintainers
+   has_many :gears, through: :gear_maintainers
    has_many :changelogs, -> { order(at: :desc) }
    has_many :issue_assignees
    has_many :ftbfs, class_name: 'Issue::Ftbfs', through: :issue_assignees, source: :issue
@@ -17,6 +18,10 @@ class Maintainer < ApplicationRecord
                         primary_key: 'login',
                         foreign_key: 'maintainer_slug',
                         class_name: :Acl
+   has_many :gear_names, -> { select(:reponame).distinct },
+                        through: :gear_maintainers,
+                        source: :gear,
+                        class_name: :Gear
 
    scope :top, ->(limit) { order(srpms_count: :desc).limit(limit) }
    scope :person, -> { where("maintainers.login ~ '^[^@].*'", ) }
