@@ -11,6 +11,6 @@ class Issue::Bug < Issue
 
       joins(:assignees).where(repo_name: names)
          .or(where(maintainers: {email: maintainer.email}))
-         .order(no: :desc)
+         .order("issues.no::integer DESC")
    end
 end
