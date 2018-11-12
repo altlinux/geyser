@@ -31,7 +31,7 @@
     <%= render partial: "shared/tables/branches", locals: { branches: @branches_s.as_json } %>
     <%= render partial: "shared/tables/hints" %>
     <%= render partial: "shared/tables/maintainers", locals: { maintainers: @maintainers_s.as_json, branch: @branch } %>
-    <%= render partial: "shared/tables/top_srpms", locals: { srpms: @spkg_builds.as_json, branch: @branch } %>
+    <%# render partial: "shared/tables/top_srpms", locals: { srpms: @spkg_builds.as_json, branch: @branch } %>
 </div>
 
 <!--#include virtual="/inc/bottom.shtml?skipit" -->
