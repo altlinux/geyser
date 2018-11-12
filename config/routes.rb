@@ -32,7 +32,7 @@ Rails.application.routes.draw do
 
     get 'project' => 'pages#project'
 
-    scope '(:branch)' do
+    scope '(:branch)', branch: /([^\/]+)/ do
       get 'srpms/:id/bugs' => 'srpm_opened_bugs#index', id: /[^\/]+/, branch: /sisyphus/, as: 'bugs_srpm'
       get 'srpms/:id/allbugs' => 'srpm_all_bugs#index', id: /[^\/]+/, branch: /sisyphus/, as: 'allbugs_srpm'
       get 'srpms/:id/repocop' => 'srpm_repocops#index', id: /[^\/]+/, branch: /sisyphus/, as: 'repocop_srpm'
@@ -83,7 +83,7 @@ Rails.application.routes.draw do
     resources :rebuild, controller: :rebuild, only: :index
     resources :rsync, controller: :rsync, only: :new
 
-    scope ':branch' do
+    scope ':branch', branch: /([^\/]+)/ do
       resources :maintainers, only: :show do
         get 'srpms', on: :member
         resources :activity, only: :index, controller: :maintainer_activity
@@ -101,7 +101,7 @@ Rails.application.routes.draw do
   end
 
   scope ':locale', locale: SUPPORTED_LOCALES_RE do
-    scope ':branch' do
+    scope ':branch', branch: /([^\/]+)/ do
       get 'home' => 'home#index'
     end
   end

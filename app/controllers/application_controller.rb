@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 
   before_action :redirect_to_localized, unless: -> { params[:locale] }
   before_action :set_locale
+  before_action :redirect_to_slug_if_name
   before_action :set_default_branch
   before_action :authorizer_for_profiler
 
@@ -52,6 +53,12 @@ class ApplicationController < ActionController::Base
 
   def set_locale
     I18n.locale = FastGettext.locale = params[:locale]
+  end
+
+  def redirect_to_slug_if_name
+     if named_branch = Branch.where(name: params[:branch]).where.not(slug: params[:branch]).first
+        redirect_to(url_for(request.query_parameters.merge(branch: named_branch.slug)))
+     end
   end
 
   def set_default_branch
