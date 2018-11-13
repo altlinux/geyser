@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_12_170000) do
+ActiveRecord::Schema.define(version: 2018_11_13_143000) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2018_11_12_170000) do
     t.string "ftbfs_stat_uri", comment: "Ссылка в пучине на ftbfs для источника ветви"
     t.boolean "primary", default: false, null: false, comment: "Первичный источник пакетов для ветви"
     t.string "ftbfs_uri", comment: "Внешная изворная ссылка на ftbfs для источника ветви"
+    t.string "ftp_url"
     t.index ["arch", "branch_id", "source_path_id"], name: "index_branch_paths_on_arch_and_branch_id_and_source_path_id", unique: true
     t.index ["arch", "path"], name: "index_branch_paths_on_arch_and_path", unique: true
     t.index ["arch"], name: "index_branch_paths_on_arch", using: :gin

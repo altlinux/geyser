@@ -17,6 +17,7 @@ class BranchPath < ApplicationRecord
   scope :for_branch, ->(branch) { where(branch_id: branch) }
   scope :with_arch, ->(arch) { where(arch: arch) }
   scope :primary, -> { where(primary: true) }
+  scope :published, -> { where.not(ftp_url: nil) }
 
   validates_presence_of :branch, :arch, :path
   validates_presence_of :source_path, if: -> { arch != "src" }

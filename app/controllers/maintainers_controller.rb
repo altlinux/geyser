@@ -85,6 +85,6 @@ class MaintainersController < ApplicationController
    end
 
    def set_branches
-      @branches = Branch.all
+      @branches = Branch.published
    end
 end

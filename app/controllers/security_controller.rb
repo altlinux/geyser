@@ -7,7 +7,8 @@ class SecurityController < ApplicationController
                                         .page(params[:page])
                                         .per(50)
     counted_branches = Changelog.fix.joins(:branches)
-                                    .select("branches.id as id, count(distinct(changelogs.id)) as maintainer_id")
+                                    .merge(Branch.published)
+                                    .select("branches.id as id, branches.order_id, count(distinct(changelogs.id)) as maintainer_id")
                                     .group("branches.id")
                                     .order("maintainer_id DESC")
 

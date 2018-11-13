@@ -30,7 +30,7 @@ class GroupController < ApplicationController
    end
 
    def fetch_branches
-      @branches_s = ActiveModel::Serializer::CollectionSerializer.new(Branch.all,
+      @branches_s = ActiveModel::Serializer::CollectionSerializer.new(Branch.published,
                                                                       serializer: BranchSerializer)
    end
 end

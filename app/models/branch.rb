@@ -24,6 +24,7 @@ class Branch < ApplicationRecord
   default_scope -> { order(order_id: :desc) }
 
   scope :filled, -> { where.not(srpms_count: 0) }
+  scope :published, -> { joins(:branch_paths).merge(BranchPath.published).distinct }
 
   validates_presence_of :slug, :name, :vendor
 
