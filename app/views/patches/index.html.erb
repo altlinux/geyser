@@ -31,7 +31,7 @@
     <td> <b><%= number_to_human_size(patch.size) %></b> </td>
     <td>
       <% if patch.patch? %>
-        <%= link_to _('Download'), srpm_patch_download_path(@branch, @spkg, patch), class: 'news' %>
+        <%= link_to _('Download'), versioned_srpm_patch_download_path(branch: @branch, package_name: @spkg.name, package_evrb: @spkg.evrb, patch_filename: patch), class: 'news' %>
       <% else %>
         &nbsp;
       <% end %>

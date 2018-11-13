@@ -70,8 +70,12 @@ class Package < ApplicationRecord
       name
    end
 
-   def fullname
+   def fullname # TODO move in favor of evrb
       [ name, evr ].join('-')
+   end
+
+   def evrb
+      [epoch, "#{version}-#{release}-#{buildtime.to_i}"].compact.join(":")
    end
 
    def evr

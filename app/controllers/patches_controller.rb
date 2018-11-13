@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class PatchesController < ApplicationController
-  before_action :set_version
-  before_action :fetch_spkg
-  before_action :fetch_spkgs_by_name, only: %i(index)
+   before_action :set_version, except: :download
+   before_action :fetch_spkg, except: :download
+   before_action :fetch_spkgs_by_name, only: %i(index)
+   before_action :fetch_patch, only: :download
 
   def index
     @all_bugs = AllBugsForSrpm.new(@spkg).decorate
@@ -17,6 +18,10 @@ class PatchesController < ApplicationController
 
     @html_data = Rouge::Formatters::HTMLLegacy.new(css_class: 'highlight', line_numbers: true).format(Rouge::Lexers::Diff.new.lex(@patch.patch))
   end
+
+   def download
+      send_data(@patch.patch, disposition: 'attachment', filename: @patch.filename)
+   end
 
   protected
 
@@ -38,4 +43,24 @@ class PatchesController < ApplicationController
   def set_version
     @version = params[:version]
   end
+
+   def package_attrs
+      /(?:(?<epoch>\d+):)?(?<version>[^-]+)-(?<release>[^-]+)-(?<built_at>\d+)$/ =~ params[:package_evrb]
+
+      {
+         name: params[:package_name],
+         epoch: epoch,
+         version: version,
+         release: release,
+         arch: "src",
+         buildtime: Time.at(built_at.to_i)
+      }
+   end
+
+   def fetch_patch
+      @patch = Patch.joins(:package)
+                    .where(filename: params[:patch_filename],
+                           packages: package_attrs)&.first
+      @patch.patch? && @patch || raise(ActiveRecord::RecordNotFound)
+   end
 end

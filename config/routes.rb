@@ -46,7 +46,6 @@ Rails.application.routes.draw do
         end
 
         resources :patches, only: [:index, :show] do
-          resource :download, only: :show, controller: :patch_download
         end
 
         resources :sources, only: :index do
@@ -61,7 +60,7 @@ Rails.application.routes.draw do
       get 'srpms/:id/:version/get' => 'srpms#get', id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_get_srpm'
       get 'patches/:srpm_id/:version/index' => 'patches#index', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patches'
       get 'patches/:srpm_id/:version/show' => 'patches#show', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patch'
-      get 'patches/:srpm_id/:version/download' => 'patches#download', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patch_download'
+      get 'patches/:package_name/:package_evrb/:patch_filename/download' => 'patches#download', package_name: /[^\/]+/, package_evrb: /[^\/]+/, patch_filename: /[^\/]+/, as: 'versioned_srpm_patch_download'
       get 'sources/:srpm_id/:version/index' => 'sources#index', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_sources'
       get 'sources/:srpm_id/:version/download' => 'sources#download', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_source_download'
       get 'srpms/:id/:version/bugs' => 'srpm_opened_bugs#index', id: /[^\/]+/, version: /[^\/]+/, branch: /sisyphus/, as: 'versioned_bugs_srpm'
