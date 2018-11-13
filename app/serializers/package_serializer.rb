@@ -3,21 +3,15 @@
 class PackageSerializer < RecordSerializer
    include ActionView::Helpers::NumberHelper
 
-   attributes :name, :filename, :href, :path, :md5, :human_size
-
-   def href
-      path&.sub(/^\/ALTmips/, 'http://ftp.altlinux.org/pub/distributions/ALTLinux/ports/mipsel/Sisyphus/')
-          &.sub(/^\/ALT/, 'http://ftp.altlinux.org/pub/distributions/ALTLinux')
-          &.sub('Sisyphus-armh', 'Sisyphus')
-   end
+   attributes :name, :filename, :ftp_url, :md5, :human_size
 
    def human_size
       number_to_human_size(object.size)
    end
 
-   def path
+   def ftp_url
       if object.branch_paths.first
-         File.join(object.branch_paths.first.path, filename)
+         File.join(object.branch_paths.first.ftp_url, filename)
       end
    end
 

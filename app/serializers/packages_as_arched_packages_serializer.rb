@@ -16,7 +16,7 @@ class PackagesAsArchedPackagesSerializer < ActiveModel::Serializer::CollectionSe
          arch = package.arch
          package_s = PackageSerializer.new(package).serializable_hash(adapter_opts, opts, adapter_instance)
 
-         next sum if !package_s[:href]
+         next sum if !package_s[:ftp_url]
 
          if sum[arch]
             sum[arch] << package_s

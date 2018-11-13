@@ -48,19 +48,13 @@ class PackageDecorator < Draper::Decorator
       end
    end
 
-   def href
-      path&.sub(/^\/ALTmips/, 'http://ftp.altlinux.org/pub/distributions/ALTLinux/ports/mipsel/Sisyphus/')
-          &.sub(/^\/ALT/, 'http://ftp.altlinux.org/pub/distributions/ALTLinux')
-          &.sub('Sisyphus-armh', 'Sisyphus')
-   end
-
    def human_size
       number_to_human_size(size)
    end
 
-   def path
+   def ftp_url
       if branch_paths.first
-         File.join(branch_paths.first.path, filename)
+         File.join(branch_paths.first.ftp_url, filename)
       end
    end
 

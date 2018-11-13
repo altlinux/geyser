@@ -6,7 +6,7 @@
             tr
                td.package
                   b = "· "
-                  a.news.download { id="pack_#{index + 1}" href=package[:href] data={path: package[:path]} } = package[:filename]
+                  a.news.download { href=package[:ftp_url] } = package[:filename]
                   = " (md5: #{package[:md5]})"
                td.size
                   = package[:human_size]

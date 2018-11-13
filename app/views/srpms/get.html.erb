@@ -17,19 +17,13 @@
 <div>
 <%= render partial: "shared/srpms_menu", locals: { current_page: :download, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, version: @version } %>
 
-&nbsp;<b><%= _('Choose a mirror:') %></b>
-<select name="mirror" class="mirror-url" style="margin-left: 1em;">
-<% @mirrors.each do |mirror| %>
-  <%= "<option value=\"#{ mirror.uri }\">#{ mirror.name }</option>".html_safe %>
-<% end %>
-</select>
 <p />
 
 <table class="sources">
   <tr>
     <td class="package">
       <b>&middot;</b>
-        <a href="<%= @spkg.href %>" class="news download"><%= @spkg.filename_in(@branch) %></a> (md5: <%= @spkg.md5 %>)
+        <a href="<%= @spkg.ftp_url %>" class="news download"><%= @spkg.filename_in(@branch) %></a> (md5: <%= @spkg.md5 %>)
     </td>
     <td class="size">
       <b><%= number_to_human_size(@spkg.size) %></b>
