@@ -46,9 +46,9 @@ namespace :update do
             end
          end
 
-         RemoveOldRpms.new.do
       end
 
+      RemoveOldRpms.new.do
       ActionController::Base.cache_store.clear
    end
 
