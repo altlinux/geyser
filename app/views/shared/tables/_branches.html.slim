@@ -15,5 +15,6 @@
                         ul.line.left
                            - branch_paths.each do |branch_path|
                               li
+                                 - title = _('Quantity of source rpms resized in the branch source ') + branch_path[:name]
                                  .left.float.i = branch_path[:name]
-                                 .right.float = branch_path[:count]
+                                 .right.float { title=title } = branch_path[:count]

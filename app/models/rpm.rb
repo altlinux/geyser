@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Rpm < ApplicationRecord
-   belongs_to :branch_path, inverse_of: :rpms, counter_cache: :srpms_count
+   belongs_to :branch_path, inverse_of: :rpms
    belongs_to :package, autosave: true
 
    has_one :branch, through: :branch_path
@@ -15,12 +15,6 @@ class Rpm < ApplicationRecord
    scope :src, -> { joins(:package).where(packages: { arch: 'src' })}
 
    delegate :evr, :arch, to: :package
-
-   before_create   :increment_branch_path_counter
-   before_destroy  :decrement_branch_path_counter
-
-#   after_create    :update_branching_maintainer_counter
-#   after_update    :update_branching_maintainer_counter, if: :is_obsoleted?
 
    validates_presence_of :branch_path, :filename
 
@@ -45,19 +39,5 @@ class Rpm < ApplicationRecord
                                         obsoleted_at: obsoleted_at)
 
       scope.present?
-   end
-
-   protected
-
-#   def update_branching_maintainer_counter
-#      BranchingMaintainer.find_or_initialize_by(maintainer_id: builder, branch_id: branch).update_count!
-#   end
-
-   def decrement_branch_path_counter
-      BranchPath.decrement_counter(:srpms_count, branch_path.id)
-   end
-
-   def increment_branch_path_counter
-      BranchPath.increment_counter(:srpms_count, branch_path.id)
    end
 end

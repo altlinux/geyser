@@ -25,7 +25,7 @@ class RemoveOldSrpms < Rectify::Command
    end
 
    def call
-      Package.transaction do
+      ApplicationRecord.transaction do
          list = self.list
 
          list_to_remove = branch_path.rpms.where(filename: list)

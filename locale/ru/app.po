@@ -1286,3 +1286,6 @@ msgstr "Пароль"
 
 msgid "Password confirmation"
 msgstr "Подтверждение пароля"
+
+msgid "Quantity of source rpms resized in the branch source "
+msgstr "Количество исходных пакетов расположенных в источнике ветви "

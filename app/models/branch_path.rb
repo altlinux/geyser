@@ -3,7 +3,7 @@ class BranchPath < ApplicationRecord
   belongs_to :source_path, foreign_key: :source_path_id, class_name: :BranchPath, optional: true
 
   has_many :rpms, inverse_of: :branch_path
-  has_many :packages, through: :rpms#, counter_cache: :srpms_count
+  has_many :packages, through: :rpms
   has_many :builders, -> { distinct }, through: :packages
   has_many :build_paths, foreign_key: :source_path_id, class_name: :BranchPath
   has_many :srpm_filenames, -> { src.select(:filename).distinct }, through: :rpms, source: :branch_path
