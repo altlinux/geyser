@@ -1289,3 +1289,6 @@ msgstr "Подтверждение пароля"
 
 msgid "Quantity of source rpms resized in the branch source "
 msgstr "Количество исходных пакетов расположенных в источнике ветви "
+
+msgid "No files to download"
+msgstr "Нет файлов для скачивания"

@@ -10,7 +10,8 @@ class Package < ApplicationRecord
 
    belongs_to :group
    belongs_to :builder, class_name: 'Maintainer', inverse_of: :rpms, counter_cache: :srpms_count
-   has_many :rpms, inverse_of: :package, dependent: :destroy
+   has_many :rpms, inverse_of: :package
+   has_many :all_rpms, -> { unscope(where: :obsoleted_at) }, class_name: 'Rpm', dependent: :destroy
    has_many :branch_paths, through: :rpms
    has_many :branches, through: :branch_paths
 
@@ -248,7 +249,7 @@ class Package < ApplicationRecord
                error "IMPORT: file '#{ filepath }' has invalid MD5 sum"
             rescue => e
                time = time < rpm.buildtime && time || rpm.buildtime
-               error "IMPORT: file '#{ filepath }' failed to update, reason: #{e.message} at #{e.backtrace[0]}"
+               error "IMPORT: file '#{ filepath }' failed to update, reason: #{e.message} at #{e.backtrace.join("\n\t")}"
             end
          end
 

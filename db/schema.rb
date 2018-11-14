@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_13_143000) do
+ActiveRecord::Schema.define(version: 2018_11_13_185300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -394,11 +394,11 @@ ActiveRecord::Schema.define(version: 2018_11_13_143000) do
   create_table "sources", id: :serial, force: :cascade do |t|
     t.binary "content"
     t.string "filename", limit: 255
-    t.integer "size"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "source"
     t.bigint "package_id", comment: "Ссылка на пакет"
+    t.bigint "size", comment: "Размер исходника"
     t.index ["package_id"], name: "index_sources_on_package_id"
   end
 

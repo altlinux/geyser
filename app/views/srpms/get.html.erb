@@ -20,6 +20,7 @@
 <p />
 
 <table class="sources">
+  <%- if url = @spkg.ftp_url %>
   <tr>
     <td class="package">
       <b>&middot;</b>
@@ -31,6 +32,10 @@
   </tr>
 
   <%= render partial: 'shared/arches', locals: { arches: @arched_packages_s.as_json }  %>
+
+  <%- else %>
+    <p><%= _('No files to download') %></p>
+  <%- end %>
 
 </table>
 </div>
