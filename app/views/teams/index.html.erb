@@ -25,6 +25,7 @@
 </div>
 </div>
 
+<%- if @branching_teams.present? %>
   <table style='font-size: 10pt;' width='100%'>
     <tr>
       <th><%= _('Teams') %></th>
@@ -43,6 +44,9 @@
       </td>
     </tr>
   </table>
+<%- else %>
+  <p><%= _('There are no developer teams for the branch ') + @branch.name %></p>
+<%- end %>
 </div>
 
 <div id='bottom-offset-l'>
