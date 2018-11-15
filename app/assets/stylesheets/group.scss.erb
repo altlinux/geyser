@@ -6,6 +6,7 @@
 
       &:only-child {
          background: none;
+         cursor: default;
       }
    }
 
@@ -28,6 +29,11 @@
    &.open {
       & > .group-title {
          background-image: url(<%= asset_path 'minus.gif' %>);
+
+         &:only-child {
+            background: none;
+            cursor: default;
+         }
       }
 
       & > .group-content {
