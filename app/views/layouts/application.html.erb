@@ -61,7 +61,7 @@
     </div>
     <div style='text-align: right'>
       <%- I18n.available_locales.each do |lang| %>
-        <%= link_to_unless_current lang, request.query_parameters.merge(locale: lang), lanlangtitle: _("_#{lang}") %>
+        <%= link_to_unless_current lang, params.permit!.merge(locale: lang), lanlangtitle: _("_#{lang}") %>
       <%- end %>
     </div>
   </div>

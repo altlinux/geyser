@@ -25,6 +25,7 @@
 </div>
 </div>
 
+<%- if @branching_people.present? %>
   <table style='font-size: 10pt;' width='100%'>
     <tr>
       <th><%= _('Maintainers') %></th>
@@ -44,6 +45,9 @@
       </td>
     </tr>
   </table>
+<%- else %>
+  <p><%= _('This branch is supported by the Basealt SPO Team.') %></p>
+<%- end %>
 </div>
 
 <div id='bottom-offset-l'>
