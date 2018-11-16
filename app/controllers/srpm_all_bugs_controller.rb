@@ -20,7 +20,12 @@ class SrpmAllBugsController < ApplicationController
   end
 
   def fetch_spkgs_by_name
-    @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src.by_name(params[:id]).includes(:branch_path, :branch, :package).order('packages.buildtime DESC, branches.order_id'))
+    @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
+                                                   .by_name(params[:id])
+                                                   .joins(:branch)
+                                                   .merge(Branch.published)
+                                                   .includes(:branch_path, :branch, :package)
+                                                   .order('packages.buildtime DESC, branches.order_id'))
   end
 
   def set_version

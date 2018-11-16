@@ -33,9 +33,10 @@ Rails.application.routes.draw do
     get 'project' => 'pages#project'
 
     scope '(:branch)', branch: /([^\/]+)/ do
-      get 'srpms/:id/bugs' => 'srpm_opened_bugs#index', id: /[^\/]+/, branch: /sisyphus/, as: 'bugs_srpm'
-      get 'srpms/:id/allbugs' => 'srpm_all_bugs#index', id: /[^\/]+/, branch: /sisyphus/, as: 'allbugs_srpm'
       get 'srpms/:id/repocop' => 'srpm_repocops#index', id: /[^\/]+/, branch: /sisyphus/, as: 'repocop_srpm'
+
+      get 'srpms/:id/bugs' => 'srpm_opened_bugs#index', id: /[^\/]+/, as: 'bugs_srpm'
+      get 'srpms/:id/allbugs' => 'srpm_all_bugs#index', id: /[^\/]+/, as: 'allbugs_srpm'
 
       resources :srpms, id: /[^\/]+/, only: :show do
         member do
