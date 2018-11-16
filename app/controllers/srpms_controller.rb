@@ -68,7 +68,7 @@ class SrpmsController < ApplicationController
        gear: [gears: :maintainer],
     }[action_name.to_sym]
 
-    spkgs = @branch.spkgs.by_name(params[:id]).by_evr(params[:version]).order(buildtime: :desc)
+    spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(params[:version]).order(buildtime: :desc)
     spkgs = spkgs.includes(*includes) if includes
     
     @spkg = spkgs.first!.decorate
@@ -76,7 +76,7 @@ class SrpmsController < ApplicationController
 
   def fetch_spkgs_by_name
     @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
-                                                   .by_name(params[:id])
+                                                   .by_name(params[:reponame])
                                                    .joins(:branch)
                                                    .merge(Branch.published)
                                                    .includes(:branch_path, :branch, :package)

@@ -30,15 +30,36 @@ Rails.application.routes.draw do
 
     root to: 'home#index'
 
+    # support old rules
+    # from v2
+    get ':branch/srpms/:reponame/gear', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
+    # from v1
+    get 'srpm/:branch/:reponame', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
+    get 'srpm/:branch/:reponame/changelog', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/changelog')
+    get 'srpm/:branch/:reponame/spec', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/spec')
+    get 'srpm/:branch/:reponame/patches', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/patches')
+    get 'srpm/:branch/:reponame/sources', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/sources')
+    get 'srpm/:branch/:reponame/get', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/get')
+    get 'srpm/:branch/:reponame/gear', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
+    get 'srpm/:branch/:reponame/bugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/bugs')
+    get 'srpm/:branch/:reponame/repocop', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/repocop')
+    get 'people', to: redirect('/%{locale}/sisyphus/maintainers')
+    get 'packager/:login', to: redirect('/%{locale}/sisyphus/maintainers/%{login}')
+    get 'team/:login', to: redirect('/%{locale}/sisyphus/teams/%{login}')
+    get 'packages', to: redirect('/%{locale}/sisyphus/packages'), as: :old_packages
+    get 'packages/:group1', to: redirect('/%{locale}/sisyphus/packages/%{group1}')
+    get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
+    get 'packages/:group1/:group2/:group3', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}_#{pp[:group3].downcase}" }
+
     get 'project' => 'pages#project'
 
     scope '(:branch)', branch: /([^\/]+)/ do
-      get 'srpms/:id/repocop' => 'srpm_repocops#index', id: /[^\/]+/, branch: /sisyphus/, as: 'repocop_srpm'
+      get 'srpms/:reponame/repocop' => 'srpm_repocops#index', reponame: /[^\/]+/, branch: /sisyphus/, as: 'repocop_srpm'
 
-      get 'srpms/:id/bugs' => 'srpm_opened_bugs#index', id: /[^\/]+/, as: 'bugs_srpm'
-      get 'srpms/:id/allbugs' => 'srpm_all_bugs#index', id: /[^\/]+/, as: 'allbugs_srpm'
+      get 'srpms/:reponame/bugs' => 'srpm_opened_bugs#index', reponame: /[^\/]+/, as: 'bugs_srpm'
+      get 'srpms/:reponame/allbugs' => 'srpm_all_bugs#index', reponame: /[^\/]+/, as: 'allbugs_srpm'
 
-      resources :srpms, id: /[^\/]+/, only: :show do
+      resources :srpms, param: :reponame, reponame: /[^\/]+/, only: :show do
         member do
           get 'changelog'
           get 'spec'
@@ -46,27 +67,27 @@ Rails.application.routes.draw do
           get 'get'
         end
 
-        resources :patches, only: [:index, :show] do
+        resources :patches, param: :reponame, only: [:index, :show] do
         end
 
-        resources :sources, only: :index do
+        resources :sources, param: :reponame, only: :index do
           resource :download, only: :show, controller: :source_download
         end
       end
 
-      get 'srpms/:id/:version' => 'srpms#show', id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm'
-      get 'srpms/:id/:version/changelog' => 'srpms#changelog', id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_changelog_srpm'
-      get 'srpms/:id/:version/spec' => 'srpms#spec', id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_spec_srpm'
-      get 'srpms/:id/:version/rawspec' => 'srpms#rawspec', id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_rawspec_srpm'
-      get 'srpms/:id/:version/get' => 'srpms#get', id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_get_srpm'
-      get 'patches/:srpm_id/:version/index' => 'patches#index', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patches'
-      get 'patches/:srpm_id/:version/show' => 'patches#show', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patch'
+      get 'srpms/:reponame/:version' => 'srpms#show', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm'
+      get 'srpms/:reponame/:version/changelog' => 'srpms#changelog', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_changelog_srpm'
+      get 'srpms/:reponame/:version/spec' => 'srpms#spec', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_spec_srpm'
+      get 'srpms/:reponame/:version/rawspec' => 'srpms#rawspec', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_rawspec_srpm'
+      get 'srpms/:reponame/:version/get' => 'srpms#get', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_get_srpm'
+      get 'patches/:reponame/:version/index' => 'patches#index', srpm_reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patches'
+      get 'patches/:reponame/:version/show' => 'patches#show', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patch'
       get 'patches/:package_name/:package_evrb/:patch_filename/download' => 'patches#download', package_name: /[^\/]+/, package_evrb: /[^\/]+/, patch_filename: /[^\/]+/, as: 'versioned_srpm_patch_download'
-      get 'sources/:srpm_id/:version/index' => 'sources#index', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_sources'
-      get 'sources/:srpm_id/:version/download' => 'sources#download', srpm_id: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_source_download'
-      get 'srpms/:id/:version/bugs' => 'srpm_opened_bugs#index', id: /[^\/]+/, version: /[^\/]+/, branch: /sisyphus/, as: 'versioned_bugs_srpm'
-      get 'srpms/:id/:version/allbugs' => 'srpm_all_bugs#index',  id: /[^\/]+/, version: /[^\/]+/, branch: /sisyphus/, as: 'versioned_allbugs_srpm'
-      get 'srpms/:id/:version/repocop' => 'srpm_repocops#index',  id: /[^\/]+/, version: /[^\/]+/, branch: /sisyphus/, as: 'versioned_repocop_srpm'
+      get 'sources/:reponame/:version/index' => 'sources#index', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_sources'
+      get 'sources/:reponame/:version/download' => 'sources#download', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_source_download'
+      get 'srpms/:reponame/:version/bugs' => 'srpm_opened_bugs#index', reponame: /[^\/]+/, version: /[^\/]+/, branch: /sisyphus/, as: 'versioned_bugs_srpm'
+      get 'srpms/:reponame/:version/allbugs' => 'srpm_all_bugs#index',  reponame: /[^\/]+/, version: /[^\/]+/, branch: /sisyphus/, as: 'versioned_allbugs_srpm'
+      get 'srpms/:reponame/:version/repocop' => 'srpm_repocops#index',  reponame: /[^\/]+/, version: /[^\/]+/, branch: /sisyphus/, as: 'versioned_repocop_srpm'
 
       get 'rss' => 'rss#index', as: 'rss'
       resources :teams, only: [:index, :show]

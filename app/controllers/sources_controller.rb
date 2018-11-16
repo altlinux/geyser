@@ -14,13 +14,16 @@ class SourcesController < ApplicationController
   protected
 
   def fetch_spkg
-    spkgs = @branch.spkgs.by_name(params[:srpm_id]).by_evr(params[:version]).order(buildtime: :desc)
+    spkgs = @branch.spkgs.by_name(params[:srpm_reponame]).by_evr(params[:version]).order(buildtime: :desc)
 
     @spkg = spkgs.first!.decorate
   end
 
   def fetch_spkgs_by_name
-    @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src.by_name(params[:srpm_id]).includes(:branch_path, :branch, :package).order('packages.buildtime DESC, branches.order_id'))
+    @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
+                                                   .by_name(params[:srpm_reponame])
+                                                   .includes(:branch_path, :branch, :package)
+                                                   .order('packages.buildtime DESC, branches.order_id'))
   end
 
   def set_version
