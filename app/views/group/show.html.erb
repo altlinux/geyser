@@ -1,8 +1,8 @@
-<% title _('Prometheus 2.0 - Group &laquo;%s&raquo;') % @branch_group.full_name %>
+<% title _('Prometheus 2.0 - Group &laquo;%s&raquo;') % @branch_group.full_name(I18n.locale) %>
 
 <div id='main-content'>
-  <div class='header'>
-    <%= _('Group') %> :: <%= _(@branch_group.full_name) %>
+   <div class='header'>
+     <%= _('Group') %> :: <%= _(@branch_group.full_name(I18n.locale)) %>
   </div>
 
   <p class='news'></p>

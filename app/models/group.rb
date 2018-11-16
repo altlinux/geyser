@@ -13,8 +13,13 @@ class Group < ApplicationRecord
    before_save :fillin_slug, on: :create
 
    # scopes
+
+   def tree
+      self.class.where("groups.path <@ :path", path: path)
+   end
+
    def groups
-      self.class.where("groups.path <@ :path AND groups.path <> :path", path: self.path)
+      tree.where("groups.path <> :path", path: path)
    end
 
    def children
@@ -33,7 +38,7 @@ class Group < ApplicationRecord
    def full_name locale = :ru
       prop = locale.to_s == 'en' && :name_en || :name
 
-      uptree.select(prop).pluck(:name).join("/")
+      uptree.select(prop).pluck(prop).join("/")
    end
 
    class << self
