@@ -12,5 +12,6 @@ class Issue::Bug < Issue
       joins(:assignees).where(repo_name: names)
          .or(where(maintainers: {email: maintainer.email}))
          .order("issues.no::integer DESC")
+         .select("distinct on (issues.no::integer) issues.*")
    end
 end
