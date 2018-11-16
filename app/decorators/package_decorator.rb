@@ -55,7 +55,7 @@ class PackageDecorator < Draper::Decorator
    end
 
    def ftp_url
-      branch_paths.reduce(nil) do |res, bp|
+      branch_paths.published.reduce(nil) do |res, bp|
          path = File.join(bp.ftp_url, filename)
 
          res || is_url_available?(path) && path || nil

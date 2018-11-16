@@ -12,7 +12,7 @@ class PackageSerializer < RecordSerializer
    end
 
    def ftp_url
-      object.branch_paths.reduce(nil) do |res, bp|
+      object.branch_paths.published.reduce(nil) do |res, bp|
          path = File.join(bp.ftp_url, filename)
 
          res || is_url_available?(path) && path || nil
