@@ -172,14 +172,15 @@ class Package < ApplicationRecord
             package.save!
          end
          
-         if package.branch_paths.include?(branch_path)
+         rpm = Rpm.unscope(:where)
+                  .find_or_initialize_by(branch_path_id: branch_path.id,
+                                         filename: rpm.filename,
+                                         package_id: package.id)
+
+         if !rpm.obsoleted_at && rpm.persisted?
             raise AlreadyExistError
          else
-            rpm = Rpm.new(branch_path_id: branch_path.id,
-                          filename: rpm.filename,
-                          package_id: package.id)
-
-            rpm.save! if !rpm.exists?
+            rpm.update!(obsoleted_at: nil) # NOTE sometimes rpms are appeared in a branch with the samecreds but obsoleted....
 
             raise AttachedNewBranchError
          end
