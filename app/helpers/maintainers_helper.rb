@@ -32,7 +32,7 @@ module MaintainersHelper
       },
       watches: {
          title: 'Watches',
-         path: 'feature_requests_maintainer_path',
+         path: 'watches_maintainer_path',
          args: [branch, maintainer],
          popup: 'watches',
       },

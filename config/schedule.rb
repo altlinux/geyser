@@ -24,7 +24,7 @@ every 3.hours, at: '2:15' do
 end
 
 every 3.hours, at: '2:25' do
-   rake 'feature_request:update'
+   rake 'watches:update'
 end
 
 every 1.day, at: '3:25' do # takes about 20 min

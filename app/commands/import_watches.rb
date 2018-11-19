@@ -2,7 +2,7 @@
 
 require 'nokogiri'
 
-class ImportFeatureRequests
+class ImportWatches
    MAP = {
       'php_coder' => 'php-coder',
       'psolntsev' => 'p_solntsev',
@@ -14,7 +14,7 @@ class ImportFeatureRequests
    attr_reader :url, :name, :version
 
    def do
-      Rails.logger.info("#{ Time.zone.now }: IMPORT.FeatureRequests")
+      Rails.logger.info("#{ Time.zone.now }: IMPORT.Watches")
 
       ApplicationRecord.transaction do
          append_watches
@@ -76,7 +76,7 @@ class ImportFeatureRequests
          self.noes(url)
       end.flatten.uniq
 
-      Issue::FeatureRequest.where.not(no: noes).active.update_all(resolution: "FIXED", resolved_at: Time.zone.now)
+      Issue::Watch.where.not(no: noes).active.update_all(resolution: "FIXED", resolved_at: Time.zone.now)
    end
 
    def srpm
@@ -108,7 +108,7 @@ class ImportFeatureRequests
 
             [ no,
                [ ATTR_NAMES,
-                  [ 'Issue::FeatureRequest',
+                  [ 'Issue::Watch',
                      no,
                      'NEW',
                      'normal',

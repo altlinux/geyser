@@ -14,6 +14,7 @@
     <th><%= raw _('current<br>version') %></th>
     <th><%= _('reported at') %></th>
     <th><%= _('new version') %></th>
+    <th><%= _('url') %></th>
   </tr>
 
   <% @frs.each do |f| %>
@@ -23,6 +24,7 @@
       <td><%= "#{ f.evr }" %></td>
       <td><%= time_ago_in_words(f.reported_at) %> <%= _('back') %></td>
       <td><%= f.source_url && link_to(f.target_version, f.source_url, class: "news") || f.target_version %></td>
+      <td><%= f.source_url && link_to(f.source_url, f.source_url, class: "news") %></td>
     </tr>
   <% end %>
 </table>
