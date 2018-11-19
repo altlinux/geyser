@@ -2,7 +2,8 @@
 
 class SecurityController < ApplicationController
   def index
-    @changelogs = @branch.changelogs.fix.includes(:package)
+    @changelogs = @branch.all_changelogs.fix
+                                        .includes(:package)
                                         .order('changelogs.at DESC')
                                         .page(params[:page])
                                         .per(50)

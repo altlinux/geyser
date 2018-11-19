@@ -11,6 +11,8 @@ class Branch < ApplicationRecord
   has_many :srpm_filenames, -> { src.select(:filename).distinct }, through: :branch_paths, source: :rpms
   has_many :all_packages, -> { distinct }, through: :all_rpms, class_name: :Package, source: :package
   has_many :changelogs, through: :spkgs, source: :changelog
+  has_many :all_changelogs, -> { order("changelogs.at DESC, changelogs.text").select("DISTINCT ON (at, text) changelogs.*") },
+                           through: :all_spkgs, source: :changelog
   has_many :branch_groups, dependent: :destroy
   has_many :groups, through: :spkgs
   has_many :teams, dependent: :destroy
