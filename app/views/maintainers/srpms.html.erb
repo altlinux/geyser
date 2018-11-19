@@ -37,14 +37,13 @@
   <tr>
     <% if @branch.perpetual? %>
       <th>
-        <%= raw _('repo<br>cop') %><br>
-        <%= link_to image_tag('stock_navigate-prev.png'), sort: 'status', order: sort_order_next('status') %>
+        <%= raw _('repo<br>cop') %>
       </th>
     <% end %>
-    <th><%= _('package') %><br><%= link_to image_tag('stock_navigate-prev.png'), sort: 'name', order: sort_order_next('name') %></th>
+    <th><%= _('package') %></th>
     <th><%= raw _('current<br>version') %></th>
     <th><%= _('build time') %></th>
-    <th><%= _('age') %><br><%= link_to image_tag('stock_navigate-prev.png'), sort: 'age', order: sort_order_next('age') %></th>
+    <th><%= _('age') %></th>
     <th><%= _('Url') %></th>
     <th><%= _('Summary') %></th>
   </tr>
