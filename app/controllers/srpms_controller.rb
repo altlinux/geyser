@@ -4,6 +4,7 @@ class SrpmsController < ApplicationController
   before_action :set_version
   before_action :fetch_spkg
   before_action :fetch_spkgs_by_name, only: %i(show changelog spec get)
+  before_action :fetch_bugs, only: %i(show changelog spec get)
   before_action :fetch_changelogs, only: %i(show changelog)
 
   def show
@@ -23,19 +24,12 @@ class SrpmsController < ApplicationController
       login = @acls.owner.first.maintainer_slug
       @leader = Maintainer.where(login: login).first
     end
-
-    @all_bugs = AllBugsForSrpm.new(@spkg).decorate
-    @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
   end
 
   def changelog
-    @all_bugs = AllBugsForSrpm.new(@spkg).decorate
-    @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
   end
 
   def spec
-    @all_bugs = AllBugsForSrpm.new(@spkg).decorate
-    @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
   end
 
   def rawspec
@@ -50,8 +44,6 @@ class SrpmsController < ApplicationController
     @mirrors = Mirror.where(branch_id: @branch.id).where("protocol != 'rsync'").order('mirrors.order_id ASC')
     packages = @spkg.packages.order('packages.name ASC').group("packages.arch, packages.id")
     @arched_packages_s = PackagesAsArchedPackagesSerializer.new(packages, branch: @branch)
-    @all_bugs = AllBugsForSrpm.new(@spkg).decorate
-    @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
   end
 
   protected
@@ -85,5 +77,10 @@ class SrpmsController < ApplicationController
 
   def set_version
     @version = params[:version]
+  end
+
+  def fetch_bugs
+    @all_bugs = AllBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
+    @opened_bugs = OpenedBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
   end
 end

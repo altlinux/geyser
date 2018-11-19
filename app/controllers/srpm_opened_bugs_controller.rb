@@ -6,8 +6,8 @@ class SrpmOpenedBugsController < ApplicationController
   before_action :fetch_spkgs_by_name, only: %i(index)
 
   def index
-    @all_bugs = AllBugsForSrpm.new(@spkg).decorate
-    @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
+    @all_bugs = AllBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
+    @opened_bugs = OpenedBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
   end
 
   protected

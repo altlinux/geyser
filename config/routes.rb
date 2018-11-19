@@ -93,6 +93,12 @@ Rails.application.routes.draw do
       resources :teams, only: [:index, :show]
 
       resources :maintainers, only: :index
+      get 'maintainers/:id/gear' => 'maintainers#gear', as: 'gear_maintainer'
+      get 'maintainers/:id/bugs' => 'maintainers#bugs', as: 'bugs_maintainer'
+      get 'maintainers/:id/allbugs' => 'maintainers#allbugs', as: 'allbugs_maintainer'
+      get 'maintainers/:id/ftbfs' => 'maintainers#ftbfs', as: 'ftbfs_maintainer'
+      get 'maintainers/:id/feature_requests' => 'maintainers#feature_requests', as: 'feature_requests_maintainer'
+      get 'maintainers/:id/repocop' => 'maintainers#repocop', as: 'repocop_maintainer'
 
       get 'packages/:slug' => 'group#show', as: 'group'
       get 'packages' => 'group#index', as: 'packages'
@@ -109,15 +115,6 @@ Rails.application.routes.draw do
         get 'srpms', on: :member
         resources :activity, only: :index, controller: :maintainer_activity
       end
-    end
-
-    scope 'sisyphus' do
-      get 'maintainers/:id/gear' => 'maintainers#gear', as: 'gear_maintainer'
-      get 'maintainers/:id/bugs' => 'maintainers#bugs', as: 'bugs_maintainer'
-      get 'maintainers/:id/allbugs' => 'maintainers#allbugs', as: 'allbugs_maintainer'
-      get 'maintainers/:id/ftbfs' => 'maintainers#ftbfs', as: 'ftbfs_maintainer'
-      get 'maintainers/:id/feature_requests' => 'maintainers#feature_requests', as: 'feature_requests_maintainer'
-      get 'maintainers/:id/repocop' => 'maintainers#repocop', as: 'repocop_maintainer'
     end
   end
 

@@ -7,8 +7,8 @@ class PatchesController < ApplicationController
    before_action :fetch_patch, only: :download
 
   def index
-    @all_bugs = AllBugsForSrpm.new(@spkg).decorate
-    @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
+    @all_bugs = AllBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
+    @opened_bugs = OpenedBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
   end
 
   def show

@@ -183,7 +183,7 @@ msgstr "Документация/Прочее"
 msgid "Broken changelog entry."
 msgstr ""
 
-msgid "FRs"
+msgid "Watches"
 msgstr "Надзор"
 
 msgid "Bugs"

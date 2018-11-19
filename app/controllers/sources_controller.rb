@@ -7,8 +7,8 @@ class SourcesController < ApplicationController
 
   def index
     @sources = Source.where(package: @spkg).select('filename, size, source')
-    @all_bugs = AllBugsForSrpm.new(@spkg).decorate
-    @opened_bugs = OpenedBugsForSrpm.new(@spkg).decorate
+    @all_bugs = AllBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
+    @opened_bugs = OpenedBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
   end
 
   protected

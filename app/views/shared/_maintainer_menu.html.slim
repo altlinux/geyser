@@ -1,0 +1,8 @@
+.page-menu
+   - maintainer_menu_data(branch, maintainer, opened_bugs, all_bugs).each do |page, data|
+      - next if data[:valid] && !branch.send(data[:valid])
+      .tab
+         - if page == current_page
+            span = _(data[:title])
+         - else
+            = link_to(_(data[:title]), send(data[:path], *data[:args]), title: _(data[:popup]))

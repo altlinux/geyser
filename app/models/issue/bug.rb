@@ -7,10 +7,11 @@ class Issue::Bug < Issue
 
    scope :opened, -> { where(status: OPEN_STATUSES) }
    scope :for_maintainer_and_branch, ->(maintainer, branch) do
-      names = branch.spkgs.where(name: maintainer.acl_names).select(:name).distinct
+      branch_path_ids = branch.branch_paths.select(:id)
 
-      joins(:assignees).where(repo_name: names)
-         .or(where(maintainers: {email: maintainer.email}))
+      joins(:assignees, :branch_path)
+         .where(branch_path_id: branch_path_ids,
+                maintainers: { email: maintainer.email })
          .order("issues.no::integer DESC")
          .select("distinct on (issues.no::integer) issues.*")
    end

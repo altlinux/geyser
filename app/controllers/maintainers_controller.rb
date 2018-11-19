@@ -3,7 +3,7 @@
 class MaintainersController < ApplicationController
    before_action :set_srpms, only: %i(srpms bugs allbugs repocop)
    before_action :set_bug_lists, except: %i(index)
-   before_action :set_branches, only: %i(index show srpms)
+   before_action :set_branches, only: %i(index show srpms bugs)
 
    def index
       @branching_people = BranchingMaintainer.person

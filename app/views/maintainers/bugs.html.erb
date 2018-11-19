@@ -2,9 +2,32 @@
 
 <div id='main-content'>
 
+<div id="rightbar">
+<div class="headleft">
+<div class="headright" title="<%= _('ALT Linux repositories') %>">
+  <%= _('ALT Linux repositories') %>
+</div>
+<%= image_tag('collapse.gif', id: 'topRPM', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9') %>
+</div>
+<div id="topRPMDiv" style="border: dotted gray 1px; margin: 0px 4px 4px 4px;">
+<table style="font-size:8pt;" width="100%">
+
+<% @branches.each do |branch| %>
+<tr>
+  <td style="text-align: left;">
+    <%= link_to branch.name, maintainers_path(branch), class: 'news' %>
+  </td>
+  <td style="text-align: right;"><%= branch.srpms_count %></td>
+</tr>
+<% end %>
+
+</table>
+</div>
+</div>
 <div class="header"><%= _('Maintainer:') %> <%= _(@maintainer.name) %></div>
 <p class="break" />
-<span class="vkladka">&nbsp;<%= link_to _('Information'), maintainer_path('sisyphus', @maintainer), class: 'news', title: _('information about maintainer') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('Packages'), srpms_maintainer_path('sisyphus', @maintainer), class: 'news', title: _('packages which was built by this maintainer') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('Gear'), gear_maintainer_path(@maintainer), class: 'news', title: _('gear') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="current">&nbsp;<b><%= _('Bugs and FR (%s/%s)') % [@opened_bugs.count, @all_bugs.count] %></b>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('FTBFS'), ftbfs_maintainer_path(@maintainer), class: 'news', title: _('FTBFS') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('FRs'), feature_requests_maintainer_path(@maintainer), class: 'news', title: _('FRs') %></b>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('Repocop'), repocop_maintainer_path(@maintainer), class: 'news', title: _('repocop bugreports') %>&nbsp;</span><p class="news" /><br>
+<%= render partial: "shared/maintainer_menu", locals: { current_page: :bugs, branch: @branch, maintainer: @maintainer, opened_bugs: @opened_bugs, all_bugs: @all_bugs } %>
+<p class="news" /><br>
 <b><%= _('Total records:') %></b> <%= @all_bugs.count %> (<span style='color: red;'><%= @opened_bugs.count %></span>|<%= @all_bugs.count - @opened_bugs.count %>)
 
 <div style="text-align:left;margin-left:2em;margin-top:1.5em;">

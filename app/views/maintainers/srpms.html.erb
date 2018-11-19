@@ -27,7 +27,10 @@
 
 <div class="header"><%= _('Maintainer:') %> <%= _(@maintainer.name) %></div>
 <p class="break" />
-<span class="vkladka">&nbsp;<%= link_to _('Information'), maintainer_path(@branch, @maintainer), class: 'news', title: _('information about maintainer') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="current">&nbsp;<b><%= _('Packages') %></b>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('Gear'), gear_maintainer_path(@maintainer), class: 'news', title: _('gear') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('Bugs and FR (%s/%s)') % [@opened_bugs.count, @all_bugs.count], bugs_maintainer_path(@maintainer), class: 'news', title: _('Bugs/FR statistics assigned to this maintainer') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('FTBFS'), ftbfs_maintainer_path(@maintainer), class: 'news', title: _('FTBFS') %>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('FRs'), feature_requests_maintainer_path(@maintainer), class: 'news', title: _('FRs') %></b>&nbsp;</span><span class="underl">&nbsp;</span><span class="vkladka">&nbsp;<%= link_to _('Repocop'), repocop_maintainer_path(@maintainer), class: 'news', title: _('repocop bugreports') %>&nbsp;</span><p class="break" />
+
+<%= render partial: "shared/maintainer_menu", locals: { current_page: :packages, branch: @branch, maintainer: @maintainer, opened_bugs: @opened_bugs, all_bugs: @all_bugs } %>
+
+<p class="break" />
 <b><%= _('List of packages which was built by this maintainer:') %></b> [<%= @maintainer.support_count %>] <br><br>
 
 <table id="bugs" cellspacing="0" cellpadding="3">
@@ -50,7 +53,7 @@
   <tr>
     <% if @branch.perpetual? %>
       <td>
-        <%= link_to image_tag("#{ srpm.repocop_status }.png", size: '20x20', alt: srpm.repocop_status), repocop_srpm_path(id: srpm.name), class: 'repocoplink', title: 'repocop' %>
+        <%= link_to image_tag("#{ srpm.repocop_status }.png", size: '20x20', alt: srpm.repocop_status), repocop_srpm_path(reponame: srpm.name), class: 'repocoplink', title: 'repocop' %>
         <% if srpm.repocop_patch %>
           <br>
           <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), repocop_patch_download_url(srpm.repocop_patch), class: 'repocoplink', title: _('repocop patchset for the package') %>
@@ -58,7 +61,7 @@
       </td>
     <% end %>
     <td class="strange">
-      <%= link_to srpm.name, srpm_path(id: srpm.name, branch: @branch.slug), class: 'news' %>
+      <%= link_to srpm.name, srpm_path(reponame: srpm.name, branch: @branch.slug), class: 'news' %>
     </td>
     <td><%= srpm.evr %></td>
     <td><%= srpm.buildtime %></td>
