@@ -495,8 +495,8 @@ msgstr "Информация:"
 msgid "Jabber ID:"
 msgstr ""
 
-msgid "Last update:"
-msgstr "Последнее обновление:"
+msgid "Last updated at"
+msgstr "Последнее обновление в"
 
 msgid "Lenar Shakirov"
 msgstr "Ленар Шакиров"
