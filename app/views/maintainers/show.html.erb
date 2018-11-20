@@ -33,16 +33,25 @@
 
 <p class="break" />
 
-<b><%= _('Website/Blog:') %></b> <% unless @maintainer.website.empty? %><%= link_to @maintainer.website, @maintainer.website %><% end %><br>
-<b><%= _('Location:') %></b> <%= @maintainer.location %><br>
+<%- if @maintainer.website.present? %>
+   <b><%= _('Website/Blog:') %></b> <%= link_to @maintainer.website, @maintainer.website %><br>
+<%- end %>
+<%- if @maintainer.location.present? %>
+   <b><%= _('Location:') %></b> <%= @maintainer.location %><br>
+<%- end %>
 <b><%= _('Email:') %></b> <%= @maintainer.email %><br>
+<%- if @maintainer.jabber.present? %>
 <b><%= _('Jabber ID:') %></b> <%= @maintainer.jabber %><br>
+<%- end %>
 <b><%= _('Time Zone:') %></b> <%= @maintainer.time_zone %><br>
 <b><%= _('Seen on building') %></b> <%= time_ago_in_words(@maintainer.last_built_at) %> <%= _('back') %><br>
-<b><%= _('Information:') %></b>
-<div class="para"><%= simple_format(@maintainer.info) %></div>
+<%- if @maintainer.info.present? %>
+   <b><%= _('Information:') %></b>
+   <div class="para"><%= simple_format(@maintainer.info) %></div>
+<%- end %>
 
 <p class="break" />
-<b><%= _('Packages built by this maintainer:') %></b> <%= @acl_count %>
+<b><%= @maintainer.for_branch(@branch).srpms_count %> </b><%= _('packages built by this maintainer to the branch') %><br>
+<b><%= @acl_count %> </b><%= _('packages built by this maintainer at all') %>
 
 </div><div id="bottom-offset-l"><div id="bottom-offset-r">&nbsp;</div></div>

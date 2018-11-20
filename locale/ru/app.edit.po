@@ -597,8 +597,23 @@ msgstr "Группы пакетов"
 msgid "Packages"
 msgstr "Пакеты"
 
-msgid "Packages built by this maintainer:"
-msgstr "Всего пакетов, собранных майнтейнером:"
+msgid "Email:"
+msgstr "Электронная почта:"
+
+msgid "Website/Blog:"
+msgstr "Вебстраница/Блог:"
+
+msgid "Location:"
+msgstr "Размещение:"
+
+msgid "Time Zone:"
+msgstr "Временной пояс:"
+
+msgid "packages built by this maintainer to the branch"
+msgstr "пакетов, собранных майнтейнером в ветвь"
+
+msgid "packages built by this maintainer at all"
+msgstr "пакетов, собранных майнтейнером всего"
 
 msgid "Packages to rebuild:"
 msgstr "Список пакетов на пересборку:"

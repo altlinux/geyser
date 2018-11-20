@@ -49,6 +49,10 @@ class Maintainer < ApplicationRecord
       acl_names.count
    end
 
+   def for_branch branch
+      branching_maintainers.where(branch_id: branch).first
+   end
+
    def locked_email
       email.gsub('@', ' аt ').gsub('.', ' dоt ')
    end
