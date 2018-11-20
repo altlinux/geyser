@@ -2,7 +2,7 @@
 
 require 'nokogiri'
 
-class ImportWatches
+class ImportNovelties
    MAP = {
       'php_coder' => 'php-coder',
       'psolntsev' => 'p_solntsev',
@@ -14,11 +14,11 @@ class ImportWatches
    attr_reader :url, :name, :version
 
    def do
-      Rails.logger.info("#{ Time.zone.now }: IMPORT.Watches")
+      Rails.logger.info("#{ Time.zone.now }: IMPORT.Novelties")
 
       ApplicationRecord.transaction do
-         append_watches
-         remove_watches
+         append_novelties
+         remove_novelties
       end
    end
 
@@ -49,7 +49,7 @@ class ImportWatches
       end
    end
 
-   def append_watches
+   def append_novelties
       data.each do |a|
          /(?<login>.*)\.txt$/ =~ a.text
 
@@ -65,7 +65,7 @@ class ImportWatches
       end
    end
 
-   def remove_watches
+   def remove_novelties
       noes = data.map do |a|
          /(?<login>.*)\.txt$/ =~ a.text
 
@@ -76,7 +76,7 @@ class ImportWatches
          self.noes(url)
       end.flatten.uniq
 
-      Issue::Watch.where.not(no: noes).active.update_all(resolution: "FIXED", resolved_at: Time.zone.now)
+      Issue::Novelty.where.not(no: noes).active.update_all(resolution: "FIXED", resolved_at: Time.zone.now)
    end
 
    def srpm
@@ -108,7 +108,7 @@ class ImportWatches
 
             [ no,
                [ ATTR_NAMES,
-                  [ 'Issue::Watch',
+                  [ 'Issue::Novelty',
                      no,
                      'NEW',
                      'normal',

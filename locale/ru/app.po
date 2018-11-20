@@ -183,8 +183,11 @@ msgstr "Документация/Прочее"
 msgid "Broken changelog entry."
 msgstr ""
 
-msgid "Watches"
+msgid "Novelties"
 msgstr "Надзор"
+
+msgid "Novelties of external package watch"
+msgstr "Надзор за внешними пакетными обновлениями"
 
 msgid "Bugs"
 msgstr "Ошибки"

@@ -33,12 +33,12 @@ class MaintainersController < ApplicationController
    def allbugs
    end
 
-   def watches
-      @frs = Issue::Watch.active
-                         .joins(:issue_assignees)
-                         .where(issue_assignees: { maintainer_id: maintainer })
-                         .includes(:branch)
-                         .order(reported_at: :asc, repo_name: :asc)
+   def novelties
+      @frs = Issue::Novelty.active
+                           .joins(:issue_assignees)
+                           .where(issue_assignees: { maintainer_id: maintainer })
+                           .includes(:branch)
+                           .order(reported_at: :asc, repo_name: :asc)
    end
 
    def ftbfs

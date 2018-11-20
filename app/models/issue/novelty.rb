@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Issue::Watch < Issue
+class Issue::Novelty < Issue
    validates_presence_of :evr, :repo_name, :reported_at, :source_url
 
    def target_version
