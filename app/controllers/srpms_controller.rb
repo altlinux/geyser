@@ -50,7 +50,9 @@ class SrpmsController < ApplicationController
 
   #TODO makeonly created_at when migrate from time to created_at_time
   def fetch_changelogs
-    @changelogs = @spkg.changelogs.includes(:maintainer).order('changelogs.at DESC, changelogs.created_at DESC')
+     @changelogs = @spkg.changelogs
+                        .includes(:maintainer)
+                        .order(at: :desc, evr: :desc, created_at: :desc)
   end
 
   def fetch_spkg
