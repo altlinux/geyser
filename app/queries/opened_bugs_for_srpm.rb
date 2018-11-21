@@ -5,8 +5,8 @@ class OpenedBugsForSrpm < Rectify::Query
 
   attr_reader :scope
 
-  def initialize(srpm)
-    @scope = AllBugsForSrpm.new(srpm)
+  def initialize(spkg: spkg, branch: branch)
+    @scope = AllBugsForSrpm.new(spkg: spkg, branch: branch)
   end
 
   def query
