@@ -39,7 +39,7 @@
 <%- if @maintainer.location.present? %>
    <b><%= _('Location:') %></b> <%= @maintainer.location %><br>
 <%- end %>
-<b><%= _('Email:') %></b> <%= @maintainer.email %><br>
+<b><%= _('Email:') %></b> <%= @maintainer.email.address %><br>
 <%- if @maintainer.jabber.present? %>
 <b><%= _('Jabber ID:') %></b> <%= @maintainer.jabber %><br>
 <%- end %>

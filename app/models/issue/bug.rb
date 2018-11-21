@@ -9,9 +9,9 @@ class Issue::Bug < Issue
    scope :for_maintainer_and_branch, ->(maintainer, branch) do
       branch_path_ids = branch.branch_paths.select(:id)
 
-      joins(:assignees, :branch_path)
+      joins(:issue_assignees, :branch_path)
          .where(branch_path_id: branch_path_ids,
-                maintainers: { email: maintainer.email })
+                issue_assignees: { maintainer_id: maintainer.id })
          .order("issues.no::integer DESC")
          .select("distinct on (issues.no::integer) issues.*")
    end

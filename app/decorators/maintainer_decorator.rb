@@ -26,6 +26,6 @@ class MaintainerDecorator < Draper::Decorator
   private
 
   def gravatar_id
-    Digest::MD5.hexdigest(email.downcase)
+    Digest::MD5.hexdigest(email.address.downcase)
   end
 end

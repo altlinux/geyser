@@ -26,11 +26,13 @@ class ImportBugs
    def import_maintainers
       attrs = parsed[1..-1].map do |l|
          [ATTR_NAMES, l].transpose.to_h[:assigned_to]
-      end.compact.uniq.map do |email|
+      end.compact.uniq.select do |email|
+         Recital::Email.where(address: email).empty?
+      end.map do |email|
          {
-            email: email,
             name: email,
-            type: 'Maintainer::Person'
+            type: 'Maintainer::Person',
+            email_attributes: { address: email },
          }
       end
 
@@ -51,7 +53,7 @@ class ImportBugs
                        columns: %i(status resolution severity branch_path_id repo_name reporter description)})
       issue_assignee_attrs = [ assigned_tos, result.ids ].transpose.map do |(assigned_to, id)|
          {
-            maintainer_id: Maintainer.find_by_email(assigned_to).id,
+            maintainer_id: Recital::Email.find_by_address!(assigned_to).maintainer_id,
             issue_id: id
          }
       end

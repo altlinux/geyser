@@ -1,3 +1,9 @@
 создавать папку /var/www/prometheus2.0/shared/sockets
 менять разрешения chmod a+rx /var/www
 
+таблицу mirrors в mirror_paths
+таблицу perl_watches в issues
+проверить Team
+удалить таблицы: freshmeats, ftbfs, mirrors, perl_watches, pg_search_documents, teams
+очистить таблицу: packages, maintainers от email
+

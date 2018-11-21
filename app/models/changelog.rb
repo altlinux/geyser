@@ -21,7 +21,7 @@ class Changelog < ApplicationRecord
       def import_from rpm, package
          attrs =
             rpm.change_log.map.with_index do |changelog, index|
-               /(?<name>.*?)[ <>]*(?<pre_email>[^<>@ ]+(?:@| at )[^<>@ ]+)[ <>]*(?<evr>.*)/ =~ changelog[1]
+               /(?<evr>[^ )<>@]+)$/ =~ changelog[1]
 
                maintainer = Maintainer.import_from_changelogname(changelog[1])
 

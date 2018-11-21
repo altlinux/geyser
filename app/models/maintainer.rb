@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Maintainer < ApplicationRecord
+   has_one :email, -> { where(foremost: true) }, class_name: 'Recital::Email'
+
    has_many :packages, foreign_key: :builder_id, inverse_of: :builder
    has_many :rpms, through: :packages
    has_many :branch_paths, -> { distinct }, through: :rpms
@@ -22,6 +24,7 @@ class Maintainer < ApplicationRecord
                         through: :gear_maintainers,
                         source: :gear,
                         class_name: :Gear
+   has_many :emails, class_name: 'Recital::Email'
 
    scope :top, ->(limit) { order(srpms_count: :desc).limit(limit) }
    scope :person, -> { where("maintainers.login ~ '^[^@].*'", ) }
@@ -29,9 +32,9 @@ class Maintainer < ApplicationRecord
 
    alias_method(:srpms_names, :built_names) #TODO remove of compat
 
-   validates_presence_of :name, :email
-   validates :name, immutable: true
-   validates :email, immutable: true
+   accepts_nested_attributes_for :email
+
+   validates_presence_of :name
 
    def slug
       to_param
@@ -67,36 +70,32 @@ class Maintainer < ApplicationRecord
 
    class << self
       def import_from_changelogname(changelogname)
-         emails = changelogname&.scan(/[^<>@ ]+(?:@| at )[^<>@ ]+(?:\.| dot )[^<>@ ]+/)
+         emails = changelogname&.scan(/[^<>@( ]+(?:@| at )[^<>@) ]+(?:\.| dot )[^<>@) ]+/)
          if emails.present?
             email = FixMaintainerEmail.new(emails.last).execute
          else
             email = 'somebody@somewhere.example'
          end
 
-         if email
-            (login, domain) = email.split('@')
-            kls = (domain == 'packages.altlinux.org' && 'Maintainer::Team' || 'Maintainer::Person').constantize
+         (login, domain) = email.split('@')
+         kls = (domain == 'packages.altlinux.org' && 'Maintainer::Team' || 'Maintainer::Person').constantize
 
-            pre_name = (changelogname && changelogname.split('<')[0].chomp.strip).to_s
-            name = if pre_name.encoding == "UTF-8"
-               pre_name
+         pre_name = (changelogname && changelogname.split('<')[0].chomp.strip).to_s
+         name = if pre_name.blank?
+            email
+         elsif pre_name.encoding == "UTF-8"
+            pre_name
+         else
+            if pre_name.ascii_only?
+               pre_name.encode("UTF-8")
             else
-               if pre_name.ascii_only?
-                  pre_name.encode("UTF-8")
-               else
-                  pre_name.force_encoding("ISO-8859-1").encode("UTF-8", replace: nil)
-               end
-            end
-
-            kls.find_or_create_by!(email: email) do |m|
-               m.name = name.blank? && email || name
-
-               if /@(packages\.)?altlinux\.org$/ =~ email
-                  m.login = login
-               end
+               pre_name.force_encoding("ISO-8859-1").encode("UTF-8", replace: nil)
             end
          end
+
+         Recital::Email.find_or_create_by!(address: email) do |re|
+            re.maintainer = Maintainer.new(name: name, login: /@(packages\.)?altlinux\.org$/ =~ email && login || nil)
+         end.maintainer
       end
    end
 end

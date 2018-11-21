@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_20_111000) do
+ActiveRecord::Schema.define(version: 2018_11_21_173700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -195,9 +195,9 @@ ActiveRecord::Schema.define(version: 2018_11_20_111000) do
     t.string "reporter", null: false, comment: "Почта отчитавшегося о решении проблемы"
     t.text "description", comment: "Описание проблемы"
     t.string "evr", comment: "Эпоха, справа, выпуск пакета"
+    t.datetime "reported_at", comment: "Время, когда был получен отчет об ошибке"
     t.datetime "resolved_at", comment: "Время разрешения вопроса"
     t.bigint "branch_path_id", null: false, comment: "Ссылка на источник ветви, к которой относится вопрос"
-    t.datetime "reported_at", comment: "Время, когда был получен отчет об ошибке"
     t.string "log_url", comment: "Пучинная ссылка на лог сборки пакета или иной лог"
     t.datetime "updated_at", comment: "Время последней пересборки пакета"
     t.string "source_url", comment: "Внешеняя ссылка на пакет-источник вопроса"
@@ -345,6 +345,17 @@ ActiveRecord::Schema.define(version: 2018_11_20_111000) do
     t.index ["package_id"], name: "index_provides_on_package_id"
   end
 
+  create_table "recitals", force: :cascade do |t|
+    t.string "address", null: false, comment: "Адрес общалки"
+    t.string "type", null: false, comment: "Вид общалки"
+    t.bigint "maintainer_id", null: false, comment: "Отсылка на сопровождающего"
+    t.boolean "foremost", default: false, comment: "Первичная общалка"
+    t.index ["address", "type"], name: "index_recitals_on_address_and_type", unique: true
+    t.index ["address"], name: "index_recitals_on_address"
+    t.index ["maintainer_id"], name: "index_recitals_on_maintainer_id"
+    t.index ["type"], name: "index_recitals_on_type"
+  end
+
   create_table "repocop_notes", force: :cascade do |t|
     t.bigint "package_id", null: false, comment: "Ссылка на архитектурный пакет, к которому применима заметка"
     t.integer "status", null: false, comment: "Короткий статус заметки: заметка, ошибка, предупреждение или опыт"
@@ -462,6 +473,7 @@ ActiveRecord::Schema.define(version: 2018_11_20_111000) do
   add_foreign_key "branch_groups", "groups", on_delete: :cascade
   add_foreign_key "branch_paths", "branch_paths", column: "source_path_id", on_delete: :cascade
   add_foreign_key "branch_paths", "branches", on_delete: :cascade
+  add_foreign_key "branching_maintainers", "maintainers", on_delete: :cascade
   add_foreign_key "changelogs", "maintainers", on_delete: :nullify
   add_foreign_key "changelogs", "packages", column: "spkg_id"
   add_foreign_key "changelogs", "packages", on_delete: :restrict
@@ -469,11 +481,13 @@ ActiveRecord::Schema.define(version: 2018_11_20_111000) do
   add_foreign_key "gear_maintainers", "gears", on_delete: :cascade
   add_foreign_key "gear_maintainers", "maintainers", on_delete: :cascade
   add_foreign_key "issue_assignees", "issues", on_delete: :cascade
+  add_foreign_key "issue_assignees", "maintainers", on_delete: :restrict
   add_foreign_key "issues", "branch_paths", on_delete: :cascade
   add_foreign_key "mirrors", "branches", on_delete: :cascade
   add_foreign_key "packages", "groups", on_delete: :restrict
   add_foreign_key "packages", "maintainers", column: "builder_id", on_delete: :restrict
   add_foreign_key "patches", "packages", on_delete: :restrict
+  add_foreign_key "recitals", "maintainers", on_delete: :cascade
   add_foreign_key "repocop_notes", "packages", on_delete: :cascade
   add_foreign_key "repocop_patches", "packages", on_delete: :cascade
   add_foreign_key "rpms", "branch_paths", on_delete: :cascade
