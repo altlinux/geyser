@@ -34,7 +34,7 @@ msgid "<b>Limit<br>by size:</b><br>"
 msgstr ""
 
 msgid ""
-"<b>Prometheus</b> project is an attempt to create analytic site for developers and users of\n"
+"<b>Geyser</b> project is an attempt to create analytic site for developers and users of\n"
 "Sisyphus repository.<br><br>\n"
 "\n"
 "It is useful for developers due to ability to more closely interoperate with other\n"
@@ -585,97 +585,97 @@ msgstr ""
 msgid "Planet"
 msgstr ""
 
-msgid "Project Prometheus"
+msgid "Project Geyser"
 msgstr ""
 
-msgid "Prometheus 2.0 - 404"
+msgid "Geyser - 404"
 msgstr ""
 
-msgid "Prometheus 2.0 - Group &laquo;%s&raquo;"
+msgid "Geyser - Group &laquo;%s&raquo;"
 msgstr ""
 
-msgid "Prometheus 2.0 - Group - Error!"
+msgid "Geyser - Group - Error!"
 msgstr ""
 
-msgid "Prometheus 2.0 - Groups"
+msgid "Geyser - Groups"
 msgstr ""
 
-msgid "Prometheus 2.0 - Information about the project"
+msgid "Geyser - Information about the project"
 msgstr ""
 
-msgid "Prometheus 2.0 - Intro"
+msgid "Geyser - Intro"
 msgstr ""
 
-msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo;"
+msgid "Geyser - Maintainer &laquo;%s&raquo;"
 msgstr ""
 
-msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - ACL"
+msgid "Geyser - Maintainer &laquo;%s&raquo; - ACL"
 msgstr ""
 
-msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - Bugs and FR"
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs and FR"
 msgstr ""
 
-msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - Bugs and FR (All)"
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs and FR (All)"
 msgstr ""
 
-msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - FTBFS"
+msgid "Geyser - Maintainer &laquo;%s&raquo; - FTBFS"
 msgstr ""
 
-msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - Gear"
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Gear"
 msgstr ""
 
-msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - Packages"
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Packages"
 msgstr ""
 
-msgid "Prometheus 2.0 - Maintainer &laquo;%s&raquo; - Repocop"
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Repocop"
 msgstr ""
 
-msgid "Prometheus 2.0 - Maintainers &amp; Teams"
+msgid "Geyser - Maintainers &amp; Teams"
 msgstr ""
 
-msgid "Prometheus 2.0 - Package &laquo;%s&raquo;"
+msgid "Geyser - Package &laquo;%s&raquo;"
 msgstr ""
 
-msgid "Prometheus 2.0 - Package &laquo;%s&raquo; - All bugs"
+msgid "Geyser - Package &laquo;%s&raquo; - All bugs"
 msgstr ""
 
-msgid "Prometheus 2.0 - Package &laquo;%s&raquo; - Bugs"
+msgid "Geyser - Package &laquo;%s&raquo; - Bugs"
 msgstr ""
 
-msgid "Prometheus 2.0 - Package &laquo;%s&raquo; - Changelog"
+msgid "Geyser - Package &laquo;%s&raquo; - Changelog"
 msgstr ""
 
-msgid "Prometheus 2.0 - Package &laquo;%s&raquo; - Download"
+msgid "Geyser - Package &laquo;%s&raquo; - Download"
 msgstr ""
 
-msgid "Prometheus 2.0 - Package &laquo;%s&raquo; - Gear"
+msgid "Geyser - Package &laquo;%s&raquo; - Gear"
 msgstr ""
 
-msgid "Prometheus 2.0 - Package &laquo;%s&raquo; - Patches"
+msgid "Geyser - Package &laquo;%s&raquo; - Patches"
 msgstr ""
 
-msgid "Prometheus 2.0 - Package &laquo;%s&raquo; - Repocop"
+msgid "Geyser - Package &laquo;%s&raquo; - Repocop"
 msgstr ""
 
-msgid "Prometheus 2.0 - Package &laquo;%s&raquo; - Sources"
+msgid "Geyser - Package &laquo;%s&raquo; - Sources"
 msgstr ""
 
-msgid "Prometheus 2.0 - Package &laquo;%s&raquo; - Spec"
+msgid "Geyser - Package &laquo;%s&raquo; - Spec"
 msgstr ""
 
-msgid "Prometheus 2.0 - Rsync Exclude"
+msgid "Geyser - Rsync Exclude"
 msgstr ""
 
-msgid "Prometheus 2.0 - Search"
+msgid "Geyser - Search"
 msgstr ""
 
-msgid "Prometheus 2.0 - Security"
+msgid "Geyser - Security"
 msgstr ""
 
-msgid "Prometheus 2.0 - Team &laquo;%s&raquo;"
+msgid "Geyser - Team &laquo;%s&raquo;"
 msgstr ""
 
-msgid "Prometheus 2.0 - Team - Error!"
+msgid "Geyser - Team - Error!"
 msgstr ""
 
 msgid "Publishing"
@@ -977,7 +977,7 @@ msgstr ""
 msgid "Your password won't change until you access the link above and create a new one."
 msgstr ""
 
-msgid "about Prometheus project"
+msgid "about Geyser project"
 msgstr ""
 
 msgid "age"

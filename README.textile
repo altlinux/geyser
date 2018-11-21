@@ -1,4 +1,4 @@
-h1. Welcome to Prometheus 2.0
+h1. Welcome to Geyser
 how to know able to build
     ssh build.alt task new --help|grep Valid|sed 's|.*: ||'
 
@@ -85,4 +85,4 @@ https://github.com/shieldfy/API-Security-Checklist
 
 h2. License
 
-Prometheus 2.0 uses the MIT license. Please check the MIT-LICENSE file for more details.
+Geyser uses the MIT license. Please check the MIT-LICENSE file for more details.

@@ -9,8 +9,8 @@ module Api
       key :swagger, '2.0'
       info do
         key :version, '1.0.0'
-        key :title, 'Prometheus 2.0 API documentation'
-        key :description, 'Prometheus 2.0 API documentation.'
+        key :title, 'Geyser API documentation'
+        key :description, 'Geyser API documentation.'
       end
       key :schemes, ['https', 'http']
       key :host, 'packages.altlinux.org'
