@@ -3,7 +3,7 @@
 class AllBugsForSrpm < Rectify::Query
   attr_reader :spkg, :branch
 
-  def initialize(spkg: spkg, branch: branch)
+  def initialize(spkg: nil, branch: nil)
     @spkg = spkg
     @branch = branch
   end
