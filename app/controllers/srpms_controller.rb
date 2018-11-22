@@ -42,7 +42,9 @@ class SrpmsController < ApplicationController
 
   def get
     @mirrors = Mirror.where(branch_id: @branch.id).where("protocol != 'rsync'").order('mirrors.order_id ASC')
-    packages = @spkg.packages.order('packages.name ASC').group("packages.arch, packages.id")
+    packages = @spkg.all_packages
+                    .group("packages.arch, packages.id")
+                    .order("packages.name ASC")
     @arched_packages_s = PackagesAsArchedPackagesSerializer.new(packages, branch: @branch)
   end
 
