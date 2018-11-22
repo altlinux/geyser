@@ -93,7 +93,7 @@ module SrpmsHelper
 
     map.map do |(title, data)|
       data[:path] = version && "versioned_" + data[:path] || data[:path]
-
+      data[:args] = data[:args] << version
       data[:title] ||= _(title.to_s.capitalize)
 
       [title, data]
