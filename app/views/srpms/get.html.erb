@@ -1,4 +1,4 @@
-<% title _('Prometheus 2.0 - Package &laquo;%s&raquo; - Download') % @spkg.name %>
+<% title _('Geyser - Package &laquo;%s&raquo; - Download') % @spkg.name %>
 <% description "#{ @spkg.name } - #{ @spkg.summary }" %>
 <% keywords @spkg.summary %>
 
@@ -17,22 +17,9 @@
 <div>
 <%= render partial: "shared/srpms_menu", locals: { current_page: :download, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, version: @version } %>
 
-<p />
-
 <table class="sources">
-  <%- if url = @spkg.ftp_url %>
-  <tr>
-    <td class="package">
-      <b>&middot;</b>
-        <a href="<%= @spkg.ftp_url %>" class="news download"><%= @spkg.filename_in(@branch) %></a> (md5: <%= @spkg.md5 %>)
-    </td>
-    <td class="size">
-      <b><%= number_to_human_size(@spkg.size) %></b>
-    </td>
-  </tr>
-
-  <%= render partial: 'shared/arches', locals: { arches: @arched_packages_s.as_json }  %>
-
+  <%- if @arched_packages_s.present? %>
+    <%= render partial: 'shared/arches', locals: { arches: @arched_packages_s.as_json } %>
   <%- else %>
     <p><%= _('No files to download') %></p>
   <%- end %>

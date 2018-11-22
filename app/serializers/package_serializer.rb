@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'open-uri'
-
 class PackageSerializer < RecordSerializer
    include ActionView::Helpers::NumberHelper
 
@@ -12,28 +10,23 @@ class PackageSerializer < RecordSerializer
    end
 
    def ftp_url
-      object.branch_paths.published.reduce(nil) do |res, bp|
-         path = File.join(bp.ftp_url, filename)
-
-         res || is_url_available?(path) && path || nil
-      end
+      rpm.ftp_url
    end
 
    def filename
-      if instance_options[:branch]
-         object.rpms.by_branch_path(branch.branch_paths).first&.filename
-      else
-         object.rpms.first&.filename
-      end
+      rpm.filename
    end
 
    protected
 
-   def is_url_available? url
-      open(url)
+   def rpm
+      @rpm ||= branch_paths.reduce(nil) do |res, bp|
+         res || object.rpms.by_branch_path(bp).find { |rpm| rpm.file_exists? }
+      end
+   end
 
-      true
-   rescue OpenURI::HTTPError
-      false
+   def branch_paths
+      scope = object.branch_paths.published
+      instance_options[:branch] && scope.in_branch(instance_options[:branch]) || scope
    end
 end

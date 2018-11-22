@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'open-uri'
 
 class PackageDecorator < Draper::Decorator
   include ActionView::Helpers::NumberHelper
@@ -52,22 +51,6 @@ class PackageDecorator < Draper::Decorator
 
    def human_size
       number_to_human_size(size)
-   end
-
-   def ftp_url
-      branch_paths.published.reduce(nil) do |res, bp|
-         path = File.join(bp.ftp_url, filename)
-
-         res || is_url_available?(path) && path || nil
-      end
-   end
-
-   def is_url_available? url
-      open(url)
-
-      true
-   rescue OpenURI::HTTPError
-      false
    end
 
    def filename

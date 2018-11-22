@@ -24,6 +24,10 @@ class Rpm < ApplicationRecord
       File.join(branch_path.path, self.filename)
    end
 
+   def ftp_url
+      File.join(branch_path.ftp_url, self.filename)
+   end
+
    def is_obsoleted?
       obsoleted_at.present?
    end
@@ -39,5 +43,9 @@ class Rpm < ApplicationRecord
                                         obsoleted_at: obsoleted_at)
 
       scope.present?
+   end
+
+   def file_exists?
+      File.exists?(filepath)
    end
 end

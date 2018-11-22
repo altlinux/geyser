@@ -1,7 +1,8 @@
 - arches.each do |arch, packages|
    tr.arch
       td
-         b = "#{arch}: "
+         - if arch != 'src'
+            b = "#{arch}: "
          - packages.each.with_index do |package, index|
             tr
                td.package
