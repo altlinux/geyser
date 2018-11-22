@@ -9,7 +9,7 @@
 <b><%= _('Total records:') %></b> <%= @all_bugs.count %> (<span style='color: red;'><%= @opened_bugs.count %></span>|<%= @all_bugs.count - @opened_bugs.count %>)
 
 <div style="text-align:left;margin-left:2em;margin-top:1.5em;">
-<span class="tabunsel">&nbsp;<%= link_to _('open'), bugs_maintainer_path(@maintainer), class: 'news' %>&nbsp;</span>
+<span class="tabunsel">&nbsp;<%= link_to _('open'), bugs_maintainer_path(branch: @branch, id: @maintainer), class: 'news' %>&nbsp;</span>
 <span class="tabsel">&nbsp;<%= _('total') %>&nbsp;</span>
 </div>
 
