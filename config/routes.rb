@@ -108,7 +108,9 @@ Rails.application.routes.draw do
     resource :maintainer_profile, only: [:edit, :update]
     resource :search, only: :show
     resources :rebuild, controller: :rebuild, only: :index
-    resources :rsync, controller: :rsync, only: :new
+    resources :rsync, controller: :rsync, only: %i(new) do
+       post :generate, on: :collection
+    end
 
     scope ':branch', branch: /([^\/]+)/ do
       resources :maintainers, only: :show do
