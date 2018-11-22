@@ -53,12 +53,13 @@ class Package < ApplicationRecord
       if text.blank?
          all
       else
-         subquery = "
-            SELECT DISTINCT src_id FROM (SELECT src_id, tsv, ts_rank_cd(tsv, plainto_tsquery('#{text}'))
-            FROM packages, plainto_tsquery(?) AS q
-            WHERE (tsv @@ q)
-            ORDER BY ts_rank_cd(tsv, plainto_tsquery(?)) DESC) as t1"
-         where("packages.id IN (#{subquery})", text, text)
+         from = self.send(:sanitize_sql_array, ["packages, plainto_tsquery(?) AS q", text])
+         select = self.send(:sanitize_sql_array, ["CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text])
+         qs = Package.from(from).where("tsv @@ q").select(:src_id, select)
+
+         joins("INNER JOIN (#{qs.to_sql}) AS qs ON qs.src_id = packages.id")
+            .order("qs.rank DESC")
+            .select("packages.*, qs.rank")
       end
    end
    singleton_class.send(:alias_method, :q, :query)

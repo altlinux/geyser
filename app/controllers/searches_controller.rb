@@ -12,7 +12,10 @@ class SearchesController < ApplicationController
       @spkgs = Package::Src.b(@branch.slug)
                            .a(@arches)
                            .q(params[:query])
-                           .reorder("packages.name, packages.epoch DESC, packages.version DESC, packages.release DESC")
+                           .order("packages.name,
+                                   packages.epoch DESC,
+                                   packages.version DESC,
+                                   packages.release DESC")
                            .includes(:branches, :rpms)
                            .distinct
                            .page(params[:page])
