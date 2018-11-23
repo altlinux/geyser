@@ -104,7 +104,7 @@ Rails.application.routes.draw do
       get 'packages' => 'group#index', as: 'packages'
       get 'security' => 'security#index', as: 'security'
 
-      get '/', to: redirect('/%{locale}/%{branch}/home')
+      #get '/', to: redirect('/%{locale}/%{branch}/home')
     end
 
     resource :maintainer_profile, only: [:edit, :update]
