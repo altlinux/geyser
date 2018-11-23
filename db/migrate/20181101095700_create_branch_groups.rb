@@ -28,6 +28,8 @@ class CreateBranchGroups < ActiveRecord::Migration[5.2]
 
       reversible do |dir|
          dir.up do
+            Group.connection.schema_cache.clear!
+            Group.reset_column_information
             Group.import!(group_attrs, on_duplicate_key_ignore: true)
 
             queries = [

@@ -37,12 +37,15 @@ class CreateRecitals < ActiveRecord::Migration[5.2]
               'Gleb F-Malinovskiy (qa)' => 'Gleb Fotengauer-Malinovskiy' }.each do |name, to_name|
                maintainer = Maintainer.find_by_name(name)
                main_maintainer = Maintainer.find_by_name(to_name)
-               MergeMaintainers.new(source: maintainer, target: main_maintainer).do
+
+               if main_maintainer && maintainer
+                  MergeMaintainers.new(source: maintainer, target: main_maintainer).do
+               end
             end
 
             Maintainer.joins(:emails).find_each do |main_maintainer|
                Maintainer.where("email IN (#{main_maintainer.emails.select(:address).to_sql})").each do |maintainer|
-                  if maintainer != main_maintainer
+                  if main_maintainer && maintainer && maintainer != main_maintainer
                      puts "#{maintainer.name} (#{maintainer.id}) => #{main_maintainer.name} (#{main_maintainer.id})"
                      MergeMaintainers.new(source: maintainer, target: main_maintainer).do
                   end
