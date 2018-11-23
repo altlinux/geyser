@@ -3,85 +3,49 @@
 require 'rails_helper'
 
 describe GroupController do
-  describe 'routing' do
-    it 'should route /:branch/packages to group#index' do
-      expect(get: '/Sisyphus/packages').to route_to(
-        controller: 'group',
-        action: 'index',
-        branch: 'Sisyphus'
-      )
-    end
+   include RSpec::Rails::RequestExampleGroup
 
-    it 'should route /:locale/:branch/packages to group#index' do
-      expect(get: '/en/Sisyphus/packages').to route_to(
-        controller: 'group',
-        action: 'index',
-        locale: 'en',
-        branch: 'Sisyphus'
-      )
-    end
+   describe 'routing' do
+      it { is_expected.to route(:get, '/ru/packages').to("group#index", locale: :ru) }
+      it { is_expected.to route(:get, '/ru/packages/slug').to("group#show", locale: :ru, slug: "slug") }
+   end
 
-    it 'should route /:branch/packages/:group to group#bygroup' do
-      expect(get: '/Sisyphus/packages/Accessibility').to route_to(
-        controller: 'group',
-        action: 'show',
-        branch: 'Sisyphus',
-        group: 'Accessibility'
-      )
-    end
+   describe 'packages.a.o routing' do
+      it do
+         get '/ru/Sisyphus/packages/Engineering'
+         expect(response).to redirect_to("/ru/sisyphus/packages/engineering")
+      end
 
-    it 'should route /:locale/:branch/packages/:group to group#bygroup' do
-      expect(get: '/en/Sisyphus/packages/Accessibility').to route_to(
-        controller: 'group',
-        action: 'show',
-        locale: 'en',
-        branch: 'Sisyphus',
-        group: 'Accessibility'
-      )
-    end
+      it do
+         get '/ru/Sisyphus/packages/System/X11'
+         expect(response).to redirect_to("/ru/sisyphus/packages/system_x11")
+      end
 
-    it 'should route /:branch/packages/:group/:group2 to group#bygroup' do
-      expect(get: '/Sisyphus/packages/Archiving/Compression').to route_to(
-        controller: 'group',
-        action: 'show',
-        branch: 'Sisyphus',
-        group: 'Archiving',
-        group2: 'Compression'
-      )
-    end
+      it do
+         get '/ru/Sisyphus/packages/System/Configuration/Boot_and_Init'
+         expect(response).to redirect_to("/ru/sisyphus/packages/system_configuration_boot_and_init")
+      end
+   end
 
-    it 'should route /:locale/:branch/packages/:group/:group2 to group#bygroup' do
-      expect(get: '/en/Sisyphus/packages/Archiving/Compression').to route_to(
-        controller: 'group',
-        action: 'show',
-        locale: 'en',
-        branch: 'Sisyphus',
-        group: 'Archiving',
-        group2: 'Compression'
-      )
-    end
+   describe 'sisyphus.ru routing' do
+      it do
+         get '/ru/packages'
+         expect(response).to redirect_to("/ru/sisyphus/packages")
+      end
 
-    it 'should route /:branch/packages/:group/:group2/:group3 to group#bygroup' do
-      expect(get: '/Sisyphus/packages/System/Configuration/Hardware').to route_to(
-        controller: 'group',
-        action: 'show',
-        branch: 'Sisyphus',
-        group: 'System',
-        group2: 'Configuration',
-        group3: 'Hardware'
-      )
-    end
+      it do
+         get '/ru/packages/Engineering'
+         expect(response).to redirect_to("/ru/sisyphus/packages/engineering")
+      end
 
-    it 'should route /:locale/:branch/packages/:group/:group2/:group3 to group#bygroup' do
-      expect(get: '/en/Sisyphus/packages/System/Configuration/Hardware').to route_to(
-        controller: 'group',
-        action: 'show',
-        locale: 'en',
-        branch: 'Sisyphus',
-        group: 'System',
-        group2: 'Configuration',
-        group3: 'Hardware'
-      )
-    end
-  end
+      it do
+         get '/ru/packages/System/X11'
+         expect(response).to redirect_to("/ru/sisyphus/packages/system_x11")
+      end
+
+      it do
+         get '/ru/packages/System/Configuration/Boot_and_Init'
+         expect(response).to redirect_to("/ru/sisyphus/packages/system_configuration_boot_and_init")
+      end
+   end
 end

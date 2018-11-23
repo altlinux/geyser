@@ -3,45 +3,47 @@
 require 'rails_helper'
 
 describe PatchesController do
-  describe 'routing' do
-    it 'should route /:branch/srpms/:srpm_id/patches to patches#index' do
-      expect(get: '/Sisyphus/srpms/glibc/patches').to route_to(
-        controller: 'patches',
-        action: 'index',
-        branch: 'Sisyphus',
-        srpm_id: 'glibc'
-      )
-    end
+   include RSpec::Rails::RequestExampleGroup
 
-    it 'should route /:locale/:branch/srpms/:srpm_id/patches to patches#index' do
-      expect(get: '/en/Sisyphus/srpms/glibc/patches').to route_to(
-        controller: 'patches',
-        action: 'index',
-        branch: 'Sisyphus',
-        srpm_id: 'glibc',
-        locale: 'en'
-      )
-    end
+   describe 'routing' do
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/srpms/reponame/patches')
+                    .to("patches#index", locale: :ru, branch: 'sisyphus', name: 'reponame')
+      end
 
-    it 'should route /:branch/srpms/:srpm_id/patches/:id to patches#show' do
-      expect(get: '/Sisyphus/srpms/pmount/patches/pmount-0.9.23-alt-natspec.patch').to route_to(
-        controller: 'patches',
-        action: 'show',
-        branch: 'Sisyphus',
-        srpm_id: 'pmount',
-        id: 'pmount-0.9.23-alt-natspec.patch'
-      )
-    end
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/srpms/reponame/patches/patch')
+                    .to("patches#show", locale: :ru, branch: 'sisyphus', name: 'reponame', patch_name: 'patch')
+      end
 
-    it 'should route /:locale/:branch/srpms/:srpm_id/patches/:id to patches#show' do
-      expect(get: '/en/Sisyphus/srpms/pmount/patches/pmount-0.9.23-alt-natspec.patch').to route_to(
-        controller: 'patches',
-        action: 'show',
-        branch: 'Sisyphus',
-        srpm_id: 'pmount',
-        id: 'pmount-0.9.23-alt-natspec.patch',
-        locale: 'en'
-      )
-    end
-  end
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/srpms/reponame/patches/patch/download')
+                    .to("patches#download", locale: :ru, branch: 'sisyphus', name: 'reponame', patch_name: 'patch')
+      end
+
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/srpms/reponame/1:1.0-alt1-1542975608/patches')
+                    .to("patches#index", locale: :ru, branch: 'sisyphus', name: 'reponame', evrb: '1:1.0-alt1-1542975608')
+      end
+
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/srpms/reponame/1:1.0-alt1-1542975608/patches/patch')
+                    .to("patches#show", locale: :ru, branch: 'sisyphus', name: 'reponame', evrb: '1:1.0-alt1-1542975608', patch_name: 'patch')
+      end
+
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/srpms/reponame/1.0-alt1/patches/patch/download')
+                    .to("patches#download", locale: :ru, branch: 'sisyphus', name: 'reponame', evrb: '1.0-alt1', patch_name: 'patch')
+      end
+   end
+
+   describe 'packages.a.o routing' do
+   end
+
+   describe 'sisyphus.ru routing' do
+      it do
+         get '/ru/srpm/sisyphus/reponame/patches'
+         expect(response).to redirect_to("/ru/sisyphus/srpms/reponame/patches")
+      end
+   end
 end
