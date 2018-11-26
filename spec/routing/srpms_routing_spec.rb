@@ -55,6 +55,18 @@ describe SrpmsController do
          get '/ru/Sisyphus/srpms/name/gear'
          expect(response).to redirect_to("/ru/Sisyphus/srpms/name")
       end
+
+      # get '/:name', to: redirect('/ru/sisyphus/srpms/:name')
+      it do
+         get '/name'
+         expect(response).to redirect_to("/ru/sisyphus/srpms/name")
+      end
+
+      # get '/src::name', to: redirect('/ru/sisyphus/srpms/:name')
+      it do
+         get '/src:name'
+         expect(response).to redirect_to("/ru/sisyphus/srpms/name")
+      end
    end
 
    describe 'sisyphus.ru routing' do

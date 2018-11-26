@@ -7,6 +7,9 @@ class SrpmsController < ApplicationController
   before_action :fetch_bugs, only: %i(show changelog spec get)
   before_action :fetch_changelogs, only: %i(show changelog)
 
+  def index
+  end
+
   def show
     @ftbfs = @branch.ftbfs.active
                           .where(repo_name: @spkg.name, evr: @spkg.evr)

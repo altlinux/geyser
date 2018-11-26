@@ -143,7 +143,7 @@ Rails.application.routes.draw do
       get 'packages/:group1', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}" }
       get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
       get 'packages/:group1/:group2/:group3', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}_#{pp[:group3].downcase}" }
-    end
+   end
 
     resource :maintainer_profile, only: [:edit, :update]
     resource :search, only: :show
@@ -151,42 +151,8 @@ Rails.application.routes.draw do
     resources :rsync, controller: :rsync, only: %i(new) do
        post :generate, on: :collection
     end
-
-#    scope ':branch', branch: /([^\/]+)/ do
-#      resources :maintainers, only: :show do
-#        get 'srpms', on: :member
-#        resources :activity, only: :index, controller: :maintainer_activity
-#      end
-#    end
-  end
-
-   resources :repocop_patches, only: [], param: 'package_id' do
-      get :download
    end
 
-  get '(/:locale)/misc/bugs' => 'misc#bugs', locale: SUPPORTED_LOCALES_RE
-
-  # TODO: drop this later
-  # get '/repocop' => 'repocop#index'
-  # get '/repocop/by-test/:testname' => 'repocop#bytest'
-  #
-  # get '/repocop/by-test/install_s' => 'repocop#srpms_install_s'
-
-  # TODO: drop this and make API
-  get '/repocop/no_url_tag' => 'repocop#no_url_tag'
-  get '/repocop/invalid_url' => 'repocop#invalid_url'
-  get '/repocop/invalid_vendor' => 'repocop#invalid_vendor'
-  get '/repocop/invalid_distribution' => 'repocop#invalid_distribution'
-  get '/repocop/srpms_summary_too_long' => 'repocop#srpms_summary_too_long'
-  get '/repocop/packages_summary_too_long' => 'repocop#packages_summary_too_long'
-  get '/repocop/srpms_summary_ended_with_dot' => 'repocop#srpms_summary_ended_with_dot'
-  get '/repocop/packages_summary_ended_with_dot' => 'repocop#packages_summary_ended_with_dot'
-  get '/repocop/srpms_filename_too_long_for_joliet' => 'repocop#srpms_filename_too_long_for_joliet'
-  get '/repocop/packages_filename_too_long_for_joliet' => 'repocop#packages_filename_too_long_for_joliet'
-  get '/repocop/srpms_install_s' => 'repocop#srpms_install_s'
-  # END
-
-  get '/src::name' => 'srpm_redirector#index', name: /[^\/]+/
-
-  get '/:name' => 'redirector#index', name: /[^\/]+/
+   get '/src::reponame', reponame: /[^\/]+/, to: redirect('/ru/sisyphus/srpms/%{reponame}')
+   get '/:reponame', reponame: /[^\/]+/, to: redirect('/ru/sisyphus/srpms/%{reponame}')
 end
