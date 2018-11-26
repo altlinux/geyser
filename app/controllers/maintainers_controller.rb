@@ -17,12 +17,6 @@ class MaintainersController < ApplicationController
       @acl_count = maintainer.acl_names.count
    end
 
-#  def acls
-#    @acls = Acl.all :conditions => {
-#                      :maintainer_slug => params[:login],
-#                      :branch_id => @branch.id }
-#  end
-
    def gear
       @gears = Gear.joins(:gear_maintainers).for_maintainer(@maintainer).order(changed_at: :desc)
    end
@@ -41,7 +35,7 @@ class MaintainersController < ApplicationController
                            .order(reported_at: :asc, repo_name: :asc)
    end
 
-   def ftbfs
+   def ftbfses
       @ftbfs = Issue::Ftbfs.active
                            .joins(:issue_assignees)
                            .where(issue_assignees: { maintainer_id: maintainer })

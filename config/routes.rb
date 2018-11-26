@@ -31,9 +31,11 @@ Rails.application.routes.draw do
     root to: 'home#index'
 
     # support old rules
-    # from v2
+    # from v2:packages.a.o
     get ':branch/srpms/:reponame/gear', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
-    # from v1
+      get ':branch/maintainers/:login/gear', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/gears')
+      get ':branch/maintainers/:login/ftbfs', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/ftbfses')
+    # from v1:sisyphus.ru
     get 'srpm/:branch/:reponame', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
     get 'srpm/:branch/:reponame/changelog', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/changelog')
     get 'srpm/:branch/:reponame/spec', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/spec')
@@ -43,8 +45,11 @@ Rails.application.routes.draw do
     get 'srpm/:branch/:reponame/gear', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
     get 'srpm/:branch/:reponame/bugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/bugs')
     get 'srpm/:branch/:reponame/repocop', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/repocop')
-    get 'people', to: redirect('/%{locale}/sisyphus/maintainers')
-    get 'packager/:login', to: redirect('/%{locale}/sisyphus/maintainers/%{login}')
+      get 'people', to: redirect('/%{locale}/sisyphus/maintainers')
+      get 'packager/:login', to: redirect('/%{locale}/sisyphus/maintainers/%{login}')
+      get 'packager/:login/srpms', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/srpms')
+      get 'packager/:login/bugs', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/bugs')
+      get 'packager/:login/repocop', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/repocop')
     get 'team/:login', to: redirect('/%{locale}/sisyphus/teams/%{login}')
     get 'packages', to: redirect('/%{locale}/sisyphus/packages'), as: :old_packages
     get 'packages/:group1', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}" }
@@ -107,13 +112,17 @@ Rails.application.routes.draw do
       get 'rss' => 'rss#index', as: 'rss'
       resources :teams, only: [:index, :show]
 
-      resources :maintainers, only: :index
-      get 'maintainers/:id/gear' => 'maintainers#gear', as: 'gear_maintainer'
-      get 'maintainers/:id/bugs' => 'maintainers#bugs', as: 'bugs_maintainer'
-      get 'maintainers/:id/allbugs' => 'maintainers#allbugs', as: 'allbugs_maintainer'
-      get 'maintainers/:id/ftbfs' => 'maintainers#ftbfs', as: 'ftbfs_maintainer'
-      get 'maintainers/:id/watch' => 'maintainers#novelties', as: 'novelties_maintainer'
-      get 'maintainers/:id/repocop' => 'maintainers#repocop', as: 'repocop_maintainer'
+         resources :maintainers, param: 'login', only: %i(index show) do
+            member do
+               get 'srpms'
+               get 'gears'
+               get 'bugs'
+               get 'allbugs'
+               get 'ftbfses'
+               get 'watch' => 'maintainers#novelties', as: 'novelties'
+               get 'repocop'
+            end
+         end
 
       get 'packages/:slug' => 'group#show', slug: /[a-z_]+/, as: 'group'
       get 'packages' => 'group#index', as: 'packages'
@@ -134,12 +143,12 @@ Rails.application.routes.draw do
        post :generate, on: :collection
     end
 
-    scope ':branch', branch: /([^\/]+)/ do
-      resources :maintainers, only: :show do
-        get 'srpms', on: :member
-        resources :activity, only: :index, controller: :maintainer_activity
-      end
-    end
+#    scope ':branch', branch: /([^\/]+)/ do
+#      resources :maintainers, only: :show do
+#        get 'srpms', on: :member
+#        resources :activity, only: :index, controller: :maintainer_activity
+#      end
+#    end
   end
 
   scope ':locale', locale: SUPPORTED_LOCALES_RE do
