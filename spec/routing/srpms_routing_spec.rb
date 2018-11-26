@@ -3,119 +3,77 @@
 require 'rails_helper'
 
 describe SrpmsController do
-  describe 'routing' do
-    it 'should route /:branch/srpms/:id to srpms#show' do
-      expect(get: '/Sisyphus/srpms/glibc').to route_to(
-        controller: 'srpms',
-        action: 'show',
-        branch: 'Sisyphus',
-        id: 'glibc'
-      )
-    end
+   include RSpec::Rails::RequestExampleGroup
 
-    it 'should route /:locale/:branch/srpms/:id to srpms#show' do
-      expect(get: '/en/Sisyphus/srpms/glibc').to route_to(
-        controller: 'srpms',
-        action: 'show',
-        branch: 'Sisyphus',
-        id: 'glibc',
-        locale: 'en'
-      )
-    end
+   describe 'routing' do
+      # get '/ru' => 'srpms#index'
+      it do
+         is_expected.to route(:get, '/ru')
+                    .to("srpms#index", locale: :ru)
+      end
 
-    it 'should route /:branch/srpms/:id/changelog to srpms#show' do
-      expect(get: '/Sisyphus/srpms/glibc/changelog').to route_to(
-        controller: 'srpms',
-        action: 'changelog',
-        branch: 'Sisyphus',
-        id: 'glibc'
-      )
-    end
+      # get '/ru/:branch/home' => 'srpms#index'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/home')
+                    .to("srpms#index", locale: :ru, branch: 'sisyphus')
+      end
 
-    it 'should route /:locale/:branch/srpms/:id/changelog to srpms#changelog' do
-      expect(get: '/en/Sisyphus/srpms/glibc/changelog').to route_to(
-        controller: 'srpms',
-        action: 'changelog',
-        branch: 'Sisyphus',
-        id: 'glibc',
-        locale: 'en'
-      )
-    end
+      # get '/ru/:branch/srpms/:name' => 'srpms#show'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/srpms/name')
+                    .to("srpms#show", locale: :ru, branch: 'sisyphus', reponame: 'name')
+      end
 
-    it 'should route /:branch/srpms/:id/spec to srpms#spec' do
-      expect(get: '/Sisyphus/srpms/glibc/spec').to route_to(
-        controller: 'srpms',
-        action: 'spec',
-        branch: 'Sisyphus',
-        id: 'glibc'
-      )
-    end
+      # get '/ru/:branch/srpms/:name/rpms' => 'srpms#rpms'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/srpms/name/rpms')
+                    .to("srpms#rpms", locale: :ru, branch: 'sisyphus', reponame: 'name')
+      end
 
-    it 'should route /:locale/:branch/srpms/:id/spec to srpms#spec' do
-      expect(get: '/en/Sisyphus/srpms/glibc/spec').to route_to(
-        controller: 'srpms',
-        action: 'spec',
-        branch: 'Sisyphus',
-        id: 'glibc',
-        locale: 'en'
-      )
-    end
+      # get '/ru/:branch/srpms/:name/:evrb' => 'srpms#show'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/srpms/name/evrb')
+                    .to("srpms#show", locale: :ru, branch: 'sisyphus', reponame: 'name', evrb: 'evrb')
+      end
 
-    it 'should route /:branch/srpms/:id/rawspec to srpms#rawspec' do
-      expect(get: '/Sisyphus/srpms/glibc/rawspec').to route_to(
-        controller: 'srpms',
-        action: 'rawspec',
-        branch: 'Sisyphus',
-        id: 'glibc'
-      )
-    end
+      # get '/ru/:branch/srpms/:name/:evrb/rpms' => 'srpms#rpms'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/srpms/name/evrb/rpms')
+                    .to("srpms#rpms", locale: :ru, branch: 'sisyphus', reponame: 'name', evrb: 'evrb')
+      end
+   end
 
-    it 'should route /:locale/:branch/srpms/:id/rawspec to srpms#rawspec' do
-      expect(get: '/en/Sisyphus/srpms/glibc/rawspec').to route_to(
-        controller: 'srpms',
-        action: 'rawspec',
-        branch: 'Sisyphus',
-        id: 'glibc',
-        locale: 'en'
-      )
-    end
+   describe 'packages.a.o routing' do
+      # get '/ru/:branch/srpms/name/get', to: redirect('/%{locale}/:branch/srpms/:name/rpms')
+      it do
+         get '/ru/Sisyphus/srpms/name/get'
+         expect(response).to redirect_to("/ru/Sisyphus/srpms/name/rpms")
+      end
 
-    it 'should route /:branch/srpms/:id/get to srpms#get' do
-      expect(get: '/Sisyphus/srpms/glibc/get').to route_to(
-        controller: 'srpms',
-        action: 'get',
-        branch: 'Sisyphus',
-        id: 'glibc'
-      )
-    end
+      # get '/ru/srpm/:branch/:name/gear', to: redirect('/%{locale}/sisyphus/srpms/:name')
+      it do
+         get '/ru/Sisyphus/srpms/name/gear'
+         expect(response).to redirect_to("/ru/Sisyphus/srpms/name")
+      end
+   end
 
-    it 'should route /:locale/:branch/srpms/:id/get to srpms#get' do
-      expect(get: '/en/Sisyphus/srpms/glibc/get').to route_to(
-        controller: 'srpms',
-        action: 'get',
-        branch: 'Sisyphus',
-        id: 'glibc',
-        locale: 'en'
-      )
-    end
+   describe 'sisyphus.ru routing' do
+      # get '/ru/srpm/:branch/:name/gear', to: redirect('/%{locale}/sisyphus/srpms/:name')
+      it do
+         get '/ru/srpm/Sisyphus/name'
+         expect(response).to redirect_to("/ru/Sisyphus/srpms/name")
+      end
 
-    it 'should route /:branch/srpms/:id/gear to srpms#gear' do
-      expect(get: '/Sisyphus/srpms/glibc/gear').to route_to(
-        controller: 'srpms',
-        action: 'gear',
-        branch: 'Sisyphus',
-        id: 'glibc'
-      )
-    end
+      # get '/ru/srpm/:branch/:name', to: redirect('/%{locale}/sisyphus/srpms/:name')
+      it do
+         get '/ru/srpm/Sisyphus/name'
+         expect(response).to redirect_to("/ru/Sisyphus/srpms/name")
+      end
 
-    it 'should route /:locale/:branch/srpms/:id/gear to srpms#gear' do
-      expect(get: '/en/Sisyphus/srpms/glibc/gear').to route_to(
-        controller: 'srpms',
-        action: 'gear',
-        branch: 'Sisyphus',
-        id: 'glibc',
-        locale: 'en'
-      )
-    end
-  end
+      # get '/ru/srpm/:branch/:name/get', to: redirect('/%{locale}/sisyphus/srpms/:name/rpms')
+      it do
+         get '/ru/srpm/Sisyphus/name/get'
+         expect(response).to redirect_to("/ru/Sisyphus/srpms/name/rpms")
+      end
+   end
 end
