@@ -6,7 +6,7 @@
 
   <% if spkg.builder %>
   <span class="news-text" style="border-bottom: dotted 1px #f0f0f0">&nbsp;<%= _('build') %>
-    <%= link_to _(spkg.builder.name), maintainer_path(current_branch, spkg.builder), class: 'news', title: _('information about maintainer') %>, <%= spkg.buildtime %>
+    <%= link_to _(spkg.builder.name), maintainer_path(current_branch, spkg.builder), class: 'news', title: _('information about maintainer') %>, <%= I18n.localize(spkg.buildtime) %>
   </span>
   <% else %>
   <span class="news-text" style="border-bottom: dotted 1px #f0f0f0">&nbsp;<%= _('build') %>
