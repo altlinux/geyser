@@ -13,17 +13,17 @@ describe GroupController do
    describe 'packages.a.o routing' do
       it do
          get '/ru/Sisyphus/packages/Engineering'
-         expect(response).to redirect_to("/ru/sisyphus/packages/engineering")
+         expect(response).to redirect_to("/ru/Sisyphus/packages/engineering")
       end
 
       it do
          get '/ru/Sisyphus/packages/System/X11'
-         expect(response).to redirect_to("/ru/sisyphus/packages/system_x11")
+         expect(response).to redirect_to("/ru/Sisyphus/packages/system_x11")
       end
 
       it do
          get '/ru/Sisyphus/packages/System/Configuration/Boot_and_Init'
-         expect(response).to redirect_to("/ru/sisyphus/packages/system_configuration_boot_and_init")
+         expect(response).to redirect_to("/ru/Sisyphus/packages/system_configuration_boot_and_init")
       end
    end
 
