@@ -97,7 +97,7 @@ Rails.application.routes.draw do
       get 'maintainers/:id/bugs' => 'maintainers#bugs', as: 'bugs_maintainer'
       get 'maintainers/:id/allbugs' => 'maintainers#allbugs', as: 'allbugs_maintainer'
       get 'maintainers/:id/ftbfs' => 'maintainers#ftbfs', as: 'ftbfs_maintainer'
-      get 'maintainers/:id/novelties' => 'maintainers#novelties', as: 'novelties_maintainer'
+      get 'maintainers/:id/watch' => 'maintainers#novelties', as: 'novelties_maintainer'
       get 'maintainers/:id/repocop' => 'maintainers#repocop', as: 'repocop_maintainer'
 
       get 'packages/:slug' => 'group#show', as: 'group'

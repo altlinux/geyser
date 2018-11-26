@@ -31,9 +31,10 @@ module MaintainersHelper
          popup: 'FTBFS',
       },
       novelties: {
+         title: 'Watch',
          path: 'novelties_maintainer_path',
          args: [branch, maintainer],
-         popup: 'Novelties of external package watch',
+         popup: 'Watch novelties of the external packages monitoring',
       },
       repocop: {
          path: 'repocop_maintainer_path',
