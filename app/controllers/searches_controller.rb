@@ -14,7 +14,7 @@ class SearchesController < ApplicationController
                            .q(params[:query])
                            .order("packages.name")
                            .unscope(:select)
-                           .select("DISTINCT on(qs.rank, packages.name) packages.name, packages.buildtime, packages.url, packages.summary, qs.rank")
+                           .select("DISTINCT on(qs.rank, packages.name) packages.*, qs.rank")
                            .page(params[:page])
 
       if @spkgs.total_count == 1 && @spkgs.first.branches.first
