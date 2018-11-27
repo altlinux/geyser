@@ -4,7 +4,7 @@ class Maintainer < ApplicationRecord
    has_one :email, -> { where(foremost: true) }, class_name: 'Recital::Email'
 
    has_many :packages, foreign_key: :builder_id, inverse_of: :builder
-   has_many :rpms, through: :packages
+   has_many :rpms, through: :packages, source: :rpms
    has_many :branch_paths, -> { distinct }, through: :rpms
    has_many :branches, -> { distinct }, through: :branch_paths
    has_many :branching_maintainers, dependent: :delete_all
