@@ -9,10 +9,9 @@ FactoryBot.define do
       md5 { Digest::MD5.hexdigest("#{@instance.name}-#{@instance.version}-#{@instance.release}-#{@instance.buildtime}") }
       groupname 'Graphical desktop/Other'
       arch { %w(i586 x86_64 noarch aarch64 mipsel armh)[rand(6)] }
-      association :builder, factory: :maintainer
-      type 'Package::Built'
-
+      association :builder, factory: :person
       group
+      type 'Package::Built'
 
       trait :src do
          arch 'src'

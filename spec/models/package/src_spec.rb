@@ -15,24 +15,17 @@ describe Package::Src do
 
    describe 'Associations' do
       it { is_expected.to have_one(:specfile).inverse_of(:package).dependent(:destroy) }
-      it { is_expected.to have_one(:repocop_patch).with_primary_key('name').with_foreign_key('name').dependent(:destroy) }
+      it { is_expected.to have_one(:repocop_patch).with_foreign_key('package_id') }
 
       it { is_expected.to have_many(:packages).dependent(:destroy) }
       it { is_expected.to have_many(:changelogs).inverse_of(:package).dependent(:destroy) }
       it { is_expected.to have_many(:patches).inverse_of(:package).dependent(:destroy) }
       it { is_expected.to have_many(:sources).inverse_of(:package).dependent(:destroy) }
       it do
-         is_expected.to have_many(:repocops)
-            .order(name: :asc)
+         is_expected.to have_one(:gear)
+            .order(changed_at: :desc)
             .with_primary_key('name')
-            .with_foreign_key('srcname')
-            .dependent(:destroy)
-      end
-      it do
-         is_expected.to have_many(:gears)
-            .order(lastchange: :desc)
-            .with_primary_key('name')
-            .with_foreign_key('repo') # .dependent(:destroy)
+            .with_foreign_key('reponame')
       end
 
       it { is_expected.to_not have_db_column(:branch_id) }
@@ -40,24 +33,16 @@ describe Package::Src do
       it { is_expected.to_not have_db_column(:alias) }
    end
 
-  describe 'Validation' do
-    it { is_expected.to validate_presence_of(:groupname) }
-    it { is_expected.to validate_presence_of(:md5) }
-    it { is_expected.to validate_presence_of(:buildtime) }
-  end
-
-  # describe 'delegated methods' do
-  #   it { should delegate_method(:name).to(:branch).with_prefix(true) }
-  # end
-
-  # set :acls
-
-  # value :leader
+   describe 'Validation' do
+      it { is_expected.to validate_presence_of(:groupname) }
+      it { is_expected.to validate_presence_of(:md5) }
+      it { is_expected.to validate_presence_of(:buildtime) }
+   end
 
    describe '#to_param' do
       subject { package }
 
-      its(:to_param) { should eq('openbox') }
+      its(:to_param) { is_expected.to eq('openbox') }
    end
 
    it 'is expected import srpm file' do
@@ -102,8 +87,8 @@ describe Package::Src do
       expect(srpm.vendor).to eq('ALT Linux Team')
       expect(srpm.distribution).to eq('ALT Linux')
       expect(srpm.buildtime).to eq(Time.at(1_349_449_185))
-      expect(srpm.changelogs.last.at).to eq(Time.at(1_118_145_600)
-      expect(srpm.changelogs.last.name).to eq('Igor Zubkov <icesik@altlinux.ru> 1.0-alt1')
+      expect(srpm.changelogs.last.at).to eq(Time.at(1_118_145_600))
+      expect(srpm.changelogs.last.maintainer.name).to eq('Igor Zubkov')
       expect(srpm.changelogs.last.text).to eq('- Initial build for Sisyphus.')
       expect(srpm.size).to eq(14_216)
       expect(srpm.md5).to eq("35f0f45bfbcdaf8754713fc1c97f8068")

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Package::Src < Package
-   has_one :repocop_patch, primary_key: 'name', foreign_key: 'name', dependent: :destroy
    has_one :specfile, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
    has_one :changelog, foreign_key: :spkg_id, inverse_of: :spkg, dependent: :destroy
    has_one :repocop_patch, foreign_key: :package_id

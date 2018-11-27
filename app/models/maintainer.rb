@@ -94,7 +94,13 @@ class Maintainer < ApplicationRecord
          end
 
          Recital::Email.find_or_create_by!(address: email) do |re|
-            re.maintainer = Maintainer.new(name: name, login: /@(packages\.)?altlinux\.org$/ =~ email && login || nil)
+            attrs = {
+               name: name,
+               login: /@(?<team>packages\.)?altlinux\.org$/ =~ email && login || nil,
+               type: team && 'Maintainer::Team' || 'Maintainer::Person'
+            }
+
+            re.maintainer = Maintainer.new(attrs)
          end.maintainer
       end
    end

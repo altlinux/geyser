@@ -1,7 +1,8 @@
 FactoryBot.define do
    factory :rpm do
       filename { "#{name || Faker::App.name}-#{Faker::App.semantic_version}-#{'alt' + Faker::App.semantic_version}.#{arch}.rpm" }
-      package { build(:package, arch.to_sym, name: filename.split('-')[0...-2].join('-'), group: group) }
+      package {
+         build(:package, arch.to_sym, name: filename.split('-')[0...-2].join('-'), group: group) }
 
       transient do
          arch { %w(i586 x86_64 noarch aarch64 mipsel armh)[rand(6)] }

@@ -1,5 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe GearMaintainer, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+   it { is_expected.to be_a(ApplicationRecord) }
+
+   context 'Associations' do
+      it { is_expected.to belong_to(:maintainer) }
+      it { is_expected.to belong_to(:gear) }
+   end
 end

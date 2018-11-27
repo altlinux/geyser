@@ -19,6 +19,7 @@ class Package < ApplicationRecord
    has_many :all_rpms, -> { unscope(where: :obsoleted_at) }, class_name: 'Rpm', dependent: :destroy
    has_many :branch_paths, through: :rpms
    has_many :branches, through: :branch_paths
+   has_many :repocop_notes
 
    validates_presence_of :buildtime, :md5, :group, :builder, :name, :arch
 
