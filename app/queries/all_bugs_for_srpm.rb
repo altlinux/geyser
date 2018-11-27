@@ -11,7 +11,7 @@ class AllBugsForSrpm < Rectify::Query
   def query
     Issue::Bug.where(repo_name: reponames,
                      branch_path_id: branch.branch_paths.select(:id))
-              .order(no: :desc)
+              .order("no::integer DESC")
   end
 
   def decorate
