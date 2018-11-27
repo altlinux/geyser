@@ -12,12 +12,9 @@ class SearchesController < ApplicationController
       @spkgs = Package::Src.b(@branch.slug)
                            .a(@arches)
                            .q(params[:query])
-                           .order("packages.name,
-                                   packages.epoch DESC,
-                                   packages.version DESC,
-                                   packages.release DESC")
-                           .includes(:branches, :rpms)
-                           .distinct
+                           .order("packages.name")
+                           .unscope(:select)
+                           .select("DISTINCT on(qs.rank, packages.name) packages.name, packages.buildtime, packages.url, packages.summary, qs.rank")
                            .page(params[:page])
 
       if @spkgs.total_count == 1 && @spkgs.first.branches.first

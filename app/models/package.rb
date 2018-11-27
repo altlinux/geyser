@@ -10,6 +10,11 @@ class Package < ApplicationRecord
 
    belongs_to :group
    belongs_to :builder, class_name: 'Maintainer', inverse_of: :rpms, counter_cache: :srpms_count
+
+   has_one :rpm
+   has_one :branch_path, through: :rpm
+   has_one :branch, through: :branch_path
+
    has_many :rpms, inverse_of: :package
    has_many :all_rpms, -> { unscope(where: :obsoleted_at) }, class_name: 'Rpm', dependent: :destroy
    has_many :branch_paths, through: :rpms
@@ -53,9 +58,15 @@ class Package < ApplicationRecord
       if text.blank?
          all
       else
-         from = self.send(:sanitize_sql_array, ["packages, plainto_tsquery(?) AS q", text])
-         select = self.send(:sanitize_sql_array, ["CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text])
-         qs = Package.from(from).where("tsv @@ q").select(:src_id, select)
+         ttqs_from = self.send(:sanitize_sql_array, ["packages, plainto_tsquery(?) AS q", text])
+         ttqs_select = self.send(:sanitize_sql_array, ["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text])
+         ttqs = Package.from(ttqs_from).where("tsv @@ q").select(ttqs_select)
+
+         tqs = Package.joins("INNER JOIN (#{ttqs.to_sql}) AS ttqs ON ttqs.src_id = packages.id")
+                      .select("packages.name, packages.src_id, ttqs.rank")
+                      .order("packages.name, ttqs.rank DESC, packages.buildtime DESC")
+
+         qs = Package.from("(#{tqs.to_sql}) AS tqs").select("DISTINCT ON (name) name, src_id, rank")
 
          joins("INNER JOIN (#{qs.to_sql}) AS qs ON qs.src_id = packages.id")
             .order("qs.rank DESC")
@@ -88,10 +99,6 @@ class Package < ApplicationRecord
       rpms.map do |rpm|
          File.file?(filepath = rpm.filepath) && filepath || nil
       end.compact.first
-   end
-
-   def first_branch
-      branches.first
    end
 
    def self.source
@@ -264,33 +271,5 @@ class Package < ApplicationRecord
 
       UpdateBranchGroups.new(branch_ids: affected[:branches],
                              group_ids: affected[:groups]).do
-   end
-
-   class ActiveRecord_Relation
-      def page value
-         @page = (value || 1).to_i
-         @total_count = self[0] && self.size || 0
-
-         self.class_eval do
-            def total_count
-               @total_count
-            end
-
-            def total_pages
-               (@total_count + 24) / 25
-            end
-
-            def current_page
-               @page
-            end
-
-            def each &block
-               range = ((@page - 1) * 25...@page * 25)
-               self[range].each(&block)
-            end
-         end
-
-         self
-      end
    end
 end

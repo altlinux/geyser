@@ -1092,8 +1092,11 @@ msgstr "время сборки"
 msgid "community-en@"
 msgstr "sisyphus@"
 
-msgid "current<br>version"
-msgstr "текущая<br>версия"
+msgid "versions"
+msgstr "версии"
+
+msgid "current version"
+msgstr "текущая версия"
 
 msgid "detailed information about RPM"
 msgstr "подробная информация о пакете"

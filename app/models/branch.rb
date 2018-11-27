@@ -46,6 +46,10 @@ class Branch < ApplicationRecord
     slug == "sisyphus"
   end
 
+  def undefined?
+    new_record?
+  end
+
   def imported_at
     branch_paths.src.active.select(:imported_at, "max(imported_at) as imported_at")
                             .group(:imported_at)

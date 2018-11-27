@@ -24,6 +24,11 @@ class Package::Src < Package
    has_many :patches, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
    has_many :sources, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
    has_many :gears, -> { order(changed_at: :desc) }, primary_key: :name, foreign_key: :reponame
+   has_many :versions, -> do
+      src.joins(:branches)
+         .order("epoch DESC, version DESC, release DESC, buildtime ASC")
+         .select("DISTINCT ON (epoch, version, release) packages.*")
+   end, primary_key: :name, foreign_key: :name, class_name: :Package
 
    has_many :acls, primary_key: :name, foreign_key: :package_name
    has_many :contributors, ->{ distinct.order(:name) }, through: :changelogs, source: :maintainer, class_name: :Maintainer
@@ -46,5 +51,33 @@ class Package::Src < Package
 
    def last_changelog_text
       changelog&.text
+   end
+
+   class ActiveRecord_Relation
+      def page value
+         @page = (value || 1).to_i
+         @total_count = self[0] && self.size || 0
+
+         self.class_eval do
+            def total_count
+               @total_count
+            end
+
+            def total_pages
+               (@total_count + 24) / 25
+            end
+
+            def current_page
+               @page
+            end
+
+            def each &block
+               range = ((@page - 1) * 25...@page * 25)
+               self[range].each(&block)
+            end
+         end
+
+         self
+      end
    end
 end

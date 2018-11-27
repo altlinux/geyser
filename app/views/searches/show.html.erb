@@ -20,20 +20,18 @@
 
   <p class="break"></p>
   <br>
-  <table id='bugs' cellspacing='0' cellpadding='3'>
+  <table class="results" cellspacing='0' cellpadding='3'>
     <tr>
       <%- if @branch.perpetual? %>
-        <th><%= raw _('repo<br>cop') %></th>
+        <th class='repocop'><%= raw _('repo<br>cop') %></th>
       <%- end %>
-      <th><%= _('package') %></th>
-      <th><%= raw _('current<br>version') %></th>
-      <%- if @branch.new_record? %>
-        <th><%= raw _('branches') %></th>
-      <%- end %>
-      <th><%= _('build time') %></th>
-      <th><%= _('age') %></th>
-      <th><%= _('Url') %></th>
-      <th><%= _('summary') %></th>
+      <th class="name"><%= _('package') %></th>
+      <th class="version">
+        <%= raw(@branch.undefined? && _('versions') || _('current version')) %>
+      </th>
+      <th class='age'><%= _('age') %></th>
+      <th class='url'><%= _('Url') %></th>
+      <th class='description'><%= _('summary') %></th>
     </tr>
 
     <% @spkgs.each do |spkg| %>
@@ -41,28 +39,26 @@
         <%- spkg = spkg.decorate %>
         <tr>
           <%- if @branch.perpetual? %>
-            <td>
+            <td class='repocop'>
               <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_srpm_path(@branch, spkg), class: 'repocoplink', title: _('repocop') %>
             </td>
           <%- end %>
-          <td class="strange">
-            <%- if spkg.first_branch %>
-              <%= link_to spkg.name, versioned_srpm_path(spkg.branches.first, spkg, version: spkg.evr), class: 'news' %>
+          <td class="name">
+            <%- if spkg.branch %>
+              <%= link_to spkg.name, srpm_path(spkg.branch, spkg), class: 'news' %>
             <%- else %>
               <b class="news"><%= spkg.name %></b>
             <%- end %>
           </td>
-          <td><%= spkg.evr %></td>
-          <%- if @branch.new_record? %>
-            <td>
-              <%- if spkg.branches.present? %>
-                <%- spkg.branches.each do |b| %>
-                  <%= link_to b.name, home_path(branch: b.slug), title: _('site home page') %>
-                <%- end %>
+          <td class="version">
+            <%- if @branch.undefined? %>
+              <%- spkg.versions.includes(:branches).each do |s| %>
+                 <span class="badge"><%= link_to s.evr, versioned_srpm_path(s.branch, s, version: s.evr), class: 'news', title: s.evr %></span>
               <%- end %>
-            </td>
-          <%- end %>
-          <td><%= spkg.buildtime %></td>
+            <%- else %>
+              <%= link_to spkg.evr, versioned_srpm_path(spkg.branches.first, spkg, version: spkg.evr), class: 'news' %>
+            <%- end %>
+          </td>
           <td><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>
           <td><%= spkg.short_url %></td>
           <td><%= spkg.summary %></td>
