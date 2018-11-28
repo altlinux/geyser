@@ -3,76 +3,66 @@
 require 'rails_helper'
 
 describe AllBugsForSrpm do
-  let(:srpm) { double }
+   let(:srpm) { create(:srpm) }
 
-  subject { described_class.new(srpm) }
+   subject { described_class.new(spkg: srpm.package, branch: srpm.branch) }
 
-  it { should be_a(Rectify::Query) }
+   it { is_expected.to be_a(Rectify::Query) }
 
-  describe '#initialize' do
-    its(:srpm) { should eq(srpm) }
-  end
+   describe '#initialize' do
+      its(:spkg) { is_expected.to eq(srpm.package) }
+      its(:branch) { is_expected.to eq(srpm.branch) }
+   end
 
-  describe '#query' do
-    let(:components) { double }
+   describe '#query' do
+      let(:reponames) { Package.select(:name).distinct }
+      let(:branch_paths) { BranchPath.all }
 
-    before { expect(subject).to receive(:components).and_return(components) }
+      before { expect(subject).to receive(:reponames).and_return(reponames) }
 
-    before do
-      #
-      # Bug.where(component: components).order(bug_id: :desc)
-      #
-      expect(Bug).to receive(:where).with(component: components) do
-        double.tap do |a|
-          expect(a).to receive(:order).with(bug_id: :desc)
-        end
-      end
-    end
-
-    specify { expect { subject.query }.not_to raise_error }
-  end
-
-  describe '#decorate' do
-    before do
-      #
-      # subject.query.decorate
-      #
-      expect(subject).to receive(:query) do
-        double.tap do |a|
-          expect(a).to receive(:decorate)
-        end
-      end
-    end
-
-    specify { expect { subject.decorate }.not_to raise_error }
-  end
-
-  # private methods
-
-  describe '#components' do
-    before do
-      #
-      # srpm.packages.pluck(:name).flatten.sort.uniq
-      #
-      expect(srpm).to receive(:packages) do
-        double.tap do |a|
-          expect(a).to receive(:pluck).with(:name) do
-            double.tap do |b|
-              expect(b).to receive(:flatten) do
-                double.tap do |c|
-                  expect(c).to receive(:sort) do
-                    double.tap do |d|
-                      expect(d).to receive(:uniq)
-                    end
-                  end
-                end
-              end
+      before do
+         #
+         # Bug.where(repo_name: reponames).order(bug_id: :desc)
+         #
+         expect(Issue::Bug).to receive(:where).with(repo_name: reponames, branch_path_id: branch_paths) do
+            double.tap do |a|
+               expect(a).to receive(:order).with(no: :desc)
             end
-          end
-        end
+         end
       end
-    end
 
-    specify { expect { subject.send(:components) }.not_to raise_error }
-  end
+      specify { expect { subject.query }.not_to raise_error }
+   end
+
+   describe '#decorate' do
+      before do
+         #
+         # subject.query.decorate
+         #
+         expect(subject).to receive(:query)
+      end
+
+      specify { expect { subject.decorate }.not_to raise_error }
+   end
+
+   # private methods
+
+   describe '#reponames' do
+      before do
+         #
+         # srpm.packages.pluck(:name).flatten.sort.uniq
+         #
+         expect(srpm.package).to receive(:packages) do
+            double.tap do |a|
+               expect(a).to receive(:select).with(:name) do
+                  double.tap do |b|
+                     expect(b).to receive(:distinct)
+                  end
+               end
+            end
+         end
+      end
+
+      specify { expect { subject.send(:reponames) }.not_to raise_error }
+   end
 end

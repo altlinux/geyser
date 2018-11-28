@@ -3,76 +3,46 @@
 require 'rails_helper'
 
 describe OpenedBugsForSrpm do
-  let(:srpm) { double }
+   let(:srpm) { create(:srpm) }
 
-  subject { described_class.new(srpm) }
+   subject { described_class.new(spkg: srpm.package, branch: srpm.branch) }
 
-  it { should be_a(Rectify::Query) }
+   it { is_expected.to be_a(Rectify::Query) }
 
-  specify { expect(described_class::BUG_STATUSES).to eq(['NEW', 'ASSIGNED', 'VERIFIED', 'REOPENED']) }
+   it { expect(described_class::BUG_STATUSES).to eq(['NEW', 'ASSIGNED', 'VERIFIED', 'REOPENED']) }
 
-  describe '#initialize' do
-    let(:scope) { double }
+   describe '#initialize' do
+      let(:scope) { Issue::Bug.all }
 
-    before do
-      #
-      # AllBugsForSrpm.new(srpm) => scope
-      #
-      expect(AllBugsForSrpm).to receive(:new).with(srpm).and_return(scope)
-    end
-
-    its(:scope) { should eq(scope) }
-  end
-
-  describe '#query' do
-    let(:scope) { double }
-
-    before do
-      #
-      # AllBugsForSrpm.new(srpm) => scope
-      #
-      expect(AllBugsForSrpm).to receive(:new).with(srpm).and_return(scope)
-    end
-
-    before do
-      #
-      # scope.query.where(bug_status: BUG_STATUSES).order(bug_id: :desc)
-      #
-      expect(scope).to receive(:query) do
-        double.tap do |a|
-          expect(a).to receive(:where).with(bug_status: described_class::BUG_STATUSES) do
-            double.tap do |b|
-              expect(b).to receive(:order).with(bug_id: :desc)
-            end
-          end
-        end
+      before do
+         #
+         # AllBugsForSrpm.new(srpm) => scope
+         #
+         expect(AllBugsForSrpm).to receive(:new).with(spkg: srpm.package, branch: srpm.branch).and_return(scope)
       end
-    end
 
-    specify { expect { subject.query }.not_to raise_error }
-  end
+      its(:scope) { is_expected.to eq(scope) }
+      its(:spkg) { is_expected.to eq(srpm.package) }
+      its(:branch) { is_expected.to eq(srpm.branch) }
+   end
 
-  describe '#decorate' do
-    let(:scope) { double }
+   describe '#decorate' do
+      let(:scope) { Issue::Bug.all }
 
-    before do
-      #
-      # AllBugsForSrpm.new(srpm) => scope
-      #
-      expect(AllBugsForSrpm).to receive(:new).with(srpm).and_return(scope)
-    end
-
-    before do
-      #
-      # subject.query.decorate
-      #
-      expect(subject).to receive(:query) do
-        double.tap do |a|
-          expect(a).to receive(:decorate)
-        end
+      before do
+         #
+         # AllBugsForSrpm.new(srpm) => scope
+         #
+         expect(AllBugsForSrpm).to receive(:new).with(spkg: srpm.package, branch: srpm.branch).and_return(scope)
       end
-    end
 
-    specify { expect { subject.decorate }.not_to raise_error }
-  end
+      before do
+         #
+         # subject.query.decorate
+         #
+         expect(subject).to receive(:query)
+      end
+
+      specify { expect { subject.decorate }.not_to raise_error }
+   end
 end
