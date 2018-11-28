@@ -21,8 +21,6 @@ class Package < ApplicationRecord
    has_many :branches, through: :branch_paths
    has_many :repocop_notes
 
-   validates_presence_of :buildtime, :md5, :group, :builder, :name, :arch
-
    scope :ordered, -> { order('packages.buildtime DESC') }
    scope :by_name, ->(name) { where(name: name) }
    scope :src, -> { where(arch: 'src') }
@@ -90,7 +88,7 @@ class Package < ApplicationRecord
    singleton_class.send(:alias_method, :a, :by_arch)
    singleton_class.send(:alias_method, :b, :by_branch_slug)
 
-   validates_presence_of :buildtime, :md5, :groupname, :builder
+   validates_presence_of :buildtime, :md5, :group, :builder, :name, :arch, :builder
 
    def to_param
       name

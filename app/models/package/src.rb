@@ -7,7 +7,6 @@ class Package::Src < Package
    has_one :gear, -> { where(kind: 'gear').order(changed_at: :DESC) },
                         primary_key: :name,
                         foreign_key: :reponame
-
    has_one :srpm_git, -> { where(kind: 'srpm').order(changed_at: :DESC) },
                         primary_key: :name,
                         foreign_key: :reponame,
@@ -16,8 +15,7 @@ class Package::Src < Package
    has_many :packages, foreign_key: :src_id, class_name: 'Package::Built', dependent: :destroy
    has_many :all_packages, -> { order("CASE packages.arch WHEN 'src' THEN 0 ELSE 1 END") },
                               foreign_key: :src_id,
-                              class_name: 'Package',
-                              dependent: :destroy
+                              class_name: 'Package'
    has_many :built_rpms, through: :packages, source: :rpms, class_name: 'Rpm'
    has_many :changelogs, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
    has_many :patches, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
@@ -40,10 +38,12 @@ class Package::Src < Package
          .order('id DESC', :name)
    end
 
+   # scope
    def repocop_notes
       RepocopNote.where(package_id: all_packages.select(:id))
    end
 
+   # prop
    def filename
       "#{name}-#{evr}.#{arch}.rpm"
    end

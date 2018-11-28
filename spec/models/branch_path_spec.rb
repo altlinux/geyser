@@ -16,7 +16,7 @@ RSpec.describe BranchPath, type: :model do
    it { is_expected.to have_db_index(%i(arch path)).unique(true) }
 
    it { is_expected.to belong_to(:branch) }
-   it { is_expected.to belong_to(:source_path).with_foreign_key(:source_path_id).class_name("BranchPath") }
+   xit { is_expected.to belong_to(:source_path).with_foreign_key(:source_path_id).class_name("BranchPath").optional }
 
    it { is_expected.to have_many(:rpms) }
    it { is_expected.to have_many(:packages).through(:rpms) }
