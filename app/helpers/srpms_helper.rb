@@ -45,55 +45,46 @@ module SrpmsHelper
     text
   end
 
-  def menu_data branch, srpm, opened_bugs, all_bugs, version
+  def menu_data branch, srpm, opened_bugs, all_bugs, evrb
     map = {
       main: {
-         path: 'srpm_path',
-         args: [branch, srpm],
+         args: {controller: :srpms, action: :show, branch: branch.slug, reponame: srpm.name},
          popup: 'information about SRPM'
       },
       changelog: {
-         path: 'changelog_srpm_path',
-         args: [branch, srpm],
+         args: {controller: :changelogs, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: 'full changelog',
       },
       spec: {
-         path: 'spec_srpm_path',
-         args: [branch, srpm],
+         args: {controller: :specfiles, action: :show, branch: branch.slug, reponame: srpm.name},
          popup: 'spec',
       },
       patches: {
-         path: 'srpm_patches_path',
-         args: [branch, srpm],
+         args: {controller: :patches, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: 'patches',
       },
       sources: {
-         path: 'srpm_sources_path',
-         args: [branch, srpm],
+         args: {controller: :sources, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: 'sources',
       },
       download: {
-         path: 'get_srpm_path',
-         args: [branch, srpm],
+         args: {controller: :rpms, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: 'download latest version',
       },
       bugs: {
          title: _('Bugs') + ' (%s/%s)' % [opened_bugs.count, all_bugs.count],
-         path: 'bugs_srpm_path',
-         args: [branch, srpm],
+         args: {controller: :issues, action: :index, branch: branch.slug, reponame: srpm.name, anchor: 'bug'},
          popup: 'list of bugs and feature requests',
       },
       repocop: {
-         path: 'repocop_srpm_path',
-         args: [branch, srpm],
+         args: {controller: :repocop_notes, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: 'repocop bugreports',
          valid: 'perpetual?'
       }
     }
 
     map.map do |(title, data)|
-      data[:path] = version && "versioned_" + data[:path] || data[:path]
-      data[:args] = data[:args] << version if version
+      data[:args][:evrb] = evrb if evrb
       data[:title] ||= _(title.to_s.capitalize)
 
       [title, data]

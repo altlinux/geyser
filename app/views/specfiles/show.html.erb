@@ -15,10 +15,10 @@
 </div>
 
 <div>
-<%= render partial: "shared/srpms_menu", locals: { current_page: :spec, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, version: @version } %>
+<%= render partial: "shared/srpms_menu", locals: { current_page: :spec, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
 
 <% if @spkg.specfile %>
-<%= link_to _('Raw spec file'), rawspec_srpm_path(@branch, @spkg), class: 'news', title: _('Raw spec file') %>
+<%= link_to _('Raw spec file'), raw_specfile_path(@branch, @spkg), class: 'news', title: _('Raw spec file') %>
 
 <br><br>
 

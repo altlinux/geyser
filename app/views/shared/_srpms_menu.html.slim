@@ -1,8 +1,8 @@
 .page-menu
-   - menu_data(branch, srpm, opened_bugs, all_bugs, version).each do |page, data|
+   - menu_data(branch, srpm, opened_bugs, all_bugs, evrb).each do |page, data|
       - next if data[:valid] && !branch.send(data[:valid])
       .tab
          - if page == current_page
             span = _(page.to_s.capitalize)
          - else
-            = link_to(data[:title], send(data[:path], *data[:args]), title: _(data[:popup]))
+            = link_to(data[:title], url_for(data[:args]), title: _(data[:popup]))

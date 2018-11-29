@@ -15,7 +15,7 @@
 </div>
 
 <div>
-<%= render partial: "shared/srpms_menu", locals: { current_page: :download, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, version: @version } %>
+<%= render partial: "shared/srpms_menu", locals: { current_page: :download, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
 
 <table class="sources">
   <%- if @arched_packages_s.present? %>

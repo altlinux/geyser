@@ -13,6 +13,8 @@ FactoryBot.define do
 
       after(:build) do |o, e|
          if e.arch != 'src'
+            o.package.src = build(:srpm).package
+
             if e.branch
                o.branch_path ||= e.branch.branch_paths.built.first
             elsif e.branchname
@@ -21,6 +23,12 @@ FactoryBot.define do
             else
                o.branch_path ||= create(:branch_path)
             end
+         end
+      end
+
+      after(:create) do |o, e|
+         if e.arch != 'src'
+            create(:srpm, package: o.package.src)
          end
       end
    end

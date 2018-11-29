@@ -41,7 +41,7 @@ Rails.application.routes.draw do
       get ':branch/maintainers/:login/ftbfs', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/ftbfses')
       get ':branch/srpms/:reponame/bugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#bug')
       get ':branch/srpms/:reponame/allbugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#bug?q=all')
-      get ':branch/srpms/:reponame/repocop', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#repocop')
+      get ':branch/srpms/:reponame/repocop', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/repocop_notes')
 
       # from v1:sisyphus.ru
       get 'srpm/:branch/:reponame', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
@@ -56,7 +56,7 @@ Rails.application.routes.draw do
       get 'srpm/:branch/:reponame/gear', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
       get 'srpm/:branch/:reponame/allbugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#bug?q=all')
       get 'srpm/:branch/:reponame/bugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#bug')
-      get 'srpm/:branch/:reponame/repocop', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#repocop')
+      get 'srpm/:branch/:reponame/repocop', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/repocop_notes')
       get 'people', to: redirect('/%{locale}/sisyphus/maintainers')
       get 'packager/:login', to: redirect('/%{locale}/sisyphus/maintainers/%{login}')
       get 'packager/:login/srpms', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/srpms')
@@ -80,14 +80,15 @@ Rails.application.routes.draw do
          resources :srpms, param: :reponame, reponame: /[^\/]+/, only: %i(show) do
             member do
                resources :changelogs, only: :index
-               resources :patches, param: :patch_name, only: %i(index show) do
+               resources :patches, param: :patch_name, patch_name: /[^\/]+/, only: %i(index show) do
                   get :download, on: :member
                end
-               resources :sources, param: :source_name, only: %i(index show) do
+               resources :sources, param: :source_name, source_name: /[^\/]+/, only: %i(index show) do
                   get :download, on: :member
                end
-               get 'rpms'
-               resources :issues, param: :no, only: :index
+               resources :rpms, param: :rpm_name, rpm_name: /[^\/]+/, only: :index
+               resources :issues, param: :no, no: /[^\/]+/, only: :index
+               resources :repocop_notes, param: :no, no: /[^\/]+/, only: :index
             end
          end
 
@@ -95,7 +96,7 @@ Rails.application.routes.draw do
             scope '(:reponame)', reponame: /[^\/]+/ do
                scope '(:evrb)', evrb: /[^\/]+/ do
                   get '/' => 'specfiles#show', as: 'evrb_specfile'
-                  get 'raw' => 'specfiles#raw', as: 'evrb_raw_specfile'
+                  get 'raw' => 'specfiles#raw', as: 'raw_evrb_specfile'
                end
             end
          end
@@ -103,16 +104,17 @@ Rails.application.routes.draw do
          scope :srpms do
             scope '(:reponame)', reponame: /[^\/]+/ do
                scope '(:evrb)', evrb: /[^\/]+/ do
-                  get '/' => 'srpms#show', as: 'evrb_srpms'
-                  resources :changelogs, only: :index
-                  resources :patches, param: :patch_name, only: %i(index show) do
+                  get '/' => 'srpms#show', as: 'evrb_srpm'
+                  resources :changelogs, only: :index, as: :evrb_changelogs
+                  resources :patches, param: :patch_name, only: %i(index show), as: :evrb_patches do
                      get :download, on: :member
                   end
-                  resources :sources, param: :source_name, only: %i(index show) do
+                  resources :sources, param: :source_name, only: %i(index show), as: :evrb_sources do
                      get :download, on: :member
                   end
-                  get 'rpms' => 'srpms#rpms', as: 'evrb_rpms_srpms'
-                  resources :issues, param: :no, only: :index
+                  resources :rpms, param: :rpm_name, rpm_name: /[^\/]+/, only: :index, as: :evrb_rpms
+                  resources :issues, param: :no, only: :index, as: :evrb_issues
+                  resources :repocop_notes, param: :no, only: :index, as: :evrb_repocop_notes
                end
             end
          end

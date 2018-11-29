@@ -10,11 +10,11 @@ class PackageSerializer < RecordSerializer
    end
 
    def ftp_url
-      rpm.ftp_url
+      rpm&.ftp_url
    end
 
    def filename
-      rpm.filename
+      rpm&.filename
    end
 
    protected

@@ -15,7 +15,7 @@
 </div>
 
 <div>
-<%= render partial: "shared/srpms_menu", locals: { current_page: :changelog, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, version: @version } %>
+<%= render partial: "shared/srpms_menu", locals: { current_page: :changelog, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
 
 <% @changelogs.each do |changelog| %>
   <p class="news" />
