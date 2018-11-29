@@ -135,7 +135,7 @@ Rails.application.routes.draw do
             end
          end
 
-      get 'packages/:slug' => 'group#show', slug: /[a-z_]+/, as: 'group'
+      get 'packages/:slug' => 'group#show', slug: /[a-z0-9_]+/, as: 'group'
       get 'packages' => 'group#index', as: 'packages'
       get 'security' => 'security#index', as: 'security'
 
