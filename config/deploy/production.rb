@@ -6,12 +6,12 @@ set :deploy_to, '/var/www/prometheus2.0'
 
 set :rails_env, 'production'
 
-server 'geyser.altlinux.org', user: 'apache', roles: ['app', 'db', 'web']
+server 'packages.altlinux.org', user: 'apache', roles: ['app', 'db', 'web']
 
 set :ssh_options, port: 222
 
 set :rvm_type, :user
 
-set :app_server_host, "geyser.altlinux.org"
+set :app_server_host, "packages.altlinux.org"
 
-set :nginx_domains, "geyser.altlinux.org"
+set :nginx_domains, "packages.altlinux.org"
