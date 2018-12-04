@@ -7,24 +7,6 @@ Rails.application.routes.draw do
       mount PgHero::Engine, at: 'pghero'
    end
 
-  namespace :api, defaults: { format: 'json' } do
-    resources :docs, only: :index
-
-    resources :branches, only: [:index, :show]
-
-    resources :bugs, only: :show
-
-    resources :srpms, id: /[^\/]+/, only: [:index, :show] do
-      resources :packages, id: /[^\/]+/, only: :index
-
-      resources :changelogs, id: /[^\/]+/, only: :index
-    end
-
-    resources :packages, id: /[^\/]+/, only: :show, controller: :package
-
-    resources :maintainers, only: [:index, :show]
-  end
-
    # support old rules
    # from v2:packages.a.o
    get 'uk', to: redirect('/ru')
@@ -34,9 +16,9 @@ Rails.application.routes.draw do
    get 'uk/*other', to: redirect { |pp, _| "/ru/#{pp[:other]}" }
    get 'br/*other', to: redirect { |pp, _| "/en/#{pp[:other]}" }
 
-   scope '(:locale)', locale: SUPPORTED_LOCALES_RE do
-    devise_for :users
+   devise_for :users
 
+   scope '(:locale)', locale: SUPPORTED_LOCALES_RE do
       root to: 'srpms#index'
 
       # support old rules
@@ -73,7 +55,7 @@ Rails.application.routes.draw do
       get 'packager/:login/srpms', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/srpms')
       get 'packager/:login/bugs', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/issues#bug')
       get 'packager/:login/repocop', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/repocop_notes')
-    get 'team/:login', to: redirect('/%{locale}/sisyphus/teams/%{login}')
+      get 'team/:login', to: redirect('/%{locale}/sisyphus/teams/%{login}')
     get 'packages', to: redirect('/%{locale}/sisyphus/packages'), as: :old_packages
     get 'packages/:group1', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}" }
     get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
@@ -131,7 +113,7 @@ Rails.application.routes.draw do
          end
 
          get 'rss' => 'rss#index', as: 'rss'
-         resources :teams, only: %i(index show)
+         resources :teams, param: :login, only: %i(index show)
 
          resources :maintainers, param: 'login', only: %i(index show) do
             member do
@@ -152,14 +134,12 @@ Rails.application.routes.draw do
       get 'packages' => 'group#index', as: 'packages'
       get 'security' => 'security#index', as: 'security'
 
-      #get '/', to: redirect('/%{locale}/%{branch}/home')
-
-      # support old rules
-      # from v1:sisyphus.ru
-      get 'packages/:group1', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}" }
-      get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
-      get 'packages/:group1/:group2/:group3', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}_#{pp[:group3].downcase}" }
-   end
+         # support old rules
+         # from v2:packages.a.o
+         get 'packages/:group1', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}" }
+         get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
+         get 'packages/:group1/:group2/:group3', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}_#{pp[:group3].downcase}" }
+      end
 
     resource :maintainer_profile, only: [:edit, :update]
     resource :search, only: :show
