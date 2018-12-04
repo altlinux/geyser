@@ -13,7 +13,7 @@ class Package::Src < Package
                         class_name: :Gear
 
    has_many :packages, foreign_key: :src_id, class_name: 'Package::Built', dependent: :destroy
-   has_many :all_packages, -> { order("CASE packages.arch WHEN 'src' THEN 0 ELSE 1 END") },
+   has_many :all_packages, -> { order(Arel.sql("(CASE packages.arch WHEN 'src' THEN 0 ELSE 1 END)")) },
                               foreign_key: :src_id,
                               class_name: 'Package'
    has_many :built_rpms, through: :packages, source: :rpms, class_name: 'Rpm'

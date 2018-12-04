@@ -21,43 +21,37 @@ describe MaintainersController do
       # get 'maintainers/:login/srpms' => 'maintainers#srpms'
       it do
          is_expected.to route(:get, '/ru/sisyphus/maintainers/login/srpms')
-                    .to("maintainers#srpms", locale: :ru, branch: 'sisyphus', login: 'login')
+                    .to("srpms#maintained", locale: :ru, branch: 'sisyphus', login: 'login')
       end
 
       # get 'maintainers/:login/gear' => 'maintainers#gear'
       it do
          is_expected.to route(:get, '/ru/sisyphus/maintainers/login/gears')
-                    .to("maintainers#gears", locale: :ru, branch: 'sisyphus', login: 'login')
+                    .to("gears#index", locale: :ru, branch: 'sisyphus', login: 'login')
       end
 
-      # get 'maintainers/:login/bugs' => 'maintainers#bugs'
+      # get 'maintainers/:login/issues' => 'maintainers#issues'
       it do
          is_expected.to route(:get, '/ru/sisyphus/maintainers/login/bugs')
-                    .to("maintainers#bugs", locale: :ru, branch: 'sisyphus', login: 'login')
-      end
-
-      # get 'maintainers/:login/allbugs' => 'maintainers#allbugs'
-      it do
-         is_expected.to route(:get, '/ru/sisyphus/maintainers/login/allbugs')
-                    .to("maintainers#allbugs", locale: :ru, branch: 'sisyphus', login: 'login')
+                    .to("issues#bugs", locale: :ru, branch: 'sisyphus', login: 'login')
       end
 
       # get 'maintainers/:login/ftbfs' => 'maintainers#ftbfs'
       it do
          is_expected.to route(:get, '/ru/sisyphus/maintainers/login/ftbfses')
-                    .to("maintainers#ftbfses", locale: :ru, branch: 'sisyphus', login: 'login')
+                    .to("issues#ftbfses", locale: :ru, branch: 'sisyphus', login: 'login')
       end
 
       # get 'maintainers/:login/watch' => 'maintainers#novelties'
       it do
          is_expected.to route(:get, '/ru/sisyphus/maintainers/login/watch')
-                    .to("maintainers#novelties", locale: :ru, branch: 'sisyphus', login: 'login')
+                    .to("issues#novelties", locale: :ru, branch: 'sisyphus', login: 'login')
       end
 
-      # get 'maintainers/:id/repocop' => 'maintainers#repocop'
+      # get 'maintainers/:id/repocop_notes' => 'maintainers#repocop_notes'
       it do
-         is_expected.to route(:get, '/ru/sisyphus/maintainers/login/repocop')
-                    .to("maintainers#repocop", locale: :ru, branch: 'sisyphus', login: 'login')
+         is_expected.to route(:get, '/ru/sisyphus/maintainers/login/repocop_notes')
+                    .to("repocop_notes#maintained", locale: :ru, branch: 'sisyphus', login: 'login')
       end
    end
 
@@ -70,6 +64,16 @@ describe MaintainersController do
       it do
          get '/ru/Sisyphus/maintainers/login/ftbfs'
          expect(response).to redirect_to("/ru/Sisyphus/maintainers/login/ftbfses")
+      end
+
+      it do
+         get '/ru/Sisyphus/maintainers/login/allbugs'
+         expect(response).to redirect_to("/ru/Sisyphus/maintainers/login/bugs?q=all")
+      end
+
+      it do
+         get '/ru/Sisyphus/maintainers/login/repocop'
+         expect(response).to redirect_to("/ru/Sisyphus/maintainers/login/repocop_notes")
       end
    end
 
@@ -93,12 +97,12 @@ describe MaintainersController do
 
       it do
          get '/ru/packager/login/bugs'
-         expect(response).to redirect_to("/ru/sisyphus/maintainers/login/bugs")
+         expect(response).to redirect_to("/ru/sisyphus/maintainers/login/issues#bug")
       end
 
       it do
          get '/ru/packager/login/repocop'
-         expect(response).to redirect_to("/ru/sisyphus/maintainers/login/repocop")
+         expect(response).to redirect_to("/ru/sisyphus/maintainers/login/repocop_notes")
       end
    end
 end

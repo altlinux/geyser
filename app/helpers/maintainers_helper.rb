@@ -4,41 +4,34 @@ module MaintainersHelper
   def maintainer_menu_data branch, maintainer, opened_bugs, all_bugs
     map = {
       information: {
-         path: 'maintainer_path',
-         args: [branch, maintainer],
+         args: {controller: :maintainers, action: :show, branch: branch.slug, login: maintainer.login},
          popup: 'information about maintainer'
       },
       packages: {
-         path: 'srpms_maintainer_path',
-         args: [branch, maintainer],
+         args: {controller: :srpms, action: :maintained, branch: branch.slug, login: maintainer.login},
          popup: 'packages, which was built by this maintainer',
       },
       gear: {
-         path: 'gear_maintainer_path',
-         args: [branch, maintainer],
+         args: {controller: :gears, action: :index, branch: branch.slug, login: maintainer.login},
          popup: 'gear repositories which maintainer is involved in',
       },
       bugs: {
          title: _('Bugs') + ' (%s/%s)' % [opened_bugs.count, all_bugs.count],
-         path: 'bugs_maintainer_path',
-         args: [branch, maintainer],
+         args: {controller: :issues, action: :bugs, branch: branch.slug, login: maintainer.login},
          popup: 'list of bugs and feature requests',
       },
       ftbfs: {
          title: 'FTBFS',
-         path: 'ftbfs_maintainer_path',
-         args: [branch, maintainer],
+         args: {controller: :issues, action: :ftbfses, branch: branch.slug, login: maintainer.login},
          popup: 'FTBFS',
       },
       novelties: {
          title: 'Watch',
-         path: 'novelties_maintainer_path',
-         args: [branch, maintainer],
+         args: {controller: :issues, action: :novelties, branch: branch.slug, login: maintainer.login},
          popup: 'Watch novelties of the external packages monitoring',
       },
       repocop: {
-         path: 'repocop_maintainer_path',
-         args: [branch, maintainer],
+         args: {controller: :repocop_notes, action: :maintained, branch: branch.slug, login: maintainer.login},
          popup: 'repocop bugreports',
          valid: 'perpetual?'
       }

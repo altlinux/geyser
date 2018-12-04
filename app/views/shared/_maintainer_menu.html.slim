@@ -5,4 +5,4 @@
          - if page == current_page
             span = _(data[:title])
          - else
-            = link_to(_(data[:title]), send(data[:path], *data[:args]), title: _(data[:popup]))
+            = link_to(_(data[:title]), url_for(data[:args]), title: _(data[:popup]))

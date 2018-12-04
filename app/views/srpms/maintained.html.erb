@@ -15,7 +15,7 @@
 <% @branches.each do |branch| %>
 <tr>
   <td style="text-align: left;">
-    <%= link_to branch.name, srpms_maintainer_path(branch, @maintainer), class: 'news' %>
+    <%= link_to branch.name, maintainer_srpms_path(branch, @maintainer), class: 'news' %>
   </td>
 </tr>
 <% end %>
@@ -51,10 +51,10 @@
   <tr>
     <% if @branch.perpetual? %>
       <td>
-        <%= link_to image_tag("#{ srpm.repocop_status }.png", size: '20x20', alt: srpm.repocop_status), repocop_srpm_path(reponame: srpm.name), class: 'repocoplink', title: 'repocop' %>
+        <%= link_to image_tag("#{ srpm.repocop_status }.png", size: '20x20', alt: srpm.repocop_status), repocop_notes_path(reponame: srpm.name), class: 'repocoplink', title: 'repocop' %>
         <% if srpm.repocop_patch %>
           <br>
-          <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), repocop_patch_download_url(srpm.repocop_patch), class: 'repocoplink', title: _('repocop patchset for the package') %>
+          <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(srpm.repocop_patch.package_id), class: 'repocoplink', title: _('repocop patchset for the package') %>
         <% end %>
       </td>
     <% end %>

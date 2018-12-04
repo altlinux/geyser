@@ -9,6 +9,7 @@ class Package < ApplicationRecord
    enum repocop_status: RepocopNote.statuses.keys
 
    belongs_to :group
+   belongs_to :src, class_name: 'Package::Src', optional: true
    belongs_to :builder, class_name: 'Maintainer', inverse_of: :rpms, counter_cache: :srpms_count
 
    has_one :rpm
@@ -57,8 +58,8 @@ class Package < ApplicationRecord
       if text.blank?
          all
       else
-         tqs_from = self.send(:sanitize_sql_array, ["packages, plainto_tsquery(?) AS q", text])
-         tqs_select = self.send(:sanitize_sql_array, ["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text])
+         tqs_from = Arel.sql("packages, plainto_tsquery(?) AS q", text)
+         tqs_select = Arel.sql("DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text)
          tqs = Package.from(tqs_from).where("tsv @@ q").select(tqs_select)
 
          qs_select = "packages.name,

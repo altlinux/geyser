@@ -30,8 +30,13 @@
 <b><%= _('Total records:') %></b> <%= @all_bugs.count %> (<span style='color: red;'><%= @opened_bugs.count %></span>|<%= @all_bugs.count - @opened_bugs.count %>)
 
 <div style="text-align:left;margin-left:2em;margin-top:1.5em;">
+<%- if params[:q] == 'all' %>
+<span class="tabunsel">&nbsp;<%= link_to _('open'), bugs_maintainer_path(branch: @branch, login: @maintainer), class: 'news' %>&nbsp;</span>
+<span class="tabsel">&nbsp;<%= _('total') %>&nbsp;</span>
+<%- else %>
 <span class="tabsel">&nbsp;<%= _('open') %>&nbsp;</span>
-<span class="tabunsel">&nbsp;<%= link_to _('total'), allbugs_maintainer_path(branch: @branch, id: @maintainer), class: 'news' %>&nbsp;</span>
+<span class="tabunsel">&nbsp;<%= link_to _('total'), bugs_maintainer_path(branch: @branch, login: @maintainer, q: 'all'), class: 'news' %>&nbsp;</span>
+<%- end %>
 </div>
 
 <table id="bugs" cellspacing="0" cellpadding="3">
@@ -40,11 +45,14 @@
     <th><%= _('package') %></th>
     <th><%= _('severity') %></th>
     <th><%= _('status') %></th>
+    <%- if params[:q] == 'all' %>
+      <th><%= _('resolution') %></th>
+    <%- end %>
     <th><%= _('reporter') %></th>
     <th><%= _('summary') %></th>
   </tr>
 
-  <% @opened_bugs.each do |bug| %>
+  <% @issues.each do |bug| %>
     <tr>
       <td>
         <%= bug.link_to_bugzilla %>
@@ -52,6 +60,9 @@
       <td><%= bug.repo_name %></td>
       <td><%= bug.severity %></td>
       <td><%= bug.status %></td>
+      <%- if params[:q] == 'all' %>
+        <td><%= bug.resolution %></td>
+      <%- end %>
       <td><%= bug.reporter.gsub('@', ' at ') %></td>
       <td style="text-align: left">
         <%= bug.description %>

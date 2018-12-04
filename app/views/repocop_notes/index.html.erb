@@ -27,7 +27,7 @@
     <th><%= _('message') %></th>
   </tr>
 
-<% @spkg.repocop_notes.includes(:package).each do |repocop_note| %>
+<% @repocop_notes.each do |repocop_note| %>
   <% if !repocop_note.skip? %>
   <tr>
     <td><%= "#{ repocop_note.package_fullname }" %></td>

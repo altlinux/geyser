@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 class MaintainersController < ApplicationController
-   before_action :set_srpms, only: %i(srpms bugs allbugs repocop)
    before_action :set_bug_lists, except: %i(index)
-   before_action :set_branches, only: %i(index show srpms bugs)
+   before_action :set_branches, only: %i(index show)
 
    def index
       @branching_people = BranchingMaintainer.person
@@ -17,35 +16,6 @@ class MaintainersController < ApplicationController
       @acl_count = maintainer.acl_names.count
    end
 
-   def gear
-      @gears = Gear.joins(:gear_maintainers).for_maintainer(@maintainer).order(changed_at: :desc)
-   end
-
-   def bugs
-   end
-
-   def allbugs
-   end
-
-   def novelties
-      @frs = Issue::Novelty.active
-                           .joins(:issue_assignees)
-                           .where(issue_assignees: { maintainer_id: maintainer })
-                           .includes(:branch)
-                           .order(reported_at: :asc, repo_name: :asc)
-   end
-
-   def ftbfses
-      @ftbfs = Issue::Ftbfs.active
-                           .joins(:issue_assignees)
-                           .where(issue_assignees: { maintainer_id: maintainer })
-                           .includes(:branch)
-                           .order(reported_at: :asc, repo_name: :asc)
-   end
-
-   def repocop
-   end
-
    protected
 
    def acl_names
@@ -53,7 +23,7 @@ class MaintainersController < ApplicationController
    end
 
    def maintainer
-      @maintainer ||= Maintainer.find_by!(login: params[:id].downcase).decorate
+      @maintainer ||= Maintainer.find_by!(login: params[:login].downcase).decorate
    end
 
    def order
@@ -66,16 +36,6 @@ class MaintainersController < ApplicationController
    def set_bug_lists
       @all_bugs = BugDecorator.decorate_collection(Issue::Bug.for_maintainer_and_branch(maintainer, @branch))
       @opened_bugs =  BugDecorator.decorate_collection(@all_bugs.object.opened)
-   end
-
-   def set_srpms
-      @srpms = @branch.spkgs.where(name: acl_names)
-                      .includes(:repocop_patch)
-                      .order(order)
-                      .page(params[:page])
-                      .per(100)
-                      .select('DISTINCT(packages.*), LOWER(packages.name)')
-                      .decorate
    end
 
    def set_branches

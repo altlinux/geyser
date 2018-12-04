@@ -37,11 +37,13 @@ Rails.application.routes.draw do
       get ':branch/srpms/:reponame/rawspec', to: redirect('/%{locale}/%{branch}/specfiles/%{reponame}/raw')
       get ':branch/srpms/:reponame/get', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/rpms')
       get ':branch/srpms/:reponame/gear', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
-      get ':branch/maintainers/:login/gear', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/gears')
-      get ':branch/maintainers/:login/ftbfs', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/ftbfses')
       get ':branch/srpms/:reponame/bugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#bug')
       get ':branch/srpms/:reponame/allbugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#bug?q=all')
       get ':branch/srpms/:reponame/repocop', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/repocop_notes')
+      get ':branch/maintainers/:login/gear', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/gears')
+      get ':branch/maintainers/:login/ftbfs', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/ftbfses')
+      get ':branch/maintainers/:login/allbugs', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/bugs?q=all')
+      get ':branch/maintainers/:login/repocop', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/repocop_notes')
 
       # from v1:sisyphus.ru
       get 'srpm/:branch/:reponame', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
@@ -60,8 +62,8 @@ Rails.application.routes.draw do
       get 'people', to: redirect('/%{locale}/sisyphus/maintainers')
       get 'packager/:login', to: redirect('/%{locale}/sisyphus/maintainers/%{login}')
       get 'packager/:login/srpms', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/srpms')
-      get 'packager/:login/bugs', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/bugs')
-      get 'packager/:login/repocop', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/repocop')
+      get 'packager/:login/bugs', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/issues#bug')
+      get 'packager/:login/repocop', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/repocop_notes')
     get 'team/:login', to: redirect('/%{locale}/sisyphus/teams/%{login}')
     get 'packages', to: redirect('/%{locale}/sisyphus/packages'), as: :old_packages
     get 'packages/:group1', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}" }
@@ -119,19 +121,21 @@ Rails.application.routes.draw do
             end
          end
 
-
-      get 'rss' => 'rss#index', as: 'rss'
-      resources :teams, only: [:index, :show]
+         get 'rss' => 'rss#index', as: 'rss'
+         resources :teams, only: %i(index show)
 
          resources :maintainers, param: 'login', only: %i(index show) do
             member do
-               get 'srpms'
-               get 'gears'
-               get 'bugs'
-               get 'allbugs'
-               get 'ftbfses'
-               get 'watch' => 'maintainers#novelties', as: 'novelties'
-               get 'repocop'
+               resources :srpms, param: :reponame, reponame: /[^\/]+/, only: [], as: :maintainer_srpms do
+                  get '/' => 'srpms#maintained', on: :collection
+               end
+               resources :gears, param: :reponame, reponame: /[^\/]+/, only: :index
+               get 'bugs' => 'issues#bugs'
+               get 'ftbfses' => 'issues#ftbfses'
+               get 'watch' => 'issues#novelties', as: 'novelties'
+               resources :repocop_notes, param: :no, only: [], as: :maintainer_repocop_notes do
+                  get '/' => 'repocop_notes#maintained', on: :collection
+               end
             end
          end
 
@@ -153,6 +157,10 @@ Rails.application.routes.draw do
     resources :rsync, controller: :rsync, only: %i(new) do
        post :generate, on: :collection
     end
+   end
+
+   resources :repocop_patches, param: :package_id, only: [] do
+      get :download, on: :member
    end
 
    get '/src::reponame', reponame: /[^\/]+/, to: redirect('/ru/sisyphus/srpms/%{reponame}')

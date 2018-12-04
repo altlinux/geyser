@@ -6,9 +6,10 @@ class SrpmsController < ApplicationController
    before_action :fetch_spkgs_by_name, only: %i(show)
    before_action :fetch_bugs, only: %i(show)
    before_action :fetch_changelogs, only: %i(show)
+   before_action :fetch_branches, only: %i(index maintained)
+   before_action :fetch_maintainer, only: %i(maintained)
 
    def index
-      @branches = Branch.filled
       @spkg_builds = @branch.all_spkgs.top_rebuilds_after(Time.zone.now - 6.months).limit(16)
       @branches_s = BranchPathsToBranchesSerializer.new(BranchPath.includes(:branch)
                                                                   .for_branch(@branches)
@@ -37,6 +38,17 @@ class SrpmsController < ApplicationController
          login = @acls.owner.first.maintainer_slug
          @leader = Maintainer.where(login: login).first
       end
+   end
+
+   def maintained
+      @all_bugs = BugDecorator.decorate_collection(Issue::Bug.for_maintainer_and_branch(@maintainer, @branch))
+      @opened_bugs =  BugDecorator.decorate_collection(@all_bugs.object.opened)
+      @srpms = @branch.spkgs.where(name: @maintainer.gear_names)
+                      .includes(:repocop_patch)
+                      .page(params[:page])
+                      .per(100)
+                      .select('DISTINCT(packages.*), LOWER(packages.name)')
+                      .decorate
    end
 
    protected
@@ -77,5 +89,13 @@ class SrpmsController < ApplicationController
    def fetch_bugs
       @all_bugs = AllBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
       @opened_bugs = OpenedBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
+   end
+
+   def fetch_maintainer
+      @maintainer = Maintainer.find_by!(login: params[:login].downcase).decorate
+   end
+
+   def fetch_branches
+      @branches = Branch.filled
    end
 end

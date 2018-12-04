@@ -33,8 +33,11 @@ class CreateRecitals < ActiveRecord::Migration[5.2]
 
             queries.each { |q| ApplicationRecord.connection.execute(q) }
 
-            { 'Dmitry V. Levin (QA)' => 'Dmitry V. Levin',
-              'Gleb F-Malinovskiy (qa)' => 'Gleb Fotengauer-Malinovskiy' }.each do |name, to_name|
+            {
+               'Dmitry V. Levin (QA)' => 'Dmitry V. Levin',
+               'Gleb F-Malinovskiy (qa)' => 'Gleb Fotengauer-Malinovskiy',
+               'Malo Skryleve' => 'Pavel Skrylev'
+            }.each do |name, to_name|
                maintainer = Maintainer.find_by_name(name)
                main_maintainer = Maintainer.find_by_name(to_name)
 

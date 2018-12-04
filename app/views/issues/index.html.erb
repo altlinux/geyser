@@ -40,7 +40,9 @@
     <th><%= _('id') %></th>
     <th><%= _('severity') %></th>
     <th><%= _('status') %></th>
-    <th><%= _('resolution') %></th>
+    <%- if params[:q] == 'all' %>
+      <th><%= _('resolution') %></th>
+    <%- end %>
     <th><%= _('reporter') %></th>
     <th><%= _('summary') %></th>
   </tr>
@@ -50,7 +52,9 @@
       <td><%= bug.link_to_bugzilla %></td>
       <td><%= bug.severity %></td>
       <td><%= bug.status %></td>
-      <td><%= bug.resolution %></td>
+      <%- if params[:q] == 'all' %>
+        <td><%= bug.resolution %></td>
+      <%- end %>
       <td><%= bug.reporter.gsub('@', ' at ') %></td>
       <td style="text-align: left">
         <%= bug.description %>
