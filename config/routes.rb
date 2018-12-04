@@ -144,12 +144,11 @@ Rails.application.routes.draw do
          get 'packages/:group1/:group2/:group3', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}_#{pp[:group3].downcase}" }
       end
 
-    resource :maintainer_profile, only: [:edit, :update]
-    resource :search, only: :show
-    resources :rebuild, controller: :rebuild, only: :index
-    resources :rsync, controller: :rsync, only: %i(new) do
-       post :generate, on: :collection
-    end
+      resource :search, only: :show
+
+      resources :rsync, controller: :rsync, only: %i(new) do
+         post :generate, on: :collection
+      end
    end
 
    resources :repocop_patches, param: :package_id, only: [] do
