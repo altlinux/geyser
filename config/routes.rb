@@ -15,6 +15,7 @@ Rails.application.routes.draw do
    get '*prefix/Platform5/*other', to: redirect { |pp, _| "/#{pp[:prefix]}/p5/#{pp[:other]}" }
    get 'uk/*other', to: redirect { |pp, _| "/ru/#{pp[:other]}" }
    get 'br/*other', to: redirect { |pp, _| "/en/#{pp[:other]}" }
+   get 'project', to: redirect('/ru/project')
 
    devise_for :users
 
@@ -62,7 +63,7 @@ Rails.application.routes.draw do
       get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
       get 'packages/:group1/:group2/:group3', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}_#{pp[:group3].downcase}" }
 
-    get 'project' => 'pages#project'
+      get 'project' => 'pages#project'
 
       scope '(:branch)', branch: /([^\/]+)/ do
          get 'home' => 'srpms#index', as: 'home'
