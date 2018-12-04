@@ -56,6 +56,7 @@ Rails.application.routes.draw do
       get 'packager/:login/bugs', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/issues#bug')
       get 'packager/:login/repocop', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/repocop_notes')
       get 'team/:login', to: redirect('/%{locale}/sisyphus/teams/%{login}')
+      get 'security', to: redirect('/%{locale}/sisyphus/security'), as: :v1_security
     get 'packages', to: redirect('/%{locale}/sisyphus/packages'), as: :old_packages
     get 'packages/:group1', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}" }
     get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
@@ -132,7 +133,7 @@ Rails.application.routes.draw do
 
       get 'packages/:slug' => 'group#show', slug: /[a-z0-9_]+/, as: 'group'
       get 'packages' => 'group#index', as: 'packages'
-      get 'security' => 'security#index', as: 'security'
+         get 'security' => 'security#index', as: 'security'
 
          # support old rules
          # from v2:packages.a.o

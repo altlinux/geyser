@@ -3,41 +3,21 @@
 require 'rails_helper'
 
 describe SecurityController do
-  describe 'routing' do
-    it 'should route /:locale/:branch/security to security#index' do
-      expect(get: '/en/Sisyphus/security').to route_to(
-        controller: 'security',
-        action: 'index',
-        branch: 'Sisyphus',
-        locale: 'en'
-      )
-    end
+   include RSpec::Rails::RequestExampleGroup
 
-    it 'should route /:branch/security to security#index' do
-      expect(get: '/Sisyphus/security').to route_to(
-        controller: 'security',
-        action: 'index',
-        branch: 'Sisyphus'
-      )
-    end
+   describe 'routing' do
+      # resources :security, only: :index
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/security')
+                    .to("security#index", locale: :ru, branch: 'sisyphus')
+      end
+   end
 
-    it 'should route /:locale/:branch/security?page=:page to security#index' do
-      expect(get: '/en/Sisyphus/security?page=2').to route_to(
-        controller: 'security',
-        action: 'index',
-        locale: 'en',
-        branch: 'Sisyphus',
-        page: '2'
-      )
-    end
-
-    it 'should route /:branch/security?page=:page to security#index' do
-      expect(get: '/Sisyphus/security?page=2').to route_to(
-        controller: 'security',
-        action: 'index',
-        branch: 'Sisyphus',
-        page: '2'
-      )
-    end
-  end
+   describe 'sisyphus.ru routing' do
+      # get ':locale/security', to: redirect('/%{locale}/sisyphus/security')
+      it do
+         get '/ru/security'
+         expect(response).to redirect_to("/ru/sisyphus/security")
+      end
+   end
 end
