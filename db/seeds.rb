@@ -3,7 +3,7 @@
 if Branch.all.blank?
 # add Sisyphus branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = 'Sisyphus'
 branch.order_id = 0
 branch.path = '/Sisyphus'
@@ -12,7 +12,7 @@ branch.save!
 
 # add SisyphusARM branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = 'SisyphusARM'
 branch.order_id = 1
 branch.path = '/Sisyphus'
@@ -21,7 +21,7 @@ branch.save!
 
 # add Platform8 branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = 'p8'
 branch.order_id = 2
 branch.path = '/p8/branch'
@@ -29,7 +29,7 @@ branch.save!
 
 # add Platform7 branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = 'p7'
 branch.order_id = 3
 branch.path = '/p7/branch'
@@ -37,7 +37,7 @@ branch.save!
 
 # add t7 branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = 't7'
 branch.order_id = 4
 branch.path = '/t7/branch'
@@ -45,7 +45,7 @@ branch.save!
 
 # add Platform6 branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = 'Platform6'
 branch.order_id = 5
 branch.path = '/p6/branch'
@@ -53,7 +53,7 @@ branch.save!
 
 # add t6 branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = 't6'
 branch.order_id = 6
 branch.path = '/t6/branch'
@@ -61,7 +61,7 @@ branch.save!
 
 # add Platform5 branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = 'Platform5'
 branch.order_id = 7
 branch.path = '/p5/branch'
@@ -69,7 +69,7 @@ branch.save!
 
 # add 5.1 branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = '5.1'
 branch.order_id = 8
 branch.path = '/5.1/branch'
@@ -77,7 +77,7 @@ branch.save!
 
 # add 5.0 branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = '5.0'
 branch.order_id = 9
 branch.path = '/5.0/branch'
@@ -85,7 +85,7 @@ branch.save!
 
 # add 4.1 branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = '4.1'
 branch.order_id = 10
 branch.path = '/4.1/branch'
@@ -93,7 +93,7 @@ branch.save!
 
 # add 4.0 branch
 branch = Branch.new
-branch.vendor = 'ALT Linux'
+branch.vendor = 'ALT'
 branch.name = '4.0'
 branch.order_id = 11
 branch.path = '/4.0/branch'
@@ -108,7 +108,7 @@ branch.save!
 # branch.save!
 
 # Mirrors for Sisyphus
-branch = Branch.find_by(name: 'Sisyphus', vendor: 'ALT Linux')
+branch = Branch.find_by(name: 'Sisyphus', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -210,7 +210,7 @@ Mirror.create!(
 )
 
 # Mirrors for SisyphusARM
-# branch = Branch.find_by(name: 'SisyphusARM', vendor: 'ALT Linux')
+# branch = Branch.find_by(name: 'SisyphusARM', vendor: 'ALT')
 # Mirror.create!(
 #   branch_id: branch.id,
 #   order_id: 0,
@@ -237,7 +237,7 @@ Mirror.create!(
 # )
 
 # Mirrors for p8
-branch = Branch.find_by(name: 'p8', vendor: 'ALT Linux')
+branch = Branch.find_by(name: 'p8', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -339,7 +339,7 @@ Mirror.create!(
 )
 
 # Mirrors for p7
-branch = Branch.find_by(name: 'p7', vendor: 'ALT Linux')
+branch = Branch.find_by(name: 'p7', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -441,7 +441,7 @@ Mirror.create!(
 )
 
 # Mirrors for t7
-branch = Branch.find_by(name: 't7', vendor: 'ALT Linux')
+branch = Branch.find_by(name: 't7', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -543,7 +543,7 @@ Mirror.create!(
 )
 
 # Mirrors for Platform6
-branch = Branch.find_by(name: 'Platform6', vendor: 'ALT Linux')
+branch = Branch.find_by(name: 'Platform6', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -645,7 +645,7 @@ Mirror.create!(
 )
 
 # Mirrors for t6
-branch = Branch.find_by(name: 't6', vendor: 'ALT Linux')
+branch = Branch.find_by(name: 't6', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -747,7 +747,7 @@ Mirror.create!(
 )
 
 # Mirrors for Platform5
-branch = Branch.find_by(name: 'Platform5', vendor: 'ALT Linux')
+branch = Branch.find_by(name: 'Platform5', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -849,7 +849,7 @@ Mirror.create!(
 )
 
 # Mirrors for 5.1
-branch = Branch.find_by(name: '5.1', vendor: 'ALT Linux')
+branch = Branch.find_by(name: '5.1', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -951,7 +951,7 @@ Mirror.create!(
 )
 
 # Mirrors for 5.0
-branch = Branch.find_by(name: '5.0', vendor: 'ALT Linux')
+branch = Branch.find_by(name: '5.0', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -1053,7 +1053,7 @@ Mirror.create!(
 )
 
 # Mirrors for 4.1
-branch = Branch.find_by(name: '4.1', vendor: 'ALT Linux')
+branch = Branch.find_by(name: '4.1', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -1155,7 +1155,7 @@ Mirror.create!(
 )
 
 # Mirrors for 4.0
-branch = Branch.find_by(name: '4.0', vendor: 'ALT Linux')
+branch = Branch.find_by(name: '4.0', vendor: 'ALT')
 Mirror.create!(
   branch_id: branch.id,
   order_id: 0,
@@ -1622,7 +1622,7 @@ has_branch_path =
 if Branch.where(name: "Sisyphus_MIPS").blank? and !has_branch_path
    # add MIPS branch
    branch = Branch.new
-   branch.vendor = 'ALT Linux'
+   branch.vendor = 'ALT'
    branch.name = 'Sisyphus_MIPS'
    branch.order_id = 11
    branch.path = '/ALTmips'
@@ -1788,7 +1788,7 @@ if BranchPath.src.blank?
             'noarch' => %w(/mirror/p5/files/noarch/RPMS),
          }
       }.each do |name, arches|
-         branch = Branch.find_or_create_by!(name: name, vendor: "ALT Linux")
+         branch = Branch.find_or_create_by!(name: name, vendor: "ALT")
 
          arches.each do |arch, paths|
             pname = arch == "src" && name || "#{name} (#{arch})"
