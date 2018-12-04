@@ -49,6 +49,42 @@ describe SrpmsController do
          get '/src:name'
          expect(response).to redirect_to("/ru/sisyphus/srpms/name")
       end
+
+      # get '/uk' => '/en'
+      it do
+         get '/uk'
+         expect(response).to redirect_to("/ru")
+      end
+
+      # get '/br' => '/en'
+      it do
+         get '/br'
+         expect(response).to redirect_to("/en")
+      end
+
+      # get '/uk/Sisyphus/other' => '/en'
+      it do
+         get '/uk/Sisyphus/other'
+         expect(response).to redirect_to("/ru/Sisyphus/other")
+      end
+
+      # get '/br/Sisyphus/other' => '/en'
+      it do
+         get '/br/Sisyphus/other'
+         expect(response).to redirect_to("/en/Sisyphus/other")
+      end
+
+      # get '/ru/Platform6/home' => '/en/p6/home'
+      it do
+         get '/ru/Platform6/home'
+         expect(response).to redirect_to("/ru/p6/home")
+      end
+
+      # get '/ru/Platform5/home' => '/en/p6/home'
+      it do
+         get '/ru/Platform5/srpms/bash4'
+         expect(response).to redirect_to("/ru/p5/srpms/bash4")
+      end
    end
 
    describe 'sisyphus.ru routing' do

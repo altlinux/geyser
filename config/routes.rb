@@ -3,9 +3,9 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  authenticate :user, ->(user) { user.admin? } do
-    mount PgHero::Engine, at: 'pghero'
-  end
+   authenticate :user, ->(user) { user.admin? } do
+      mount PgHero::Engine, at: 'pghero'
+   end
 
   namespace :api, defaults: { format: 'json' } do
     resources :docs, only: :index
@@ -24,6 +24,15 @@ Rails.application.routes.draw do
 
     resources :maintainers, only: [:index, :show]
   end
+
+   # support old rules
+   # from v2:packages.a.o
+   get 'uk', to: redirect('/ru')
+   get 'br', to: redirect('/en')
+   get '*prefix/Platform6/*other', to: redirect { |pp, _| "/#{pp[:prefix]}/p6/#{pp[:other]}" }
+   get '*prefix/Platform5/*other', to: redirect { |pp, _| "/#{pp[:prefix]}/p5/#{pp[:other]}" }
+   get 'uk/*other', to: redirect { |pp, _| "/ru/#{pp[:other]}" }
+   get 'br/*other', to: redirect { |pp, _| "/en/#{pp[:other]}" }
 
    scope '(:locale)', locale: SUPPORTED_LOCALES_RE do
     devise_for :users
@@ -145,7 +154,8 @@ Rails.application.routes.draw do
 
       #get '/', to: redirect('/%{locale}/%{branch}/home')
 
-      # old routes
+      # support old rules
+      # from v1:sisyphus.ru
       get 'packages/:group1', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}" }
       get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
       get 'packages/:group1/:group2/:group3', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}_#{pp[:group3].downcase}" }
