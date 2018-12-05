@@ -7,7 +7,6 @@ addons:
   apt_packages:
     - rpm
 before_install:
-  - echo $INIT
   - $($INIT)
   - rpm --help
   - bundle install
