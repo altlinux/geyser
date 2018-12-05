@@ -58,11 +58,11 @@ class Package < ApplicationRecord
       if text.blank?
          all
       else
-         tqs_from = Arel.sql("packages, plainto_tsquery(?) AS q", text)
-         tqs_select = Arel.sql("DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text)
+         tqs_from = Arel.sql(sanitize_sql_array(["packages, plainto_tsquery(?) AS q", text]))
+         tqs_select = Arel.sql(sanitize_sql_array(["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text]))
          tqs = Package.from(tqs_from).where("tsv @@ q").select(tqs_select)
 
-         qs_select = "packages.name,
+         qs_select = Arel.sql("packages.name,
                       MAX(tqs.rank) AS rank,
                       array_agg(DISTINCT packages.id) AS src_ids,
                       jsonb_object_agg(DISTINCT packages.buildtime,
@@ -71,11 +71,12 @@ class Package < ApplicationRecord
                                                 THEN ''
                                                 ELSE packages.epoch || ':'
                                                 END || packages.version || '-' || packages.release
-                                       ) AS evrbes"
-         qs = Package.joins("INNER JOIN rpms AS qs_rpms ON qs_rpms.package_id = packages.id AND qs_rpms.obsoleted_at IS NULL
+                                       ) AS evrbes")
+         qs_join = Arel.sql("INNER JOIN rpms AS qs_rpms ON qs_rpms.package_id = packages.id AND qs_rpms.obsoleted_at IS NULL
                              INNER JOIN branch_paths AS qs_branch_paths ON qs_branch_paths.id = qs_rpms.branch_path_id
                              INNER JOIN branches AS qs_branches ON qs_branches.id = qs_branch_paths.branch_id
                              INNER JOIN (#{tqs.to_sql}) AS tqs ON tqs.src_id = packages.id")
+         qs = Package.joins(qs_join)
                      .group(:name)
                      .order(:name)
                      .select(qs_select)

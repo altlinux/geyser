@@ -26,5 +26,5 @@ RSpec.describe BranchPath, type: :model do
    it { is_expected.to validate_presence_of(:arch) }
    it { is_expected.to validate_presence_of(:path) }
 
-   it { is_expected.to validate_inclusion_of(:arch).in_array(%w(i586 x86_64 noarch aarch64 mipsel armh arm src)) }
+   it { is_expected.to validate_inclusion_of(:arch).in_array(%w(i586 x86_64 noarch aarch64 mipsel armh src)) }
 end

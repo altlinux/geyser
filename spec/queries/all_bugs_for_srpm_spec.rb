@@ -26,7 +26,7 @@ describe AllBugsForSrpm do
          #
          expect(Issue::Bug).to receive(:where).with(repo_name: reponames, branch_path_id: branch_paths) do
             double.tap do |a|
-               expect(a).to receive(:order).with(no: :desc)
+               expect(a).to receive(:order).with("no::integer DESC")
             end
          end
       end

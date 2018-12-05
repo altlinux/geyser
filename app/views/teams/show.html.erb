@@ -38,7 +38,7 @@
   <% if @leader %>
     <b><%= _('Team leader:') %></b>
     <% @leader.each do |leader| %>
-      <%= link_to leader.name, maintainer_path(id: leader.login, branch: @branch.slug), class: 'news', title: _('information about maintainer') %>
+      <%= link_to leader.name, maintainer_path(login: leader.login, branch: @branch.slug), class: 'news', title: _('information about maintainer') %>
     <% end %>
     <p class="break"></p>
   <% end %>
@@ -46,7 +46,7 @@
   <b><%= _('Team members:') %></b>
   <ul>
     <% @members.each do |member| %>
-      <li><%= link_to member.name, maintainer_path(id: member.login), class: 'news', title: _('information about maintainer') %></li>
+      <li><%= link_to member.name, maintainer_path(login: member.login), class: 'news', title: _('information about maintainer') %></li>
     <% end %>
   </ul>
 
@@ -54,7 +54,7 @@
 
   <b><%= _('List of packages:') %></b>
   [
-  <%= @srpms_counter %>
+  <%= @spkgs_counter %>
   ]
   <br>
   <br>
@@ -72,25 +72,25 @@
       <th><%= _('Summary') %></th>
     </tr>
 
-    <% @srpms.each do |srpm| %>
+    <% @spkgs.each do |spkg| %>
       <tr>
         <% if @branch.perpetual? %>
           <td>
-            <%= link_to image_tag("#{ srpm.repocop_status }.png", size: '20x20', alt: srpm.repocop_status), repocop_srpm_path(srpm), class: 'repocoplink', title: _('repocop') %>
-            <% if srpm.repocop_patch %>
+            <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(reponame: spkg.name, branch: @branch), class: 'repocoplink', title: _('repocop') %>
+            <% if spkg.repocop_patch %>
               <br>
-              <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), repocop_patch_download_url(srpm.repocop_patch), class: 'repocoplink', title: _('repocop patchset for the package') %>
+              <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), repocop_patch_download_url(spkg.repocop_patch), class: 'repocoplink', title: _('repocop patchset for the package') %>
             <% end %>
           </td>
         <% end %>
         <td class="strange">
-          <%= link_to srpm.name, srpm_path(@branch, srpm), class: 'news', title: _('detailed information about RPM') %>
+          <%= link_to spkg.name, srpm_path(branch: @branch, reponame: spkg), class: 'news', title: _('detailed information about RPM') %>
         </td>
-        <td><%= srpm.evr %></td>
-        <td><%= srpm.buildtime %></td>
-        <td><%= "#{ time_ago_in_words(srpm.buildtime) } #{ _('ago') }" %></td>
-        <td><%= srpm.short_url %></td>
-        <td style="text-align: left;"><%= srpm.summary %></td>
+        <td><%= spkg.evr %></td>
+        <td><%= spkg.buildtime %></td>
+        <td><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>
+        <td><%= spkg.short_url %></td>
+        <td style="text-align: left;"><%= spkg.summary %></td>
       </tr>
     <% end %>
   </table>
@@ -98,7 +98,7 @@
   <p class="break" />
 
   <div style="text-align:center">
-    <%= paginate @srpms %>
+    <%= paginate @spkgs %>
   </div>
 
 <div id="bottom-offset-l">

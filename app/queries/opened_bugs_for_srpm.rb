@@ -12,7 +12,7 @@ class OpenedBugsForSrpm < Rectify::Query
   end
 
   def query
-    scope.query.where(status: BUG_STATUSES).order("no::integer DESC")
+    scope.query.where(status: BUG_STATUSES)
   end
 
   def decorate
