@@ -5,7 +5,7 @@ class Changelog < ApplicationRecord
    belongs_to :maintainer, optional: true
    belongs_to :spkg, class_name: 'Package::Src', optional: true
 
-   has_many :branches, through: :spkg
+   has_many :branches, through: :spkg, source: :branch
 
    scope :fix, -> { where("changelogs.text LIKE '%CVE%'") }
 
