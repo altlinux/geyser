@@ -3,12 +3,6 @@
 require 'nokogiri'
 
 class ImportNovelties
-   MAP = {
-      'php_coder' => 'php-coder',
-      'psolntsev' => 'p_solntsev',
-      '@vim_plugins' => '@vim-plugins',
-   }
-
    ATTR_NAMES = %i(type no status severity branch_path_id repo_name evr reporter reported_at source_url)
 
    attr_reader :url, :name, :version
@@ -37,16 +31,17 @@ class ImportNovelties
       []
    end
 
-   def maintainer_from pre_login
-      login = MAP[pre_login] || pre_login
+   def maintainer_from login
       /(?<team>@)?(?<name>.*)/ =~ login
       email = name + (team && "@packages.altlinux.org" || "@altlinux.org")
 
-      Maintainer.where(login: login).first || Maintainer.find_or_create_by!(email: email) do |m|
-         m.name = name
-         m.login = login
-         m.type = team && 'Maintainer::Team' || 'Maintainer::Person'
-      end
+      Recital::Email.find_or_create_by!(address: email) do |r_e|
+         r_e.maintainer = Maintainer.find_or_initialize_by(login: login) do |m|
+            m.name = name
+            m.login = login
+            m.type = team && 'Maintainer::Team' || 'Maintainer::Person'
+         end
+      end.maintainer
    end
 
    def append_novelties
