@@ -1,4 +1,6 @@
+dist: xenial
 language: ruby
+postgresql: 9.5
 rvm:
   - 2.5.1
 env:
