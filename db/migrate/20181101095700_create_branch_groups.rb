@@ -99,7 +99,7 @@ class CreateBranchGroups < ActiveRecord::Migration[5.2]
 
    def group_attrs
       names = NAMES_RU.invert
-      groups = IO.read('/usr/lib/rpm/GROUPS')
+      groups = IO.read('db/seed/GROUPS')
 
       attrs = (groups.split("\n").map do |group|
          path = group.gsub(/[\s\.\-\+]+/, '_').gsub(/\//, '.').downcase
