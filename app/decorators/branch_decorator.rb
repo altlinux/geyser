@@ -18,7 +18,7 @@ class BranchDecorator < Draper::Decorator
   end
 
   def default_arches
-    %w(i586 x86_64 aarch64 mipsel armh arm)
+    %w(i586 x86_64 aarch64 mipsel armh)
   end
 
   def options_for arch
