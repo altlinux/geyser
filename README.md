@@ -12,13 +12,10 @@
 * PostgreSQL 9.6 (some features will not work in other db)
 * nginx
 * gettext
-* curl
-* sphinx search engine
 * node.js
 * /usr/bin/md5sum from coreutils
 * git
 * memcached
-* graphviz
 * rpm
 * rpm2cpio
 * bzip2
@@ -27,41 +24,38 @@
 
 or with a few lines:
 
-    $ rvm install ruby-2.5.1
-    $ gem install bundler
     # apt-get install postgresql11-server postgresql11-contrib postgresql11 bzip2 \
-                      gettext graphviz memcached /usr/bin/md5sum npm nodejs curl sphinx \
-                      libruby-devel ruby zlib-devel postgresql9.6-devel
+                      gettext memcached /usr/bin/md5sum npm nodejs \
+                      libruby-devel ruby zlib-devel postgresql11-devel ruby-bundler
 
 ### Post setup
 
-   # service postgresql start
-   $ memcached -d -m 128
-   $ bundle install
-   $ rake secret
-   $ rake gettext:pack
+    # service postgresql start
+    $ memcached -d -m 128
+    $ bundle install
+    $ rake secret
+    $ rake gettext:pack
 
 ### Initialize the database
 
-   $ bundle exec rails db:create db:migrate db:seed
+    $ bundle exec rails db:create db:migrate db:seed
 
 ### Import data
 
-   $ rake update:branches update:lost[true]
-   $ 
+    $ rake update:branches update:lost[true]
 
 
 ## Deployment
 
-   $ cap production deploy
+    $ cap production deploy
 
 or from the specific branch/tag:
 
-   $ BRANCH=0.3 cap production deploy
+    $ BRANCH=0.3 cap production deploy
 
 ## Tests
 
-   $ rspec
+    $ rspec
 
 ## Useful links
 
