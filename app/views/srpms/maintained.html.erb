@@ -1,0 +1,80 @@
+<% title _('Geyser - Maintainer &laquo;%s&raquo; - Packages') % _(@maintainer.name) %>
+
+<div id='main-content'>
+
+<div id="rightbar">
+<div class="headleft">
+<div class="headright" title="<%= _('ALT repositories') %>">
+  <%= _('ALT repositories') %>
+</div>
+<%= image_tag('collapse.gif', id: 'topRPM', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9') %>
+</div>
+<div id="topRPMDiv" style="border: dotted gray 1px; margin: 0px 4px 4px 4px;">
+<table style="font-size:8pt;" width="100%">
+
+<% @branches.each do |branch| %>
+<tr>
+  <td style="text-align: left;">
+    <%= link_to branch.name, maintainer_srpms_path(branch, @maintainer), class: 'news' %>
+  </td>
+</tr>
+<% end %>
+
+</table>
+</div>
+</div>
+
+<div class="header"><%= _('Maintainer:') %> <%= _(@maintainer.name) %></div>
+<p class="break" />
+
+<%= render partial: "shared/maintainer_menu", locals: { current_page: :packages, branch: @branch, maintainer: @maintainer, opened_bugs: @opened_bugs, all_bugs: @all_bugs } %>
+
+<p class="break" />
+<b><%= _('List of packages which was built by this maintainer:') %></b> [<%= @maintainer.support_count %>] <br><br>
+
+<table id="bugs" cellspacing="0" cellpadding="3">
+  <tr>
+    <% if @branch.perpetual? %>
+      <th>
+        <%= raw _('repo<br>cop') %>
+      </th>
+    <% end %>
+    <th><%= _('package') %></th>
+    <th><%= raw _('current<br>version') %></th>
+    <th><%= _('build time') %></th>
+    <th><%= _('age') %></th>
+    <th><%= _('Url') %></th>
+    <th><%= _('Summary') %></th>
+  </tr>
+
+  <% @srpms.each do |srpm| %>
+  <tr>
+    <% if @branch.perpetual? %>
+      <td>
+        <%= link_to image_tag("#{ srpm.repocop_status }.png", size: '20x20', alt: srpm.repocop_status), repocop_notes_path(reponame: srpm.name), class: 'repocoplink', title: 'repocop' %>
+        <% if srpm.repocop_patch %>
+          <br>
+          <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(srpm.repocop_patch.package_id), class: 'repocoplink', title: _('repocop patchset for the package') %>
+        <% end %>
+      </td>
+    <% end %>
+    <td class="strange">
+      <%= link_to srpm.name, srpm_path(reponame: srpm.name, branch: @branch.slug), class: 'news' %>
+    </td>
+    <td><%= srpm.evr %></td>
+    <td><%= srpm.buildtime %></td>
+    <td><%= time_ago_in_words(srpm.buildtime) %> <%= _('ago') %></td>
+    <td><%= srpm.short_url %></td>
+    <td style="text-align:left;"><%= srpm.summary %></td>
+  </tr>
+  <% end %>
+</table>
+
+  <p class="break" />
+
+  <div style="text-align:center">
+    <%= paginate @srpms %>
+  </div>
+
+
+</div><div id="bottom-offset-l"><div id="bottom-offset-r">&nbsp;</div></div>

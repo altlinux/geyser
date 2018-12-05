@@ -3,100 +3,70 @@
 require 'rails_helper'
 
 describe Maintainer do
-  it { should be_a(ApplicationRecord) }
+   let(:person) { create(:person, login: 'person') }
 
-  context 'Associations' do
-    it { should have_many(:teams) }
+   it { is_expected.to be_a(ApplicationRecord) }
 
-    it { should have_many(:gears) }
+   context 'Associations' do
+      it { is_expected.to have_many(:rpms).through(:packages) }
+      it { is_expected.to have_many(:branch_paths).through(:rpms) }
+      it { is_expected.to have_many(:branches).through(:branch_paths) }
+      it { is_expected.to have_many(:branching_maintainers).dependent(:delete_all) }
+      it { is_expected.to have_many(:gear_maintainers) }
+      it { is_expected.to have_many(:gears).through(:gear_maintainers) }
+      it { is_expected.to have_many(:changelogs) }
+      it { is_expected.to have_many(:issue_assignees) }
+      it { is_expected.to have_many(:ftbfs).class_name('Issue::Ftbfs').through(:issue_assignees).source(:issue) }
+      it { is_expected.to have_many(:bugs).class_name('Issue::Bug').through(:issue_assignees).source(:issue) }
+      it { is_expected.to have_many(:built_names).through(:packages).source(:rpms) }
+      it { is_expected.to have_many(:acls).with_primary_key('login').with_foreign_key('maintainer_slug') }
+      it { is_expected.to have_many(:acl_names).with_primary_key('login').with_foreign_key('maintainer_slug').class_name(:Acl) }
+      it { is_expected.to have_many(:gear_names).through(:gear_maintainers).source(:gear).class_name(:Gear) }
+      it { is_expected.to have_many(:emails).class_name('Recital::Email') }
+   end
 
-    it { should have_many(:ftbfs) }
-  end
+   context 'Attributes' do
+      it { is_expected.to accept_nested_attributes_for(:email) }
+   end
 
-  context 'Validation' do
-    it { should validate_presence_of(:name) }
+   context 'Validation' do
+      it { is_expected.to validate_presence_of(:name) }
+   end
 
-    it { should validate_presence_of(:email) }
+   context 'common' do
+      subject { person }
 
-    it { should validate_presence_of(:login) }
-  end
+      it 'is_expected.to return Maintainer.login on .to_param' do
+         expect(subject.to_param).to eq('person')
+         expect(subject.slug).to eq('person')
+      end
+   end
 
-  it 'should validate_uniqueness_of :login' do
-    Maintainer.create!(name: 'Igor Zubkov',
-                       email: 'icesik@altlinux.org',
-                       login: 'icesik')
-    should validate_uniqueness_of :login
-  end
+   context 'import' do
+      it 'is_expected.to create one Maintainer' do
+         expect {
+            Maintainer.import_from_changelogname('Igor Zubkov <icesik@altlinux.org>')
+         }.to change(Maintainer, :count).by(1)
+      end
 
-  it 'should return Maintainer.login on .to_param' do
-    expect(Maintainer.new(login: 'icesik').to_param).to eq('icesik')
-  end
+      it 'is_expected.to not create Maintainer if Maintainer already exists' do
+         Maintainer.import_from_changelogname('Igor Zubkov <icesik@altlinux.org>')
+         expect {
+            Maintainer.import_from_changelogname('Igor Zubkov <icesik@altlinux.org>')
+         }.not_to change(Maintainer, :count)
+      end
 
-  it 'should deny change email' do
-    maintainer = Maintainer.create!(name: 'Igor Zubkov',
-                                    email: 'icesik@altlinux.org',
-                                    login: 'icesik')
-    maintainer.email = 'ldv@altlinux.org'
-    expect(maintainer.save).to eq(false)
-  end
+      it 'is_expected.to create new Maintainer team' do
+         expect {
+            Maintainer.import_from_changelogname('Ruby Maintainers Team <ruby@packages.altlinux.org>')
+         }.to change(Maintainer::Team, :count).by(1)
+      end
 
-  it 'should deny change login' do
-    maintainer = Maintainer.create!(name: 'Igor Zubkov',
-                                    email: 'icesik@altlinux.org',
-                                    login: 'icesik')
-    maintainer.login = 'ldv'
-    expect(maintainer.save).to eq(false)
-  end
-
-  it 'should deny change name' do
-    maintainer = Maintainer.create!(name: 'Igor Zubkov',
-                                    email: 'icesik@altlinux.org',
-                                    login: 'icesik')
-    maintainer.name = 'Dmitry V. Levin'
-    expect(maintainer.save).to eq(false)
-  end
-
-  it 'should return true if Maintainer exists' do
-    Maintainer.create!(name: 'Igor Zubkov',
-                       email: 'icesik@altlinux.org',
-                       login: 'icesik')
-    expect(Maintainer.login_exists?('icesik')).to eq(true)
-  end
-
-  it 'should return false if Maintainer not exists' do
-    expect(Maintainer.login_exists?('ice')).to eq(false)
-  end
-
-  it 'should downcase login before checking for exists' do
-    Maintainer.create!(name: 'Igor Zubkov',
-                       email: 'icesik@altlinux.org',
-                       login: 'icesik')
-    expect(Maintainer.login_exists?('ICESIK')).to eq(true)
-  end
-
-  it 'should create one Maintainer' do
-    expect {
-      Maintainer.import('Igor Zubkov <icesik@altlinux.org>')
-    }.to change(Maintainer, :count).by(1)
-  end
-
-  it 'should not create Maintainer if Maintainer already exists' do
-    Maintainer.import('Igor Zubkov <icesik@altlinux.org>')
-    expect {
-      Maintainer.import('Igor Zubkov <icesik@altlinux.org>')
-    }.not_to change(Maintainer, :count)
-  end
-
-  it 'should create new Maintainer team' do
-    expect {
-      Maintainer.import('Ruby Maintainers Team <ruby@packages.altlinux.org>')
-    }.to change(Maintainer::Team, :count).by(1)
-  end
-
-  it 'should not create new Maintainer team' do
-    Maintainer.import('Ruby Maintainers Team <ruby@packages.altlinux.org>')
-    expect {
-      Maintainer.import('Ruby Maintainers Team <ruby@packages.altlinux.org>')
-    }.not_to change(Maintainer::Team, :count)
-  end
+      it 'is_expected.to not create new Maintainer team' do
+         Maintainer.import_from_changelogname('Ruby Maintainers Team <ruby@packages.altlinux.org>')
+         expect {
+            Maintainer.import_from_changelogname('Ruby Maintainers Team <ruby@packages.altlinux.org>')
+         }.not_to change(Maintainer::Team, :count)
+      end
+   end
 end

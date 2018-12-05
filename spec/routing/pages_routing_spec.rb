@@ -3,17 +3,17 @@
 require 'rails_helper'
 
 describe PagesController do
-  describe 'routing' do
-    it 'should route /project to pages#project' do
-      expect(get: '/project').to route_to('pages#project')
-    end
+   include RSpec::Rails::RequestExampleGroup
 
-    it 'should route /:locale/project to pages#project' do
-      expect(get: '/en/project').to route_to(
-        controller: 'pages',
-        action: 'project',
-        locale: 'en'
-      )
-    end
-  end
+   describe 'routing' do
+      it do
+         is_expected.to route(:get, '/ru/project')
+                    .to("pages#project", locale: :ru)
+      end
+
+      it do
+         get '/project'
+         expect(response).to redirect_to("/ru/project")
+      end
+   end
 end

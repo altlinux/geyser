@@ -32,10 +32,6 @@ class Rpm < ApplicationRecord
       obsoleted_at.present?
    end
 
-   def fill_name_in
-      self.name ||= filename.split(/-/)[0...-2].join('-')
-   end
-
    def exists?
       scope = self.class.unscoped.where(branch_path_id: branch_path_id,
                                         filename: filename,
@@ -47,5 +43,11 @@ class Rpm < ApplicationRecord
 
    def file_exists?
       File.exists?(filepath)
+   end
+
+   protected
+
+   def fill_name_in
+      self.name ||= filename.split(/-/)[0...-2].join('-')
    end
 end

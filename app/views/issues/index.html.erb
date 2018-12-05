@@ -1,0 +1,70 @@
+<% title _('Geyser - Package &laquo;%s&raquo; - Bugs') % @spkg.name %>
+<% description "#{ @spkg.name } - #{ @spkg.summary }" %>
+<% keywords @spkg.summary %>
+
+<div id='main-content'>
+   <div class="rightbar fat">
+      <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
+   </div>
+
+<div style="height:3em;">
+  <div id="rpmtop">
+    <b style="font-size:9pt;"><%= _('Group') %> :: <%= _(@spkg.groupname) %></b><br>
+    <div class="header" style="letter-spacing:1px;"><%= _('Source RPM:') %> <%= @spkg.name %></div>
+  </div>
+</div>
+
+<div>
+<%= render partial: "shared/srpms_menu", locals: { current_page: :bugs, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
+
+<% if @all_bugs.empty? %>
+
+<b><%= _('There are no bugreports against this package') %></b>
+
+<% else %>
+
+<b><%= _('Total:') %></b> <%= @issues.count %> (<span style='color:red'><%= @opened_bugs.count %></span>|<%= @all_bugs.count %>)
+
+<div style="text-align:left;margin-left:2em;margin-top:1.5em;">
+<%- if params[:q] == 'all' %>
+<span class="tabunsel">&nbsp;<%= link_to _('open'), @evrb && issues_path(reponame: params[:reponame], evrb: @evrb) || issues_path(id: params[:id]), class: 'news' %>&nbsp;</span>
+<span class="tabsel">&nbsp;<%= _('total') %>&nbsp;</span>
+<%- else %>
+<span class="tabsel">&nbsp;<%= _('open') %>&nbsp;</span>
+<span class="tabunsel">&nbsp;<%= link_to _('total'), @evrb && evrb_issues_path(reponame: params[:reponame], evrb: @evrb, q: 'all') || issues_path(reponame: params[:reponame], q: 'all'), class: 'news' %>&nbsp;</span>
+<%- end %>
+</div>
+
+<table id="bugs" cellspacing="0" cellpadding="3">
+  <tr>
+    <th><%= _('id') %></th>
+    <th><%= _('severity') %></th>
+    <th><%= _('status') %></th>
+    <%- if params[:q] == 'all' %>
+      <th><%= _('resolution') %></th>
+    <%- end %>
+    <th><%= _('reporter') %></th>
+    <th><%= _('summary') %></th>
+  </tr>
+
+  <% @issues.each do |bug| %>
+    <tr>
+      <td><%= bug.link_to_bugzilla %></td>
+      <td><%= bug.severity %></td>
+      <td><%= bug.status %></td>
+      <%- if params[:q] == 'all' %>
+        <td><%= bug.resolution %></td>
+      <%- end %>
+      <td><%= bug.reporter.gsub('@', ' at ') %></td>
+      <td style="text-align: left">
+        <%= bug.description %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<% end %>
+
+</div>
+
+</div><div id="bottom-offset-l"><div id="bottom-offset-r">&nbsp;</div></div>

@@ -3,145 +3,106 @@
 require 'rails_helper'
 
 describe MaintainersController do
-  describe 'routing' do
-    it 'should route /:branch/maintainers to maintainers#index' do
-      expect(get: '/sisyphus/maintainers').to route_to(
-        controller: 'maintainers',
-        action: 'index',
-        branch: 'sisyphus'
-      )
-    end
+   include RSpec::Rails::RequestExampleGroup
 
-    it 'should route /:locale/:branch/maintainers to maintainers#index' do
-      expect(get: '/en/sisyphus/maintainers').to route_to(
-        controller: 'maintainers',
-        action: 'index',
-        branch: 'sisyphus',
-        locale: 'en'
-      )
-    end
+   describe 'routing' do
+      # resources :maintainers, only: :index
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/maintainers')
+                    .to("maintainers#index", locale: :ru, branch: 'sisyphus')
+      end
 
-    it 'should route /:branch/maintainers/:id to maintainers#show' do
-      expect(get: '/sisyphus/maintainers/icesik').to route_to(
-        controller: 'maintainers',
-        action: 'show',
-        branch: 'sisyphus',
-        id: 'icesik'
-      )
-    end
+      # get 'maintainers/:login/show' => 'maintainers#show'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/maintainers/login')
+                    .to("maintainers#show", locale: :ru, branch: 'sisyphus', login: 'login')
+      end
 
-    it 'should route /:locale/:branch/maintainers/:id to maintainers#show' do
-      expect(get: '/en/sisyphus/maintainers/icesik').to route_to(
-        controller: 'maintainers',
-        action: 'show',
-        branch: 'sisyphus',
-        id: 'icesik',
-        locale: 'en'
-      )
-    end
+      # get 'maintainers/:login/srpms' => 'maintainers#srpms'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/maintainers/login/srpms')
+                    .to("srpms#maintained", locale: :ru, branch: 'sisyphus', login: 'login')
+      end
 
-    it 'should route /:branch/maintainers/:id/srpms to maintainers#srpms' do
-      expect(get: '/sisyphus/maintainers/icesik/srpms').to route_to(
-        controller: 'maintainers',
-        action: 'srpms',
-        branch: 'sisyphus',
-        id: 'icesik'
-      )
-    end
+      # get 'maintainers/:login/gear' => 'maintainers#gear'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/maintainers/login/gears')
+                    .to("gears#index", locale: :ru, branch: 'sisyphus', login: 'login')
+      end
 
-    it 'should route /:locale/:branch/maintainers/:id/srpms to maintainers#srpms' do
-      expect(get: '/en/sisyphus/maintainers/icesik/srpms').to route_to(
-        controller: 'maintainers',
-        action: 'srpms',
-        branch: 'sisyphus',
-        id: 'icesik',
-        locale: 'en'
-      )
-    end
+      # get 'maintainers/:login/issues' => 'maintainers#issues'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/maintainers/login/bugs')
+                    .to("issues#bugs", locale: :ru, branch: 'sisyphus', login: 'login')
+      end
 
-    it 'should route /sisyphus/maintainers/:id/gear to maintainers#gear' do
-      expect(get: '/sisyphus/maintainers/icesik/gear').to route_to(
-        controller: 'maintainers',
-        action: 'gear',
-        id: 'icesik'
-      )
-    end
+      # get 'maintainers/:login/ftbfs' => 'maintainers#ftbfs'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/maintainers/login/ftbfses')
+                    .to("issues#ftbfses", locale: :ru, branch: 'sisyphus', login: 'login')
+      end
 
-    it 'should route /:locale/sisyphus/maintainers/:id/gear to maintainers#gear' do
-      expect(get: '/en/sisyphus/maintainers/icesik/gear').to route_to(
-        controller: 'maintainers',
-        action: 'gear',
-        id: 'icesik',
-        locale: 'en'
-      )
-    end
+      # get 'maintainers/:login/watch' => 'maintainers#novelties'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/maintainers/login/watch')
+                    .to("issues#novelties", locale: :ru, branch: 'sisyphus', login: 'login')
+      end
 
-    it 'should route /sisyphus/maintainers/:id/bugs to maintainers#bugs' do
-      expect(get: '/sisyphus/maintainers/icesik/bugs').to route_to(
-        controller: 'maintainers',
-        action: 'bugs',
-        id: 'icesik'
-      )
-    end
+      # get 'maintainers/:id/repocop_notes' => 'maintainers#repocop_notes'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/maintainers/login/repocop_notes')
+                    .to("repocop_notes#maintained", locale: :ru, branch: 'sisyphus', login: 'login')
+      end
+   end
 
-    it 'should route /:locale/sisyphus/maintainers/:id/bugs to maintainers#bugs' do
-      expect(get: '/en/sisyphus/maintainers/icesik/bugs').to route_to(
-        controller: 'maintainers',
-        action: 'bugs',
-        id: 'icesik',
-        locale: 'en'
-      )
-    end
+   describe 'packages.a.o routing' do
+      it do
+         get '/ru/Sisyphus/maintainers/login/gear'
+         expect(response).to redirect_to("/ru/Sisyphus/maintainers/login/gears")
+      end
 
-    it 'should route /sisyphus/maintainers/:id/allbugs to maintainers#allbugs' do
-      expect(get: '/sisyphus/maintainers/icesik/allbugs').to route_to(
-        controller: 'maintainers',
-        action: 'allbugs',
-        id: 'icesik'
-      )
-    end
+      it do
+         get '/ru/Sisyphus/maintainers/login/ftbfs'
+         expect(response).to redirect_to("/ru/Sisyphus/maintainers/login/ftbfses")
+      end
 
-    it 'should route /:locale/sisyphus/maintainers/:id/allbugs to maintainers#allbugs' do
-      expect(get: '/en/sisyphus/maintainers/icesik/allbugs').to route_to(
-        controller: 'maintainers',
-        action: 'allbugs',
-        id: 'icesik',
-        locale: 'en'
-      )
-    end
+      it do
+         get '/ru/Sisyphus/maintainers/login/allbugs'
+         expect(response).to redirect_to("/ru/Sisyphus/maintainers/login/bugs?q=all")
+      end
 
-    it 'should route /sisyphus/maintainers/:id/ftbfs to maintainers#ftbfs' do
-      expect(get: '/sisyphus/maintainers/icesik/ftbfs').to route_to(
-        controller: 'maintainers',
-        action: 'ftbfs',
-        id: 'icesik'
-      )
-    end
+      it do
+         get '/ru/Sisyphus/maintainers/login/repocop'
+         expect(response).to redirect_to("/ru/Sisyphus/maintainers/login/repocop_notes")
+      end
+   end
 
-    it 'should route /:locale/sisyphus/maintainers/:id/ftbfs to maintainers#ftbfs' do
-      expect(get: '/en/sisyphus/maintainers/icesik/ftbfs').to route_to(
-        controller: 'maintainers',
-        action: 'ftbfs',
-        id: 'icesik',
-        locale: 'en'
-      )
-    end
+   describe 'sisyphus.ru routing' do
+      # get 'people', to: redirect('/%{locale}/sisyphus/maintainers')
+      it do
+         get '/ru/people'
+         expect(response).to redirect_to("/ru/sisyphus/maintainers")
+      end
 
-    it 'should route /sisyphus/maintainers/:id/repocop to maintainers#repocop' do
-      expect(get: '/sisyphus/maintainers/icesik/repocop').to route_to(
-        controller: 'maintainers',
-        action: 'repocop',
-        id: 'icesik'
-      )
-    end
+      # get 'packager/:login', to: redirect('/%{locale}/sisyphus/maintainers/%{login}')
+      it do
+         get '/ru/packager/login'
+         expect(response).to redirect_to("/ru/sisyphus/maintainers/login")
+      end
 
-    it 'should route /:locale/sisyphus/maintainers/:id/repocop to maintainers#repocop' do
-      expect(get: '/en/sisyphus/maintainers/icesik/repocop').to route_to(
-        controller: 'maintainers',
-        action: 'repocop',
-        id: 'icesik',
-        locale: 'en'
-      )
-    end
-  end
+      it do
+         get '/ru/packager/login/srpms'
+         expect(response).to redirect_to("/ru/sisyphus/maintainers/login/srpms")
+      end
+
+      it do
+         get '/ru/packager/login/bugs'
+         expect(response).to redirect_to("/ru/sisyphus/maintainers/login/issues#bug")
+      end
+
+      it do
+         get '/ru/packager/login/repocop'
+         expect(response).to redirect_to("/ru/sisyphus/maintainers/login/repocop_notes")
+      end
+   end
 end

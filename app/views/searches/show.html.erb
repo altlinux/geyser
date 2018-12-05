@@ -40,7 +40,7 @@
         <tr>
           <%- if @branch.perpetual? %>
             <td class='repocop'>
-              <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_srpm_path(branch: @branch, reponame: spkg.name), class: 'repocoplink', title: _('repocop') %>
+              <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(branch: @branch, reponame: spkg.name), class: 'repocoplink', title: _('repocop') %>
             </td>
           <%- end %>
           <td class="name">
@@ -53,10 +53,10 @@
           <td class="version">
             <%- if @branch.undefined? %>
                <%- spkg.evrbes.sort_by { |(buildtime, _)| buildtime }.reverse.each do |_, evrb| %>
-                 <span class="badge"><%= link_to evrb, versioned_srpm_path(branch: spkg.branch_slug, reponame: spkg.name, version: evrb), class: 'news', title: spkg.name + "-" + evrb %></span>
+                 <span class="badge"><%= link_to evrb, evrb_srpm_path(branch: spkg.branch_slug, reponame: spkg.name, evrb: evrb), class: 'news', title: spkg.name + "-" + evrb %></span>
               <%- end %>
             <%- else %>
-              <%= link_to spkg.evr, versioned_srpm_path(branch: spkg.branches.first.slug, reponame: spkg.name, version: spkg.evrb), class: 'news' %>
+              <%= link_to spkg.evr, evrb_srpm_path(branch: spkg.branches.first.slug, reponame: spkg.name, evrb: spkg.evrb), class: 'news' %>
             <%- end %>
           </td>
           <td><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>

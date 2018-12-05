@@ -36,7 +36,7 @@
 
 <div>
 
-<%= render partial: "shared/srpms_menu", locals: { current_page: :main, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, version: @version } %>
+<%= render partial: "shared/srpms_menu", locals: { current_page: :main, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
 
 <b><%= _('Current version:') %></b> <%= @spkg.evr %><br>
 <b><%= _('Built:') %></b> <abbr title="<%= @spkg.buildtime %>" style="border-bottom: 1px dotted gray;"><%= time_ago_in_words(@spkg.buildtime) %> <%= _('ago') %></abbr><br>

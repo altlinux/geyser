@@ -3,158 +3,158 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  authenticate :user, ->(user) { user.admin? } do
-    mount PgHero::Engine, at: 'pghero'
-  end
-
-  namespace :api, defaults: { format: 'json' } do
-    resources :docs, only: :index
-
-    resources :branches, only: [:index, :show]
-
-    resources :bugs, only: :show
-
-    resources :srpms, id: /[^\/]+/, only: [:index, :show] do
-      resources :packages, id: /[^\/]+/, only: :index
-
-      resources :changelogs, id: /[^\/]+/, only: :index
-    end
-
-    resources :packages, id: /[^\/]+/, only: :show, controller: :package
-
-    resources :maintainers, only: [:index, :show]
-  end
-
-  scope '(:locale)', locale: SUPPORTED_LOCALES_RE do
-    devise_for :users
-
-    root to: 'home#index'
-
-    # support old rules
-    # from v2
-    get ':branch/srpms/:reponame/gear', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
-    # from v1
-    get 'srpm/:branch/:reponame', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
-    get 'srpm/:branch/:reponame/changelog', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/changelog')
-    get 'srpm/:branch/:reponame/spec', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/spec')
-    get 'srpm/:branch/:reponame/patches', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/patches')
-    get 'srpm/:branch/:reponame/sources', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/sources')
-    get 'srpm/:branch/:reponame/get', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/get')
-    get 'srpm/:branch/:reponame/gear', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
-    get 'srpm/:branch/:reponame/bugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/bugs')
-    get 'srpm/:branch/:reponame/repocop', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/repocop')
-    get 'people', to: redirect('/%{locale}/sisyphus/maintainers')
-    get 'packager/:login', to: redirect('/%{locale}/sisyphus/maintainers/%{login}')
-    get 'team/:login', to: redirect('/%{locale}/sisyphus/teams/%{login}')
-    get 'packages', to: redirect('/%{locale}/sisyphus/packages'), as: :old_packages
-    get 'packages/:group1', to: redirect('/%{locale}/sisyphus/packages/%{group1}')
-    get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
-    get 'packages/:group1/:group2/:group3', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}_#{pp[:group3].downcase}" }
-
-    get 'project' => 'pages#project'
-
-    scope '(:branch)', branch: /([^\/]+)/ do
-      get 'srpms/:reponame/repocop' => 'srpm_repocops#index', reponame: /[^\/]+/, branch: /sisyphus/, as: 'repocop_srpm'
-
-      get 'srpms/:reponame/bugs' => 'srpm_opened_bugs#index', reponame: /[^\/]+/, as: 'bugs_srpm'
-      get 'srpms/:reponame/allbugs' => 'srpm_all_bugs#index', reponame: /[^\/]+/, as: 'allbugs_srpm'
-
-      resources :srpms, param: :reponame, reponame: /[^\/]+/, only: :show do
-        member do
-          get 'changelog'
-          get 'spec'
-          get 'rawspec'
-          get 'get'
-        end
-
-        resources :patches, param: :reponame, only: [:index, :show] do
-        end
-
-        resources :sources, param: :reponame, only: :index do
-          resource :download, only: :show, controller: :source_download
-        end
-      end
-
-      get 'srpms/:reponame/:version' => 'srpms#show', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm'
-      get 'srpms/:reponame/:version/changelog' => 'srpms#changelog', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_changelog_srpm'
-      get 'srpms/:reponame/:version/spec' => 'srpms#spec', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_spec_srpm'
-      get 'srpms/:reponame/:version/rawspec' => 'srpms#rawspec', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_rawspec_srpm'
-      get 'srpms/:reponame/:version/get' => 'srpms#get', reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_get_srpm'
-      get 'patches/:srpm_reponame/:version/index' => 'patches#index', srpm_reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patches'
-      get 'patches/:srpm_reponame/:version/show' => 'patches#show', srpm_reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_patch'
-      get 'patches/:package_name/:package_evrb/:patch_filename/download' => 'patches#download', package_name: /[^\/]+/, package_evrb: /[^\/]+/, patch_filename: /[^\/]+/, as: 'versioned_srpm_patch_download'
-      get 'sources/:srpm_reponame/:version/index' => 'sources#index', srpm_reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_sources'
-      get 'sources/:srpm_reponame/:version/download' => 'sources#download', srpm_reponame: /[^\/]+/, version: /[^\/]+/, as: 'versioned_srpm_source_download'
-      get 'srpms/:reponame/:version/bugs' => 'srpm_opened_bugs#index', reponame: /[^\/]+/, version: /[^\/]+/, branch: /sisyphus/, as: 'versioned_bugs_srpm'
-      get 'srpms/:reponame/:version/allbugs' => 'srpm_all_bugs#index',  reponame: /[^\/]+/, version: /[^\/]+/, branch: /sisyphus/, as: 'versioned_allbugs_srpm'
-      get 'srpms/:reponame/:version/repocop' => 'srpm_repocops#index',  reponame: /[^\/]+/, version: /[^\/]+/, branch: /sisyphus/, as: 'versioned_repocop_srpm'
-
-      get 'rss' => 'rss#index', as: 'rss'
-      resources :teams, only: [:index, :show]
-
-      resources :maintainers, only: :index
-      get 'maintainers/:id/gear' => 'maintainers#gear', as: 'gear_maintainer'
-      get 'maintainers/:id/bugs' => 'maintainers#bugs', as: 'bugs_maintainer'
-      get 'maintainers/:id/allbugs' => 'maintainers#allbugs', as: 'allbugs_maintainer'
-      get 'maintainers/:id/ftbfs' => 'maintainers#ftbfs', as: 'ftbfs_maintainer'
-      get 'maintainers/:id/watch' => 'maintainers#novelties', as: 'novelties_maintainer'
-      get 'maintainers/:id/repocop' => 'maintainers#repocop', as: 'repocop_maintainer'
-
-      get 'packages/:slug' => 'group#show', as: 'group'
-      get 'packages' => 'group#index', as: 'packages'
-      get 'security' => 'security#index', as: 'security'
-
-      #get '/', to: redirect('/%{locale}/%{branch}/home')
-    end
-
-    resource :maintainer_profile, only: [:edit, :update]
-    resource :search, only: :show
-    resources :rebuild, controller: :rebuild, only: :index
-    resources :rsync, controller: :rsync, only: %i(new) do
-       post :generate, on: :collection
-    end
-
-    scope ':branch', branch: /([^\/]+)/ do
-      resources :maintainers, only: :show do
-        get 'srpms', on: :member
-        resources :activity, only: :index, controller: :maintainer_activity
-      end
-    end
-  end
-
-  scope ':locale', locale: SUPPORTED_LOCALES_RE do
-    scope ':branch', branch: /([^\/]+)/ do
-      get 'home' => 'home#index'
-    end
-  end
-
-   resources :repocop_patches, only: [], param: 'package_id' do
-      get :download
+   authenticate :user, ->(user) { user.admin? } do
+      mount PgHero::Engine, at: 'pghero'
    end
 
-  get '(/:locale)/misc/bugs' => 'misc#bugs', locale: SUPPORTED_LOCALES_RE
+   # support old rules
+   # from v2:packages.a.o
+   get 'uk', to: redirect('/ru')
+   get 'br', to: redirect('/en')
+   get '*prefix/Platform6/*other', to: redirect { |pp, _| "/#{pp[:prefix]}/p6/#{pp[:other]}" }
+   get '*prefix/Platform5/*other', to: redirect { |pp, _| "/#{pp[:prefix]}/p5/#{pp[:other]}" }
+   get 'uk/*other', to: redirect { |pp, _| "/ru/#{pp[:other]}" }
+   get 'br/*other', to: redirect { |pp, _| "/en/#{pp[:other]}" }
+   get 'project', to: redirect('/ru/project')
 
-  # TODO: drop this later
-  # get '/repocop' => 'repocop#index'
-  # get '/repocop/by-test/:testname' => 'repocop#bytest'
-  #
-  # get '/repocop/by-test/install_s' => 'repocop#srpms_install_s'
+   devise_for :users
 
-  # TODO: drop this and make API
-  get '/repocop/no_url_tag' => 'repocop#no_url_tag'
-  get '/repocop/invalid_url' => 'repocop#invalid_url'
-  get '/repocop/invalid_vendor' => 'repocop#invalid_vendor'
-  get '/repocop/invalid_distribution' => 'repocop#invalid_distribution'
-  get '/repocop/srpms_summary_too_long' => 'repocop#srpms_summary_too_long'
-  get '/repocop/packages_summary_too_long' => 'repocop#packages_summary_too_long'
-  get '/repocop/srpms_summary_ended_with_dot' => 'repocop#srpms_summary_ended_with_dot'
-  get '/repocop/packages_summary_ended_with_dot' => 'repocop#packages_summary_ended_with_dot'
-  get '/repocop/srpms_filename_too_long_for_joliet' => 'repocop#srpms_filename_too_long_for_joliet'
-  get '/repocop/packages_filename_too_long_for_joliet' => 'repocop#packages_filename_too_long_for_joliet'
-  get '/repocop/srpms_install_s' => 'repocop#srpms_install_s'
-  # END
+   scope '(:locale)', locale: SUPPORTED_LOCALES_RE do
+      root to: 'srpms#index'
 
-  get '/src::name' => 'srpm_redirector#index', name: /[^\/]+/
+      # support old rules
+      # from v2:packages.a.o
+      get ':branch/srpms/:reponame/changelog', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/changelogs')
+      get ':branch/srpms/:reponame/spec', to: redirect('/%{locale}/%{branch}/specfiles/%{reponame}')
+      get ':branch/srpms/:reponame/rawspec', to: redirect('/%{locale}/%{branch}/specfiles/%{reponame}/raw')
+      get ':branch/srpms/:reponame/get', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/rpms')
+      get ':branch/srpms/:reponame/gear', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
+      get ':branch/srpms/:reponame/bugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#bug')
+      get ':branch/srpms/:reponame/allbugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#bug?q=all')
+      get ':branch/srpms/:reponame/repocop', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/repocop_notes')
+      get ':branch/maintainers/:login/gear', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/gears')
+      get ':branch/maintainers/:login/ftbfs', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/ftbfses')
+      get ':branch/maintainers/:login/allbugs', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/bugs?q=all')
+      get ':branch/maintainers/:login/repocop', to: redirect('/%{locale}/%{branch}/maintainers/%{login}/repocop_notes')
 
-  get '/:name' => 'redirector#index', name: /[^\/]+/
+      # from v1:sisyphus.ru
+      get 'srpm/:branch/:reponame', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
+      get 'srpm/:branch/:reponame/changelog', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/changelogs')
+      get 'srpm/:branch/:reponame/spec', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/spec')
+      get 'srpm/:branch/:reponame/patches', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/patches')
+      get 'srpm/:branch/:reponame/patches/:id', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/patches/%{id}')
+      get 'srpm/:branch/:reponame/sources', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/sources')
+      get 'srpm/:branch/:reponame/sources/:id', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/sources/%{id}')
+      get 'srpm/:branch/:reponame/getsource/:id', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/sources/%{id}/download')
+      get 'srpm/:branch/:reponame/get', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/rpms')
+      get 'srpm/:branch/:reponame/gear', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}')
+      get 'srpm/:branch/:reponame/allbugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#bug?q=all')
+      get 'srpm/:branch/:reponame/bugs', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/issues#bug')
+      get 'srpm/:branch/:reponame/repocop', to: redirect('/%{locale}/%{branch}/srpms/%{reponame}/repocop_notes')
+      get 'people', to: redirect('/%{locale}/sisyphus/maintainers')
+      get 'packager/:login', to: redirect('/%{locale}/sisyphus/maintainers/%{login}')
+      get 'packager/:login/srpms', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/srpms')
+      get 'packager/:login/bugs', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/issues#bug')
+      get 'packager/:login/repocop', to: redirect('/%{locale}/sisyphus/maintainers/%{login}/repocop_notes')
+      get 'team/:login', to: redirect('/%{locale}/sisyphus/teams/%{login}')
+      get 'security', to: redirect('/%{locale}/sisyphus/security'), as: :v1_security
+      get 'packages', to: redirect('/%{locale}/sisyphus/packages'), as: :v1_packages
+      get 'packages/:group1', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}" }
+      get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
+      get 'packages/:group1/:group2/:group3', to: redirect { |pp, _| "/#{pp[:locale]}/sisyphus/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}_#{pp[:group3].downcase}" }
+
+      get 'project' => 'pages#project'
+
+      scope '(:branch)', branch: /([^\/]+)/ do
+         get 'home' => 'srpms#index', as: 'home'
+
+         resources :specfiles, param: :reponame, reponame: /[^\/]+/, only: :show do
+            get :raw, on: :member
+         end
+
+         resources :srpms, param: :reponame, reponame: /[^\/]+/, only: %i(show) do
+            member do
+               resources :changelogs, only: :index
+               resources :patches, param: :patch_name, patch_name: /[^\/]+/, only: %i(index show) do
+                  get :download, on: :member
+               end
+               resources :sources, param: :source_name, source_name: /[^\/]+/, only: %i(index show) do
+                  get :download, on: :member
+               end
+               resources :rpms, param: :rpm_name, rpm_name: /[^\/]+/, only: :index
+               resources :issues, param: :no, no: /[^\/]+/, only: :index
+               resources :repocop_notes, param: :no, no: /[^\/]+/, only: :index
+            end
+         end
+
+         scope :specfiles do
+            scope '(:reponame)', reponame: /[^\/]+/ do
+               scope '(:evrb)', evrb: /[^\/]+/ do
+                  get '/' => 'specfiles#show', as: 'evrb_specfile'
+                  get 'raw' => 'specfiles#raw', as: 'raw_evrb_specfile'
+               end
+            end
+         end
+
+         scope :srpms do
+            scope '(:reponame)', reponame: /[^\/]+/ do
+               scope '(:evrb)', evrb: /[^\/]+/ do
+                  get '/' => 'srpms#show', as: 'evrb_srpm'
+                  resources :changelogs, only: :index, as: :evrb_changelogs
+                  resources :patches, param: :patch_name, only: %i(index show), as: :evrb_patches do
+                     get :download, on: :member
+                  end
+                  resources :sources, param: :source_name, only: %i(index show), as: :evrb_sources do
+                     get :download, on: :member
+                  end
+                  resources :rpms, param: :rpm_name, rpm_name: /[^\/]+/, only: :index, as: :evrb_rpms
+                  resources :issues, param: :no, only: :index, as: :evrb_issues
+                  resources :repocop_notes, param: :no, only: :index, as: :evrb_repocop_notes
+               end
+            end
+         end
+
+         get 'rss' => 'rss#index', as: 'rss'
+         resources :teams, param: :login, only: %i(index show)
+
+         resources :maintainers, param: 'login', only: %i(index show) do
+            member do
+               resources :srpms, param: :reponame, reponame: /[^\/]+/, only: [], as: :maintainer_srpms do
+                  get '/' => 'srpms#maintained', on: :collection
+               end
+               resources :gears, param: :reponame, reponame: /[^\/]+/, only: :index
+               get 'bugs' => 'issues#bugs'
+               get 'ftbfses' => 'issues#ftbfses'
+               get 'watch' => 'issues#novelties', as: 'novelties'
+               resources :repocop_notes, param: :no, only: [], as: :maintainer_repocop_notes do
+                  get '/' => 'repocop_notes#maintained', on: :collection
+               end
+            end
+         end
+
+         get 'packages/:slug' => 'group#show', slug: /[a-z0-9_]+/, as: 'group'
+         get 'packages' => 'group#index', as: 'packages'
+
+         get 'security' => 'security#index', as: 'security'
+
+         # support old rules
+         # from v2:packages.a.o
+         get 'packages/:group1', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}" }
+         get 'packages/:group1/:group2', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}" }
+         get 'packages/:group1/:group2/:group3', to: redirect { |pp, _| "/#{pp[:locale]}/#{pp[:branch]}/packages/#{pp[:group1].downcase}_#{pp[:group2].downcase}_#{pp[:group3].downcase}" }
+      end
+
+      resource :search, only: :show
+
+      resources :rsync, controller: :rsync, only: %i(new) do
+         post :generate, on: :collection
+      end
+   end
+
+   resources :repocop_patches, param: :package_id, only: [] do
+      get :download, on: :member
+   end
+
+   get '/src::reponame', reponame: /[^\/]+/, to: redirect('/ru/sisyphus/srpms/%{reponame}')
+   get '/:reponame', reponame: /[^\/]+/, to: redirect('/ru/sisyphus/srpms/%{reponame}')
 end

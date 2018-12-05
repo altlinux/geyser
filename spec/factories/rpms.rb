@@ -1,7 +1,7 @@
 FactoryBot.define do
    factory :rpm do
       filename { "#{name || Faker::App.name}-#{Faker::App.semantic_version}-#{'alt' + Faker::App.semantic_version}.#{arch}.rpm" }
-      package { build(:package, arch.to_sym, name: filename.split('-')[0...-2].join('-'), group: group) }
+      package { build(:package, arch: arch.to_sym, name: filename.split('-')[0...-2].join('-'), group: group) }
 
       transient do
          arch { %w(i586 x86_64 noarch aarch64 mipsel armh)[rand(6)] }
@@ -13,6 +13,8 @@ FactoryBot.define do
 
       after(:build) do |o, e|
          if e.arch != 'src'
+            o.package.src = build(:srpm).package
+
             if e.branch
                o.branch_path ||= e.branch.branch_paths.built.first
             elsif e.branchname
@@ -23,9 +25,17 @@ FactoryBot.define do
             end
          end
       end
+
+      after(:create) do |o, e|
+         if e.arch != 'src'
+            create(:srpm, package: o.package.src)
+         end
+      end
    end
    
    factory :srpm, parent: :rpm do
+      package { build(:spkg, name: filename.split('-')[0...-2].join('-'), group: group) }
+
       transient do
          arch 'src'
       end

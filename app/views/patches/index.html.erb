@@ -15,7 +15,7 @@
 </div>
 
 <div>
-<%= render partial: "shared/srpms_menu", locals: { current_page: :patches, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, version: @version } %>
+<%= render partial: "shared/srpms_menu", locals: { current_page: :patches, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
 
 <% if @spkg.patches.any? %>
 <table style="pretty">
@@ -23,7 +23,7 @@
   <tr>
     <td style="border-bottom: #aaa dotted 1px; padding-right:1em;">&middot;
       <% if patch.patch? %>
-        <%= link_to patch.filename, srpm_patch_path(@branch, @spkg, patch), class: 'news' %>
+        <%= link_to patch.filename, patch_path(@branch, @spkg, patch), class: 'news' %>
       <% else %>
         <%= patch.filename %>
       <% end %>
@@ -31,7 +31,7 @@
     <td> <b><%= number_to_human_size(patch.size) %></b> </td>
     <td>
       <% if patch.patch? %>
-        <%= link_to _('Download'), versioned_srpm_patch_download_path(branch: @branch, package_name: @spkg.name, package_evrb: @spkg.evrb, patch_filename: patch), class: 'news' %>
+        <%= link_to _('Download'), download_patch_path(@branch, @spkg.name, patch), class: 'news' %>
       <% else %>
         &nbsp;
       <% end %>

@@ -3,7 +3,7 @@
 class Specfile < ApplicationRecord
    belongs_to :package, class_name: 'Package::Src'
 
-   validates :spec, presence: true
+   validates_presence_of :spec
 
    def self.import rpm, package
       specfilename = `rpm -qp --queryformat=\"[%{FILEFLAGS} %{FILENAMES}\n]\" "#{ rpm.file }" | grep \"32 \" | sed -e 's/32 //'`.strip

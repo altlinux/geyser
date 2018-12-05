@@ -12,6 +12,6 @@ class RepocopPatchesController < ApplicationController
    protected
 
    def fetch_repocop_patch
-      @repocop_patch = RepocopPatch.find_by!(package_id: params[:repocop_patch_package_id])
+      @repocop_patch = RepocopPatch.find_by!(package_id: params[:package_id])
    end
 end

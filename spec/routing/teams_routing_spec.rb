@@ -3,41 +3,27 @@
 require 'rails_helper'
 
 describe TeamsController do
-  describe 'routing' do
-    it 'should route /:branch/teams to teams#index' do
-      expect(get: '/Sisyphus/teams').to route_to(
-        controller: 'teams',
-        action: 'index',
-        branch: 'Sisyphus'
-      )
-    end
+   include RSpec::Rails::RequestExampleGroup
 
-    it 'should route /:locale/:branch/teams to teams#index' do
-      expect(get: '/en/Sisyphus/teams').to route_to(
-        controller: 'teams',
-        action: 'index',
-        branch: 'Sisyphus',
-        locale: 'en'
-      )
-    end
+   describe 'routing' do
+      # resources :teams, only: :index
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/teams')
+                    .to("teams#index", locale: :ru, branch: 'sisyphus')
+      end
 
-    it 'should route /:branch/teams/:id to teams#show' do
-      expect(get: '/Sisyphus/teams/ruby').to route_to(
-        controller: 'teams',
-        action: 'show',
-        branch: 'Sisyphus',
-        id: 'ruby'
-      )
-    end
+      # get 'teams/:login/show' => 'teams#show'
+      it do
+         is_expected.to route(:get, '/ru/sisyphus/teams/login')
+                    .to("teams#show", locale: :ru, branch: 'sisyphus', login: 'login')
+      end
+   end
 
-    it 'should route /:locale/:branch/teams/:id to teams#show' do
-      expect(get: '/en/Sisyphus/teams/ruby').to route_to(
-        controller: 'teams',
-        action: 'show',
-        branch: 'Sisyphus',
-        id: 'ruby',
-        locale: 'en'
-      )
-    end
-  end
+   describe 'sisyphus.ru routing' do
+      # get '/ru/team/login', to: redirect('/%{locale}/sisyphus/teams/login')
+      it do
+         get '/ru/team/login'
+         expect(response).to redirect_to("/ru/sisyphus/teams/login")
+      end
+   end
 end
