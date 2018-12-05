@@ -47,12 +47,15 @@ class ImportFtbfses
    end
 
    def maintainer_from login
-      Maintainer.find_or_create_by!(login: login) do |m|
-         /(?<team>@)?(?<name>.*)/ =~ login
-         m.name = name
-         m.email = name + (team && "@packages.altlinux.org" || "@altlinux.org")
-         m.type = team && 'Maintainer::Team' || 'Maintainer::Person'
-      end
+      /(?<team>@)?(?<name>.*)/ =~ login
+      email = name + (team && "@packages.altlinux.org" || "@altlinux.org")
+
+      Recital::Email.find_or_create_by!(address: email) do |r_e|
+         r_e.maintainer = Maintainer.find_or_initialize_by(login: login) do |m|
+            m.name = name
+            m.type = team && 'Maintainer::Team' || 'Maintainer::Person'
+         end
+      end.maintainer
    end
 
    def maintainer_ids_from acls
