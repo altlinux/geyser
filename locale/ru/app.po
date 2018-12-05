@@ -100,13 +100,13 @@ msgid "<b>Q:</b> How can I skip heap of packages if I even don't know why I need
 msgstr "<b>В:</b> Как избежать копирования множества пакетов, необходимость которых, лично вам, сомнительна?"
 
 msgid "<b>Sisyphus</b> is daily updated free software repository by <abbr title=\"Independent ALT development team\" style=\"border-bottom: 1px dotted gray;\">ALT&nbsp;Linux&nbsp;Team</abbr>. Participation in Sisyphus project is open for anyone. This project is based upon software packaging and dependency tracking technologies as well as robust developer collaboration processes. Any ALT distribution and <b>APT</b> package manager is sufficient to use Sisyphus. Sisyphus is a solution set constantly being under development which can be used to create universal or specialized <b>Linux distributions</b> or just <b>single systems</b>."
-msgstr "<b>Sisyphus</b> &mdash; ежедневно обновляемый репозиторий пакетов свободных программ <abbr title=\"Независимая команда разработчиков ALT Linux\" style=\"border-bottom: 1px dotted gray;\">ALT&nbsp;Linux&nbsp;Team</abbr>. Участие в Sisyphus открыто для всех желающих. В основе Sisyphus лежат технологии сборки программ и учета зависимостей между ними, а также отработанные процессы по взаимодействию между разработчиками. Для использования Sisyphus достаточно наличие любого дистрибутива ALT&nbsp;Linux и средства управления пакетами программ <b>APT</b>. Sisyphus &mdash; это постоянно развивающийся набор решений, на основе которого возможно создание универсальных или специализированных <b>дистрибутивов Linux</b> и <b>одиночных внедрений</b>."
+msgstr "<b>Sisyphus</b> &mdash; ежедневно обновляемый репозиторий пакетов свободных программ <abbr title=\"Независимая команда разработчиков ALT Linux\" style=\"border-bottom: 1px dotted gray;\">ALT&nbsp;Linux&nbsp;Team</abbr>. Участие в Sisyphus открыто для всех желающих. В основе Sisyphus лежат технологии сборки программ и учета зависимостей между ними, а также отработанные процессы по взаимодействию между разработчиками. Для использования Sisyphus достаточно наличие любого дистрибутива ALT и средства управления пакетами программ <b>APT</b>. Sisyphus &mdash; это постоянно развивающийся набор решений, на основе которого возможно создание универсальных или специализированных <b>дистрибутивов Linux</b> и <b>одиночных внедрений</b>."
 
 msgid "It is useful to estimate the current state of Sisyphus by <b><a href=\"http://en.altlinux.org/Regular\">the regular LiveCD builds</a></b>."
 msgstr "Оценить текущее состояние может быть удобно при помощи <b><a href=\"http://www.altlinux.org/Regular\">регулярных сборок</a> LiveCD</b>."
 
 msgid "Sisyphus is not intended for end users and its usage may result in unpredictable behaviour. You might want to use ALT distributions and their usual updates if you want to run a reliable system."
-msgstr "Sisyphus не направлен на удовлетворение нужд конечных пользователей, и его использование может привести к непредсказуемым последствиям. Если вам нужна надежно работающая система, то следует использовать только дистрибутивы ALT Linux и штатные обновления к ним."
+msgstr "Sisyphus не направлен на удовлетворение нужд конечных пользователей, и его использование может привести к непредсказуемым последствиям. Если вам нужна надежно работающая система, то следует использовать только дистрибутивы ALT и штатные обновления к ним."
 
 msgid "ACL's"
 msgstr ""
@@ -117,8 +117,8 @@ msgstr ""
 msgid "Seen on building"
 msgstr "Замечен за сборкою"
 
-msgid "ALT Linux Planet"
-msgstr "Планета ALT Linux"
+msgid "ALT Planet"
+msgstr "Планета ALT"
 
 msgid "ALT Linux Team - package repositories info"
 msgstr ""
@@ -874,7 +874,7 @@ msgstr ""
 "<b>Warning:</b> filters combined together with a logical &quot;AND&quot;"
 
 msgid "ALT repositories"
-msgstr "Репозитории ALT Linux"
+msgstr "Репозитории ALT"
 
 msgid "Sisyphus sync"
 msgstr "Синхронизация Sisyphus"
