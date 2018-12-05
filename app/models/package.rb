@@ -58,19 +58,31 @@ class Package < ApplicationRecord
       if text.blank?
          all
       else
-         ttqs_from = self.send(:sanitize_sql_array, ["packages, plainto_tsquery(?) AS q", text])
-         ttqs_select = self.send(:sanitize_sql_array, ["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text])
-         ttqs = Package.from(ttqs_from).where("tsv @@ q").select(ttqs_select)
+         tqs_from = self.send(:sanitize_sql_array, ["packages, plainto_tsquery(?) AS q", text])
+         tqs_select = self.send(:sanitize_sql_array, ["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text])
+         tqs = Package.from(tqs_from).where("tsv @@ q").select(tqs_select)
 
-         tqs = Package.joins("INNER JOIN (#{ttqs.to_sql}) AS ttqs ON ttqs.src_id = packages.id")
-                      .select("packages.name, packages.src_id, ttqs.rank")
-                      .order("packages.name, ttqs.rank DESC, packages.buildtime DESC")
+         qs_select = "packages.name,
+                      MAX(tqs.rank) AS rank,
+                      array_agg(DISTINCT packages.id) AS src_ids,
+                      jsonb_object_agg(DISTINCT packages.buildtime,
+                                                CASE
+                                                WHEN packages.epoch IS NULL
+                                                THEN ''
+                                                ELSE packages.epoch || ':'
+                                                END || packages.version || '-' || packages.release
+                                       ) AS evrbes"
+         qs = Package.joins("INNER JOIN rpms AS qs_rpms ON qs_rpms.package_id = packages.id AND qs_rpms.obsoleted_at IS NULL
+                             INNER JOIN branch_paths AS qs_branch_paths ON qs_branch_paths.id = qs_rpms.branch_path_id
+                             INNER JOIN branches AS qs_branches ON qs_branches.id = qs_branch_paths.branch_id
+                             INNER JOIN (#{tqs.to_sql}) AS tqs ON tqs.src_id = packages.id")
+                     .group(:name)
+                     .order(:name)
+                     .select(qs_select)
 
-         qs = Package.from("(#{tqs.to_sql}) AS tqs").select("DISTINCT ON (name) name, src_id, rank")
-
-         joins("INNER JOIN (#{qs.to_sql}) AS qs ON qs.src_id = packages.id")
-            .order("qs.rank DESC")
-            .select("packages.*, qs.rank")
+         joins(:branch, "INNER JOIN (#{qs.to_sql}) AS qs ON packages.id = ANY (qs.src_ids)")
+            .order("qs.rank DESC, packages.name, branches.order_id DESC")
+            .select("packages.*, branches.slug, qs.rank, qs.evrbes")
       end
    end
    singleton_class.send(:alias_method, :q, :query)
@@ -99,6 +111,15 @@ class Package < ApplicationRecord
       rpms.map do |rpm|
          File.file?(filepath = rpm.filepath) && filepath || nil
       end.compact.first
+   end
+
+   # props
+   def evrbes
+      read_attribute(:evrbes) || versions.map {|v| [ s.buildtime, s.evr ] }.to_h
+   end
+
+   def branch_slug
+      read_attribute(:slug) || branch.slug
    end
 
    def self.source

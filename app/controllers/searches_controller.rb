@@ -12,8 +12,7 @@ class SearchesController < ApplicationController
          @spkgs = Package::Src.b(@branch.slug)
                               .a(@arches)
                               .q(params[:query])
-                              .includes(:branch)
-                              .order("packages.name")
+                              .order(order_sql)
                               .unscope(:select)
                               .select(select_sql)
                               .page(params[:page])
@@ -38,9 +37,17 @@ class SearchesController < ApplicationController
 
    def select_sql
       if params[:query].blank?
-         select = "DISTINCT on(packages.name) packages.*"
+         "DISTINCT on(packages.name) packages.*"
       else
-         select = "DISTINCT on(qs.rank, packages.name) packages.*, qs.rank"
+         "DISTINCT on(qs.rank, packages.name) packages.*, branches.slug, qs.rank, qs.evrbes"
+      end
+   end
+
+   def order_sql
+      if params[:query].blank?
+         "packages.name, branches.order_id DESC"
+      else
+         "qs.rank DESC, packages.name, branches.order_id DESC"
       end
    end
 end
