@@ -1,6 +1,6 @@
 h1. Welcome to Geyser
-how to know able to build
-    ssh build.alt task new --help|grep Valid|sed 's|.*: ||'
+
+The goal of Geyser project is to help to a RPM-maintainer support its packages. The projects of based on [Prometheus2.0](https://github.com/biow0lf/prometheus2.0)
 
 !https://hakiri.io/github/biow0lf/prometheus2.0/master.svg!:https://hakiri.io/github/biow0lf/prometheus2.0/master
 !https://secure.travis-ci.org/biow0lf/prometheus2.0.svg(Build Status)!:http://travis-ci.org/biow0lf/prometheus2.0
