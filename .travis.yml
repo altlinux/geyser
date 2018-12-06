@@ -7,7 +7,6 @@ env:
   global:
     - DB=postgresql
     - TRAVIS=true
-    - CC_TEST_REPORTER_ID=ABC123
 addons:
   apt_packages:
     - rpm
