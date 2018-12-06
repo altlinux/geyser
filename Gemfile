@@ -94,7 +94,7 @@ group :development do
   gem 'capistrano-rvm', require: false
   gem 'capistrano3-nginx', require: false
   gem 'capistrano-faster-assets', require: false
-#  gem 'capistrano3-puma', github: "seuros/capistrano-puma", require: false
+  # gem 'capistrano3-puma', github: "seuros/capistrano-puma", require: false
   gem 'capistrano-rake'
   # gem 'xray-rails'
   gem 'rubocop', require: false
@@ -116,6 +116,8 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'awesome_print', require: 'ap'
   gem 'faker'
+  gem 'bundler', '~> 1.2'
+  gem 'bundle-audit'
 end
 
 group :test do
@@ -131,4 +133,5 @@ group :test do
   gem 'database_rewinder'
   gem 'webmock', require: false
   gem 'simplecov', require: false
+  gem 'codeclimate-test-reporter'
 end

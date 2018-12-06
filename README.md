@@ -1,6 +1,8 @@
 # Welcome to Geyser
 
 [![Build Status](https://api.travis-ci.com/altlinux/geyser.png?branch=master)](https://travis-ci.com/altlinux/geyser.png)
+[![Code Climate](https://codeclimate.com/github/altlinux/geyser/badges/gpa.svg)](https://codeclimate.com/github/altlinux/geyser)
+[![Test Coverage](https://codeclimate.com/github/caltlinux/geyse/badges/coverage.svg)](https://codeclimate.com/github/altlinux/geyser)
 [![MIT License](http://b.repl.ca/v1/License-MIT-blue.png)](LICENSE)
 
 ## Setup and run

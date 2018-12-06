@@ -4,7 +4,10 @@ postgresql: 9.5
 rvm:
   - 2.5.1
 env:
-  - DB=postgresql TRAVIS=true
+  global:
+    - DB=postgresql
+    - TRAVIS=true
+    - CC_TEST_REPORTER_ID=ABC123
 addons:
   apt_packages:
     - rpm
@@ -15,13 +18,20 @@ before_install:
   - $($INIT)
   - rpm --help
   - bundle install
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
 
 before_script:
   - gem update --system
   - gem --version
+  - gem install bundler
   - psql -c 'create database prometheus_test;' -U postgres
   - bundle exec rake db:migrate
+  - ./cc-test-reporter before-build
 
 script:
   - bundle exec rake
-  - bundle exec codeclimate-test-reporter
+  - bundle audit
+
+after_script:
+  - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
