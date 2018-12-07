@@ -32,8 +32,6 @@ class Maintainer < ApplicationRecord
 
    alias_method(:srpms_names, :built_names) #TODO remove of compat
 
-   accepts_nested_attributes_for :email
-
    validates_presence_of :name
 
    def slug
