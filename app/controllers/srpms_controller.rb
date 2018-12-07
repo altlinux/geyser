@@ -8,16 +8,14 @@ class SrpmsController < ApplicationController
    before_action :fetch_changelogs, only: %i(show)
    before_action :fetch_branches, only: %i(index maintained)
    before_action :fetch_maintainer, only: %i(maintained)
+   #widgets
+   before_action :widge_branches, only: %i(index)
+   before_action :widge_maintainers, only: %i(index)
+   before_action :widge_builds, only: %i(index)
+   before_action :widge_srpm_counts, only: %i(index)
+
 
    def index
-      @spkg_builds = @branch.all_spkgs.top_rebuilds_after(Time.zone.now - 6.months).limit(16)
-      @branches_s = BranchPathsToBranchesSerializer.new(BranchPath.includes(:branch)
-                                                                  .for_branch(@branches)
-                                                                  .published
-                                                                  .unanonimous
-                                                                  .src
-                                                                  .order("branches.order_id DESC, branch_paths.id"))
-      @maintainers_s = ActiveModel::Serializer::CollectionSerializer.new(BranchingMaintainer.includes(:maintainer).top(15, @branch), serializer: BranchingMaintainerAsMaintainerSerializer).as_json
       @spkgs = @branch.spkgs.includes(:builder).ordered.page(params[:page]).per(40).decorate
    end
 
@@ -97,5 +95,31 @@ class SrpmsController < ApplicationController
 
    def fetch_branches
       @branches = Branch.filled
+   end
+
+   def widge_maintainers
+      @maintainers_s = ActiveModel::Serializer::CollectionSerializer.new(
+         BranchingMaintainer.includes(:maintainer)
+                            .top(15, @branch),
+         serializer: BranchingMaintainerAsMaintainerSerializer).as_json
+   end
+
+   def widge_branches
+      @branches_s = BranchPathsToBranchesSerializer.new(BranchPath.includes(:branch)
+                                                                  .for_branch(@branches)
+                                                                  .published
+                                                                  .unanonimous
+                                                                  .src
+                                                                  .order("branches.order_id DESC, branch_paths.id"))
+   end
+
+   def widge_builds
+      @spkg_builds = @branch.all_spkgs.top_rebuilds_after(Time.zone.now - 6.months).limit(16)
+   end
+
+   def widge_srpm_counts
+      @srpm_counts_s = ActiveModel::Serializer::CollectionSerializer.new(
+         Package.counted_arches_for(@branch),
+         serializer: PackageAsArchCountSerializer).as_json
    end
 end

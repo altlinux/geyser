@@ -86,6 +86,20 @@ class Package < ApplicationRecord
             .select("packages.*, branches.slug, qs.rank, qs.evrbes")
       end
    end
+   scope :counted_arches_for, ->(branch) do
+      ases = Package.joins(:branches)
+                    .where(arch: BranchPath::PHYS_ARCHES, branches: { slug: branch.slug })
+                    .select("DISTINCT ON (packages.arch, packages.src_id) packages.arch, packages.src_id")
+
+#      select ases.arch, count(ases.src_id) from packages inner join (select distinct on (packages.arch, packages.src_id) packages.arch, packages.src_id from packages INNER JOIN "rpms" ON "rpms"."package_id" = "packages"."id" AND "rpms"."obsoleted_at" IS NULL INNER JOIN "branch_paths" ON "branch_paths"."id" = "rpms"."branch_path_id" INNER JOIN "branches" ON "branches"."id" = "branch_paths"."branch_id" where packages.arch in ('i586','x86_64','aarch64','armh', 'mipsel') and branches.slug = 'p7') as ases on ases.src_id = packages.id group by ases.arch
+
+      self.joins("INNER JOIN (#{ases.to_sql}) as ases ON ases.src_id = packages.id")
+          .group("ases.arch")
+          .order("ases.arch ASC")
+          .select("ases.arch, count(ases.src_id) AS count")
+   end
+
+
    singleton_class.send(:alias_method, :q, :query)
    singleton_class.send(:alias_method, :a, :by_arch)
    singleton_class.send(:alias_method, :b, :by_branch_slug)
@@ -121,6 +135,10 @@ class Package < ApplicationRecord
 
    def branch_slug
       read_attribute(:slug) || branch.slug
+   end
+
+   def count
+      read_attribute(:count)
    end
 
    def self.source

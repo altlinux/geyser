@@ -1320,3 +1320,12 @@ msgstr "Нет файлов для скачивания"
 
 msgid "This branch is supported by the Basealt SPO Team."
 msgstr "Данная ветвь сопровождается командой Базальт СПО."
+
+msgid "Srpm counts calculated per physical architecture for the current branch"
+msgstr "Количество исходных пакетов вычисленное по каждой архитектуре для текущей ветви"
+
+msgid "Current branch srpm counts"
+msgstr "Число исходных пакетов ветви"
+
+msgid "search by arch "
+msgstr "поиск по архитектуре "
