@@ -19,30 +19,39 @@ class ImportBugs
 
       ApplicationRecord.transaction do
          import_maintainers
+         import_emails
          import_issues
       end
    end
 
    protected
 
-   def import_maintainers
-      emails = parsed[1..-1].map do |l|
+   def absent_emails
+      @absent_emails ||= parsed[1..-1].map do |l|
          [ATTR_NAMES, l].transpose.to_h[:assigned_to]
       end.compact.uniq.select do |email|
          Recital::Email.where(address: email).empty?
-      end.map do |email|
+      end
+   end
+
+   def import_maintainers
+      maintainers = absent_emails.map do |email|
          /(?<login>[^@]+)@(?<domain>.*)/ =~ email
 
          if DOMAINS.include?(domain)
             re_sql = ApplicationRecord.sanitize_sql_array(["address ~ ?", "#{login}@(#{DOMAINS.join('|')})"])
-            match_email = Recital::Email.find_by(re_sql)
-         end
+            Recital::Email.find_by(re_sql)&.maintainer
+         end || Maintainer.new(name: email, type: 'Maintainer::Person')
+      end
 
-         maintainer = match_email&.maintainer || Maintainer.new(name: email,
-                                                                type: 'Maintainer::Person')
+      res = Maintainer.import!(maintainers, on_duplicate_key_ignore: true)
+      maintainers.select {|m| !m.id }.each.with_index {|m, i| m.id = res.ids[i] }
+      @maintainer_ids = maintainers.map {|m| m.id }
+   end
 
-         Recital::Email.new(address: email,
-                            maintainer: maintainer)
+   def import_emails
+      emails = absent_emails.map.with_index do |email, index|
+         Recital::Email.new(address: email, maintainer_id: maintainer_ids[index])
       end
 
       Recital::Email.import!(emails, on_duplicate_key_ignore: true)
