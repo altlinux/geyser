@@ -9,6 +9,7 @@ class MergeMaintainers
          merge_issue_assignees
          merge_branching_maintainers
          merge_changelogs
+         merge_emails
 
          source.destroy!
       end
@@ -74,6 +75,10 @@ class MergeMaintainers
 
    def merge_changelogs
       source.changelogs.update_all(maintainer_id: target.id)
+   end
+
+   def merge_emails
+      source.emails.update_all(maintainer_id: target.id)
    end
 
    def initialize source: nil, target: nil
