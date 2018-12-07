@@ -8,6 +8,8 @@ class ImportBugs
 
    ATTR_NAMES = %i(no status resolution severity product repo_name assigned_to reporter description)
 
+   DOMAINS = %w(basealt.ru altlinux.ru altlinux.org altlinux.com)
+
    def initialize(url)
       @url = url
    end
@@ -24,19 +26,26 @@ class ImportBugs
    protected
 
    def import_maintainers
-      attrs = parsed[1..-1].map do |l|
+      emails = parsed[1..-1].map do |l|
          [ATTR_NAMES, l].transpose.to_h[:assigned_to]
       end.compact.uniq.select do |email|
          Recital::Email.where(address: email).empty?
       end.map do |email|
-         {
-            name: email,
-            type: 'Maintainer::Person',
-            email_attributes: { address: email },
-         }
+         /(?<login>[^@]+)@(?<domain>.*)/ =~ email
+
+         if DOMAINS.include?(domain)
+            re_sql = ApplicationRecord.sanitize_sql_array(["address ~ ?", "#{login}@(#{DOMAINS.join('|')})"])
+            match_email = Recital::Email.find_by(re_sql)
+         end
+
+         maintainer = match_email&.maintainer || Maintainer.new(name: email,
+                                                                type: 'Maintainer::Person')
+
+         Recital::Email.new(address: email,
+                            maintainer: maintainer)
       end
 
-      Maintainer.import!(attrs, on_duplicate_key_ignore: true)
+      Recital::Email.import!(emails, on_duplicate_key_ignore: true)
    end
 
    def import_issues
