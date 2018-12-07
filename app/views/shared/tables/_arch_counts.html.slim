@@ -1,0 +1,15 @@
+
+
+- if arch_counts.present?
+   .table
+      .headleft
+         .headright { title=_('Srpm counts calculated per physical architecture for the current branch') } = _('Current branch srpm counts')
+         = image_tag('collapse.gif', id: 'arch-counts', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9')
+      .frame#arch-counts
+         table
+            - arch_counts.each do |pkg|
+               ul
+                  li
+                     .line
+                        .left.float.b = link_to(_(pkg['arch']), search_path(branch: branch.slug, arch: [ pkg['arch'], 'noarch' ]), title: _('search by arch ') + pkg['arch'])
+                        .right.float = pkg['count']
