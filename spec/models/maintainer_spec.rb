@@ -25,10 +25,6 @@ describe Maintainer do
       it { is_expected.to have_many(:emails).class_name('Recital::Email') }
    end
 
-   context 'Attributes' do
-      it { is_expected.to accept_nested_attributes_for(:email) }
-   end
-
    context 'Validation' do
       it { is_expected.to validate_presence_of(:name) }
    end
