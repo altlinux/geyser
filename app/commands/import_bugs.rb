@@ -45,6 +45,9 @@ class ImportBugs
                             maintainer: maintainer)
       end
 
+      maintainers = emails.map { |e| e.maintainer }
+      res = Maintainer.import!(maintainers, on_duplicate_key_ignore: true)
+      emails.each.with_index { |e, index| e.maintainer_id = res.ids[index] }
       Recital::Email.import!(emails, on_duplicate_key_ignore: true)
    end
 

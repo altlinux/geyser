@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_21_173700) do
+ActiveRecord::Schema.define(version: 2018_12_07_224200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -214,7 +214,7 @@ ActiveRecord::Schema.define(version: 2018_11_21_173700) do
 
   create_table "maintainers", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "email", limit: 255, null: false
+    t.string "email", limit: 255
     t.string "login", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
