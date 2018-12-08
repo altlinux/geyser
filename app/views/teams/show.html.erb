@@ -59,23 +59,23 @@
   <br>
   <br>
 
-  <table id='bugs' cellspacing='0' cellpadding='3'>
+  <table class='results' cellspacing='0' cellpadding='3'>
     <tr>
       <% if @branch.perpetual? %>
-        <th><%= raw _('repo<br>cop') %></th>
+        <th class='repocop'><%= raw _('repo<br>cop') %></th>
       <% end %>
-      <th><%= _('package') %></th>
-      <th><%= raw _('current<br>version') %></th>
-      <th><%= _('build time') %></th>
-      <th><%= _('age') %></th>
-      <th><%= _('Url') %></th>
-      <th><%= _('Summary') %></th>
+      <th class='name'><%= _('package') %></th>
+      <th class='evrb'><%= raw _('current version') %></th>
+      <th class='built-at'><%= _('build time') %></th>
+      <th class='age'><%= _('age') %></th>
+      <th class='url'><%= _('Url') %></th>
+      <th class='description'><%= _('Summary') %></th>
     </tr>
 
     <% @spkgs.each do |spkg| %>
       <tr>
         <% if @branch.perpetual? %>
-          <td>
+          <td class='repocop'>
             <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(reponame: spkg.name, branch: @branch), class: 'repocoplink', title: _('repocop') %>
             <% if spkg.repocop_patch %>
               <br>
@@ -83,14 +83,14 @@
             <% end %>
           </td>
         <% end %>
-        <td class="strange">
+        <td class='name'>
           <%= link_to spkg.name, srpm_path(branch: @branch, reponame: spkg), class: 'news', title: _('detailed information about RPM') %>
         </td>
-        <td><%= spkg.evr %></td>
-        <td><%= spkg.buildtime %></td>
-        <td><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>
-        <td><%= spkg.short_url %></td>
-        <td style="text-align: left;"><%= spkg.summary %></td>
+        <td class='evrb'><%= spkg.evr %></td>
+        <td class='built-at'><%= spkg.buildtime %></td>
+        <td class='age'><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>
+        <td class='url'><%= spkg.url && link_to(spkg.url, spkg.url, class: 'news', target: :blank, rel: :nofollow) %></td>
+        <td class='description'><%= spkg.summary %></td>
       </tr>
     <% end %>
   </table>

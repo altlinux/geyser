@@ -33,14 +33,6 @@ class PackageDecorator < Draper::Decorator
     }
   end
 
-   def short_url
-      if url
-         create_link
-      else
-         '&ndash;'.html_safe
-      end
-   end
-
    def evr
       if epoch
          "#{ epoch }:#{ version }-#{ release }"
@@ -59,19 +51,5 @@ class PackageDecorator < Draper::Decorator
 
    def filename_in branch
       rpms.by_branch_path(branch.branch_paths).first&.filename
-   end
-
-   private
-
-   def create_link
-      if url.length > 27
-         local_link_to("#{ url[0..26] }...")
-      else
-         local_link_to(url)
-      end
-  end
-
-   def local_link_to(text)
-      h.link_to(text, url, class: 'news', rel: 'nofollow')
    end
 end

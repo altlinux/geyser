@@ -32,25 +32,25 @@
 <p class="break" />
 <b><%= _('List of packages which was built by this maintainer:') %></b> [<%= @maintainer.support_count %>] <br><br>
 
-<table id="bugs" cellspacing="0" cellpadding="3">
+<table class='results' cellspacing="0" cellpadding="3">
   <tr>
     <% if @branch.perpetual? %>
-      <th>
+      <th class='repocop'>
         <%= raw _('repo<br>cop') %>
       </th>
     <% end %>
-    <th><%= _('package') %></th>
-    <th><%= raw _('current<br>version') %></th>
-    <th><%= _('build time') %></th>
-    <th><%= _('age') %></th>
-    <th><%= _('Url') %></th>
-    <th><%= _('Summary') %></th>
+    <th class='name'><%= _('package') %></th>
+    <th class='evrb'><%= raw _('current version') %></th>
+    <th class='built-at'><%= _('build time') %></th>
+    <th class='age'><%= _('age') %></th>
+    <th class='url'><%= _('Url') %></th>
+    <th class='description'><%= _('Summary') %></th>
   </tr>
 
   <% @srpms.each do |srpm| %>
   <tr>
     <% if @branch.perpetual? %>
-      <td>
+      <td class='repocop'>
         <%= link_to image_tag("#{ srpm.repocop_status }.png", size: '20x20', alt: srpm.repocop_status), repocop_notes_path(reponame: srpm.name), class: 'repocoplink', title: 'repocop' %>
         <% if srpm.repocop_patch %>
           <br>
@@ -58,14 +58,14 @@
         <% end %>
       </td>
     <% end %>
-    <td class="strange">
+    <td class='name'>
       <%= link_to srpm.name, srpm_path(reponame: srpm.name, branch: @branch.slug), class: 'news' %>
     </td>
-    <td><%= srpm.evr %></td>
-    <td><%= srpm.buildtime %></td>
-    <td><%= time_ago_in_words(srpm.buildtime) %> <%= _('ago') %></td>
-    <td><%= srpm.short_url %></td>
-    <td style="text-align:left;"><%= srpm.summary %></td>
+    <td class='evrb'><%= srpm.evr %></td>
+    <td class='built-at'><%= srpm.buildtime %></td>
+    <td class='age'><%= time_ago_in_words(srpm.buildtime) %> <%= _('ago') %></td>
+    <td class='url'><%= srpm.url && link_to(srpm.url, srpm.url, class: 'news', target: :blank, rel: :nofollow) %></td>
+    <td class='description'><%= srpm.summary %></td>
   </tr>
   <% end %>
 </table>

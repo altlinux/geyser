@@ -59,9 +59,9 @@
               <%= link_to spkg.evr, evrb_srpm_path(branch: spkg.branches.first.slug, reponame: spkg.name, evrb: spkg.evrb), class: 'news' %>
             <%- end %>
           </td>
-          <td><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>
-          <td><%= spkg.short_url %></td>
-          <td><%= spkg.summary %></td>
+          <td class='age'><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>
+          <td class='url'><%= spkg.url && link_to(spkg.url, spkg.url, class: 'news', target: :blank, rel: :nofollow) %></td>
+          <td class='description'><%= spkg.summary %></td>
         <% end %>
       </tr>
     <% end %>
