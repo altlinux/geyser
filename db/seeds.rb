@@ -2014,3 +2014,18 @@ if BranchPath.where.not(ftp_url: nil).blank?
       end
    end
 end
+
+if  BranchPath.where.not(team_url: nil).blank?
+   Branch.find_each do |branch|
+      branch_path = branch.branch_paths.src.first
+
+      url = "http://git.altlinux.org/acl/list.groups.#{branch.name.downcase}"
+
+      begin
+         open(URI.escape(url))
+      rescue OpenURI::HTTPError
+      else
+         branch_path.update_attribute(:team_url, url)
+      end
+   end
+end

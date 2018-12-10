@@ -24,8 +24,6 @@
 </table>
 </div>
 </div>
-
-
   <div class="header">
     <%= _('Team:') %> <%= @team.name %>
   </div>
@@ -37,9 +35,7 @@
   <p class="break"></p>
   <% if @leader %>
     <b><%= _('Team leader:') %></b>
-    <% @leader.each do |leader| %>
-      <%= link_to leader.name, maintainer_path(login: leader.login, branch: @branch.slug), class: 'news', title: _('information about maintainer') %>
-    <% end %>
+    <%= link_to @leader.name, maintainer_path(login: @leader.login, branch: @branch.slug), class: 'news', title: _('information about maintainer') %>
     <p class="break"></p>
   <% end %>
 
@@ -79,7 +75,7 @@
             <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(reponame: spkg.name, branch: @branch), class: 'repocoplink', title: _('repocop') %>
             <% if spkg.repocop_patch %>
               <br>
-              <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), repocop_patch_download_url(spkg.repocop_patch), class: 'repocoplink', title: _('repocop patchset for the package') %>
+              <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(spkg.repocop_patch), class: 'repocoplink', title: _('repocop patchset for the package') %>
             <% end %>
           </td>
         <% end %>

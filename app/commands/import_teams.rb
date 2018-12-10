@@ -3,12 +3,6 @@
 require 'open-uri'
 
 class ImportTeams
-   MAP = {
-      'php_coder' => 'php-coder',
-      'psolntsev' => 'p_solntsev',
-      '@vim_plugins' => '@vim-plugins',
-   }
-
    attr_reader :branch
 
    def do
@@ -37,7 +31,7 @@ class ImportTeams
       file(url).split("\n").map do |line|
         tokens = line.split
         tm = tokens.shift
-        [ MAP[tm] || tm, tokens.map { |t| MAP[t] || t } ]
+        [ tm, tokens ]
       end.to_h
    end
 
@@ -45,7 +39,7 @@ class ImportTeams
       file(url).split("\n").map do |line|
         tokens = line.split
         tm = tokens.shift
-        tokens.map.with_index { |t, i| [ MAP[tm] || tm, MAP[t] || t ] }
+        tokens.map.with_index { |t, i| [ tm, t ] }
       end.flatten(1)
    end
 
