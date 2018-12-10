@@ -120,6 +120,10 @@ class Package < ApplicationRecord
       [epoch, "#{version}-#{release}"].compact.join(":")
    end
 
+   def newer_gear
+      [ gear, srpm_git ].compact.sort_by { |g| g.changed_at }.last
+   end
+
    def first_presented_filepath
       rpms.map do |rpm|
          File.file?(filepath = rpm.filepath) && filepath || nil

@@ -56,10 +56,8 @@
 <% end %>
 <br><br>
 
-<% if @spkg.gear %>
-<b><%= _('Gear:') %></b> &nbsp; <%= link_to @spkg.gear.url, @spkg.gear.url, target: '_blank', class: 'news', rel: 'nofollow' %><br><br>
-<% elsif @spkg.srpm_git %>
-<b><%= _('Srpm git:') %></b> &nbsp; <%= link_to @spkg.srpm_git.url, @spkg.srpm_git.url, target: '_blank', class: 'news', rel: 'nofollow' %><br><br>
+<% if @spkg.newer_gear %>
+<b><%= _('Gear:') %></b> &nbsp; <%= link_to @spkg.newer_gear.url, @spkg.newer_gear.url, target: '_blank', class: 'news', rel: 'nofollow', title: _('lately updated gear or srpm git repo') %><br><br>
 <% end %>
 
 <% if @spkg.url %>

@@ -1329,3 +1329,6 @@ msgstr "Число исходных пакетов ветви"
 
 msgid "search by arch "
 msgstr "поиск по архитектуре "
+
+msgid "lately updated gear or srpm git repo"
+msgstr "последний по времени обновления srpm или gear репозиторий"
