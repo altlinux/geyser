@@ -15,7 +15,7 @@ class SrpmsController < ApplicationController
    before_action :widge_srpm_counts, only: %i(index)
 
    def index
-      @spkgs = @branch.spkgs.includes(:builder).ordered.page(params[:page]).per(40).decorate
+      @spkgs = @branch.spkgs.uniq_named.includes(:builder).ordered.page(params[:page]).per(40).decorate
    end
 
    def show
