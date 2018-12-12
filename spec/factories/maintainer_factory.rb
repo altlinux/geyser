@@ -12,8 +12,8 @@ FactoryBot.define do
       website { Faker::Internet.url }
       location { Faker::Address.country }
 
-      after(:create) do |m, e|
-         create(:email, maintainer: m)
+      after(:build) do |m, e|
+         m.email = build(:email, maintainer: m, foremost: true)
       end
    end
 

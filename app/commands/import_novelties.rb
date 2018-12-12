@@ -40,7 +40,9 @@ class ImportNovelties
             m.name = name
             m.login = login
             m.type = team && 'Maintainer::Team' || 'Maintainer::Person'
+            m.email = r_e
          end
+         r_e.foremost = true
       end.maintainer
    end
 
