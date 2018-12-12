@@ -2,7 +2,8 @@ class FixMaintainerEmails < ActiveRecord::Migration[5.2]
    def change
       {
           "real.altlinux.org@gmail.com" => "Eugeny A. Rostovtsev",
-          "Eugeny A. Rostovtsev (REAL)" => "Eugeny A. Rostovtsev"
+          "Eugeny A. Rostovtsev (REAL)" => "Eugeny A. Rostovtsev",
+          "voins" => "Alexey Voinov",
       }.each do |name, to_name|
          maintainer = Maintainer.find_by_name(name)
          main_maintainer = Maintainer.find_by_name(to_name)
