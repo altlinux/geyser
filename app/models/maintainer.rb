@@ -34,7 +34,7 @@ class Maintainer < ApplicationRecord
 
    alias_method(:srpms_names, :built_names) #TODO remove of compat
 
-   validates_presence_of :name
+   validates_presence_of :name, :email
 
    def slug
       to_param
@@ -97,10 +97,12 @@ class Maintainer < ApplicationRecord
             attrs = {
                name: name,
                login: /@(?<team>packages\.)?altlinux\.org$/ =~ email && login || nil,
-               type: team && 'Maintainer::Team' || 'Maintainer::Person'
+               type: team && 'Maintainer::Team' || 'Maintainer::Person',
+               email: re
             }
 
             re.maintainer = Maintainer.new(attrs)
+            re.foremost = true
          end.maintainer
       end
    end

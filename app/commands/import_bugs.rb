@@ -44,7 +44,7 @@ class ImportBugs
          end || Maintainer.new(name: email, type: 'Maintainer::Person')
       end
 
-      res = Maintainer.import!(maintainers, on_duplicate_key_ignore: true)
+      res = Maintainer.import!(maintainers, on_duplicate_key_ignore: true, validate: false)
       maintainers.select {|m| !m.id }.each.with_index {|m, i| m.id = res.ids[i] }
       @maintainer_ids = maintainers.map {|m| m.id }
    end
@@ -54,7 +54,7 @@ class ImportBugs
          Recital::Email.new(address: email, maintainer_id: maintainer_ids[index])
       end
 
-      Recital::Email.import!(emails, on_duplicate_key_ignore: true)
+      Recital::Email.import!(emails, on_duplicate_key_ignore: true, validate: false)
    end
 
    def import_issues
