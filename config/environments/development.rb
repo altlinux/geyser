@@ -18,7 +18,7 @@ Rails.application.configure do
   if ENV['CACHE']
     config.action_controller.perform_caching = true
 
-    config.cache_store = :dalli_store, { namespace: Geyser20, expires_in: 1.hour, compress: true }
+    config.cache_store = :dalli_store
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{ 2.days.seconds.to_i }"
     }

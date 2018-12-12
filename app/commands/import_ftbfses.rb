@@ -54,7 +54,9 @@ class ImportFtbfses
          r_e.maintainer = Maintainer.find_or_initialize_by(login: login) do |m|
             m.name = name
             m.type = team && 'Maintainer::Team' || 'Maintainer::Person'
+            m.email = r_e
          end
+         r_e.foremost = true
       end.maintainer
    end
 
