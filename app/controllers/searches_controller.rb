@@ -39,7 +39,7 @@ class SearchesController < ApplicationController
       if params[:query].blank?
          "DISTINCT on(packages.name) packages.*"
       else
-         "DISTINCT on(qs.rank, packages.name) packages.*, branches.slug, qs.rank, qs.evrbes"
+         "DISTINCT on(qs.rank, packages.name) packages.*, branches.slug, qs.rank, qs.evrbes, qs.slugs"
       end
    end
 

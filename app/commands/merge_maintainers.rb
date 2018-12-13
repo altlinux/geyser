@@ -46,7 +46,16 @@ class MergeMaintainers
    end
 
    def merge_issue_assignees
-      source.issue_assignees.update_all(maintainer_id: target.id)
+      ids = source.issue_assignees.select do |ia|
+         IssueAssignee.where(issue_id: ia.issue_id, maintainer_id: target.id).blank?
+      end.map(&:id)
+
+      IssueAssignee.where(id: ids).update_all(maintainer_id: target.id)
+
+      ids = source.issue_assignees.select do |ia|
+         IssueAssignee.where(issue_id: ia.issue_id, maintainer_id: target.id).present?
+      end.map(&:id)
+      IssueAssignee.where(id: ids).delete_all
    end
 
    def merge_gear_maintainers

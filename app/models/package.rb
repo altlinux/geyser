@@ -71,7 +71,8 @@ class Package < ApplicationRecord
                                                 THEN ''
                                                 ELSE packages.epoch || ':'
                                                 END || packages.version || '-' || packages.release
-                                       ) AS evrbes")
+                                       ) AS evrbes,
+                      jsonb_object_agg(DISTINCT packages.buildtime, qs_branches.slug) AS slugs")
          qs_join = Arel.sql("INNER JOIN rpms AS qs_rpms ON qs_rpms.package_id = packages.id AND qs_rpms.obsoleted_at IS NULL
                              INNER JOIN branch_paths AS qs_branch_paths ON qs_branch_paths.id = qs_rpms.branch_path_id
                              INNER JOIN branches AS qs_branches ON qs_branches.id = qs_branch_paths.branch_id
@@ -83,7 +84,7 @@ class Package < ApplicationRecord
 
          joins(:branch, "INNER JOIN (#{qs.to_sql}) AS qs ON packages.id = ANY (qs.src_ids)")
             .order("qs.rank DESC, packages.name, branches.order_id DESC")
-            .select("packages.*, branches.slug, qs.rank, qs.evrbes")
+            .select("packages.*, branches.slug, qs.rank, qs.evrbes, qs.slugs")
       end
    end
    scope :counted_arches_for, ->(branch) do
@@ -135,6 +136,10 @@ class Package < ApplicationRecord
    end
 
    # props
+   def slugs
+      read_attribute(:slugs) || versions.map {|v| [ s.buildtime, s.branch.slug ] }.to_h
+   end
+
    def evrbes
       read_attribute(:evrbes) || versions.map {|v| [ s.buildtime, s.evr ] }.to_h
    end
