@@ -21,6 +21,8 @@ class SourcesController < ApplicationController
    def fetch_spkgs_by_name
       @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
                                                      .by_name(params[:reponame])
+                                                     .joins(:branch)
+                                                     .merge(Branch.published)
                                                      .includes(:branch_path, :branch, :package)
                                                      .order('packages.buildtime DESC, branches.order_id'))
    end
