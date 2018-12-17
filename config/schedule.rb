@@ -31,6 +31,10 @@ every 1.day, at: '3:25' do # takes about 20 min
    rake 'repocop:update'
 end
 
+every 1.day, at: '3:45' do # takes about 5 min
+   rake 'fix:branching_maintainers'
+end
+
 every :sunday, at: '03:30' do
 #  rake 'sitemap:clean sitemap:refresh'
 end
