@@ -3,7 +3,7 @@
 <% keywords @spkg.summary %>
 
 <div id='main-content'>
-   <div class="rightbar fat">
+   <div class="rightbar">
       <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
    </div>
 
