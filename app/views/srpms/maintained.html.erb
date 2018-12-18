@@ -40,32 +40,34 @@
       </th>
     <% end %>
     <th class='name'><%= _('package') %></th>
-    <th class='evrb'><%= raw _('current version') %></th>
-    <th class='built-at'><%= _('build time') %></th>
+    <th class='version'><%= raw _('versions') %></th>
     <th class='age'><%= _('age') %></th>
     <th class='url'><%= _('Url') %></th>
     <th class='description'><%= _('Summary') %></th>
   </tr>
 
-  <% @srpms.each do |srpm| %>
+  <% @spkgs.each do |spkg| %>
   <tr>
     <% if @branch.perpetual? %>
       <td class='repocop'>
-        <%= link_to image_tag("#{ srpm.repocop_status }.png", size: '20x20', alt: srpm.repocop_status), repocop_notes_path(reponame: srpm.name), class: 'repocoplink', title: 'repocop' %>
-        <% if srpm.repocop_patch %>
+        <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(reponame: spkg.name), class: 'repocoplink', title: 'repocop' %>
+        <% if spkg.repocop_patch %>
           <br>
-          <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(srpm.repocop_patch.package_id), class: 'repocoplink', title: _('repocop patchset for the package') %>
+          <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(spkg.repocop_patch.package_id), class: 'repocoplink', title: _('repocop patchset for the package') %>
         <% end %>
       </td>
     <% end %>
     <td class='name'>
-      <%= link_to srpm.name, srpm_path(reponame: srpm.name, branch: @branch.slug), class: 'news' %>
+      <%= link_to spkg.name, srpm_path(reponame: spkg.name, branch: @branch.slug), class: 'news' %>
     </td>
-    <td class='evrb'><%= srpm.evr %></td>
-    <td class='built-at'><%= srpm.buildtime %></td>
-    <td class='age'><%= time_ago_in_words(srpm.buildtime) %> <%= _('ago') %></td>
-    <td class='url'><%= srpm.url && link_to(srpm.url, srpm.url, class: 'news', target: :blank, rel: :nofollow) %></td>
-    <td class='description'><%= srpm.summary %></td>
+    <td class='version'>
+      <%- spkg.evrbes.sort_by { |(buildtime, _)| buildtime }.reverse.each do |time, evrb| %>
+         <span class="badge"><%= link_to evrb, evrb_srpm_path(branch: spkg.slugs[time], reponame: spkg.name, evrb: evrb), class: 'news', title: spkg.name + "-" + evrb %></span>
+      <%- end %>
+    </td>
+    <td class='age'><%= time_ago_in_words(spkg.buildtime) %> <%= _('ago') %></td>
+    <td class='url'><%= spkg.url && link_to(spkg.url, spkg.url, class: 'news', target: :blank, rel: :nofollow) %></td>
+    <td class='description'><%= spkg.summary %></td>
   </tr>
   <% end %>
 </table>
@@ -73,7 +75,7 @@
   <p class="break" />
 
   <div style="text-align:center">
-    <%= paginate @srpms %>
+    <%= paginate @spkgs %>
   </div>
 
 

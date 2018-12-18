@@ -102,8 +102,13 @@ class ImportGears
 
       Rails.logger.info("IMPORT.GEAR: find with args #{args}")
       wrapper = Terrapin::CommandLine.new('find', args, environment: { 'LANG' => 'C', 'LC_ALL' => 'en_US.UTF-8' })
+      attrs = parse(wrapper.run)
 
-      parse(wrapper.run)
+      if attrs.blank?
+         Rails.logger.error('IMPORT.GEAR: find exit status zero, but result is blank')
+      end
+
+      attrs
    rescue Terrapin::CommandNotFoundError
       Rails.logger.error('IMPORT.GEAR: find command not found')
    rescue Terrapin::ExitStatusError
