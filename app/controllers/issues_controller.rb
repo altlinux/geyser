@@ -9,6 +9,8 @@ class IssuesController < ApplicationController
    before_action :fetch_maintainer, only: %i(bugs novelties ftbfses)
    before_action :fetch_maintainer_bugs, only: %i(bugs novelties ftbfses)
 
+   has_scope :b
+
    def index
       if params[:q] == 'all'
          @issues = @all_bugs
@@ -74,8 +76,8 @@ class IssuesController < ApplicationController
    end
 
    def fetch_bugs
-      @all_bugs = AllBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
-      @opened_bugs = OpenedBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
+      @all_bugs = BugDecorator.decorate_collection(apply_scopes(Issue::Bug).s(@spkg))
+      @opened_bugs = BugDecorator.decorate_collection(@all_bugs.object.opened)
    end
 
    def fetch_maintainer

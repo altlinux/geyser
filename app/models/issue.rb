@@ -9,6 +9,9 @@ class Issue < ApplicationRecord
    has_many :assignees, class_name: :Maintainer, through: :issue_assignees, source: :maintainer
 
    scope :active, -> { where(resolution: nil) }
+   scope :b, ->(slug) { joins(:branch).where(branches: {slug: slug}) }
+   scope :m, ->(m) { joins(:assignees).where(maintainers: {login: m.login}) }
+   scope :s, ->(spkg) { where(repo_name: spkg.packages.select(:name).distinct) }
 
    accepts_nested_attributes_for :issue_assignees, reject_if: :all_blank, allow_destroy: true
 
