@@ -6,7 +6,7 @@ class SrpmsController < ApplicationController
    before_action :fetch_spkgs_by_name, only: %i(show)
    before_action :fetch_bugs, only: %i(show)
    before_action :fetch_changelogs, only: %i(show)
-   before_action :fetch_branches, only: %i(index maintained)
+   before_action :fetch_branches, only: %i(maintained)
    before_action :fetch_maintainer, only: %i(maintained)
    #widgets
    before_action :widge_branches, only: %i(index)
@@ -92,7 +92,8 @@ class SrpmsController < ApplicationController
    end
 
    def fetch_branches
-      @branches = Branch.filled
+      @branches_s = ActiveModel::Serializer::CollectionSerializer.new(Branch.published,
+                                                                      serializer: BranchSerializer)
    end
 
    def widge_maintainers
@@ -104,7 +105,7 @@ class SrpmsController < ApplicationController
 
    def widge_branches
       @branches_s = BranchPathsToBranchesSerializer.new(BranchPath.includes(:branch)
-                                                                  .for_branch(@branches)
+                                                                  .for_branch(Branch.published.unscope(:order))
                                                                   .published
                                                                   .unanonimous
                                                                   .src

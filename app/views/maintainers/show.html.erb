@@ -3,25 +3,7 @@
 <div id='main-content'>
 
 <div id="rightbar">
-<div class="headleft">
-<div class="headright" title="<%= _('ALT repositories') %>">
-  <%= _('ALT repositories') %>
-</div>
-<%= image_tag('collapse.gif', id: 'topRPM', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9') %>
-</div>
-<div id="topRPMDiv" style="border: dotted gray 1px; margin: 0px 4px 4px 4px;">
-<table style="font-size:8pt;" width="100%">
-
-<% @branches.each do |branch| %>
-<tr>
-  <td style="text-align: left;">
-    <%= link_to branch.name, maintainer_path(branch, @maintainer), class: 'news' %>
-  </td>
-</tr>
-<% end %>
-
-</table>
-</div>
+  <%= render partial: "shared/tables/pure_branches", locals: { branches: @branches_s.as_json } %>
 </div>
 
 <div class="header"><%= _('Maintainer:') %> <%= _(@maintainer.name) %></div>

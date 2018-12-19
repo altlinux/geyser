@@ -9,7 +9,7 @@
                ul
                   li
                      .line
-                        .left.float.b = link_to(_(maintainer['name']), maintainer_path(branch.slug, maintainer['login']), title: _('information about maintainer'))
+                        .left.float.b = link_to(_(maintainer['name']), url_for(branch: branch.slug), title: _('information about maintainer'))
                         .right.float = maintainer['srpms_count']
          .footer
             .center = '…'
