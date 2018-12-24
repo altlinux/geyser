@@ -80,6 +80,10 @@ module SrpmsHelper
          args: {controller: :repocop_notes, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: 'repocop bugreports',
          valid: 'perpetual?'
+      },
+      repos: {
+         args: {controller: :gears, action: :repos, branch: branch.slug, reponame: srpm.name},
+         popup: 'git repos associated with the package',
       }
     }
 

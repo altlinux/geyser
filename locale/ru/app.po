@@ -781,6 +781,9 @@ msgstr ""
 msgid "Repocop"
 msgstr "Репокоп"
 
+msgid "Repos"
+msgstr "Репозитории"
+
 msgid "Repocop messages:"
 msgstr "Сообщения от репокопа:"
 
@@ -1207,6 +1210,15 @@ msgstr ""
 msgid "repocop"
 msgstr "репокоп"
 
+msgid "maintainer"
+msgstr "сопроводитель"
+
+msgid "kind"
+msgstr "вид"
+
+msgid "repos"
+msgstr "репозитории"
+
 msgid "repocop bugreports"
 msgstr "отчёты repocop о найденных ошибках и замечаниях"
 
@@ -1332,3 +1344,9 @@ msgstr "поиск по архитектуре "
 
 msgid "lately updated gear or srpm git repo"
 msgstr "последний по времени обновления srpm или gear репозиторий"
+
+msgid "person"
+msgstr "личный"
+
+msgid "gear"
+msgstr "гир"

@@ -12,7 +12,7 @@ every 1.hour do
 end
 
 every 3.hours, at: '0:35' do
-   rake 'gear:update'
+   rake 'gear:update gear:people'
 end
 
 every 3.hours, at: '2:05' do

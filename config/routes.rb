@@ -84,6 +84,9 @@ Rails.application.routes.draw do
                resources :rpms, param: :rpm_name, rpm_name: /[^\/]+/, only: :index
                resources :issues, param: :no, no: /[^\/]+/, only: :index
                resources :repocop_notes, param: :no, no: /[^\/]+/, only: :index
+               resources :gears, only: [] do
+                  get :repos, on: :collection
+               end
             end
          end
 
@@ -110,6 +113,9 @@ Rails.application.routes.draw do
                   resources :rpms, param: :rpm_name, rpm_name: /[^\/]+/, only: :index, as: :evrb_rpms
                   resources :issues, param: :no, only: :index, as: :evrb_issues
                   resources :repocop_notes, param: :no, only: :index, as: :evrb_repocop_notes
+                  resources :gears, as: :evrb_repocop_notes do
+                     get :repos, on: :collection
+                  end
                end
             end
          end
