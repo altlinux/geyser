@@ -103,10 +103,25 @@ describe Package::Src do
 
          expect(srpm.patches.first.filename).to eq("catpkt-1.0-alt-dont-strip.patch")
          expect(srpm.sources.first.filename).to eq("catpkt-1.0.tar.gz")
+
+         expect(srpm.descriptions.first).to be_nil
+         expect(srpm.summaries.first).to be_nil
+      end
+
+      it 'is expected import srpm file containing ru codepage' do
+         file = Rails.root.join('spec/data/fonts-ttf-vera-1.10-alt3.src.rpm')
+         rpm = Rpm::Base.new(file)
+
+         expect { described_class.import(branch_path, rpm) }.to change(Package, :count).by(1)
+
+         srpm = Package.first
+
+         expect(srpm.descriptions.first.text).to eq("Этот пакет содержит свободно распространяемые шрифты Bitstream Vera.")
+         expect(srpm.summaries.first.text).to eq("Шрифты Bitstream Vera")
       end
 
       it 'should import all srpms from path' do
-         expect { described_class.import_all(branch_path.branch) }.to change(Package, :count).by(2)
+         expect { described_class.import_all(branch_path.branch) }.to change(Package, :count).by(3)
       end
 
       context '#by_branch' do

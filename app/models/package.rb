@@ -21,6 +21,8 @@ class Package < ApplicationRecord
    has_many :branch_paths, through: :rpms
    has_many :branches, through: :branch_paths
    has_many :repocop_notes
+   has_many :descriptions, class_name: "Lorem::Description"
+   has_many :summaries, class_name: "Lorem::Summary"
 
    scope :ordered, -> { order('packages.buildtime DESC') }
    scope :by_name, ->(name) { where(name: name) }
@@ -135,6 +137,9 @@ class Package < ApplicationRecord
 
    validates_presence_of :buildtime, :md5, :group, :builder, :name, :arch, :builder
 
+   accepts_nested_attributes_for :descriptions, reject_if: :all_blank, allow_destroy: true
+   accepts_nested_attributes_for :summaries, reject_if: :all_blank, allow_destroy: true
+
    def to_param
       name
    end
@@ -230,6 +235,17 @@ class Package < ApplicationRecord
 
          package.rpms << Rpm.new(branch_path: branch_path,
                                  filename: rpm.filename)
+
+         # russian zone
+         rpm_ru = Rpm::Base.new(rpm.file, "ru_RU.UTF-8")
+
+         if rpm_ru.summary.present? && rpm_ru.summary != rpm.summary
+            package.summaries << Lorem::Summary.new(text: rpm_ru.summary, codepage: "ru_RU.UTF-8")
+         end
+
+         if rpm_ru.description.present? && rpm_ru.description != rpm.description
+            package.descriptions << Lorem::Description.new(text: rpm_ru.description, codepage: "ru_RU.UTF-8")
+         end
       end
 
       if !package.group

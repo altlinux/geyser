@@ -61,7 +61,7 @@
           </td>
           <td class='age'><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>
           <td class='url'><%= spkg.url && link_to(spkg.url, spkg.url, class: 'news', target: :blank, rel: :nofollow) %></td>
-          <td class='description'><%= spkg.summary %></td>
+          <td class='description'><%= I18n.locale == :ru && spkg.summaries.first&.text || spkg.summary %></td>
         <% end %>
       </tr>
     <% end %>

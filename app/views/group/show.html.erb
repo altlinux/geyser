@@ -21,7 +21,7 @@
       <span class='news-text'><%= "#{ spkg.buildtime } (#{ time_ago_in_words(spkg.buildtime) } #{_('ago')})" %></span>
       <br>
       <b><%= _('Summary:') %></b>
-      <span class='news-text'><%= spkg.summary %></span>
+      <span class='news-text'><%= I18n.locale == :ru && spkg.summaries.first&.text || spkg.summary %></span>
       <br>
       <b><%= _('Changes:') %></b>
       <div class='para'>

@@ -44,10 +44,10 @@ class SearchesController < ApplicationController
    end
 
    def order_sql
-      if params[:query].blank?
-         "packages.name, branches.order_id DESC"
-      else
-         "qs.rank DESC, packages.name, branches.order_id DESC"
-      end
+      order_parts = [ "packages.name", "packages.buildtime DESC", "branches.order_id DESC" ]
+
+      order_parts.unshift("qs.rank DESC") if params[:query].present?
+
+      order_parts.join(", ")
    end
 end

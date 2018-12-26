@@ -69,8 +69,8 @@
 <b><%= _('Group:') %></b> <span class="news-text"><%= @spkg.groupname %></span><br>
 -->
 
-<b><%= _('Summary:') %></b> <span class="news-text"><%= @spkg.summary %></span><br>
-<b><%= _('Description:') %></b> <div class="para"><%= simple_format h(@spkg.description) %></div>
+<b><%= _('Summary:') %></b> <span class="news-text"><%= I18n.locale == :ru && @spkg.summaries.first&.text || @spkg.summary %></span><br>
+<b><%= _('Description:') %></b> <div class="para"><%= simple_format h(I18n.locale == :ru && @spkg.descriptions.first&.text || @spkg.description) %></div>
 <p class="news" />
 
 <% if @leader %>

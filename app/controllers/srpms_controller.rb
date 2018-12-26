@@ -43,6 +43,7 @@ class SrpmsController < ApplicationController
       @spkgs = @branch.spkgs.for_maintainer(@maintainer)
                             .aggregated
                             .includes(:repocop_patch)
+                            .order(:name, buildtime: :desc)
                             .page(params[:page])
                             .per(100)
    end
