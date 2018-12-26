@@ -9,5 +9,4 @@
                ul
                   li
                      .line
-                        .left.float = link_to "#{ branch[:name] }", url_for(params.merge(branch: branch[:slug])), class: 'b'
-                        .right.float = branch[:srpms_count]
+                        .left.float = link_to_unless_current("#{ branch[:name] }", url_for(params.permit!.merge(branch: branch[:slug])), class: 'b')

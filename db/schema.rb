@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_12_151900) do
+ActiveRecord::Schema.define(version: 2018_12_25_102825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -210,6 +210,18 @@ ActiveRecord::Schema.define(version: 2018_12_12_151900) do
     t.index ["status"], name: "index_issues_on_status"
     t.index ["type", "no"], name: "index_issues_on_type_and_no", unique: true
     t.index ["type"], name: "index_issues_on_type"
+  end
+
+  create_table "lorems", force: :cascade do |t|
+    t.text "text", null: false, comment: "Текст"
+    t.string "codepage", null: false, comment: "Кодовая страница текста"
+    t.bigint "package_id", null: false, comment: "Указатель на пакет"
+    t.string "type", null: false, comment: "Род текста"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["codepage"], name: "index_lorems_on_codepage"
+    t.index ["package_id"], name: "index_lorems_on_package_id"
+    t.index ["type"], name: "index_lorems_on_type"
   end
 
   create_table "maintainers", id: :serial, force: :cascade do |t|
@@ -483,6 +495,7 @@ ActiveRecord::Schema.define(version: 2018_12_12_151900) do
   add_foreign_key "issue_assignees", "issues", on_delete: :cascade
   add_foreign_key "issue_assignees", "maintainers", on_delete: :restrict
   add_foreign_key "issues", "branch_paths", on_delete: :cascade
+  add_foreign_key "lorems", "packages"
   add_foreign_key "mirrors", "branches", on_delete: :cascade
   add_foreign_key "packages", "groups", on_delete: :restrict
   add_foreign_key "packages", "maintainers", column: "builder_id", on_delete: :restrict

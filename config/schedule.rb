@@ -12,7 +12,7 @@ every 1.hour do
 end
 
 every 3.hours, at: '0:35' do
-   rake 'gear:update'
+   rake 'gear:update gear:people'
 end
 
 every 3.hours, at: '2:05' do
@@ -29,6 +29,10 @@ end
 
 every 1.day, at: '3:25' do # takes about 20 min
    rake 'repocop:update'
+end
+
+every 1.day, at: '3:45' do # takes about 5 min
+   rake 'fix:branching_maintainers'
 end
 
 every :sunday, at: '03:30' do

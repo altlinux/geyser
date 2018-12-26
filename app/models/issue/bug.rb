@@ -15,4 +15,6 @@ class Issue::Bug < Issue
          .order("issues.no::integer DESC")
          .select("distinct on (issues.no::integer) issues.*")
    end
+
+   default_scope -> { order(Arel.sql("issues.no::integer DESC")) }
 end

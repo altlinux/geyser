@@ -6,7 +6,7 @@ class SrpmsController < ApplicationController
    before_action :fetch_spkgs_by_name, only: %i(show)
    before_action :fetch_bugs, only: %i(show)
    before_action :fetch_changelogs, only: %i(show)
-   before_action :fetch_branches, only: %i(index maintained)
+   before_action :fetch_branches, only: %i(maintained)
    before_action :fetch_maintainer, only: %i(maintained)
    #widgets
    before_action :widge_branches, only: %i(index)
@@ -20,9 +20,9 @@ class SrpmsController < ApplicationController
 
    def show
       @ftbfs = @branch.ftbfs.active
-                                       .where(repo_name: @spkg.name, evr: @spkg.evr)
-                                       .order(reported_at: :desc)
-                                       .includes(:branch_path)
+                            .where(repo_name: @spkg.name, evr: @spkg.evr)
+                            .order(reported_at: :desc)
+                            .includes(:branch_path)
       if @spkg.name[0..4] == 'perl-' && @spkg.name != 'perl'
          @perl_watch = PerlWatch.where(name: @spkg.name[5..-1].gsub('-', '::')).first
       end
@@ -40,12 +40,12 @@ class SrpmsController < ApplicationController
    def maintained
       @all_bugs = BugDecorator.decorate_collection(Issue::Bug.for_maintainer_and_branch(@maintainer, @branch))
       @opened_bugs =  BugDecorator.decorate_collection(@all_bugs.object.opened)
-      @srpms = @branch.spkgs.where(name: @maintainer.gear_names)
-                      .includes(:repocop_patch)
-                      .page(params[:page])
-                      .per(100)
-                      .select('DISTINCT(packages.*), LOWER(packages.name)')
-                      .decorate
+      @spkgs = @branch.spkgs.for_maintainer(@maintainer)
+                            .aggregated
+                            .includes(:repocop_patch)
+                            .order(:name, buildtime: :desc)
+                            .page(params[:page])
+                            .per(100)
    end
 
    protected
@@ -93,7 +93,8 @@ class SrpmsController < ApplicationController
    end
 
    def fetch_branches
-      @branches = Branch.filled
+      @branches_s = ActiveModel::Serializer::CollectionSerializer.new(Branch.published,
+                                                                      serializer: BranchSerializer)
    end
 
    def widge_maintainers
@@ -105,7 +106,7 @@ class SrpmsController < ApplicationController
 
    def widge_branches
       @branches_s = BranchPathsToBranchesSerializer.new(BranchPath.includes(:branch)
-                                                                  .for_branch(@branches)
+                                                                  .for_branch(Branch.published.unscope(:order))
                                                                   .published
                                                                   .unanonimous
                                                                   .src

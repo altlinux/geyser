@@ -39,6 +39,7 @@ class MaintainersController < ApplicationController
    end
 
    def set_branches
-      @branches = Branch.published
+      @branches_s = ActiveModel::Serializer::CollectionSerializer.new(Branch.published,
+                                                                      serializer: BranchSerializer)
    end
 end

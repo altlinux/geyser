@@ -3,7 +3,7 @@
 class RpmsController < ApplicationController
    before_action :set_evrb
    before_action :fetch_spkg, only: %i(index)
-   before_action :fetch_spkgs_by_name, only: %i(show)
+   before_action :fetch_spkgs_by_name, only: %i(index)
    before_action :fetch_bugs, only: %i(index)
 
    def index
@@ -24,11 +24,11 @@ class RpmsController < ApplicationController
 
    def fetch_spkgs_by_name
       @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
-                                                      .by_name(params[:reponame])
-                                                      .joins(:branch)
-                                                      .merge(Branch.published)
-                                                      .includes(:branch_path, :branch, :package)
-                                                      .order('packages.buildtime DESC, branches.order_id'))
+                                                     .by_name(params[:reponame])
+                                                     .joins(:branch)
+                                                     .merge(Branch.published)
+                                                     .includes(:branch_path, :branch, :package)
+                                                     .order('packages.buildtime DESC, branches.order_id'))
    end
 
    def set_evrb

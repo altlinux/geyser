@@ -179,6 +179,9 @@ GEM
     git (1.5.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    has_scope (0.7.2)
+      actionpack (>= 4.1)
+      activesupport (>= 4.1)
     hashdiff (0.3.7)
     http_accept_language (2.1.1)
     http_logger (0.5.1)
@@ -311,7 +314,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.19.0, < 2.0)
     rainbow (3.0.0)
-    rake (12.3.1)
+    rake (12.3.2)
     rb-fsevent (0.10.3)
     rb-inotify (0.9.10)
       ffi (>= 0.5.0, < 2)
@@ -496,6 +499,7 @@ DEPENDENCIES
   gettext
   gettext_i18n_rails
   git
+  has_scope
   http_accept_language
   http_logger
   kaminari
@@ -553,4 +557,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.17.1
+   1.17.2

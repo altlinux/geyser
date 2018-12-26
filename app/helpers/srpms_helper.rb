@@ -73,19 +73,24 @@ module SrpmsHelper
       },
       bugs: {
          title: _('Bugs') + ' (%s/%s)' % [opened_bugs.count, all_bugs.count],
-         args: {controller: :issues, action: :index, branch: branch.slug, reponame: srpm.name, anchor: 'bug'},
+         args: {controller: :issues, action: :index, branch: branch.slug, reponame: srpm.name, b: !branch.perpetual? && branch.slug},
          popup: 'list of bugs and feature requests',
       },
       repocop: {
          args: {controller: :repocop_notes, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: 'repocop bugreports',
          valid: 'perpetual?'
+      },
+      repos: {
+         args: {controller: :gears, action: :repos, branch: branch.slug, reponame: srpm.name},
+         popup: 'git repos associated with the package',
       }
     }
 
     map.map do |(title, data)|
       data[:args][:evrb] = evrb if evrb
       data[:title] ||= _(title.to_s.capitalize)
+      data[:args] = data[:args].select { |k, v| v }
 
       [title, data]
     end.to_h

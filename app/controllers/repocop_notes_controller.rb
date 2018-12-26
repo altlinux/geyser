@@ -7,6 +7,7 @@ class RepocopNotesController < ApplicationController
    before_action :fetch_bugs, only: %i(index)
    before_action :fetch_maintainer, only: %i(maintained)
    before_action :fetch_maintainer_bugs, only: %i(maintained)
+   before_action :set_branches, only: %i(maintained)
 
    def index
       @repocop_notes = @spkg.repocop_notes.includes(:package)
@@ -17,6 +18,11 @@ class RepocopNotesController < ApplicationController
    end
 
    protected
+
+   def set_branches
+      @branches_s = ActiveModel::Serializer::CollectionSerializer.new(Branch.published,
+                                                                      serializer: BranchSerializer)
+   end
 
    def fetch_spkg
       spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(params[:evrb]).order(buildtime: :desc)

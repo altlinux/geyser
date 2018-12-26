@@ -14,6 +14,6 @@ class SecurityController < ApplicationController
                                     .order("maintainer_id DESC")
 
     @branches_s = ActiveModel::Serializer::CollectionSerializer.new(counted_branches,
-                                                                    serializer: BranchAsChangelogSerializer).as_json
+                                                                    serializer: BranchAsChangelogSerializer)
   end
 end

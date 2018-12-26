@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'open-uri'
-
 class Gear < ApplicationRecord
    has_many :spkgs, primary_key: :reponame, foreign_key: :name, class_name: 'Package::Src'
    has_many :gear_maintainers
@@ -10,6 +8,8 @@ class Gear < ApplicationRecord
    has_many :branch_paths, -> { distinct }, through: :srpms, source: :branch_path
    has_many :branches, -> { distinct }, through: :branch_paths, source: :branch
 
+   scope :pure, -> { where(kind: %w(srpms gears)) }
+   scope :for_spkg, ->(spkg) { joins(:spkgs).where(packages: { id: spkg.id }).distinct }
    scope :for_maintainer, ->(maintainer) { where(gear_maintainers: { maintainer_id: maintainer }) }
    scope :maintainly_unanalyzed, -> do
       updated_at = GearMaintainer.updated_at || Time.at(0)

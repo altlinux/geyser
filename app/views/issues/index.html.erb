@@ -3,7 +3,7 @@
 <% keywords @spkg.summary %>
 
 <div id='main-content'>
-   <div class="rightbar fat">
+   <div class="rightbar">
       <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
    </div>
 
@@ -27,17 +27,18 @@
 
 <div style="text-align:left;margin-left:2em;margin-top:1.5em;">
 <%- if params[:q] == 'all' %>
-<span class="tabunsel">&nbsp;<%= link_to _('open'), @evrb && issues_path(reponame: params[:reponame], evrb: @evrb) || issues_path(id: params[:id]), class: 'news' %>&nbsp;</span>
+<span class="tabunsel">&nbsp;<%= link_to _('open'), url_for(q: nil, b: params[:b]), class: 'news' %>&nbsp;</span>
 <span class="tabsel">&nbsp;<%= _('total') %>&nbsp;</span>
 <%- else %>
 <span class="tabsel">&nbsp;<%= _('open') %>&nbsp;</span>
-<span class="tabunsel">&nbsp;<%= link_to _('total'), @evrb && evrb_issues_path(reponame: params[:reponame], evrb: @evrb, q: 'all') || issues_path(reponame: params[:reponame], q: 'all'), class: 'news' %>&nbsp;</span>
+<span class="tabunsel">&nbsp;<%= link_to _('total'), url_for(q: 'all', b: params[:b]), class: 'news' %>&nbsp;</span>
 <%- end %>
 </div>
 
 <table id="bugs" cellspacing="0" cellpadding="3">
   <tr>
     <th><%= _('id') %></th>
+    <th><%= _('branch') %></th>
     <th><%= _('severity') %></th>
     <th><%= _('status') %></th>
     <%- if params[:q] == 'all' %>
@@ -50,6 +51,7 @@
   <% @issues.each do |bug| %>
     <tr>
       <td><%= bug.link_to_bugzilla %></td>
+      <td><%= bug.branch.slug %></td>
       <td><%= bug.severity %></td>
       <td><%= bug.status %></td>
       <%- if params[:q] == 'all' %>

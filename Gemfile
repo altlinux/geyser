@@ -48,6 +48,9 @@ gem 'activerecord-import'
 # view
 gem 'slim'
 
+# controller
+gem 'has_scope'
+
 # seed
 gem 'factory_bot_rails'
 

@@ -5,7 +5,7 @@ require 'terrapin'
 class Rpm::Base
    include Draper::Decoratable
 
-   attr_reader :file
+   attr_reader :file, :codepage
 
    # TODO: packagesize is broken on alt rpm 4.0.4
    TAGS = {
@@ -20,8 +20,9 @@ class Rpm::Base
       self.class
    end
 
-   def initialize(file)
+   def initialize file, codepage = 'en_US.UTF-8'
       @file = file
+      @codepage = codepage
    end
 
    def get method
@@ -79,6 +80,7 @@ class Rpm::Base
 
       output = rpm.exec(
         line: '-qp --queryformat=:tag :file',
+        codepage: codepage,
         tag: tag,
         file: file)
 
@@ -106,9 +108,9 @@ class Rpm::Base
 
       def hash_of args
          if args.is_a?(String)
-            { line: args }
+            { line: args, codepage: 'en_US.UTF-8' }
          elsif args.is_a?(Hash)
-            args
+            { codepage: 'en_US.UTF-8' }.merge(args)
          else
             raise
          end
@@ -117,7 +119,7 @@ class Rpm::Base
       def exec args
          a_hash = hash_of(args)
 
-         wrapper = Terrapin::CommandLine.new('rpm', a_hash[:line], environment: { 'LANG' => 'C', 'LC_ALL' => 'en_US.UTF-8' })
+         wrapper = Terrapin::CommandLine.new('rpm', a_hash[:line], environment: { 'LANG' => 'C', 'LC_ALL' => a_hash[:codepage] })
 
          result = wrapper.run(a_hash)
          result !~ /\A(\(none\)|)\z/ && result.force_encoding('utf-8') || nil

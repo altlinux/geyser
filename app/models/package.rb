@@ -21,11 +21,14 @@ class Package < ApplicationRecord
    has_many :branch_paths, through: :rpms
    has_many :branches, through: :branch_paths
    has_many :repocop_notes
+   has_many :descriptions, class_name: "Lorem::Description"
+   has_many :summaries, class_name: "Lorem::Summary"
 
    scope :ordered, -> { order('packages.buildtime DESC') }
    scope :by_name, ->(name) { where(name: name) }
    scope :src, -> { where(arch: 'src') }
    scope :built, -> { where.not(arch: 'src') }
+   scope :for_maintainer, ->(maintainer) { where(name: maintainer.gear_names) }
    scope :by_branch_slug, ->(slug) do
       if slug.blank?
          joins(:branches).where(branches: { slug: Branch.select(:slug) })
@@ -71,7 +74,8 @@ class Package < ApplicationRecord
                                                 THEN ''
                                                 ELSE packages.epoch || ':'
                                                 END || packages.version || '-' || packages.release
-                                       ) AS evrbes")
+                                       ) AS evrbes,
+                      jsonb_object_agg(DISTINCT packages.buildtime, qs_branches.slug) AS slugs")
          qs_join = Arel.sql("INNER JOIN rpms AS qs_rpms ON qs_rpms.package_id = packages.id AND qs_rpms.obsoleted_at IS NULL
                              INNER JOIN branch_paths AS qs_branch_paths ON qs_branch_paths.id = qs_rpms.branch_path_id
                              INNER JOIN branches AS qs_branches ON qs_branches.id = qs_branch_paths.branch_id
@@ -83,8 +87,33 @@ class Package < ApplicationRecord
 
          joins(:branch, "INNER JOIN (#{qs.to_sql}) AS qs ON packages.id = ANY (qs.src_ids)")
             .order("qs.rank DESC, packages.name, branches.order_id DESC")
-            .select("packages.*, branches.slug, qs.rank, qs.evrbes")
+            .select("packages.*, branches.slug, qs.rank, qs.evrbes, qs.slugs")
       end
+   end
+   scope :aggregated, -> do
+         qs_select = Arel.sql("packages.name,
+                      array_agg(DISTINCT packages.id) AS src_ids,
+                      jsonb_object_agg(DISTINCT packages.buildtime,
+                                                CASE
+                                                WHEN packages.epoch IS NULL
+                                                THEN ''
+                                                ELSE packages.epoch || ':'
+                                                END || packages.version || '-' || packages.release
+                                       ) AS evrbes,
+                      jsonb_object_agg(DISTINCT packages.buildtime, qs_branches.slug) AS slugs")
+         qs_join = Arel.sql("INNER JOIN rpms AS qs_rpms ON qs_rpms.package_id = packages.id AND qs_rpms.obsoleted_at IS NULL
+                             INNER JOIN branch_paths AS qs_branch_paths ON qs_branch_paths.id = qs_rpms.branch_path_id
+                             INNER JOIN branches AS qs_branches ON qs_branches.id = qs_branch_paths.branch_id")
+         wheres = where_clause.send(:predicates).reduce {|res, c| res.and(c) }
+         qs = Package.joins([qs_join]|joins_values)
+                     .where(wheres)
+                     .group(:name)
+                     .order(:name)
+                     .select(qs_select)
+
+         joins(:branch, "INNER JOIN (#{qs.to_sql}) AS qs ON packages.id = ANY (qs.src_ids)")
+        .order("packages.name, branches.order_id DESC")
+        .select("DISTINCT on(packages.name) packages.*, branches.slug, qs.evrbes, qs.slugs")
    end
    scope :counted_arches_for, ->(branch) do
       ases = Package.joins(:branches)
@@ -107,6 +136,9 @@ class Package < ApplicationRecord
    singleton_class.send(:alias_method, :b, :by_branch_slug)
 
    validates_presence_of :buildtime, :md5, :group, :builder, :name, :arch, :builder
+
+   accepts_nested_attributes_for :descriptions, reject_if: :all_blank, allow_destroy: true
+   accepts_nested_attributes_for :summaries, reject_if: :all_blank, allow_destroy: true
 
    def to_param
       name
@@ -135,6 +167,10 @@ class Package < ApplicationRecord
    end
 
    # props
+   def slugs
+      read_attribute(:slugs) || versions.map {|v| [ s.buildtime, s.branch.slug ] }.to_h
+   end
+
    def evrbes
       read_attribute(:evrbes) || versions.map {|v| [ s.buildtime, s.evr ] }.to_h
    end
@@ -199,6 +235,17 @@ class Package < ApplicationRecord
 
          package.rpms << Rpm.new(branch_path: branch_path,
                                  filename: rpm.filename)
+
+         # russian zone
+         rpm_ru = Rpm::Base.new(rpm.file, "ru_RU.UTF-8")
+
+         if rpm_ru.summary.present? && rpm_ru.summary != rpm.summary
+            package.summaries << Lorem::Summary.new(text: rpm_ru.summary, codepage: "ru_RU.UTF-8")
+         end
+
+         if rpm_ru.description.present? && rpm_ru.description != rpm.description
+            package.descriptions << Lorem::Description.new(text: rpm_ru.description, codepage: "ru_RU.UTF-8")
+         end
       end
 
       if !package.group

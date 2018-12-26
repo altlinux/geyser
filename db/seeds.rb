@@ -2029,3 +2029,38 @@ if  BranchPath.where.not(team_url: nil).blank?
       end
    end
 end
+
+if BranchPath.src.where("name ~ 'ports'").blank?
+   BranchPath.transaction do
+      {
+         'sisyphus' => {
+             'ports (aarch64)' => %w(src /ports/aarch64/sisyphus/files/SRPMS),
+             'ports (aarch64/aarch64)' => %w(aarch64 /ports/aarch64/sisyphus/files/aarch64/RPMS /ports/aarch64/sisyphus/files/SRPMS),
+             'ports (aarch64/noarch)' => %w(noarch /ports/aarch64/sisyphus/files/aarch64/RPMS /ports/aarch64/sisyphus/files/SRPMS),
+             'ports (armh)' => %w(src /ports/armh/sisyphus/files/SRPMS),
+             'ports (armh/armh)' => %w(armh /ports/armh/sisyphus/files/armh/RPMS /ports/armh/sisyphus/files/SRPMS),
+             'ports (armh/noarch)' => %w(noarch /ports/armh/sisyphus/files/armh/RPMS /ports/armh/sisyphus/files/SRPMS),
+             'ports (mipsel)' => %w(src /ports/mipsel/sisyphus/files/SRPMS),
+             'ports (mipsel/mipsel)' => %w(mipsel /ports/mipsel/sisyphus/files/mipsel/RPMS /ports/mipsel/sisyphus/files/SRPMS),
+             'ports (mipsel/noarch)' => %w(noarch /ports/mipsel/sisyphus/files/noarch/RPMS /ports/mipsel/sisyphus/files/SRPMS),
+             'autoimports' => %w(src /roland/autoimports/ALTLinux/autoimports/Sisyphus/files/SRPMS),
+         },
+         'p8' => {
+             'autoimports' => %w(src /roland/autoimports/ALTLinux/autoimports/p8/files/SRPMS),
+         },
+         'p7' => {
+             'autoimports' => %w(src /roland/autoimports/ALTLinux/autoimports/p7/files/SRPMS),
+         },
+      }.each do |branch_slug, source|
+         branch = Branch.find_by!(slug: branch_slug)
+
+         source.each do |name, (arch, path, src_path)|
+            bp = BranchPath.find_or_create_by!(path: path, arch: arch) do |bp|
+               bp.name = name
+               bp.branch = branch
+               bp.source_path = BranchPath.find_by!(arch: "src", path: src_path) if src_path
+            end
+         end
+      end
+   end
+end
