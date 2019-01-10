@@ -35,7 +35,7 @@ class RemoveOldSrpms < Rectify::Command
          list.each { |f| Rails.logger.info "IMPORT: removed file #{f} for #{branch_path.name}" }
 
          branch_path.update!(srpms_count: branch_path.srpm_filenames.count)
-         branch_path.branch.update!(srpms_count: branch_path.branch.srpm_filenames.count)
+         branch_path.branch.update!(srpms_count: branch_path.branch.public_srpm_filenames.count)
 
          branch_path.builders.where(id: builder_ids).find_each do |maintainer|
             maintainer.branching_maintainers.where(branch_id: branch_path.branch).each do |branching_maintainer|

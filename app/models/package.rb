@@ -359,7 +359,7 @@ class Package < ApplicationRecord
       end
 
       if source.downcase == 'src'
-         branch.update(srpms_count: branch.srpm_filenames.count)
+         branch.update(srpms_count: branch.public_srpm_filenames.count)
       end
 
       UpdateBranchGroups.new(branch_ids: affected[:branches],

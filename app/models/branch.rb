@@ -3,11 +3,12 @@
 class Branch < ApplicationRecord
   has_many :branch_paths
   has_many :rpms, through: :branch_paths
-  has_many :packages, through: :branch_paths#, counter_cache: :srpms_count
+  has_many :packages, through: :branch_paths
   has_many :spkgs, through: :rpms, class_name: 'Package::Src', source: :package
   has_many :all_rpms, -> { unscope(where: :obsoleted_at) }, through: :branch_paths, class_name: :Rpm, source: :rpms
   has_many :all_spkgs, through: :all_rpms, class_name: 'Package::Src', source: :package
   has_many :rpm_names, -> { select(:name).distinct }, through: :branch_paths, source: :rpms
+  has_many :public_srpm_filenames, -> { src.active.published.select(:filename).distinct }, through: :branch_paths, source: :rpms
   has_many :srpm_filenames, -> { src.select(:filename).distinct }, through: :branch_paths, source: :rpms
   has_many :all_packages, -> { distinct }, through: :all_rpms, class_name: :Package, source: :package
   has_many :changelogs, through: :spkgs, source: :changelog

@@ -13,6 +13,8 @@ class Rpm < ApplicationRecord
    scope :by_name, ->(name) { where(name: name) }
    scope :names, -> { select(:name).distinct }
    scope :src, -> { joins(:package).where(packages: { arch: 'src' })}
+   scope :active, -> { joins(:branch_path).merge(BranchPath.active) }
+   scope :published, -> { joins(:branch_path).merge(BranchPath.published) }
 
    delegate :evr, :arch, to: :package
 
