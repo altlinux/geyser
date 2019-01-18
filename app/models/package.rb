@@ -57,12 +57,13 @@ class Package < ApplicationRecord
          end
       end
    end
-   scope :query, ->(text) do
-      if text.blank?
+   scope :query, ->(text_in) do
+      if text_in.blank?
          all
       else
+         text = text_in.gsub(/[ _\-]+/, '[ _-]+')
          tqs_from = Arel.sql(sanitize_sql_array(["packages, plainto_tsquery(?) AS q", text]))
-         tqs_select = Arel.sql(sanitize_sql_array(["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text]))
+         tqs_select = Arel.sql(sanitize_sql_array(["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text_in]))
          tqs = Package.from(tqs_from).where("tsv @@ q").select(tqs_select)
 
          qs_select = Arel.sql("packages.name,
