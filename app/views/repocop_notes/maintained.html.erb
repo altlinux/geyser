@@ -23,7 +23,7 @@
   </tr>
 
 <% if @repocop_notes.present? %>
-  <% @repocop_notes.find_each do |repocop_note| %>
+  <% @repocop_notes.each do |repocop_note| %>
      <%- if repocop_note.spkg.present? #NOTE can be null when is=src_id of built package %>
         <tr>
            <td class="strange">
