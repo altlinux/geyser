@@ -79,6 +79,7 @@ class ImportRepos
    end
 
    def repo_attrs
+      binding.pry
       people_attrs.as_json(except: :login)
    end
 
