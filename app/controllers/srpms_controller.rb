@@ -2,17 +2,20 @@
 
 class SrpmsController < ApplicationController
    before_action :set_evrb
-   before_action :fetch_spkg, only: %i(show)
+   before_action :fetch_spkg, only: %i(show find_first)
    before_action :fetch_spkgs_by_name, only: %i(show)
    before_action :fetch_bugs, only: %i(show)
    before_action :fetch_changelogs, only: %i(show)
    before_action :fetch_branches, only: %i(maintained)
    before_action :fetch_maintainer, only: %i(maintained)
+   skip_before_action :set_default_branch, only: %i(find_first)
    #widgets
    before_action :widge_branches, only: %i(index)
    before_action :widge_maintainers, only: %i(index)
    before_action :widge_builds, only: %i(index)
    before_action :widge_srpm_counts, only: %i(index)
+
+   rescue_from 'ActiveRecord::RecordNotFound', with: :redirect_to_home
 
    def index
       @spkgs = @branch.spkgs.uniq_named.includes(:builder).ordered.page(params[:page]).per(40).decorate
@@ -48,6 +51,10 @@ class SrpmsController < ApplicationController
                             .per(100)
    end
 
+   def find_first
+      redirect_to srpm_url(reponame: @spkg, branch: @spkg.branch, locale: I18n.locale)
+   end
+
    protected
 
    #TODO makeonly created_at when migrate from time to created_at_time
@@ -58,14 +65,15 @@ class SrpmsController < ApplicationController
    end
 
    def fetch_spkg
-      includes = {
+      @includes = {
           index: %i(packages),
           rawspec: %i(group branch),
           gear: [gears: :maintainer],
       }[action_name.to_sym]
 
-      spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(@evrb).order(buildtime: :desc)
-      spkgs = spkgs.includes(*includes) if includes
+      spkgs = Package::Src.in_branch(@branch).by_name(params[:reponame]).by_evr(@evrb).order(buildtime: :desc)
+
+      spkgs = spkgs.includes(*@includes) if @includes
 
       @spkg = spkgs.first!.decorate
    end
@@ -121,5 +129,9 @@ class SrpmsController < ApplicationController
       @srpm_counts_s = ActiveModel::Serializer::CollectionSerializer.new(
          Package.counted_arches_for(@branch),
          serializer: PackageAsArchCountSerializer).as_json
+   end
+
+   def redirect_to_home
+      redirect_to home_url(branch: @branch)
    end
 end
