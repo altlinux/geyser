@@ -1352,7 +1352,7 @@ msgid "person"
 msgstr "личный"
 
 msgid "srpm"
-msgstr "сведенный"
+msgstr "импортированный"
 
 msgid "gear"
-msgstr "общий"
+msgstr "сведённый"
