@@ -416,7 +416,7 @@ msgid "Games/Strategy"
 msgstr "Игры/Стратегия"
 
 msgid "Gear"
-msgstr ""
+msgstr "При́вод"
 
 msgid "Git repo"
 msgstr ""
@@ -781,8 +781,8 @@ msgstr ""
 msgid "Repocop"
 msgstr "Репокоп"
 
-msgid "Repos"
-msgstr "Репозитории"
+msgid "Git Repos"
+msgstr "Репозитории Git"
 
 msgid "Repocop messages:"
 msgstr "Сообщения от репокопа:"

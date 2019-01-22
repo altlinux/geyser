@@ -3,6 +3,6 @@
       - next if data[:valid] && !branch.send(data[:valid])
       .tab
          - if page == current_page
-            span = _(page.to_s.capitalize)
+            span = _(data[:title])
          - else
             = link_to(data[:title], url_for(data[:args]), title: _(data[:popup]))
