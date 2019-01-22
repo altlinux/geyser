@@ -770,7 +770,7 @@ msgstr[1] "пакетa:"
 msgstr[2] "пакетов:"
 
 msgid "RSS"
-msgstr ""
+msgstr "ОСС"
 
 msgid "Radik Usupov"
 msgstr "Радик Юсупов"
@@ -1214,10 +1214,13 @@ msgid "maintainer"
 msgstr "сопроводитель"
 
 msgid "kind"
-msgstr "вид"
+msgstr "род"
 
 msgid "repos"
 msgstr "репозитории"
+
+msgid "change time"
+msgstr "время правки"
 
 msgid "repocop bugreports"
 msgstr "отчёты repocop о найденных ошибках и замечаниях"
@@ -1348,5 +1351,8 @@ msgstr "последний по времени обновления srpm или 
 msgid "person"
 msgstr "личный"
 
+msgid "srpm"
+msgstr "сведенный"
+
 msgid "gear"
-msgstr "гир"
+msgstr "общий"

@@ -12,7 +12,8 @@ class ImportRepos
    attr_reader :url, :path
 
    def do
-      Gear.import!(repo_attrs, on_duplicate_key_ignore: true).ids
+      Gear.import!(repo_attrs, on_duplicate_key_update: {
+         conflict_target: %i(url), columns: %i(changed_at)}).ids
       GearMaintainer.import!(repo_maintainer_attrs, on_duplicate_key_ignore: true)
    end
 
@@ -40,7 +41,7 @@ class ImportRepos
    def parse result
       if result !~ /\A\z/
          result.force_encoding('utf-8').split("\n").map do |line|
-            /.*?(?<kind>people)\/(?<login>[^\/]+)\/packages\/(?<reponame>[^\/]+)\.git/ =~ line
+            /.*?(?<kind>people)\/(?<login>[^\/]+)\/packages\/(?<reponame>[^\/]+)\.git (?<time>\d+)/ =~ line
 
             if kind
                {
@@ -48,7 +49,7 @@ class ImportRepos
                   reponame: reponame,
                   kind: kind.singularize,
                   login: login,
-                  changed_at: Time.at(0)
+                  changed_at: Time.at(time.to_i)
                }
             else
                Rails.logger.info("IMPORT.REPO: failed to parse line #{line}")
@@ -61,7 +62,8 @@ class ImportRepos
       @people_attrs ||= (
          fullpath = File.expand_path(path)
          depth = 2 + fullpath.count('/')
-         args = "#{fullpath} -maxdepth #{depth} 2>/dev/null |grep packages.*\.git"
+         args = "#{fullpath} -maxdepth #{depth} 2>/dev/null |grep packages.*\.git |" +
+                " while read f; do stat=$(stat -c %Z \"$f\"); echo $f $stat; done"
 
          Rails.logger.info("IMPORT.REPO: find with args #{args}")
          wrapper = Terrapin::CommandLine.new('find', args, environment: { 'LANG' => 'C', 'LC_ALL' => 'en_US.UTF-8' })
@@ -74,12 +76,13 @@ class ImportRepos
          attrs)
    rescue Terrapin::CommandNotFoundError
       Rails.logger.error('IMPORT.REPO: find command not found')
+      nil
    rescue Terrapin::ExitStatusError
       Rails.logger.error('IMPORT.REPO: find exit status non zero')
+      nil
    end
 
    def repo_attrs
-      binding.pry
       people_attrs.as_json(except: :login)
    end
 
