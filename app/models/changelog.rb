@@ -21,7 +21,7 @@ class Changelog < ApplicationRecord
       def import_from rpm, package
          attrs =
             rpm.change_log.map.with_index do |changelog, index|
-               /(?<evr>[^ )<>@]+)$/ =~ changelog[1]
+               /(?<evr>[^ )>@]*)$/ =~ changelog[1]
 
                maintainer = Maintainer.import_from_changelogname(changelog[1])
 
@@ -34,7 +34,7 @@ class Changelog < ApplicationRecord
                   end
 
                attrs = {
-                  at: Time.at(changelog[0].to_i),
+                  at: Time.at(changelog[0].to_i + 3599 - index),
                   text: text,
                   evr: evr.to_s,
                   maintainer_id: maintainer&.id,

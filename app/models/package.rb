@@ -130,8 +130,8 @@ class Package < ApplicationRecord
           .select("ases.arch, count(ases.src_id) AS count")
    end
    scope :uniq_named, -> do
-     select("DISTINCT ON(packages.buildtime,packages.name, packages.epoch, packages.version, packages.release) packages.*")
-    .order("packages.buildtime DESC, packages.name, packages.epoch, packages.version, packages.release")
+      self.select("DISTINCT ON(packages.buildtime,packages.name, packages.epoch, packages.version, packages.release) packages.*")
+          .order("packages.buildtime DESC, packages.name, packages.epoch, packages.version, packages.release")
    end
 
 
