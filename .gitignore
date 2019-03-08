@@ -34,6 +34,5 @@ config/test.sphinx.conf
 config/initializers/devise.rb
 coverage/
 .idea/
-.env
 .ruby-version
 vendor/cache
