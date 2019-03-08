@@ -10,11 +10,11 @@ class RepocopNotesController < ApplicationController
    before_action :set_branches, only: %i(maintained)
 
    def index
-      @repocop_notes = @spkg.repocop_notes.includes(:package)
+      @repocop_notes = @spkg.repocop_notes.includes(:package).order(status: :desc, kind: :asc)
    end
 
    def maintained
-      @repocop_notes = @maintainer.repocop_notes.buggy.includes(:spkg, :package)
+      @repocop_notes = @maintainer.repocop_notes.buggy.includes(:spkg, :package).order(status: :desc, kind: :asc)
    end
 
    protected

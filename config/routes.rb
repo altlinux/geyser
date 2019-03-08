@@ -161,6 +161,6 @@ Rails.application.routes.draw do
       get :download, on: :member
    end
 
-   get '/src::reponame', reponame: /[^\/]+/, to: redirect('/ru/sisyphus/srpms/%{reponame}')
-   get '/:reponame', reponame: /[^\/]+/, to: redirect('/ru/sisyphus/srpms/%{reponame}')
+   get '/:reponame', reponame: /[^:\/]+/, to: "srpms#find_first"
+   get '/src::reponame', reponame: /[^\/]+/, to: redirect('/%{reponame}')
 end

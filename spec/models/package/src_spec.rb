@@ -93,7 +93,7 @@ describe Package::Src do
          expect(srpm.vendor).to eq('ALT Linux Team')
          expect(srpm.distribution).to eq('ALT Linux')
          expect(srpm.buildtime).to eq(Time.at(1_349_449_185))
-         expect(srpm.changelogs.last.at).to eq(Time.at(1_118_145_600))
+         expect(srpm.changelogs.last.at).to eq(Time.at(1_118_149_195))
          expect(srpm.changelogs.last.maintainer.name).to eq('Igor Zubkov')
          expect(srpm.changelogs.last.text).to eq('- Initial build for Sisyphus.')
          expect(srpm.size).to eq(14_216)

@@ -40,14 +40,13 @@ describe SrpmsController do
 
       # get '/:name', to: redirect('/ru/sisyphus/srpms/:name')
       it do
-         get '/name'
-         expect(response).to redirect_to("/ru/sisyphus/srpms/name")
+         is_expected.to route(:get, '/name').to("srpms#find_first", reponame: 'name')
       end
 
       # get '/src::name', to: redirect('/ru/sisyphus/srpms/:name')
       it do
          get '/src:name'
-         expect(response).to redirect_to("/ru/sisyphus/srpms/name")
+         expect(response).to redirect_to("/name")
       end
 
       # get '/uk' => '/en'

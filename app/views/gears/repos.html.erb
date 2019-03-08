@@ -23,6 +23,7 @@
     <th><%= _('kind') %></th>
     <th><%= _('maintainer') %></th>
     <th><%= _('url') %></th>
+    <th><%= _('change time') %></th>
   </tr>
 
 <% @gears.each do |gear| %>
@@ -31,6 +32,7 @@
     <td><%= link_to _(gear.maintainers.first.name), maintainer_path(@branch, gear.maintainers.first.to_param), class: 'news', title: _('information about maintainer') %>
  </td>
     <td><%= link_to gear.url, gear.url, target: '_blank', class: 'news', rel: 'nofollow', title: _('affiliated git repo') %></td>
+    <td><%= gear.changed_at %></td>
   </tr>
 <% end %>
 

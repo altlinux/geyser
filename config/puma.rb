@@ -19,7 +19,8 @@ if Rails.env.production? || Rails.env.staging?
       shared_dir = File.expand_path("#{app_dir}/../shared")
    end
    $stdout.puts "{puma.rb}: shared_dir #{shared_dir}"
-   threads_count = Integer(ENV['MAX_THREADS'] || 5)
+   $stdout.puts "{puma.rb}: env: #{ENV.inspect}"
+   threads_count = Integer(ENV['MAX_THREADS'] || 10)
 
    workers Integer(ENV['WEB_CONCURRENCY'] || 2)
    bind "unix://#{shared_dir}/sockets/puma-prometheus2.0.sock"

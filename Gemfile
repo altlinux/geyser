@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-ruby '2.5.1'
+ruby '2.5.4'
 
 source 'https://rubygems.org'
 
@@ -63,9 +63,9 @@ gem 'git', require: false
 # caching
 gem 'dalli'
 
-group :production do
-  gem 'newrelic_rpm'
-end
+# environment
+gem 'bundler', '~> 2.0'
+gem 'dotenv'
 
 group :production, :staging do
   gem 'lograge'
@@ -107,8 +107,8 @@ group :development do
   gem 'brakeman', require: false
   # gem 'lol_dba'
   gem 'squasher', require: false
-  gem 'bundler-audit', require: false
-  gem 'bundler-stats', require: false
+  # gem 'bundler-audit', require: false
+  # gem 'bundler-stats', require: false
   gem 'license_finder', require: false
   gem 'active_record_doctor'
   gem 'http_logger'
@@ -119,8 +119,6 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'awesome_print', require: 'ap'
   gem 'faker'
-  gem 'bundler', '~> 1.2'
-  gem 'bundle-audit'
 end
 
 group :test do

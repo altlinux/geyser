@@ -29,6 +29,9 @@ class Package < ApplicationRecord
    scope :src, -> { where(arch: 'src') }
    scope :built, -> { where.not(arch: 'src') }
    scope :for_maintainer, ->(maintainer) { where(name: maintainer.gear_names) }
+   scope :in_branch, ->(branches) do
+      branches.present? && joins(:branch).where(branches: {id: branches}) || self
+   end
    scope :by_branch_slug, ->(slug) do
       if slug.blank?
          joins(:branches).where(branches: { slug: Branch.select(:slug) })
@@ -57,12 +60,13 @@ class Package < ApplicationRecord
          end
       end
    end
-   scope :query, ->(text) do
-      if text.blank?
+   scope :query, ->(text_in) do
+      if text_in.blank?
          all
       else
+         text = text_in.gsub(/[ _\-]+/, '[ _-]+')
          tqs_from = Arel.sql(sanitize_sql_array(["packages, plainto_tsquery(?) AS q", text]))
-         tqs_select = Arel.sql(sanitize_sql_array(["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text]))
+         tqs_select = Arel.sql(sanitize_sql_array(["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text_in]))
          tqs = Package.from(tqs_from).where("tsv @@ q").select(tqs_select)
 
          qs_select = Arel.sql("packages.name,
@@ -126,8 +130,8 @@ class Package < ApplicationRecord
           .select("ases.arch, count(ases.src_id) AS count")
    end
    scope :uniq_named, -> do
-     select("DISTINCT ON(packages.buildtime,packages.name, packages.epoch, packages.version, packages.release) packages.*")
-    .order("packages.buildtime DESC, packages.name, packages.epoch, packages.version, packages.release")
+      self.select("DISTINCT ON(packages.buildtime,packages.name, packages.epoch, packages.version, packages.release) packages.*")
+          .order("packages.buildtime DESC, packages.name, packages.epoch, packages.version, packages.release")
    end
 
 
@@ -359,7 +363,7 @@ class Package < ApplicationRecord
       end
 
       if source.downcase == 'src'
-         branch.update(srpms_count: branch.srpm_filenames.count)
+         branch.update(srpms_count: branch.public_srpm_filenames.count)
       end
 
       UpdateBranchGroups.new(branch_ids: affected[:branches],

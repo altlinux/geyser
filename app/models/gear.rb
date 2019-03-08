@@ -2,7 +2,7 @@
 
 class Gear < ApplicationRecord
    has_many :spkgs, primary_key: :reponame, foreign_key: :name, class_name: 'Package::Src'
-   has_many :gear_maintainers
+   has_many :gear_maintainers, -> { order(created_at: :desc) }
    has_many :maintainers, through: :gear_maintainers
    has_many :srpms, through: :spkgs, class_name: 'Rpm', source: :rpms
    has_many :branch_paths, -> { distinct }, through: :srpms, source: :branch_path

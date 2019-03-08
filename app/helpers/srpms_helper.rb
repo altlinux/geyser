@@ -82,6 +82,7 @@ module SrpmsHelper
          valid: 'perpetual?'
       },
       repos: {
+         title: _('Git Repos'),
          args: {controller: :gears, action: :repos, branch: branch.slug, reponame: srpm.name},
          popup: 'git repos associated with the package',
       }
