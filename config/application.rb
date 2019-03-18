@@ -18,8 +18,10 @@ require 'sprockets/railtie'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module Geyser20
+module Geyser0
   class Application < Rails::Application
+    Dotenv::Railtie.load
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.1
 
