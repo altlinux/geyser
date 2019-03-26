@@ -45,7 +45,7 @@ GEM
       activemodel (= 5.2.2.1)
       activesupport (= 5.2.2.1)
       arel (>= 9.0)
-    activerecord-import (0.24.0)
+    activerecord-import (1.0.1)
       activerecord (>= 3.2)
     activestorage (5.2.2.1)
       actionpack (= 5.2.2.1)
@@ -455,7 +455,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers
   active_record_doctor
-  activerecord-import
+  activerecord-import (~> 1.0)
   awesome_nested_set
   awesome_print
   bcrypt_pbkdf (>= 1.0, < 2.0)

@@ -43,7 +43,7 @@ gem 'http_accept_language'
 # gem 'molinillo', require: false
 #
 # model
-gem 'activerecord-import'
+gem 'activerecord-import', '~> 1.0'
 
 # view
 gem 'slim'
