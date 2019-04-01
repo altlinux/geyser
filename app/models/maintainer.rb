@@ -8,8 +8,13 @@ class Maintainer < ApplicationRecord
    has_many :branch_paths, -> { distinct }, through: :rpms
    has_many :branches, -> { distinct }, through: :branch_paths
    has_many :branching_maintainers, dependent: :delete_all
-   has_many :gear_maintainers
-   has_many :gears, through: :gear_maintainers
+   has_many :gears, -> { order(changed_at: :desc) }, primary_key: :login, foreign_key: :holder_slug, class_name: "Repo"
+   has_many :tags, foreign_key: :author_id
+   has_many :tagged_tags, foreign_key: :tagger_id, class_name: "Tag"
+   has_many :repo_tags, -> { distinct }, through: :tags
+   has_many :tagged_repo_tags, -> { distinct }, through: :tagged_tags, source: :tagger, class_name: "RepoTag"
+   has_many :repos, -> { distinct }, through: :repo_tags
+   has_many :tagged_repos, -> { distinct }, through: :tagged_repo_tags, source: :repo, class_name: "Repo"
    has_many :changelogs, -> { order(at: :desc) }
    has_many :issue_assignees
    has_many :ftbfs, class_name: 'Issue::Ftbfs', through: :issue_assignees, source: :issue
@@ -17,15 +22,12 @@ class Maintainer < ApplicationRecord
    has_many :built_names, -> { src.select(:name).distinct }, through: :packages, source: :rpms
    has_many :acls, primary_key: 'login', foreign_key: 'maintainer_slug'
    has_many :acl_names, -> { select(:package_name).distinct },
-                        primary_key: 'login',
-                        foreign_key: 'maintainer_slug',
-                        class_name: :Acl
-   has_many :gear_names, -> { select(:reponame).distinct },
-                        through: :gear_maintainers,
-                        source: :gear,
-                        class_name: :Gear
+      primary_key: 'login',
+      foreign_key: 'maintainer_slug',
+      class_name: :Acl
+   has_many :gear_names, -> { select(:name).distinct }, source: :gears, primary_key: :login, foreign_key: :holder_slug, class_name: :Repo
    has_many :emails, class_name: 'Recital::Email'
-   has_many :spkgs, -> { distinct }, through: :gears, class_name: 'Package', source: :spkgs
+   has_many :spkgs, -> { distinct }, through: :repos, class_name: 'Package', source: :spkgs
    has_many :repocop_notes, -> { distinct }, through: :spkgs
 
    scope :top, ->(limit) { order(srpms_count: :desc).limit(limit) }
@@ -69,7 +71,7 @@ class Maintainer < ApplicationRecord
    end
 
    class << self
-      def import_from_changelogname(changelogname)
+      def parse_changelogname changelogname
          emails = changelogname&.scan(/[^<>@( ]+(?:@| at )[^<>@) ]+(?:\.| dot )[^<>@) ]+/)
          if emails.present?
             email = FixMaintainerEmail.new(emails.last).execute
@@ -93,15 +95,28 @@ class Maintainer < ApplicationRecord
             end
          end
 
-         Recital::Email.find_or_create_by!(address: email) do |re|
-            attrs = {
-               name: name,
-               login: /@(?<team>packages\.)?altlinux\.org$/ =~ email && login || nil,
-               type: team && 'Maintainer::Team' || 'Maintainer::Person',
-               email: re
-            }
+         at_in = changelogname&.scan(/ (\d+)(?: ([+-])(\d{2})(\d{2}))?/).first
+         if at_in.present?
+            seconds = at_in[0].to_i - "#{at_in[1]}#{(at_in[2].to_i * 60 + at_in[3].to_i) * 60}".to_i
+            at = Time.at(seconds.to_i)
+         end
 
-            re.maintainer = Maintainer.new(attrs)
+         {
+            email: email,
+            name: name,
+            login: /@(?<team>packages\.)?altlinux\.org$/ =~ email && login || nil,
+            type: team && 'Maintainer::Team' || 'Maintainer::Person',
+            at: at
+         }
+      end
+
+      def import_from_changelogname changelogname
+         attrs = parse_changelogname(changelogname)
+            Recital::Email.find_or_create_by!(address: attrs[:email]) do |re|
+            re.maintainer = Maintainer.new(name: attrs[:name],
+                                           login: attrs[:login],
+                                           type: attrs[:type],
+                                           email: re)
             re.foremost = true
          end.maintainer
       end

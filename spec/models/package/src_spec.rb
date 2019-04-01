@@ -18,14 +18,14 @@ describe Package::Src do
          is_expected.to have_one(:gear)
             .order(changed_at: :desc)
             .with_primary_key('name')
-            .with_foreign_key('reponame')
+            .with_foreign_key('name')
       end
       it do
          is_expected.to have_one(:srpm_git)
             .order(changed_at: :desc)
-            .with_foreign_key('reponame')
+            .with_foreign_key('name')
             .with_primary_key(:name)
-            .class_name('Gear')
+            .class_name('Repo')
       end
 
       it { is_expected.to have_many(:packages).with_foreign_key('src_id').class_name('Package::Built').dependent(:destroy) }
@@ -34,7 +34,7 @@ describe Package::Src do
       it { is_expected.to have_many(:changelogs).with_foreign_key(:package_id).inverse_of(:package).dependent(:destroy) }
       it { is_expected.to have_many(:patches).with_foreign_key(:package_id).inverse_of(:package).dependent(:destroy) }
       it { is_expected.to have_many(:sources).with_foreign_key(:package_id).inverse_of(:package).dependent(:destroy) }
-      it { is_expected.to have_many(:gears).with_foreign_key('reponame').with_primary_key(:name).order(changed_at: :desc) }
+      it { is_expected.to have_many(:repos).with_foreign_key('name').with_primary_key(:name).order(changed_at: :desc) }
       it { is_expected.to have_many(:acls).with_foreign_key('package_name').with_primary_key(:name) }
       it { is_expected.to have_many(:contributors).through(:changelogs).source(:maintainer).class_name('Maintainer').order(:name) }
    end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_25_102825) do
+ActiveRecord::Schema.define(version: 2019_04_22_191200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -144,27 +144,6 @@ ActiveRecord::Schema.define(version: 2018_12_25_102825) do
     t.integer "epoch"
     t.index ["branch_id"], name: "index_ftbfs_on_branch_id"
     t.index ["maintainer_id"], name: "index_ftbfs_on_maintainer_id"
-  end
-
-  create_table "gear_maintainers", force: :cascade do |t|
-    t.bigint "gear_id"
-    t.bigint "maintainer_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["gear_id", "maintainer_id"], name: "index_gear_maintainers_on_gear_id_and_maintainer_id", unique: true
-    t.index ["gear_id"], name: "index_gear_maintainers_on_gear_id"
-    t.index ["maintainer_id"], name: "index_gear_maintainers_on_maintainer_id"
-  end
-
-  create_table "gears", force: :cascade do |t|
-    t.string "reponame", null: false, comment: "Имя пакета"
-    t.string "url", null: false, comment: "Внешняя ссылка к ресурсу на сервере"
-    t.string "kind", null: false, comment: "Вид ресурса gear или srpm"
-    t.datetime "changed_at", null: false, comment: "Время изменения"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["reponame"], name: "index_gears_on_reponame"
-    t.index ["url"], name: "index_gears_on_url", unique: true
   end
 
   create_table "groups", force: :cascade do |t|
@@ -368,6 +347,14 @@ ActiveRecord::Schema.define(version: 2018_12_25_102825) do
     t.index ["type"], name: "index_recitals_on_type"
   end
 
+  create_table "repo_tags", force: :cascade do |t|
+    t.bigint "repo_id", null: false, comment: "Ссылка на схов"
+    t.bigint "tag_id", null: false, comment: "Ссылка на метку"
+    t.index ["repo_id", "tag_id"], name: "index_repo_tags_on_repo_id_and_tag_id", unique: true
+    t.index ["repo_id"], name: "index_repo_tags_on_repo_id"
+    t.index ["tag_id"], name: "index_repo_tags_on_tag_id"
+  end
+
   create_table "repocop_notes", force: :cascade do |t|
     t.bigint "package_id", null: false, comment: "Ссылка на архитектурный пакет, к которому применима заметка"
     t.integer "status", null: false, comment: "Короткий статус заметки: заметка, ошибка, предупреждение или опыт"
@@ -385,6 +372,21 @@ ActiveRecord::Schema.define(version: 2018_12_25_102825) do
     t.text "text", null: false, comment: "Текст заплатки"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "repos", force: :cascade do |t|
+    t.string "name", null: false, comment: "Имя схова"
+    t.string "uri", null: false, comment: "Внешняя ссылка на схов"
+    t.string "path", null: false, comment: "Внутренний путь к схову"
+    t.string "kind", default: "origin", null: false, comment: "Вид ресурса gear, srpm или origin"
+    t.string "holder_slug", comment: "Владелец схова, если определён"
+    t.datetime "changed_at", default: "1970-01-01 00:00:00", null: false, comment: "Время последнего обновления схова"
+    t.index ["changed_at"], name: "index_repos_on_changed_at"
+    t.index ["holder_slug"], name: "index_repos_on_holder_slug"
+    t.index ["kind"], name: "index_repos_on_kind"
+    t.index ["name"], name: "index_repos_on_name"
+    t.index ["path"], name: "index_repos_on_path"
+    t.index ["uri"], name: "index_repos_on_uri", unique: true
   end
 
   create_table "requires", id: :serial, force: :cascade do |t|
@@ -434,6 +436,26 @@ ActiveRecord::Schema.define(version: 2018_12_25_102825) do
     t.tsvector "tsv"
     t.index ["package_id"], name: "index_specfiles_on_package_id"
     t.index ["tsv"], name: "index_specfiles_on_tsv", using: :gin
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "sha", null: false, comment: "Хеш метки"
+    t.string "name", comment: "Имя метки"
+    t.boolean "alt", comment: "Метка альтовая"
+    t.boolean "signed", comment: "Метка подписана"
+    t.datetime "authored_at", null: false, comment: "Воплетено в..."
+    t.datetime "tagged_at", comment: "Помечено в..."
+    t.bigint "author_id", null: false, comment: "Воплетчик"
+    t.bigint "tagger_id", comment: "Опометчик"
+    t.text "message", comment: "Текст воплета метки"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_tags_on_author_id"
+    t.index ["authored_at"], name: "index_tags_on_authored_at"
+    t.index ["name"], name: "index_tags_on_name"
+    t.index ["sha"], name: "index_tags_on_sha", unique: true
+    t.index ["tagged_at"], name: "index_tags_on_tagged_at"
+    t.index ["tagger_id"], name: "index_tags_on_tagger_id"
   end
 
   create_table "team_people", id: :serial, force: :cascade do |t|
@@ -490,8 +512,6 @@ ActiveRecord::Schema.define(version: 2018_12_25_102825) do
   add_foreign_key "changelogs", "packages", column: "spkg_id"
   add_foreign_key "changelogs", "packages", on_delete: :restrict
   add_foreign_key "ftbfs", "branches", on_delete: :cascade
-  add_foreign_key "gear_maintainers", "gears", on_delete: :cascade
-  add_foreign_key "gear_maintainers", "maintainers", on_delete: :cascade
   add_foreign_key "issue_assignees", "issues", on_delete: :cascade
   add_foreign_key "issue_assignees", "maintainers", on_delete: :restrict
   add_foreign_key "issues", "branch_paths", on_delete: :cascade
@@ -501,12 +521,16 @@ ActiveRecord::Schema.define(version: 2018_12_25_102825) do
   add_foreign_key "packages", "maintainers", column: "builder_id", on_delete: :restrict
   add_foreign_key "patches", "packages", on_delete: :restrict
   add_foreign_key "recitals", "maintainers", on_delete: :cascade
+  add_foreign_key "repo_tags", "repos", on_delete: :cascade
+  add_foreign_key "repo_tags", "tags", on_delete: :cascade
   add_foreign_key "repocop_notes", "packages", on_delete: :cascade
   add_foreign_key "repocop_patches", "packages", on_delete: :cascade
   add_foreign_key "rpms", "branch_paths", on_delete: :cascade
   add_foreign_key "rpms", "packages", on_delete: :cascade
   add_foreign_key "sources", "packages", on_delete: :restrict
   add_foreign_key "specfiles", "packages", on_delete: :restrict
+  add_foreign_key "tags", "maintainers", column: "author_id", on_delete: :restrict
+  add_foreign_key "tags", "maintainers", column: "tagger_id", on_delete: :restrict
   add_foreign_key "team_people", "branch_paths", on_delete: :cascade
   add_foreign_key "teams", "branches", on_delete: :cascade
 end

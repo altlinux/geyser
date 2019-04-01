@@ -5,12 +5,13 @@ class Package::Src < Package
    has_one :changelog, foreign_key: :spkg_id, inverse_of: :spkg, dependent: :destroy
    has_one :repocop_patch, foreign_key: :package_id
    has_one :gear, -> { where(kind: 'gear').order(changed_at: :DESC) },
-                        primary_key: :name,
-                        foreign_key: :reponame
+                  primary_key: :name,
+                  foreign_key: :name,
+                  class_name: :Repo
    has_one :srpm_git, -> { where(kind: 'srpm').order(changed_at: :DESC) },
-                        primary_key: :name,
-                        foreign_key: :reponame,
-                        class_name: :Gear
+                      primary_key: :name,
+                      foreign_key: :name,
+                      class_name: :Repo
 
    has_many :packages, foreign_key: :src_id, class_name: 'Package::Built', dependent: :destroy
    has_many :all_packages, -> { order(Arel.sql("(CASE packages.arch WHEN 'src' THEN 0 ELSE 1 END)")) },
@@ -20,7 +21,8 @@ class Package::Src < Package
    has_many :changelogs, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
    has_many :patches, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
    has_many :sources, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
-   has_many :gears, -> { order(changed_at: :desc) }, primary_key: :name, foreign_key: :reponame
+   has_many :repos, -> { order(changed_at: :desc).distinct }, primary_key: :name, foreign_key: :name
+
    has_many :versions, -> do
       src.joins(:branches)
          .order("epoch DESC, version DESC, release DESC, buildtime ASC")

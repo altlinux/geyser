@@ -2064,3 +2064,8 @@ if BranchPath.src.where("name ~ 'ports'").blank?
       end
    end
 end
+
+if Branch.where(slug: 'icarus').blank?
+   branch = Branch.create!(slug: 'icarus', name: 'Icarus', vendor: 'ALT Linux')
+   branch.branch_paths.create(arch: 'src', path: '/ALT/Sisyphus', active: false, name: 'Icarus [src]', primary: true)
+end

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
    authenticate :user, ->(user) { user.admin? } do
@@ -163,4 +164,6 @@ Rails.application.routes.draw do
 
    get '/:reponame', reponame: /[^:\/]+/, to: "srpms#find_first"
    get '/src::reponame', reponame: /[^\/]+/, to: redirect('/%{reponame}')
+
+   resources :tags
 end

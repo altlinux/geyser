@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/majioa/ruby-git.git
+  revision: 64558205829e205da1d72aff644e17922e3db506
+  specs:
+    git (1.5.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -168,7 +174,6 @@ GEM
       text (>= 1.3.0)
     gettext_i18n_rails (1.8.0)
       fast_gettext (>= 0.9.0)
-    git (1.5.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     has_scope (0.7.2)
@@ -487,7 +492,7 @@ DEPENDENCIES
   fast_gettext
   gettext
   gettext_i18n_rails
-  git
+  git!
   has_scope
   http_accept_language
   http_logger

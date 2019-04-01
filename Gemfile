@@ -58,7 +58,7 @@ gem 'factory_bot_rails'
 gem 'active_model_serializers'
 
 # git
-gem 'git', require: false
+gem 'git', require: false, git: "https://github.com/majioa/ruby-git.git"
 
 # caching
 gem 'dalli'

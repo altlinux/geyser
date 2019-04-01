@@ -10,11 +10,11 @@ class GearsController < ApplicationController
    before_action :fetch_bugs, only: %i(repos)
 
    def index
-      @gears = Gear.pure.joins(:gear_maintainers).for_maintainer(@maintainer).order(changed_at: :desc)
+      @repos = @maintainer.gears
    end
 
    def repos
-      @gears = Gear.joins(:gear_maintainers).for_spkg(@spkg).order(changed_at: :desc)
+      @repos = @spkg.repos.includes(:holder)
    end
 
    protected

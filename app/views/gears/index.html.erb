@@ -11,18 +11,18 @@
 <%= render partial: "shared/maintainer_menu", locals: { current_page: :gear, branch: @branch, maintainer: @maintainer, opened_bugs: @opened_bugs, all_bugs: @all_bugs } %>
 <p class="break" />
 
-<% if @gears.count != 0 %>
-<table id="bugs" cellspacing="0" cellpadding="3" class="gear">
+<% if @repos.count != 0 %>
+<table id="bugs" cellspacing="0" cellpadding="3" class="repo">
   <tr>
     <th><%= _('Git repo') %></th>
     <th><%= _('Time') %></th>
   </tr>
-  <% @gears.each do |gear| %>
+  <% @repos.each do |repo| %>
     <tr>
       <td style="text-align: left">
-        <%= link_to gear.reponame, gear.url, class: 'news' %>
+        <%= link_to repo.reponame, repo.uri, class: 'news' %>
       </td>
-      <td><%= gear.changed_at %></td>
+      <td><%= repo.changed_at %></td>
     </tr>
   <% end %>
 </table>

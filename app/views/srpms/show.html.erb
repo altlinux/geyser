@@ -57,7 +57,7 @@
 <br><br>
 
 <% if @spkg.newer_gear %>
-<b><%= _('Gear:') %></b> &nbsp; <%= link_to @spkg.newer_gear.url, @spkg.newer_gear.url, target: '_blank', class: 'news', rel: 'nofollow', title: _('lately updated gear or srpm git repo') %><br><br>
+<b><%= _('Gear:') %></b> &nbsp; <%= link_to @spkg.newer_gear.uri, @spkg.newer_gear.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('lately updated gear or srpm git repo') %><br><br>
 <% end %>
 
 <% if @spkg.url %>

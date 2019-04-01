@@ -12,8 +12,13 @@ describe Maintainer do
       it { is_expected.to have_many(:branch_paths).through(:rpms) }
       it { is_expected.to have_many(:branches).through(:branch_paths) }
       it { is_expected.to have_many(:branching_maintainers).dependent(:delete_all) }
-      it { is_expected.to have_many(:gear_maintainers) }
-      it { is_expected.to have_many(:gears).through(:gear_maintainers) }
+      it { is_expected.to have_many(:tags).with_foreign_key('author_id') }
+      it { is_expected.to have_many(:tagged_tags).with_foreign_key('tagger_id').class_name(:Tag) }
+      it { is_expected.to have_many(:repo_tags).through(:tags) }
+      it { is_expected.to have_many(:tagged_repo_tags).through(:tagged_tags).source(:tagger).class_name(:RepoTag) }
+      it { is_expected.to have_many(:repos).through(:repo_tags) }
+      it { is_expected.to have_many(:tagged_repos).through(:tagged_repo_tags).source(:repo).class_name(:Repo) }
+      it { is_expected.to have_many(:gears).with_primary_key('login').with_foreign_key('holder_slug').class_name(:Repo) }
       it { is_expected.to have_many(:changelogs) }
       it { is_expected.to have_many(:issue_assignees) }
       it { is_expected.to have_many(:ftbfs).class_name('Issue::Ftbfs').through(:issue_assignees).source(:issue) }
@@ -21,7 +26,7 @@ describe Maintainer do
       it { is_expected.to have_many(:built_names).through(:packages).source(:rpms) }
       it { is_expected.to have_many(:acls).with_primary_key('login').with_foreign_key('maintainer_slug') }
       it { is_expected.to have_many(:acl_names).with_primary_key('login').with_foreign_key('maintainer_slug').class_name(:Acl) }
-      it { is_expected.to have_many(:gear_names).through(:gear_maintainers).source(:gear).class_name(:Gear) }
+      it { is_expected.to have_many(:gear_names).with_primary_key('login').with_foreign_key('holder_slug').class_name(:Repo) }
       it { is_expected.to have_many(:emails).class_name('Recital::Email') }
    end
 
