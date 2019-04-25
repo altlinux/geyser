@@ -6,9 +6,11 @@ namespace :task do
       ImportTasks.new(sources: [{
                             path: '/tasks',
                             depth: 2,
+                            file: "files1.list",
                          }, {
                             path: '/tasks/archive/done',
                             depth: 3,
+                            file: "files2.list",
                          }]).do
    end
 end
