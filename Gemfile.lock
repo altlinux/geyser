@@ -482,7 +482,6 @@ DEPENDENCIES
   dalli
   database_rewinder
   devise
-  dotenv
   dotenv-rails
   draper
   ed25519 (>= 1.2, < 2.0)

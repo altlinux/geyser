@@ -17,7 +17,6 @@ gem 'rails-i18n'
 gem 'kaminari'
 gem 'kaminari-i18n'
 gem 'rack-mini-profiler', require: false
-gem 'dotenv-rails'
 gem 'pghero'
 gem 'pg_query'
 # gem 'maily'
@@ -65,7 +64,7 @@ gem 'dalli'
 
 # environment
 gem 'bundler', '~> 2.0'
-gem 'dotenv'
+gem 'dotenv-rails'
 
 group :production, :staging do
   gem 'lograge'
