@@ -29,6 +29,7 @@ class Maintainer < ApplicationRecord
    has_many :emails, class_name: 'Recital::Email'
    has_many :spkgs, -> { distinct }, through: :repos, class_name: 'Package', source: :spkgs
    has_many :repocop_notes, -> { distinct }, through: :spkgs
+   has_many :tasks, -> { order(changed_at: :desc).distinct }, primary_key: :login, foreign_key: :owner_slug
 
    scope :top, ->(limit) { order(srpms_count: :desc).limit(limit) }
    scope :person, -> { where("maintainers.login ~ '^[^@].*'", ) }

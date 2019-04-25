@@ -21,7 +21,9 @@ class Package::Src < Package
    has_many :changelogs, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
    has_many :patches, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
    has_many :sources, foreign_key: :package_id, inverse_of: :package, dependent: :destroy
-   has_many :repos, -> { order(changed_at: :desc).distinct }, primary_key: :name, foreign_key: :name
+   has_many :exercises, -> { repo }, primary_key: :name, foreign_key: :pkgname
+   has_many :repos, -> { left_outer_joins(:exercises).order(changed_at: :desc).distinct }, primary_key: :name, foreign_key: :name
+   has_many :tasks, -> { order(changed_at: :desc).distinct }, through: :exercises
 
    has_many :versions, -> do
       src.joins(:branches)

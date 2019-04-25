@@ -85,6 +85,11 @@ module SrpmsHelper
          title: _('Git Repos'),
          args: {controller: :gears, action: :repos, branch: branch.slug, reponame: srpm.name},
          popup: 'git repos associated with the package',
+      },
+      tasks: {
+         title: _('Tasks'),
+         args: {controller: :tasks, action: :pkg_index, branch: branch.slug, reponame: srpm.name},
+         popup: 'build tasks associated with the package',
       }
     }
 

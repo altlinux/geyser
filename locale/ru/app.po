@@ -689,25 +689,28 @@ msgid "Geyser - Maintainer &laquo;%s&raquo;"
 msgstr "Geyser - Майнтейнер &laquo;%s&raquo;"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - ACL"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - ACL"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Права"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Bugs"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Ошибки"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs (All)"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Bugs (All)"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Все ошибки"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - FTBFS"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - FTBFS"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Непересборка"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Gear"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Gear"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Жир"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Packages"
 msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Пакеты"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Repocop"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Repocop"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Репокоп"
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Tasks"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Задачи"
 
 msgid "Geyser - Maintainers &amp; Teams"
 msgstr "Geyser - Майнтейнеры и команды разработчиков"
@@ -728,19 +731,22 @@ msgid "Geyser - Package &laquo;%s&raquo; - Download"
 msgstr "Geyser - Пакет &laquo;%s&raquo; - Загрузить"
 
 msgid "Geyser - Package &laquo;%s&raquo; - Gear"
-msgstr "Geyser - Пакет &laquo;%s&raquo; - Gear"
+msgstr "Geyser - Пакет &laquo;%s&raquo; - Жир"
 
 msgid "Geyser - Package &laquo;%s&raquo; - Patches"
-msgstr "Geyser - Пакет &laquo;%s&raquo; - Патчи"
+msgstr "Geyser - Пакет &laquo;%s&raquo; - Заплаты"
 
 msgid "Geyser - Package &laquo;%s&raquo; - Repocop"
-msgstr "Geyser - Пакет &laquo;%s&raquo; - Repocop"
+msgstr "Geyser - Пакет &laquo;%s&raquo; - Репокоп"
 
 msgid "Geyser - Package &laquo;%s&raquo; - Sources"
 msgstr "Geyser - Пакет &laquo;%s&raquo; - Исходники"
 
 msgid "Geyser - Package &laquo;%s&raquo; - Spec"
 msgstr "Geyser - Пакет &laquo;%s&raquo; - Спек"
+
+msgid "Geyser - Package &laquo;%s&raquo; - Tasks"
+msgstr "Geyser - Пакет &laquo;%s&raquo; - Задачи"
 
 msgid "Geyser - Rsync Exclude"
 msgstr "Geyser - Исключения Rsync"
@@ -783,6 +789,9 @@ msgstr "Репокоп"
 
 msgid "Git Repos"
 msgstr "Репозитории Git"
+
+msgid "Tasks"
+msgstr "Задачи"
 
 msgid "Repocop messages:"
 msgstr "Сообщения от репокопа:"
@@ -1356,3 +1365,51 @@ msgstr "импортированный"
 
 msgid "gear"
 msgstr "сведённый"
+
+msgid "git repos associated with the package"
+msgstr "git-репозитории ассоциированные с пакетом"
+
+msgid "build tasks associated with the package"
+msgstr "сборочные задачи ассоциированные с пакетом"
+
+msgid "build tasks which maintainer have originated"
+msgstr "сборочные задачи, созданные сопроводителем"
+
+msgid "task no"
+msgstr "номер задания"
+
+msgid "state"
+msgstr "состояние"
+
+msgid "shared"
+msgstr "разделяемое"
+
+msgid "try"
+msgstr "попытка"
+
+msgid "changed at"
+msgstr "изменено в"
+
+msgid "owner"
+msgstr "владелец"
+
+msgid "DONE"
+msgstr "ЕСТЬ"
+
+msgid "FAILED"
+msgstr "ЗАВАЛИЛОСЬ"
+
+msgid "FAILING"
+msgstr "В ЗАВАЛИВАНИИ"
+
+msgid "PENDING"
+msgstr "В ОЧЕРЕДИ"
+
+msgid "AWAITING"
+msgstr "В ОЖИДАНИИ"
+
+msgid "private"
+msgstr "личное"
+
+msgid "prod"
+msgstr "бой"

@@ -1,0 +1,45 @@
+<% title _('Geyser - Maintainer &laquo;%s&raquo; - Tasks') % _(@maintainer.name) %>
+
+<div id='main-content'>
+
+<div id="rightbar">
+  <%= render partial: "shared/tables/pure_branches", locals: { branches: @branches_s.as_json } %>
+</div>
+
+<div class="header"><%= _('Maintainer:') %> <%= _(@maintainer.name) %></div>
+<p class="break" />
+<%= render partial: "shared/maintainer_menu", locals: { current_page: :tasks, branch: @branch, maintainer: @maintainer, opened_bugs: @opened_bugs, all_bugs: @all_bugs } %>
+<p class="break" />
+
+<% if @tasks.count != 0 %>
+<table id="bugs" cellspacing="0" cellpadding="3" class="task">
+  <tr>
+    <th><%= _('task no') %></th>
+    <th><%= _('state') %></th>
+    <th><%= _('shared') %></th>
+    <th><%= _('kind') %></th>
+    <th><%= _('try') %></th>
+    <th><%= _('changed at') %></th>
+    <th><%= _('branch') %></th>
+  </tr>
+  <% @tasks.each do |task| %>
+    <tr>
+    <td><%= link_to task.no, task.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('task number and uri') %></td>
+    <td><%= _(task.state) %></td>
+    <td><%= task.shared && _('shared') || _('private') %></td>
+    <td><%= task.test && _('test') || _('prod') %></td>
+    <td><%= [ task.try, task.iteration != 1 && task.iteration || nil ].compact.join(".") %></td>
+    <td><%= time_ago_in_words(task.changed_at) %></td>
+    <td><%= link_to _(task.branch.name), home_path(task.branch) %></td>
+    </tr>
+  <% end %>
+</table>
+<% end %>
+
+</div>
+
+<div id="bottom-offset-l">
+  <div id="bottom-offset-r">
+    &nbsp;
+  </div>
+</div>

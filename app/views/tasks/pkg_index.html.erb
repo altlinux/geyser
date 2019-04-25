@@ -1,0 +1,48 @@
+<% title _('Geyser - Package &laquo;%s&raquo; - Tasks') % @spkg.name %>
+<% description "#{ @spkg.name } - #{ @spkg.summary }" %>
+<% keywords @spkg.summary %>
+
+<div id='main-content'>
+   <div class="rightbar">
+      <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
+   </div>
+
+<div style="height:3em;">
+  <div id="rpmtop">
+    <b style="font-size:9pt;"><%= _('Group') %> :: <%= _(@spkg.groupname) %></b><br>
+    <div class="header" style="letter-spacing:1px;"><%= _('Source RPM:') %> <%= @spkg.name %></div>
+  </div>
+</div>
+
+<div>
+<%= render partial: "shared/srpms_menu", locals: { current_page: :tasks, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
+
+</div>
+<table class="list" cellspacing="0" cellpadding="3">
+  <tr>
+    <th><%= _('task no') %></th>
+    <th><%= _('state') %></th>
+    <th><%= _('shared') %></th>
+    <th><%= _('kind') %></th>
+    <th><%= _('try') %></th>
+    <th><%= _('changed at') %></th>
+    <th><%= _('owner') %></th>
+    <th><%= _('branch') %></th>
+  </tr>
+
+<% @tasks.each do |task| %>
+  <tr>
+    <td><%= link_to task.no, task.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('task number and uri') %></td>
+    <td><%= _(task.state) %></td>
+    <td><%= task.shared && _('shared') || _('private') %></td>
+    <td><%= task.test && _('test') || _('prod') %></td>
+    <td><%= [ task.try, task.iteration != 1 && task.iteration || nil ].compact.join(".") %></td>
+    <td><%= time_ago_in_words(task.changed_at) %></td>
+    <td><%= task.owner && link_to(_(task.owner.name), maintainer_path(@branch, task.owner.to_param), class: 'news', title: _('information about maintainer')) %></td>
+    <td><%= link_to _(task.branch.name), home_path(task.branch) %></td>
+  </tr>
+<% end %>
+
+</table>
+
+</div><div id="bottom-offset-l"><div id="bottom-offset-r">&nbsp;</div></div>

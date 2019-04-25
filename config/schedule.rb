@@ -11,6 +11,10 @@ every 1.hour do
    rake 'update:branches update:lost[true]'
 end
 
+every 1.hour do
+   rake 'task:update'
+end
+
 every 3.hours, at: '0:35' do
    rake 'repo:gears repo:srpms repo:people'
 end

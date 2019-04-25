@@ -23,6 +23,8 @@ class Package < ApplicationRecord
    has_many :repocop_notes
    has_many :descriptions, class_name: "Lorem::Description"
    has_many :summaries, class_name: "Lorem::Summary"
+   has_many :exercises, primary_key: :name, foreign_key: :pkgname
+   has_many :repos, through: :exercises
 
    scope :ordered, -> { order('packages.buildtime DESC') }
    scope :by_name, ->(name) { where(name: name) }

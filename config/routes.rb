@@ -88,6 +88,9 @@ Rails.application.routes.draw do
                resources :gears, only: [] do
                   get :repos, on: :collection
                end
+               resources :tasks, only: [] do
+                  get :pkg_index, on: :collection
+               end
             end
          end
 
@@ -114,8 +117,11 @@ Rails.application.routes.draw do
                   resources :rpms, param: :rpm_name, rpm_name: /[^\/]+/, only: :index, as: :evrb_rpms
                   resources :issues, param: :no, only: :index, as: :evrb_issues
                   resources :repocop_notes, param: :no, only: :index, as: :evrb_repocop_notes
-                  resources :gears, as: :evrb_repocop_notes do
+                  resources :gears, as: :evrb_gears do
                      get :repos, on: :collection
+                  end
+                  resources :tasks, as: :evrb_tasks do
+                     get :pkg_index, on: :collection
                   end
                end
             end
@@ -136,6 +142,7 @@ Rails.application.routes.draw do
                resources :repocop_notes, param: :no, only: [], as: :maintainer_repocop_notes do
                   get '/' => 'repocop_notes#maintained', on: :collection
                end
+               resources :tasks, param: :reponame, reponame: /[^\/]+/, only: :index
             end
          end
 

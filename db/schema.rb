@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_22_191200) do
+ActiveRecord::Schema.define(version: 2019_04_22_191402) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -122,6 +122,31 @@ ActiveRecord::Schema.define(version: 2019_04_22_191200) do
     t.integer "flags"
     t.integer "epoch"
     t.index ["package_id"], name: "index_conflicts_on_package_id"
+  end
+
+  create_table "exercise_approvers", force: :cascade do |t|
+    t.bigint "exercise_id", null: false, comment: "Ссылка на задание"
+    t.string "approver_slug", null: false, comment: "Ссылка на заверщика задания"
+    t.index ["approver_slug"], name: "index_exercise_approvers_on_approver_slug"
+    t.index ["exercise_id", "approver_slug"], name: "index_exercise_approvers_on_exercise_id_and_approver_slug", unique: true
+    t.index ["exercise_id"], name: "index_exercise_approvers_on_exercise_id"
+  end
+
+  create_table "exercises", force: :cascade do |t|
+    t.integer "no", null: false, comment: "Число задачи в задании"
+    t.string "kind", null: false, comment: "Вид задания"
+    t.string "pkgname", null: false, comment: "Имя пакета для задания"
+    t.string "resource", comment: "Имя исходного сбора или ресурс исходников для задания"
+    t.string "sha", comment: "Хеш соборочный для задания"
+    t.string "committer_slug", null: false, comment: "Автор воплета задания"
+    t.bigint "task_id", null: false, comment: "Ссылка на задачу"
+    t.index ["committer_slug"], name: "index_exercises_on_committer_slug"
+    t.index ["no"], name: "index_exercises_on_no"
+    t.index ["pkgname"], name: "index_exercises_on_pkgname"
+    t.index ["resource"], name: "index_exercises_on_resource"
+    t.index ["sha"], name: "index_exercises_on_sha"
+    t.index ["task_id", "no"], name: "index_exercises_on_task_id_and_no", unique: true
+    t.index ["task_id"], name: "index_exercises_on_task_id"
   end
 
   create_table "freshmeats", id: :serial, force: :cascade do |t|
@@ -458,6 +483,25 @@ ActiveRecord::Schema.define(version: 2019_04_22_191200) do
     t.index ["tagger_id"], name: "index_tags_on_tagger_id"
   end
 
+  create_table "tasks", force: :cascade do |t|
+    t.integer "no", null: false, comment: "Число задания сборочницы"
+    t.string "uri", comment: "Ссылка на задание"
+    t.string "state", comment: "Статус задания"
+    t.boolean "shared", comment: "Разделяемое задание"
+    t.boolean "test", comment: "Тестовое задание"
+    t.integer "try", comment: "Попытка"
+    t.integer "iteration", comment: "Шаг"
+    t.string "owner_slug", null: false, comment: "Учётка владельца"
+    t.bigint "branch_path_id", null: false, comment: "Ссылка на сборочный путь ветви"
+    t.datetime "changed_at", null: false, comment: "Задание изменено в"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["branch_path_id"], name: "index_tasks_on_branch_path_id"
+    t.index ["no"], name: "index_tasks_on_no", unique: true
+    t.index ["owner_slug"], name: "index_tasks_on_owner_slug"
+    t.index ["state"], name: "index_tasks_on_state"
+  end
+
   create_table "team_people", id: :serial, force: :cascade do |t|
     t.string "person_slug", null: false, comment: "Ссылка на сопровождающего в команде"
     t.string "team_slug", null: false, comment: "Ссылка на сопровождающую команду"
@@ -511,6 +555,8 @@ ActiveRecord::Schema.define(version: 2019_04_22_191200) do
   add_foreign_key "changelogs", "maintainers", on_delete: :nullify
   add_foreign_key "changelogs", "packages", column: "spkg_id"
   add_foreign_key "changelogs", "packages", on_delete: :restrict
+  add_foreign_key "exercise_approvers", "exercises", on_delete: :restrict
+  add_foreign_key "exercises", "tasks", on_delete: :restrict
   add_foreign_key "ftbfs", "branches", on_delete: :cascade
   add_foreign_key "issue_assignees", "issues", on_delete: :cascade
   add_foreign_key "issue_assignees", "maintainers", on_delete: :restrict
@@ -531,6 +577,7 @@ ActiveRecord::Schema.define(version: 2019_04_22_191200) do
   add_foreign_key "specfiles", "packages", on_delete: :restrict
   add_foreign_key "tags", "maintainers", column: "author_id", on_delete: :restrict
   add_foreign_key "tags", "maintainers", column: "tagger_id", on_delete: :restrict
+  add_foreign_key "tasks", "branch_paths", on_delete: :restrict
   add_foreign_key "team_people", "branch_paths", on_delete: :cascade
   add_foreign_key "teams", "branches", on_delete: :cascade
 end

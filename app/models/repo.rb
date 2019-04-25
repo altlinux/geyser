@@ -7,6 +7,9 @@ class Repo < ApplicationRecord
    has_many :tags, -> { order(authored_at: :desc) }, through: :repo_tags
    has_many :authors, -> { select("DISTINCT ON(maintainers.id) maintainers.*, tags.authored_at").order(:id) }, through: :tags, class_name: 'Maintainer'
    has_many :taggers, -> { select("DISTINCT ON(maintainers.id) maintainers.*, tags.authored_at").order(:id) }, through: :tags, class_name: 'Maintainer'
+   has_many :exercises, -> { repo }, primary_key: :uri, foreign_key: :resource
+   has_many :tasks, through: :exercises
+   has_many :packages, through: :exercises, class_name: "Package::Src"
 
    scope :alt, -> { where(kind: %w(srpm gear)) }
    scope :person, -> { where(kind: 'person') }
@@ -28,7 +31,7 @@ class Repo < ApplicationRecord
    end
 
    class << self
-      def changed_at scope
+      def changed_at scope = :all
          self.send(scope).select("max(#{table_name}.changed_at) as changed_at")[0].read_attribute(:changed_at)
       end
    end

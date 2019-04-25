@@ -34,7 +34,11 @@ module MaintainersHelper
          args: {controller: :repocop_notes, action: :maintained, branch: branch.slug, login: maintainer.login},
          popup: 'repocop bugreports',
          valid: 'perpetual?'
-      }
+      },
+      tasks: {
+         args: {controller: :tasks, action: :index, branch: branch.slug, login: maintainer.login},
+         popup: 'build tasks which maintainer have originated',
+      },
     }
 
     map.map do |(title, data)|
