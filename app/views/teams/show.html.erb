@@ -35,14 +35,14 @@
   <p class="break"></p>
   <% if @leader %>
     <b><%= _('Team leader:') %></b>
-    <%= link_to @leader.name, maintainer_path(login: @leader.login, branch: @branch.slug), class: 'news', title: _('information about maintainer') %>
+    <%= link_to _(@leader.name), maintainer_path(login: @leader.login, branch: @branch.slug), class: 'news', title: _('information about maintainer') %>
     <p class="break"></p>
   <% end %>
 
   <b><%= _('Team members:') %></b>
   <ul>
     <% @members.each do |member| %>
-      <li><%= link_to member.name, maintainer_path(login: member.login), class: 'news', title: _('information about maintainer') %></li>
+      <li><%= link_to _(member.name), maintainer_path(login: member.login), class: 'news', title: _('information about maintainer') %></li>
     <% end %>
   </ul>
 

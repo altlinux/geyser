@@ -75,7 +75,7 @@
 
 <% if @leader %>
 <div class="maintainer"><b><%= _('Current maintainer:') %></b>
-<%= link_to _(@leader.name), maintainer_path(@branch, @leader.to_param), class: 'news', title: _('information about maintainer') %>
+<%= link_to _(@leader.name), @leader.is_a?(Maintainer::Team) && team_path(@branch, @leader.to_param) || maintainer_path(@branch, @leader.to_param), class: 'news', title: _('information about maintainer') %>
 </div><br>
 <% end %>
 
@@ -85,7 +85,7 @@
   <ul>
     <% @spkg.contributors.each do |contributor| %>
       <li>
-        <%- if contributor.has_login? %>
+         <%- if contributor.has_login? %>
           <%= link_to _(contributor.shown_name), maintainer_path(@branch, contributor), class: 'news',
               title: _('information about maintainer') %>
         <%- else %>
