@@ -1,6 +1,6 @@
 class BranchPath < ApplicationRecord
-  ARCHES = %w(i586 x86_64 aarch64 mipsel armh riscv64 ppc64le e2kv3 e2kv4 src noarch)
-  PHYS_ARCHES = %w(i586 x86_64 aarch64 mipsel armh riscv64 ppc64le e2kv3 e2kv4)
+  ARCHES = %w(i586 x86_64 aarch64 mipsel armh riscv64 ppc64le e2k e2kv4 src noarch)
+  PHYS_ARCHES = %w(i586 x86_64 aarch64 mipsel armh riscv64 ppc64le e2k e2kv4)
 
   belongs_to :branch
   belongs_to :source_path, foreign_key: :source_path_id, class_name: :BranchPath, optional: true
