@@ -69,10 +69,10 @@ msgstr ""
 "пользователей репозиториев Alt.<br><br>\n"
 "\n"
 "Для разработчиков он будет интересен тем, что позволит более тесно взамодействовать с другими\n"
-"разработчиками и пользователями его пакетов. Майнтейнеры смогут обмениваться информационными\n"
+"разработчиками и пользователями его пакетов. Сопроводители смогут обмениваться информационными\n"
 "сообщениями с командой, извещая о тех или иных изменениях в поддержке своих пакетов, смогут\n"
 "объединяться в команды по \"интересам\" - что может улучшить качество создаваемых пакетов, благодаря\n"
-"коллективным усилиям над улучшениями и исправлению багов. Чтобы каждый майнтейнер знал, кто может\n"
+"коллективным усилиям над улучшениями и исправлению багов. Чтобы каждый сопроводитель знал, кто может\n"
 "временно его подменить по поддержке пакета, если он будет отсутствовать и т.д.<br><br>\n"
 "\n"
 "Особо ценным ресурс может оказаться для новобранцев ALT Linux Team. Это исключит много однообразных\n"
@@ -84,7 +84,7 @@ msgstr ""
 "по пакету (ссылки на сайты с полезной документацией, специфичная для ALT информация о пакете,\n"
 "особенности сборки и т.д.). Это в будущем может избавить от лишних вопросов в рассылках и\n"
 "упорядочит весь имеющийся архив документации по ALT. В обсуждениях (форумах) будет\n"
-"возможность общения с майнтенерами, что опять же может дать ответ на большинство вопросов новичков.<br><br>\n"
+"возможность общения с сопроводителями, что опять же может дать ответ на большинство вопросов новичков.<br><br>\n"
 "\n"
 "Для опытных пользователей будет удобная возможность отслеживания состояния интересующих их пакетов. Они\n"
 "смогут вносить свои предложения по развитию.<br><br>\n"
@@ -332,7 +332,7 @@ msgid "Confirm new password"
 msgstr ""
 
 msgid "Current maintainer:"
-msgstr "Текущий майнтейнер:"
+msgstr "Текущий сопроводитель:"
 
 msgid "Current version:"
 msgstr "Текущая версия:"
@@ -440,7 +440,7 @@ msgid "Download"
 msgstr "Загрузить"
 
 msgid "Edit my maintainer profile"
-msgstr "Редактировать мой профиль майнтейнера"
+msgstr "Редактировать мою учётку сопроводителя"
 
 msgid "Editors"
 msgstr "Редакторы"
@@ -599,13 +599,13 @@ msgid "License:"
 msgstr "Лицензия:"
 
 msgid "List of contributors:"
-msgstr "Список всех майнтейнеров, принимавших участие<br>в данной и/или предыдущих сборках пакета:"
+msgstr "Список всех сопроводителей, принимавших участие<br>в данной и/или предыдущих сборках пакета:"
 
 msgid "List of packages needing rebuild without \"%undefine _configure_target\" hack:"
 msgstr "Список пакетов, которые необходимо пересобрать без хака \"%undefine _configure_target\":"
 
 msgid "List of packages which was built by this maintainer:"
-msgstr "Список пакетов, собранных майнтейнером:"
+msgstr "Список пакетов, собранных сопроводителем:"
 
 msgid "List of packages:"
 msgstr "Список пакетов, собранных командой:"
@@ -623,10 +623,10 @@ msgid "Main"
 msgstr "Главная"
 
 msgid "Maintainer:"
-msgstr "Майнтейнер:"
+msgstr "Сопроводитель:"
 
 msgid "Maintainers"
-msgstr "Майнтейнеры"
+msgstr "Сопроводители"
 
 msgid "Michael Shigorin"
 msgstr "Михаил Шигорин"
@@ -725,10 +725,10 @@ msgid "Time Zone:"
 msgstr "Временной пояс:"
 
 msgid "packages built by this maintainer to the branch"
-msgstr "пакетов, собранных майнтейнером во ветвь"
+msgstr "пакетов, собранных сопроводителем в эту ветвь"
 
 msgid "packages built by this maintainer at all"
-msgstr "пакетов, собранных майнтейнером всего"
+msgstr "пакетов, собранных сопроводителем всего"
 
 msgid "Packages to rebuild:"
 msgstr "Список пакетов на пересборку:"
@@ -770,34 +770,34 @@ msgid "Geyser - Intro"
 msgstr "Geyser - Intro"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo;"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo;"
+msgstr "Geyser - Сопроводитель &laquo;%s&raquo;"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - ACL"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Права"
+msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Права"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Ошибки"
+msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Ошибки"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs (All)"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Все ошибки"
+msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Все ошибки"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - FTBFS"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Непересборка"
+msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Непересборка"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Gear"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Жир"
+msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Жир"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Packages"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Пакеты"
+msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Пакеты"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Repocop"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Репокоп"
+msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Репокоп"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Tasks"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - Задачи"
+msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Задачи"
 
 msgid "Geyser - Maintainers &amp; Teams"
-msgstr "Geyser - Майнтейнеры и команды разработчиков"
+msgstr "Geyser - Сопроводители и команды разработчиков"
 
 msgid "Geyser - Package &laquo;%s&raquo;"
 msgstr "Geyser - Пакет &laquo;%s&raquo;"
@@ -1079,7 +1079,7 @@ msgid "TOP RPMs"
 msgstr "TOP пакеты"
 
 msgid "TOP maintainers"
-msgstr "TOP майнтейнеры"
+msgstr "Вершина сопроводителей"
 
 msgid "Team leader:"
 msgstr "Лидер команды:"
@@ -1127,7 +1127,7 @@ msgid "Update"
 msgstr "Обновить"
 
 msgid "Update personal maintainer info"
-msgstr "Обновить персональную информацию майнтейнера"
+msgstr "Обновить личные сведения о сопроводителе"
 
 msgid "Url"
 msgstr ""
@@ -1247,7 +1247,7 @@ msgid "information about SRPM"
 msgstr "просмотреть информацию о пакете"
 
 msgid "information about maintainer"
-msgstr "просмотреть информацию о майнтейнере"
+msgstr "просмотреть сведения о сопроподителе"
 
 msgid "leader"
 msgstr "ведущий"
@@ -1259,7 +1259,7 @@ msgid "list of bugs and feature requests"
 msgstr "список багов и предложений по улучшению"
 
 msgid "maintainers information"
-msgstr "информация о майнтейнерах"
+msgstr "сведения о сопроводителях"
 
 msgid "message"
 msgstr "сообщение"
@@ -1280,7 +1280,7 @@ msgid "packages information"
 msgstr "информация о пакетах"
 
 msgid "packages which was built by this maintainer"
-msgstr "просмотреть пакеты, собранные майнтейнером"
+msgstr "просмотреть пакеты, собранные сопроводителем"
 
 msgid "log url"
 msgstr "url лога"
