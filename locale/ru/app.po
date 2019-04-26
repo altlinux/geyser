@@ -143,7 +143,7 @@ msgid "Accessibility"
 msgstr "Доступность"
 
 msgid "Alexey Shabalin"
-msgstr "Алексей Шабалин"
+msgstr "Алексей Шабали́н"
 
 msgid "Andrey Cherepanov"
 msgstr "Андрей Черепанов"
@@ -153,6 +153,90 @@ msgstr "Андрей Степанов"
 
 msgid "Anton Farygin"
 msgstr "Антон Фарыгин"
+
+msgid "Ivan Zakharyaschev"
+msgstr "Иван Захарящев"
+
+msgid "Gleb Fotengauer-Malinovskiy"
+msgstr "Глеб Фотенгауэр-Малиновский"
+
+msgid "Vladimir D. Seleznev"
+msgstr "Владимир Селезнёв"
+
+msgid "Mikhail Efremov"
+msgstr "Михаил Ефремов"
+
+msgid "Anton V. Boyarshinov"
+msgstr "Антон Бояршинов"
+
+msgid "Ivan A. Melnikov"
+msgstr "Иван Мельников"
+
+msgid "Grigory Ustinov"
+msgstr "Григорий Устинов"
+
+msgid "Anton Midyukov"
+msgstr "Антон Мидюков"
+
+msgid "Stanislav Levin"
+msgstr "Станислав Левин"
+
+msgid "Yuri N. Sedunov"
+msgstr "Юрий Седунов"
+
+msgid "Sergey V Turchin"
+msgstr "Сергей Турчин"
+
+msgid "George V. Kouryachy"
+msgstr "Георгий Курячий"
+
+msgid "Aleksei Nikiforov"
+msgstr "Алексей Никифоров"
+
+msgid "Dmitry V. Levin"
+msgstr "Дмитрий Левин"
+
+msgid "Nikolay A. Fetisov"
+msgstr "Николай Фетисов"
+
+msgid "Valery Inozemtsev"
+msgstr "Валерий Иноземцев"
+
+msgid "Vladimir Lettiev"
+msgstr "Владимир Леттиев"
+
+msgid "Alexey Gladkov"
+msgstr "Алексей Гладков"
+
+msgid "Evgenii Terechkov"
+msgstr "Евгений Терешков"
+
+msgid "Paul Wolneykien"
+msgstr "Павел Волнейкин"
+
+msgid "Pavel Skrylev"
+msgstr "Малъ Скрылёвъ"
+
+msgid "Sergey Bolshakov"
+msgstr "Сергей Большаков"
+
+msgid "Sergey V Turchin"
+msgstr "Сергей Турчин"
+
+msgid "Andrew Savchenko"
+msgstr "Андрей Савченко"
+
+msgid "Andrey Bychkov"
+msgstr "Андрей Бычков"
+
+msgid "AEN"
+msgstr "Алексей Новодворский"
+
+msgid "Denis Medvedev"
+msgstr "Денис Медведев"
+
+msgid "Ruby Team"
+msgstr "Рубишная ватага"
 
 msgid "Archiving/Backup"
 msgstr "Архивирование/Резервное копирование"
@@ -485,7 +569,7 @@ msgid "If you didn't request this, please ignore this email."
 msgstr "Если вы не запрашивали это действие, просто игнорируйте письмо."
 
 msgid "Igor Vlasenko"
-msgstr "Игорь Власенко"
+msgstr "Игорь Власе́нко"
 
 msgid "Igor Zubkov"
 msgstr "Игорь Зубков"
@@ -551,7 +635,7 @@ msgid "Monitoring"
 msgstr "Мониторинг"
 
 msgid "Motsyo Gennadi"
-msgstr "Моцьо Геннадий"
+msgstr "Геннадий Моцё"
 
 msgid "Mykola Grechukh"
 msgstr "Николай Гречух"
@@ -1223,7 +1307,7 @@ msgid "maintainer"
 msgstr "сопроводитель"
 
 msgid "kind"
-msgstr "род"
+msgstr "вид"
 
 msgid "repos"
 msgstr "репозитории"
@@ -1394,7 +1478,7 @@ msgid "owner"
 msgstr "владелец"
 
 msgid "DONE"
-msgstr "ЕСТЬ"
+msgstr "СДЕЛАНО"
 
 msgid "FAILED"
 msgstr "ЗАВАЛИЛОСЬ"
