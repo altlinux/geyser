@@ -2,7 +2,7 @@ dist: xenial
 language: ruby
 postgresql: 9.5
 rvm:
-  - 2.5.1
+  - 2.5.5
 env:
   global:
     - DB=postgresql
@@ -22,6 +22,7 @@ before_install:
   - $($INIT)
   - rpm --version
   - env
+  - gem install bundler:2.0.1
   - bundle install
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
