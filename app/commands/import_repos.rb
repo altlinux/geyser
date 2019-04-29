@@ -140,7 +140,7 @@ class ImportRepos
          fullpath = File.expand_path(path)
 
          mins = (Time.zone.now - Repo.changed_at(scope).to_i + 59).to_i / 60
-         args = "#{fullpath} -maxdepth #{depth} -mmin -#{mins} -name *.git -type d -exec stat -c '%N %Y' {} \\;"
+         args = "#{fullpath}/ -maxdepth #{depth} -mmin -#{mins} -name *.git -type d -exec stat -c '%N %Y' {} \\;"
 
          Rails.logger.info("Import.Repo: find with args #{args}")
          wrapper = Terrapin::CommandLine.new('find', args, environment: { 'LANG' => 'C', 'LC_ALL' => 'en_US.UTF-8' }, expected_outcodes: [ 0, 1 ])
