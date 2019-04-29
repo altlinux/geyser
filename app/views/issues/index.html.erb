@@ -57,7 +57,13 @@
       <%- if params[:q] == 'all' %>
         <td><%= bug.resolution %></td>
       <%- end %>
-      <td><%= bug.reporter.gsub('@', ' at ') %></td>
+      <td>
+         <%- if (maintainer = Recital::Email.find_by(address: bug.reporter)&.maintainer) && maintainer.login %>
+           <%= link_to _(maintainer.shown_name), maintainer_path(@branch, maintainer), class: 'news', title: _('information about maintainer') %>
+         <%- else %>
+           <%= bug.reporter.gsub('@', ' at ') %>
+         <%- end %>
+      </td>
       <td style="text-align: left">
         <%= bug.description %>
       </td>
