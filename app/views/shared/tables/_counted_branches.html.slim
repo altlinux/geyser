@@ -9,5 +9,5 @@
                ul
                   li
                      .line
-                        .left.float = link_to "#{ branch[:name] }:", security_path(branch: branch['slug']), class: 'b'
+                        .left.float = link_to "#{ branch[:name] }:", url_for(branch: branch['slug']), class: 'b'
                         .right.float = branch[:srpms_count]
