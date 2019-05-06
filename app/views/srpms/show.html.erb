@@ -44,7 +44,7 @@
   <b><%= _('<abbr title="Fails To Build From Source">FTBFS:</abbr>').html_safe %></b>
   <%- ftbfs_show = @ftbfs.group_by {|f| time_ago_in_words(f.reported_at) }.map do |time, ftbfses| %>
      <%- about_ftbfs = ftbfses.map { |ftbfs| ftbfs.arch }.join(", ") %>
-     <%- "#{about_ftbfs} #{_('reported at')} #{time}" %>
+     <%- "#{about_ftbfs} #{_('reported')} #{time}" %>
   <%- end %>
   <%= _('about') %> <%= ftbfs_show.join(", ") %> <%= _('ago') %><br />
 <%- end %>

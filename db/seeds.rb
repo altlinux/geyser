@@ -2069,3 +2069,42 @@ if Branch.where(slug: 'icarus').blank?
    branch = Branch.create!(slug: 'icarus', name: 'Icarus', vendor: 'ALT Linux')
    branch.branch_paths.create(arch: 'src', path: '/ALT/Sisyphus', active: false, name: 'Icarus [src]', primary: true)
 end
+
+if BranchPath.where.not(ftbfs_stat_since_uri: nil).blank?
+   BranchPath.transaction do
+      uris = {
+         'Sisyphus' => [
+            %w(http://git.altlinux.org/beehive/stats/Sisyphus-i586/ftbfs-since i586),
+            %w(http://git.altlinux.org/beehive/stats/Sisyphus-x86_64/ftbfs-since x86_64),
+         ],
+         'p8' => [
+            %w(http://git.altlinux.org/beehive/stats/p8-i586/ftbfs-since i586),
+            %w(http://git.altlinux.org/beehive/stats/p8-x86_64/ftbfs-since x86_64),
+         ],
+         'c7' => [
+            %w(http://git.altlinux.org/beehive/stats/c7-i586/ftbfs-since i586),
+            %w(http://git.altlinux.org/beehive/stats/c7-x86_64/ftbfs-since x86_64),
+         ],
+         'p7' => [
+            %w(http://git.altlinux.org/beehive/stats/p7-i586/ftbfs-since i586),
+            %w(http://git.altlinux.org/beehive/stats/p7-x86_64/ftbfs-since x86_64),
+         ],
+         'p6' => [
+            %w(http://git.altlinux.org/beehive/stats/p6-i586/ftbfs-since i586),
+            %w(http://git.altlinux.org/beehive/stats/p6-x86_64/ftbfs-since x86_64),
+         ],
+         't6' => [
+            %w(http://git.altlinux.org/beehive/stats/t6-i586/ftbfs-since i586),
+            %w(http://git.altlinux.org/beehive/stats/t6-x86_64/ftbfs-since x86_64),
+         ]
+      }
+
+      uris.each do |branch_name, arches|
+         arches.each do |(uri, arch)|
+            branch_paths = BranchPath.joins(:branch).where(arch: arch, branches: { name: branch_name })
+            branch_path = branch_paths.find {|bp| bp.source_path.primary }
+            branch_path.update_attribute(:ftbfs_stat_since_uri, uri)
+         end
+      end
+   end
+end

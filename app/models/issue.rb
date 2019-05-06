@@ -18,4 +18,12 @@ class Issue < ApplicationRecord
    delegate :arch, to: :branch_path
 
    validates_presence_of :no, :reporter, :status, :severity, :branch_path
+
+   before_save :fillin_touched_at, on: :create
+
+   protected
+
+   def fillin_touched_at
+      self.touched_at ||= self.reported_at
+   end
 end

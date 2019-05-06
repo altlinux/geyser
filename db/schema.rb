@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_22_191402) do
+ActiveRecord::Schema.define(version: 2019_05_06_113400) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(version: 2019_04_22_191402) do
     t.boolean "primary", default: false, null: false, comment: "Первичный источник пакетов для ветви"
     t.string "ftbfs_uri", comment: "Внешная изворная ссылка на ftbfs для источника ветви"
     t.string "ftp_url"
+    t.string "ftbfs_stat_since_uri", comment: "Внешняя изворовая ссылка на ресурс с датами первой поломки"
     t.index ["arch", "branch_id", "source_path_id"], name: "index_branch_paths_on_arch_and_branch_id_and_source_path_id", unique: true
     t.index ["arch", "path"], name: "index_branch_paths_on_arch_and_path", unique: true
     t.index ["arch"], name: "index_branch_paths_on_arch", using: :gin
@@ -205,6 +206,7 @@ ActiveRecord::Schema.define(version: 2019_04_22_191402) do
     t.string "log_url", comment: "Пучинная ссылка на лог сборки пакета или иной лог"
     t.datetime "updated_at", comment: "Время последней пересборки пакета"
     t.string "source_url", comment: "Внешеняя ссылка на пакет-источник вопроса"
+    t.datetime "touched_at", comment: "Время, когда был обновлён статус отчета об ошибке"
     t.index ["branch_path_id"], name: "index_issues_on_branch_path_id"
     t.index ["no"], name: "index_issues_on_no"
     t.index ["repo_name"], name: "index_issues_on_repo_name"

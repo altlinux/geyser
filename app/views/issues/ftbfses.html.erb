@@ -17,7 +17,8 @@
     <th><%= _('package') %></th>
     <th><%= raw _('current<br>version') %></th>
     <th><%= _('arch') %></th>
-    <th><%= _('reported at') %></th>
+    <th><%= _('reported') %></th>
+    <th><%= _('touched') %></th>
     <th><%= _('log url') %></th>
   </tr>
 
@@ -27,7 +28,8 @@
       <td><%= link_to f.repo_name, srpm_path(f.branch, f.repo_name), class: 'news' %></td>
       <td><%= "#{ f.evr }" %></td>
       <td><%= f.arch %></td>
-      <td><%= time_ago_in_words(f.reported_at) %> <%= _('back') %></td>
+      <td><%= time_ago_in_words(f.reported_at) %> <%= _('ago') %></td>
+      <td><%= time_ago_in_words(f.touched_at) %> <%= _('ago') %></td>
       <td><%= f.log_url && link_to(f.repo_name, f.log_url, class: "news") %></td>
     </tr>
   <% end %>
