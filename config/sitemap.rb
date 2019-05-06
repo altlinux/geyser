@@ -30,10 +30,8 @@ SitemapGenerator::Sitemap.create do
   add '/', changefreq: 'hourly'
   add '/en', changefreq: 'hourly'
   add '/ru', changefreq: 'hourly'
-  add '/uk', changefreq: 'hourly'
-  add '/br', changefreq: 'hourly'
 
-  ['en', 'ru', 'uk', 'br'].each do |locale|
+  ['en', 'ru'].each do |locale|
     Branch.find_each do |branch|
       add home_path(locale, branch)
       add packages_path(locale, branch)
@@ -42,20 +40,16 @@ SitemapGenerator::Sitemap.create do
       add project_path(locale)
       add rss_path(locale, branch)
 
-      branch.srpms.find_each do |srpm|
+      branch.spkgs.find_each do |srpm|
         add srpm_path(locale, branch, srpm)
-        add changelog_srpm_path(locale, branch, srpm)
-        add spec_srpm_path(locale, branch, srpm)
-        add srpm_patches_path(locale, branch, srpm)
-        add srpm_sources_path(locale, branch, srpm)
-        add get_srpm_path(locale, branch, srpm)
-        add gear_srpm_path(locale, branch, srpm)
-
-        if branch.perpetual?
-          add bugs_srpm_path(locale, branch, srpm)
-          add allbugs_srpm_path(locale, branch, srpm)
-          add repocop_srpm_path(locale, branch, srpm)
-        end
+        add changelogs_path(locale, branch, srpm)
+        add specfile_path(locale, branch, srpm)
+        add patches_path(locale, branch, srpm)
+        add sources_path(locale, branch, srpm)
+        add issues_path(locale, branch, srpm)
+        add repocop_notes_path(locale, branch, srpm)
+        add repos_gears_path(locale, branch, srpm)
+        add pkg_index_tasks_path(locale, branch, srpm)
       end
     end
   end

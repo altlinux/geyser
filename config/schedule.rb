@@ -40,7 +40,7 @@ every 1.day, at: '3:45' do # takes about 5 min
 end
 
 every :sunday, at: '03:30' do
-#  rake 'sitemap:clean sitemap:refresh'
+  rake 'sitemap:clean sitemap:refresh'
 end
 
 every :sunday, at: '06:30' do
