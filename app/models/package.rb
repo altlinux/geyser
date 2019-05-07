@@ -136,7 +136,6 @@ class Package < ApplicationRecord
           .order("packages.buildtime DESC, packages.name, packages.epoch, packages.version, packages.release")
    end
 
-
    singleton_class.send(:alias_method, :q, :query)
    singleton_class.send(:alias_method, :a, :by_arch)
    singleton_class.send(:alias_method, :b, :by_branch_slug)
@@ -173,6 +172,12 @@ class Package < ApplicationRecord
    end
 
    # props
+   def archive_uri
+      if branch.archive_uri 
+         File.join(branch.archive_uri, name[0], name)
+      end
+   end
+
    def slugs
       read_attribute(:slugs) || versions.map {|v| [ s.buildtime, s.branch.slug ] }.to_h
    end

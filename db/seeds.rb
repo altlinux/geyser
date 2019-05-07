@@ -2108,3 +2108,29 @@ if BranchPath.where.not(ftbfs_stat_since_uri: nil).blank?
       end
    end
 end
+
+if Branch.where.not(archive_uri: nil).blank?
+   Branch.transaction do
+      uris = {
+         'Sisyphus' => [
+            %w(http://ftp.altlinux.org/pub/distributions/archive/sisyphus/index/src/ src),
+         ],
+         'p8' => [
+            %w(http://ftp.altlinux.org/pub/distributions/archive/p8/index/src/ src),
+         ],
+         'p7' => [
+            %w(http://ftp.altlinux.org/pub/distributions/archive/p7/index/src/ src),
+         ],
+         't7' => [
+            %w(http://ftp.altlinux.org/pub/distributions/archive/t7/index/src/ src),
+         ]
+      }
+
+      uris.each do |branch_name, arches|
+         arches.each do |(uri, arch)|
+            branch_path = BranchPath.joins(:branch).where(arch: arch, branches: { name: branch_name }).primary.first
+            branch_path.branch.update_attribute(:archive_uri, uri)
+         end
+      end
+   end
+end

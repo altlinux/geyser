@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_06_113400) do
+ActiveRecord::Schema.define(version: 2019_05_06_163200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -84,6 +84,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_113400) do
     t.string "path", limit: 255
     t.integer "srpms_count", default: 0, comment: "Счётчик уникальных исходных пакетов для ветви"
     t.string "slug", null: false, comment: "Плашка для обращения к ветви в строке пути браузера"
+    t.string "archive_uri", comment: "Внешняя ссылка на ссылку списка архивов заданий для ветви"
     t.index ["name"], name: "index_branches_on_name"
     t.index ["slug"], name: "index_branches_on_slug", unique: true
   end

@@ -54,10 +54,14 @@
 <% if @spkg.repocop_patch %>
   <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(@spkg.repocop_patch), class: 'repocoplink', title: _('repocop patchset for the package') %>
 <% end %>
-<br><br>
+<br>
 
 <% if @spkg.newer_gear %>
-<b><%= _('Gear:') %></b> &nbsp; <%= link_to @spkg.newer_gear.uri, @spkg.newer_gear.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('lately updated gear or srpm git repo') %><br><br>
+<b><%= _('Gear:') %></b> &nbsp; <%= link_to @spkg.newer_gear.uri, @spkg.newer_gear.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('lately updated gear or srpm git repo') %><br>
+<% end %>
+
+<% if @spkg.archive_uri %>
+<b><%= _('Archive:') %></b> &nbsp; <%= link_to @spkg.archive_uri, @spkg.archive_uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('link to archive task list for the source RPM') %><br>
 <% end %>
 
 <% if @spkg.url %>

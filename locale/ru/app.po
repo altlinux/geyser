@@ -298,8 +298,17 @@ msgstr "Время сборки:"
 msgid "Built:"
 msgstr "Собрано:"
 
+msgid "Gear:"
+msgstr "При́вод:"
+
+msgid "Archive:"
+msgstr "Архив:"
+
+msgid "Repocop status:"
+msgstr "Отчёт репокопа:"
+
 msgid "CPAN:"
-msgstr ""
+msgstr "ЦПАН"
 
 msgid "Cancel my account"
 msgstr ""
@@ -785,7 +794,7 @@ msgid "Geyser - Maintainer &laquo;%s&raquo; - FTBFS"
 msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Непересборка"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Gear"
-msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Жир"
+msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Привод"
 
 msgid "Geyser - Maintainer &laquo;%s&raquo; - Packages"
 msgstr "Geyser - Сопроводитель &laquo;%s&raquo; - Пакеты"
@@ -815,7 +824,7 @@ msgid "Geyser - Package &laquo;%s&raquo; - Download"
 msgstr "Geyser - Пакет &laquo;%s&raquo; - Загрузить"
 
 msgid "Geyser - Package &laquo;%s&raquo; - Gear"
-msgstr "Geyser - Пакет &laquo;%s&raquo; - Жир"
+msgstr "Geyser - Пакет &laquo;%s&raquo; - Привод"
 
 msgid "Geyser - Package &laquo;%s&raquo; - Patches"
 msgstr "Geyser - Пакет &laquo;%s&raquo; - Заплаты"
