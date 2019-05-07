@@ -28,6 +28,7 @@ class Package < ApplicationRecord
 
    scope :ordered, -> { order('packages.buildtime DESC') }
    scope :by_name, ->(name) { where(name: name) }
+   scope :published, -> { joins(:branch_paths).merge(BranchPath.published) }
    scope :src, -> { where(arch: 'src') }
    scope :built, -> { where.not(arch: 'src') }
    scope :for_maintainer, ->(maintainer) { where(name: maintainer.gear_names) }

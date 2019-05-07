@@ -18,7 +18,7 @@ class SrpmsController < ApplicationController
    rescue_from 'ActiveRecord::RecordNotFound', with: :redirect_to_home
 
    def index
-      @spkgs = @branch.spkgs.uniq_named.includes(:builder).ordered.page(params[:page]).per(40).decorate
+      @spkgs = @branch.spkgs.published.uniq_named.includes(:builder, :changelog).ordered.page(params[:page]).per(40).decorate
    end
 
    def show
