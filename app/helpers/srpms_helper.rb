@@ -4,12 +4,12 @@ module SrpmsHelper
   def colorize_specfile(text)
     text.force_encoding('UTF-8')
     text = text.gsub('@altlinux', ' at altlinux')
+    text = text.gsub(/#/,"\uFEFF")
 
     # ${$text}=~ s/&/&amp;/g;
     # ${$text}=~ s/>/&gt;/g;
     # ${$text}=~ s/</&lt;/g;
     # ${$text}=~ s/\"/&quot;/g;
-    text = ERB::Util.h(text)
 
     # ${$text}=~ s/\@/ at /g;
 
@@ -17,10 +17,9 @@ module SrpmsHelper
     # TODO: add link to Url:
 
     # ${$text}=~ s/^(\w+\:)/<b>$1<\/b>/g;
-    text = text.gsub(/^(\w+\:)/) { |s| s = "<b>#{ s }</b>" }
 
-    text = text.gsub(/\t/, '&nbsp;' * 8)
-    text = text.gsub(' ', '&nbsp;')
+    text = h(text.gsub(/\t/, ' ' * 8))
+    text = text.gsub(/^(\w+\:)/) { |s| s = "<b>#{ s }</b>" }
 
     # ${$text}=~ s/^(\s*\#.*)/<b class='comment'>$1<\/b>/g;
     # text = text.gsub(/^(\s*\#.*)/) { |s| s = "<b class='comment'>#{s}</b>" }
@@ -30,7 +29,8 @@ module SrpmsHelper
 
     # ${$text}=~ s/\n(\s*\#.*)/\n<b class='comment'>$1<\/b>/g;
 
-    text = text.gsub(/(\s*\#.*)/) { |s| s = "<b class='comment'>#{ s }</b>" }
+    text = text.gsub(/(\s*\uFEFF.*)/) { |s| s = "<b class='comment'>#{ s }</b>" }
+    text = text.gsub(/\uFEFF/, '#')
 
     # ${$text}=~ s/\n\%(description|prep|build|install|preun|pre|postun|post|triggerpostun|trigger|files|changelog|package)([\n|\s])/\n<b class='reserved'>\%$1<\/b>$2/g;
     text = text.gsub(/^%(description|prep|build|check|install|preun|pre|postun|post|triggerpostun|trigger|files|changelog|package)/) { |s| s = "<b class='reserved'>#{ s }</b>" }
@@ -42,7 +42,6 @@ module SrpmsHelper
     text = text.gsub(/\r/, '')
 
     text.html_safe
-    text
   end
 
   def menu_data branch, srpm, opened_bugs, all_bugs, evrb
