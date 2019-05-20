@@ -646,6 +646,24 @@ msgstr "Мониторинг"
 msgid "Motsyo Gennadi"
 msgstr "Геннадий Моцьо"
 
+msgid "Pavel Moseev (Mars)"
+msgstr "Павел Моисеев"
+
+msgid "Konstantin A. Lepikhov"
+msgstr "Константин Лепихов"
+
+msgid "Oleg Solovyov"
+msgstr "Олег Соловьёв"
+
+msgid "Alexei Takaseev"
+msgstr "Алексей Такасеев"
+
+msgid "Cronbuild Service"
+msgstr "Служба самосборки"
+
+msgid "Vitaly Chikunov"
+msgstr "Виталий Чикунов"
+
 msgid "Mykola Grechukh"
 msgstr "Николай Гречух"
 
