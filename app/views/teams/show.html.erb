@@ -75,7 +75,7 @@
             <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(reponame: spkg.name, branch: @branch), class: 'repocoplink', title: _('repocop') %>
             <% if spkg.repocop_patch %>
               <br>
-              <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(spkg.repocop_patch), class: 'repocoplink', title: _('repocop patchset for the package') %>
+              <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(spkg.repocop_patch), class: 'repocoplink', title: _('repocop brought patchset for the package') %>
             <% end %>
           </td>
         <% end %>

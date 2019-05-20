@@ -1333,7 +1333,7 @@ msgstr "отчёты repocop о найденных ошибках и замеч�
 msgid "repocop patch"
 msgstr "репокопова заплатка"
 
-msgid "repocop patchset for the package"
+msgid "repocop brought patchset for the package"
 msgstr "сведённый набор репокоповых заплаток для пакета"
 
 msgid "reporter"
