@@ -635,7 +635,7 @@ msgid "Monitoring"
 msgstr "Мониторинг"
 
 msgid "Motsyo Gennadi"
-msgstr "Геннадий Моцё"
+msgstr "Геннадий Моцьо"
 
 msgid "Mykola Grechukh"
 msgstr "Николай Гречух"
