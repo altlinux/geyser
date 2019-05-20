@@ -757,6 +757,15 @@ msgstr "Вики"
 msgid "Altlinux public wiki"
 msgstr "Публичный вики Altlinux"
 
+msgid "Bugzilla - create a new issue"
+msgstr "Bugzilla - сообщите о вопросе"
+
+msgid "VKontakte ALTLinux page"
+msgstr "Страница ALTLinux во ВКонтакте "
+
+msgid "Facebook ALTLinux Facebook"
+msgstr "Страница ALTLinux на Facebook"
+
 msgid "Project Geyser"
 msgstr "Проект Geyser"
 
