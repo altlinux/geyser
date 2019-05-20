@@ -2139,24 +2139,26 @@ if BranchPath.where(name: 'p9').blank?
    Branch.transaction do
       {
          'p9' => {
-            'src' => %w(/ALT/p9/files/SRPMS),
-            'i586' => %w(/ALT/p9/files/i586/RPMS),
-            'x86_64' => %w(/ALT/p9/files/x86_64/RPMS),
-            'aarch64' => %w(/ALT/p9/files/aarch64/RPMS),
-            'armh' => %w(/mnt/p9/armh),
-            'noarch' => %w(/ALT/p9/files/noarch/RPMS),
+            'p9-src' => %w(src /ALT/p9/files/SRPMS http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/branch/files/SRPMS/),
+            'p9 i586' => %w(i586 /ALT/p9/files/i586/RPMS http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/branch/files/i586/RPMS/ p9-src),
+            'p9 x86_64' => %w(x86_64 /ALT/p9/files/x86_64/RPMS http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/branch/files/x86_64/RPMS/ p9-src),
+            'p9 aarch64' => %w(aarch64 /ALT/p9/files/aarch64/RPMS http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/branch/files/aarch64/RPMS/ p9-src),
+            'p9 noarch' => %w(noarch /ALT/p9/files/noarch/RPMS http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/branch/files/noarch/RPMS/ p9-src),
+            'p9-armh' => %w(src /mnt/p9/armh http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/armh/files/SRPMS/),
+            'p9 arch-armh' => %w(armh /mnt/p9/armh/arch http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/armh/files/armh/RPMS/ p9-armh),
+            'p9 noarch-armh' => %w(noarch /mnt/p9/armh/noarch http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/armh/files/noarch/RPMS/ p9-armh),
+            'p9-mipsel' => %w(src /mnt/p9/mipsel http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/mipsel/files/SRPMS/),
+            'p9 arch-mipsel' => %w(mipsel /mnt/p9/mipsel/arch http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/mipsel/files/mipsel/RPMS/ p9-mipsel),
+            'p9 noarch-mipsel' => %w(noarch /mnt/p9/mipsel/noarch http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/mipsel/files/noarch/RPMS/ p9-mipsel),
          },
       }.each do |name, arches|
          branch = Branch.find_or_create_by!(name: name, vendor: "ALT", slug: name)
 
-         arches.each do |arch, paths|
-            pname = arch == "src" && name || "#{name} (#{arch})"
-            [ paths ].flatten.each do |path|
-               attrs = { name: pname, arch: arch, path: path, branch_id: branch.id }
-               attrs[:source_path_id] = BranchPath.where(path: arches['src'].first).first.id if arch != "src"
+         arches.each.with_index do |(pname, (arch, path, ftp, src_name)), index|
+            attrs = { name: pname, arch: arch, path: path, branch_id: branch.id, ftp_url: ftp, primary: index == 0 }
+            attrs[:source_path_id] = BranchPath.where(name: src_name).first.id if src_name
 
-               BranchPath.create!(attrs)
-            end
+            BranchPath.create!(attrs)
          end
       end
    end
