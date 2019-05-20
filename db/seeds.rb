@@ -2134,3 +2134,30 @@ if Branch.where.not(archive_uri: nil).blank?
       end
    end
 end
+
+if BranchPath.where(name: 'p9').blank?
+   Branch.transaction do
+      {
+         'p9' => {
+            'src' => %w(/ALT/p9/files/SRPMS),
+            'i586' => %w(/ALT/p9/files/i586/RPMS),
+            'x86_64' => %w(/ALT/p9/files/x86_64/RPMS),
+            'aarch64' => %w(/ALT/p9/files/aarch64/RPMS),
+            'armh' => %w(/mnt/p9/armh),
+            'noarch' => %w(/ALT/p9/files/noarch/RPMS),
+         },
+      }.each do |name, arches|
+         branch = Branch.find_or_create_by!(name: name, vendor: "ALT", slug: name)
+
+         arches.each do |arch, paths|
+            pname = arch == "src" && name || "#{name} (#{arch})"
+            [ paths ].flatten.each do |path|
+               attrs = { name: pname, arch: arch, path: path, branch_id: branch.id }
+               attrs[:source_path_id] = BranchPath.where(path: arches['src'].first).first.id if arch != "src"
+
+               BranchPath.create!(attrs)
+            end
+         end
+      end
+   end
+end
