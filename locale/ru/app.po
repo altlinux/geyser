@@ -235,6 +235,9 @@ msgstr "Алексей Новодворский"
 msgid "Denis Medvedev"
 msgstr "Денис Медведев"
 
+msgid "Alexey Appolonov"
+msgstr "Алексей Апполонов"
+
 msgid "Ruby Team"
 msgstr "Рубишная ватага"
 
