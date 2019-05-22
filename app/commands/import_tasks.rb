@@ -12,6 +12,7 @@ class ImportTasks
          import_tasks
          import_exercises
          import_exercise_approvers
+         import_task_rpms
       end
    end
 
@@ -19,6 +20,18 @@ class ImportTasks
 
    def initialize sources: raise
       @sources = sources
+   end
+
+   def parse_task_rpms result, options = {}
+      if result !~ /\A\z/
+         result.force_encoding('utf-8').split("\n").map do |line|
+            /(?<md5>[a-f0-9]+)\s(?<file_name>.*)/ =~ line
+
+            { md5: md5, task_id: options[:task].id }
+         end
+      else
+         []
+      end
    end
 
    def parse result
@@ -121,6 +134,36 @@ class ImportTasks
          end.compact
    end
 
+   def task_rpm_data
+      @task_rpm_data ||= (
+         task_rpm_data = tasks.reduce([]) do |list, task|
+            path = task.uri.gsub("http://git.altlinux.org", '')
+
+            args = "#{path}/ -name *.rpm -exec md5sum {} \\;"
+
+            Rails.logger.info("Import.TaskRpms: find with args #{args}")
+            wrapper = Terrapin::CommandLine.new('find', args, environment: { 'LANG' => 'C', 'LC_ALL' => 'en_US.UTF-8' }, expected_outcodes: [ 0, 1 ])
+
+            parsed = parse_task_rpms(wrapper.run, task: task)
+
+            list + parsed
+         end
+
+         if task_rpm_data.blank?
+            Rails.logger.error('Import.TaskRpms: find exit status zero, but result is blank')
+         end
+
+         task_rpm_data || [])
+   rescue Terrapin::CommandNotFoundError
+      Rails.logger.error('Import.TaskRpms: find command not found')
+
+      []
+   rescue Terrapin::ExitStatusError
+      Rails.logger.error('Import.TaskRpms: find exit status non zero')
+
+      []
+   end
+
    def tasks
       @tasks ||=
          task_data.map do |task|
@@ -138,7 +181,7 @@ class ImportTasks
                      created_at: task["created_at"],
                      changed_at: task["updated_at"],
                      updated_at: task["updated_at"])
-         end
+         end.uniq { |x| x.no }
    end
 
    def exercises
@@ -183,5 +226,9 @@ class ImportTasks
    def import_tasks
       @task_ids = Task.import!(tasks, on_duplicate_key_update: { conflict_target: %i(no),
                                                                  columns: %i(state uri shared test try iteration changed_at owner_slug branch_path_id) }).ids
+   end
+
+   def import_task_rpms
+      TaskRpm.import!(task_rpm_data, on_duplicate_key_ignore: true)
    end
 end

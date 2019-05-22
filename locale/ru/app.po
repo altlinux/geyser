@@ -1539,3 +1539,6 @@ msgstr "личное"
 
 msgid "prod"
 msgstr "бой"
+
+msgid "Task no"
+msgstr "Задание"

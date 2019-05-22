@@ -15,6 +15,8 @@ class Package < ApplicationRecord
    has_one :rpm
    has_one :branch_path, through: :rpm
    has_one :branch, through: :branch_path
+   has_one :task_rpm, primary_key: :md5, foreign_key: :md5
+   has_one :task, through: :task_rpm
 
    has_many :rpms, inverse_of: :package
    has_many :all_rpms, -> { unscope(where: :obsoleted_at) }, class_name: 'Rpm', dependent: :destroy

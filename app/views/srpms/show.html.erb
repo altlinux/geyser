@@ -55,6 +55,9 @@
   <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(@spkg.repocop_patch), class: 'repocoplink', title: _('repocop brought patchset for the package') %>
 <% end %>
 <br>
+<%- if @spkg.task %>
+<b><%= _('Task no:') %></b> <%= link_to @spkg.task.no, @spkg.task.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('task number and uri') %><br>
+<%- end %>
 
 <% if @spkg.newer_gear %>
 <b><%= _('Gear:') %></b> &nbsp; <%= link_to @spkg.newer_gear.uri, @spkg.newer_gear.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('lately updated gear or srpm git repo') %><br>

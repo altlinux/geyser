@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_06_163200) do
+ActiveRecord::Schema.define(version: 2019_05_21_125817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -486,6 +486,14 @@ ActiveRecord::Schema.define(version: 2019_05_06_163200) do
     t.index ["tagger_id"], name: "index_tags_on_tagger_id"
   end
 
+  create_table "task_rpms", id: false, force: :cascade do |t|
+    t.string "md5", comment: "MD5 сумма файла RPM"
+    t.bigint "task_id", comment: "Относка к заданию"
+    t.index ["md5", "task_id"], name: "index_task_rpms_on_md5_and_task_id", unique: true
+    t.index ["md5"], name: "index_task_rpms_on_md5"
+    t.index ["task_id"], name: "index_task_rpms_on_task_id"
+  end
+
   create_table "tasks", force: :cascade do |t|
     t.integer "no", null: false, comment: "Число задания сборочницы"
     t.string "uri", comment: "Ссылка на задание"
@@ -580,6 +588,7 @@ ActiveRecord::Schema.define(version: 2019_05_06_163200) do
   add_foreign_key "specfiles", "packages", on_delete: :restrict
   add_foreign_key "tags", "maintainers", column: "author_id", on_delete: :restrict
   add_foreign_key "tags", "maintainers", column: "tagger_id", on_delete: :restrict
+  add_foreign_key "task_rpms", "tasks", on_delete: :cascade
   add_foreign_key "tasks", "branch_paths", on_delete: :restrict
   add_foreign_key "team_people", "branch_paths", on_delete: :cascade
   add_foreign_key "teams", "branches", on_delete: :cascade

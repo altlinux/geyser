@@ -13,4 +13,10 @@ namespace :task do
                             file: "files2.list",
                          }]).do
    end
+
+   desc 'Update all tasks to database'
+   task :link, %i(begin end) => %i(environment) do |_, args|
+      range = Range.new(args.begin.to_i, args.end.to_i)
+      ImportTaskRpms.new(range).do
+   end
 end
