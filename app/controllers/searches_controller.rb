@@ -14,6 +14,7 @@ class SearchesController < ApplicationController
                               .q(params[:query])
                               .order(order_sql)
                               .unscope(:select)
+                              .includes(:branch)
                               .select(select_sql)
                               .page(params[:page])
 
