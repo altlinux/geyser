@@ -56,7 +56,7 @@
                  <span class="badge"><%= link_to evrb, evrb_srpm_path(branch: spkg.slugs[time], reponame: spkg.name, evrb: evrb), class: 'news', title: spkg.name + "-" + evrb %></span>
               <%- end %>
             <%- else %>
-              <%= link_to spkg.evr, evrb_srpm_path(branch: spkg.branches.first.slug, reponame: spkg.name, evrb: spkg.evrb), class: 'news' %>
+              <%= link_to spkg.evr, evrb_srpm_path(branch: spkg.branches.first.slug, reponame: spkg.name, evrb: spkg.evr), class: 'news' %>
             <%- end %>
           </td>
           <td class='age'><%= "#{ time_ago_in_words(spkg.buildtime) } #{ _('ago') }" %></td>

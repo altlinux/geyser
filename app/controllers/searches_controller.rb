@@ -1,19 +1,17 @@
 # frozen_string_literal: true
 
 class SearchesController < ApplicationController
-   before_action :fix_arches
    before_action :set_branch
 
    def show
       @branches = Branch.all
-      if params[:query].blank? and params[:arch].blank?
+      if params[:query].blank? and arch.blank?
          redirect_to controller: 'home', action: 'index'
       else
          spkgs = Package::Src.b(@branch.slug)
-                             .a(@arches)
+                             .a(arch)
                              .q(params[:query])
                              .unscope(:select)
-                             .includes(:branch)
 
          @spkgs = spkgs.order(order_for_sql(spkgs))
                        .select(select_for_sql(spkgs))
@@ -27,10 +25,9 @@ class SearchesController < ApplicationController
 
    protected
 
-   # fixes noarch arch call when blank TODO
-   def fix_arches
-      arches = [ params[:arch] ].flatten.compact.select { |a| a.present? }
-      @arches = arches.any? { |a| a != 'noarch' } && arches || nil
+   # keep to compat
+   def arch
+      @arch ||= params[:arch].is_a?(Array) && params[:arch].first || params[:arch]
    end
 
    def set_branch

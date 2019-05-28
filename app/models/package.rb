@@ -44,12 +44,18 @@ class Package < ApplicationRecord
          joins(:branches).where(branches: { slug: slug })
       end
    end
-   scope :by_arch, ->(arch) do
-      if arch.blank?
+   scope :by_arch, ->(arch_in) do
+      if arch_in.blank?
          all
       else
          subquery = "SELECT DISTINCT src_id FROM packages WHERE packages.arch IN (?)"
-         where("packages.id IN (#{subquery})", arch)
+
+         arches = [ arch_in, 'noarch' ]
+         self.select("packages.*").from('packages')
+             .where("packages.id IN (#{subquery})", arches)
+             .joins("INNER JOIN branch_paths AS branch_paths_a
+                            ON rpms.branch_path_id = branch_paths_a.id")
+             .merge(BranchPath.for(arch_in))
       end
    end
    scope :by_evr, ->(evr) do

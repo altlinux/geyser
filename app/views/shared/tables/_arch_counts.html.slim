@@ -1,5 +1,3 @@
-
-
 - if arch_counts.present?
    .table
       .headleft
@@ -11,5 +9,5 @@
                ul
                   li
                      .line
-                        .left.float.b = link_to(_(pkg['arch']), search_path(branch: branch.slug, arch: [ pkg['arch'], 'noarch' ]), title: _('search by arch ') + pkg['arch'])
+                        .left.float.b = link_to(_(pkg['arch']), search_path(branch: branch.slug, arch: pkg['arch']), title: _('search by arch ') + pkg['arch'])
                         .right.float = pkg['count']
