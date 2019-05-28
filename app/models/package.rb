@@ -66,38 +66,39 @@ class Package < ApplicationRecord
       end
    end
    scope :query, ->(text_in) do
-      if text_in.blank?
-         all
-      else
-         text = text_in.gsub(/[ \._\-]+/, ' & ')
-         tqs_from = Arel.sql(sanitize_sql_array(["packages, to_tsquery(?) AS q", text]))
-         tqs_select = Arel.sql(sanitize_sql_array(["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text_in]))
-         tqs = Package.from(tqs_from).where("tsv @@ q").select(tqs_select)
+      text = text_in.to_s.gsub(/[ \._\-]+/, ' & ')
+      tqs_from = Arel.sql(sanitize_sql_array(["packages, to_tsquery(?) AS q", text]))
+      tqs_select = Arel.sql(sanitize_sql_array(["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text_in]))
+      tqs = Package.from(tqs_from).where("tsv @@ q").select(tqs_select)
 
-         qs_select = Arel.sql("packages.name,
-                      MAX(tqs.rank) AS rank,
-                      array_agg(DISTINCT packages.id) AS src_ids,
-                      jsonb_object_agg(DISTINCT packages.buildtime,
-                                                CASE
-                                                WHEN packages.epoch IS NULL
-                                                THEN ''
-                                                ELSE packages.epoch || ':'
-                                                END || packages.version || '-' || packages.release
-                                       ) AS evrbes,
-                      jsonb_object_agg(DISTINCT packages.buildtime, qs_branches.slug) AS slugs")
-         qs_join = Arel.sql("INNER JOIN rpms AS qs_rpms ON qs_rpms.package_id = packages.id AND qs_rpms.obsoleted_at IS NULL
-                             INNER JOIN branch_paths AS qs_branch_paths ON qs_branch_paths.id = qs_rpms.branch_path_id
-                             INNER JOIN branches AS qs_branches ON qs_branches.id = qs_branch_paths.branch_id
-                             INNER JOIN (#{tqs.to_sql}) AS tqs ON tqs.src_id = packages.id")
-         qs = Package.joins(qs_join)
-                     .group(:name)
-                     .order(:name)
-                     .select(qs_select)
+      qs_select = Arel.sql("packages.name,
+                   MAX(tqs.rank) AS rank,
+                   array_agg(DISTINCT packages.id) AS src_ids,
+                   jsonb_object_agg(DISTINCT packages.buildtime,
+                                             CASE
+                                             WHEN packages.epoch IS NULL
+                                             THEN ''
+                                             ELSE packages.epoch || ':'
+                                             END || packages.version || '-' || packages.release
+                                    ) AS evrbes,
+                   jsonb_object_agg(DISTINCT packages.buildtime, qs_branches.slug) AS slugs")
+      qs_join = Arel.sql("INNER JOIN rpms AS qs_rpms ON qs_rpms.package_id = packages.id AND qs_rpms.obsoleted_at IS NULL
+                          INNER JOIN branch_paths AS qs_branch_paths ON qs_branch_paths.id = qs_rpms.branch_path_id
+                          INNER JOIN branches AS qs_branches ON qs_branches.id = qs_branch_paths.branch_id
+                          INNER JOIN (#{tqs.to_sql}) AS tqs ON tqs.src_id = packages.id")
+      qs = Package.joins(qs_join)
+                  .group(:name)
+                  .order(:name)
+                  .select(qs_select)
 
-         joins(:branch, "INNER JOIN (#{qs.to_sql}) AS qs ON packages.id = ANY (qs.src_ids)")
-            .order("qs.rank DESC, packages.name, branches.order_id DESC")
-            .select("packages.*, branches.slug, qs.rank, qs.evrbes, qs.slugs")
-      end
+      joins(:branch, "INNER JOIN (#{qs.to_sql}) AS qs ON packages.id = ANY (qs.src_ids)")
+         .order("qs.rank DESC, packages.name, branches.order_id DESC")
+         .select("packages.*, branches.slug, qs.rank, qs.evrbes, qs.slugs")
+   end
+   scope :search, ->(text_in) do
+      text_re = text_in.gsub(/[-.{}\(\)^\[\]\+\\\/$]/) {|x| '\\' + x }.gsub(/[*?]*?\*[*?]*/, '.*').gsub(/\?/, '.')
+      wsqls = %w(name description).map { |c| Arel.sql(sanitize_sql_array(["packages.#{c} ~ ?", "^#{text_re}$"])) }
+      where(wsqls.join(" OR "))
    end
    scope :aggregated, -> do
          qs_select = Arel.sql("packages.name,
@@ -138,8 +139,16 @@ class Package < ApplicationRecord
       self.select("DISTINCT ON(packages.buildtime,packages.name, packages.epoch, packages.version, packages.release) packages.*")
           .order("packages.buildtime DESC, packages.name, packages.epoch, packages.version, packages.release")
    end
+   scope :q, ->(text_in) do
+      if text_in.blank?
+         all
+      elsif /[\*\?]/ =~ text_in
+         search(text_in)
+      else
+         query(text_in)
+      end
+   end
 
-   singleton_class.send(:alias_method, :q, :query)
    singleton_class.send(:alias_method, :a, :by_arch)
    singleton_class.send(:alias_method, :b, :by_branch_slug)
 
