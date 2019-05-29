@@ -3,7 +3,6 @@
       = select_tag :branch, branch.branches_as_options(branches, params[:branch])
    - else
       = hidden_field_tag :branch, branch.slug
-   = select_tag :arch, branch.options_for(arch), name: 'arch[]'
-   = hidden_field_tag :arch, 'noarch', name: 'arch[]'
+   = select_tag :arch, branch.options_for(@arch), name: 'arch'
    = text_field_tag :query, query, placeholder: _('Search...'), size: '20'
    = submit_tag _('find'), name: nil, class: 'top-go'
