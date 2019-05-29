@@ -11,14 +11,17 @@ class SearchesController < ApplicationController
          spkgs = Package::Src.b(@branch.slug)
                              .a(arch)
                              .q(params[:query])
-                             .unscope(:select)
 
-         @spkgs = spkgs.order(order_for_sql(spkgs))
-                       .select(select_for_sql(spkgs))
+         order = order_for_sql(spkgs)
+         select = select_for_sql(spkgs)
+
+         @spkgs = spkgs.order(order)
+                       .unscope(:select)
+                       .select(select)
                        .page(params[:page])
 
          if @spkgs.total_count == 1 && @spkgs.first.branches.first
-           redirect_to(srpm_path(@spkgs.first.branches.first, @spkgs.first), status: 302)
+            redirect_to(srpm_path(@spkgs.first.branches.first, @spkgs.first), status: 302)
          end
       end
    end
@@ -40,9 +43,10 @@ class SearchesController < ApplicationController
 
    def select_for_sql q
       order = q.order_values.map { |x| x.split(/, ?/).map { |y| y.split(' ').first} }.flatten.reject { |x| on_filter.include?(x) }
+      select = q.select_values.map { |x| x.split(/, ?/) }.flatten.reject { |x| on_filter.include?(x) }
 
       on = %w(packages.name) | order
-      rows = %w(packages.* branches.slug) | order
+      rows = %w(packages.* branches.slug) | select
 
       "DISTINCT on(#{on.join(', ')}) #{rows.join(', ')}"
    end

@@ -56,6 +56,14 @@ class Package::Src < Package
       changelog&.text
    end
 
+   def slugs
+      read_attribute(:slugs) || versions.map {|s| [ s.buildtime, s.branch.slug ] }.to_h
+   end
+
+   def evrbes
+      read_attribute(:evrbes) || versions.map {|s| [ s.buildtime, s.evr ] }.to_h
+   end
+
    class ActiveRecord_Relation
       def page value
          @page = (value || 1).to_i

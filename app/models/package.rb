@@ -92,14 +92,15 @@ class Package < ApplicationRecord
                           INNER JOIN branch_paths AS qs_branch_paths ON qs_branch_paths.id = qs_rpms.branch_path_id
                           INNER JOIN branches AS qs_branches ON qs_branches.id = qs_branch_paths.branch_id
                           INNER JOIN (#{tqs.to_sql}) AS tqs ON tqs.src_id = packages.id")
-      qs = Package.joins(qs_join)
+      qs = Package.src
+                  .joins(qs_join)
                   .group(:name)
                   .order(:name)
                   .select(qs_select)
 
-      joins(:branch, "INNER JOIN (#{qs.to_sql}) AS qs ON packages.id = ANY (qs.src_ids)")
-         .order("qs.rank DESC, packages.name, branches.order_id DESC")
-         .select("packages.*, branches.slug, qs.rank, qs.evrbes, qs.slugs")
+      self.joins(:branch, "INNER JOIN (#{qs.to_sql}) AS qs ON packages.id = ANY (qs.src_ids)")
+          .order("qs.rank DESC, packages.name, branches.order_id DESC")
+          .select("packages.*, branches.slug, qs.rank, qs.evrbes, qs.slugs")
    end
    scope :search, ->(text_in) do
       text_re = text_in.gsub(/[-.{}\(\)^\[\]\+\\\/$]/) {|x| '\\' + x }.gsub(/[*?]*?\*[*?]*/, '.*').gsub(/\?/, '.')
@@ -194,14 +195,6 @@ class Package < ApplicationRecord
       if branch.archive_uri 
          File.join(branch.archive_uri, name[0], name)
       end
-   end
-
-   def slugs
-      read_attribute(:slugs) || versions.map {|s| [ s.buildtime, s.branch.slug ] }.to_h
-   end
-
-   def evrbes
-      read_attribute(:evrbes) || versions.map {|s| [ s.buildtime, s.evr ] }.to_h
    end
 
    def branch_slug
