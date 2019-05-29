@@ -650,7 +650,7 @@ msgid "Motsyo Gennadi"
 msgstr "Геннадий Моцьо"
 
 msgid "Pavel Moseev (Mars)"
-msgstr "Павел Моисеев"
+msgstr "Павел Мосеев"
 
 msgid "Konstantin A. Lepikhov"
 msgstr "Константин Лепихов"
@@ -669,6 +669,27 @@ msgstr "Виталий Чикунов"
 
 msgid "Mykola Grechukh"
 msgstr "Николай Гречух"
+
+msgid "ptrnine"
+msgstr "Вячеслав Асеев"
+
+msgid "Alexander Makeenkov"
+msgstr "Александр Макеенков"
+
+msgid "Grigory Batalov"
+msgstr "Григорий Баталов"
+
+msgid "Alexander Myltsev"
+msgstr "Александр Мыльцев"
+
+msgid "Alexey Tourbin"
+msgstr "Алексей Турбин"
+
+msgid "Kiriil A. Shutemov"
+msgstr "Кирилл Шутемов"
+
+msgid "Vitaly Kuznetsov"
+msgstr "Виталий Кузнецов"
 
 msgid "Networking/Chat"
 msgstr "Сети/Chat"
