@@ -649,6 +649,12 @@ msgstr "Мониторинг"
 msgid "Motsyo Gennadi"
 msgstr "Геннадий Моцьо"
 
+msgid "Nikolai Kostrigin"
+msgstr "Николай Костригин"
+
+msgid "Kernel Bot"
+msgstr "Ядрёный бот"
+
 msgid "Pavel Moseev (Mars)"
 msgstr "Павел Мосеев"
 
