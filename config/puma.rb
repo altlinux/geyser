@@ -23,12 +23,12 @@ if Rails.env.production? || Rails.env.staging?
    threads_count = Integer(ENV['MAX_THREADS'] || 10)
 
    workers Integer(ENV['WEB_CONCURRENCY'] || 2)
-   bind "unix://#{shared_dir}/sockets/puma-prometheus2.0.sock"
+   bind "unix://#{shared_dir}/sockets/puma-geyser.sock"
    stdout_redirect "#{shared_dir}/log/stdout.log", "#{shared_dir}/log/stderr.log", true
    pidfile "#{shared_dir}/tmp/pids/puma.pid"
    state_path "#{shared_dir}/tmp/pids/puma.state"
    activate_control_app
-   daemonize true
+   daemonize false # required for foreman and systemd
 
    before_fork do
       require 'puma_worker_killer'
@@ -41,6 +41,7 @@ if Rails.env.production? || Rails.env.staging?
          config.reaper_status_logs = true
          config.pre_term = -> (worker) { puts "Worker #{worker.inspect} being killed" }
       end
+      PumaWorkerKiller.enable_rolling_restart
       PumaWorkerKiller.start
    end
 elsif Rails.env.development?

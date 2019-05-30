@@ -2,7 +2,7 @@
 
 lock '3.11.0'
 
-set :application, 'prometheus2.0'
+set :application, 'geyser'
 set :deploy_user, 'apache'
 
 set :branch, ENV['BRANCH'] || "master"
@@ -40,11 +40,18 @@ set :keep_releases, 3
 set :bundle_jobs, 4
 set :bundle_binstubs, -> { shared_path.join('bin') }
 
-set :nginx_service_path, "/etc/init.d/nginx"
-set :nginx_sites_available_dir, "/etc/nginx/sites-available.d"
-set :nginx_sites_enabled_dir, "/etc/nginx/sites-enabled.d"
-set :nginx_application_name, "#{fetch :application}-#{fetch :stage}.conf"
-set :nginx_template, "config/nginx.conf.erb"
+set :nginx_path, '/etc/nginx' # directory containing sites-available and sites-enabled
+set :nginx_template, 'config/nginx.conf.erb' # configuration template
+set :nginx_sites_available_subfolder, "sites-available.d"
+set :nginx_sites_enabled_subfolder, "sites-enabled.d"
+set :nginx_listen, 80 # optional, default is not set
+set :nginx_roles, :all
+
+#set :nginx_service_path, "/etc/init.d/nginx"
+#set :nginx_sites_available_dir, "/etc/nginx/sites-available.d"
+#set :nginx_sites_enabled_dir, "/etc/nginx/sites-enabled.d"
+#set :nginx_application_name, "#{fetch :application}-#{fetch :stage}.conf"
+#set :nginx_template, "config/nginx.conf.erb"
 set :app_server_socket, "#{shared_path}/sockets/puma-#{fetch :application}.sock"
 set :app_server_host, "localhost"
 set :app_server_port, 80
@@ -56,36 +63,24 @@ set :rvm_roles, %i[app web]
 
 set :puma_conf, "#{release_path}/config/puma.rb"
 
-
-task :restart_puma do
-  on release_roles :all do
-    within release_path do
-      with fetch(:bundle_env_variables, { RAILS_ENV: fetch(:stage) }) do
-        execute "ps aux|egrep ':[0-9]+\\s(rake|puma)'|cat -"
-        execute "sudo kill -9 $(ps aux|egrep ':[0-9]+\\s(rake|puma)'| sed \"s/^[^0-9]*\\([0-9]*\\).*/\\1/\"); sleep 1"
-        execute :bundle, :exec, "puma -e #{fetch(:stage)} --config #{fetch :puma_conf}"
-      end
-    end
-  end
-end
+# Default settings
+set :foreman_use_sudo, true # Set to :rbenv for rbenv sudo, :rvm for rvmsudo or true for normal sudo
+set :foreman_roles, :all
+set :foreman_init_system, 'systemd'
+set :foreman_export_path, ->{ '/run/systemd/system/' }
+set :foreman_app, -> { 'geyser' }
+set :foreman_app_name_systemd, -> { "#{ fetch(:foreman_app) }.target" }
+set :foreman_options, ->{ {
+  app: fetch(:foreman_app),
+  user: fetch(:deploy_user),
+  log: File.join(shared_path, 'log')
+} }
 
 
 namespace :deploy do
-  before 'deploy:finishing', 'nginx:site:add'
   after :finishing, 'deploy:cleanup'
-  after :restart, :clear_cache do
-    on roles(:web), in: :groups, limit: 3, wait: 10 do
-      # Here we can do anything such as:
-      # within release_path do
-      #   execute :rake, 'cache:clear'
-      # end
-    end
-  end
-
-  # before 'deploy:setup_config', 'nginx:remove_default_vhost'
-  after 'deploy:updated', 'nginx:site:add'
-  before 'deploy:publishing', 'nginx:site:enable'
-  after 'deploy:finishing', 'nginx:restart'
-  after 'deploy:finished', 'restart_puma'
-  # after :finishing, 'systemd:restart'
+  after 'deploy:finishing', 'foreman:restart'
+  before 'foreman:restart', 'foreman:export'
+  after 'foreman:restart', 'nginx:setup'
+  after 'nginx:setup', 'nginx:enable_site'
 end

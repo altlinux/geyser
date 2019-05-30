@@ -1,12 +1,5 @@
 # frozen_string_literal: true
 
-# job_type :rake, 'cd /home/prometheusapp/www/current && RAILS_ENV=:environment bundle exec rake :task :output'
-
-# TODO: fix this
-# every 1.day, at: '00:10' do
-#   rake 'ts:index'
-# end
-
 every 1.hour do
    rake 'update:branches update:lost[true]'
 end

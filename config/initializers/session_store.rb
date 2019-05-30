@@ -3,4 +3,4 @@
 # Be sure to restart your server when you modify this file.
 # TODO: remove this
 
-Rails.application.config.session_store :cookie_store, key: '_prometheus2_0_session'
+Rails.application.config.session_store :cookie_store, key: '_geyser_session'

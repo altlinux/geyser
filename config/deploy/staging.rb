@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-set :repo_url, 'git@github.com:majioa/prometheus2.0.git'
+set :repo_url, 'git@github.com:altlinux/geyser.git'
 
 
-set :deploy_to, '/var/www/prometheus2.0'
+set :deploy_to, '/var/www/geyser'
 
 set :rails_env, 'staging'
 

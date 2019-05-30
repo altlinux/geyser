@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '~> 5.2.1'
 gem 'pg', '~> 0.18'
-gem 'puma', '~> 3.11'
+gem 'puma', '~> 3.12'
 gem 'sass-rails', '~> 5.0'
 gem 'uglifier', '>= 1.3.0'
 gem 'turbolinks', '~> 5'
@@ -66,12 +66,16 @@ gem 'dalli'
 gem 'bundler', '~> 2.0'
 gem 'dotenv-rails'
 
+# worker
+gem 'delayed_job_active_record'
+
 group :production, :staging do
   gem 'lograge'
   gem 'rack-timeout'
   gem 'rack-force_domain'
   gem 'exception_notification'
   gem 'puma_worker_killer'
+  gem 'foreman', '~> 0.85'
 end
 
 group :staging, :development, :test do
@@ -94,8 +98,9 @@ group :development do
   gem 'capistrano', '~> 3.6', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rvm', require: false
-  gem 'capistrano3-nginx', require: false
   gem 'capistrano-faster-assets', require: false
+  gem 'capistrano-nginx', github: "majioa/capistrano-nginx", require: false
+  gem 'capistrano-foreman', github: "majioa/capistrano-foreman", require: false
   # gem 'capistrano3-puma', github: "seuros/capistrano-puma", require: false
   gem 'capistrano-rake'
   # gem 'xray-rails'
@@ -116,7 +121,7 @@ end
 
 group :development, :test do
   gem 'rspec-rails'
-  gem 'awesome_print', require: 'ap'
+  gem 'awesome_print'
   gem 'faker'
 end
 

@@ -1,4 +1,19 @@
 GIT
+  remote: git://github.com/majioa/capistrano-foreman.git
+  revision: b05bf8be706c6bb16ddc84294ed1addbc123bdea
+  specs:
+    capistrano-foreman (1.2.0)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+
+GIT
+  remote: git://github.com/majioa/capistrano-nginx.git
+  revision: f0095a4280872cd669aec3511fc05840bd8b0d62
+  specs:
+    capistrano-nginx (1.0.0)
+      capistrano (~> 3.1)
+
+GIT
   remote: https://github.com/majioa/ruby-git.git
   revision: 64558205829e205da1d72aff644e17922e3db506
   specs:
@@ -105,8 +120,6 @@ GEM
     capistrano-rvm (0.1.2)
       capistrano (~> 3.0)
       sshkit (~> 1.2)
-    capistrano3-nginx (2.1.6)
-      capistrano (>= 3.0.0)
     capybara (2.18.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -132,6 +145,11 @@ GEM
     crass (1.0.4)
     dalli (2.7.8)
     database_rewinder (0.8.3)
+    delayed_job (4.1.5)
+      activesupport (>= 3.0, < 5.3)
+    delayed_job_active_record (4.1.3)
+      activerecord (>= 3.0, < 5.3)
+      delayed_job (>= 3.0, < 5)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     devise (4.6.2)
@@ -168,6 +186,8 @@ GEM
       i18n (>= 0.7)
     fast_gettext (1.7.0)
     ffi (1.9.25)
+    foreman (0.85.0)
+      thor (~> 0.19.1)
     get_process_mem (0.2.2)
     gettext (3.2.9)
       locale (>= 2.0.5)
@@ -264,7 +284,7 @@ GEM
     pry-rails (0.3.6)
       pry (>= 0.10.4)
     public_suffix (3.0.2)
-    puma (3.11.4)
+    puma (3.12.1)
     puma_worker_killer (0.1.0)
       get_process_mem (~> 0.2)
       puma (>= 2.7, < 4)
@@ -418,7 +438,7 @@ GEM
     terrapin (0.6.0)
       climate_control (>= 0.0.3, < 1.0)
     text (1.3.1)
-    thor (0.20.3)
+    thor (0.19.4)
     thread_safe (0.3.6)
     tilt (2.0.8)
     toml (0.2.0)
@@ -472,15 +492,17 @@ DEPENDENCIES
   cacheflow
   capistrano (~> 3.6)
   capistrano-faster-assets
+  capistrano-foreman!
+  capistrano-nginx!
   capistrano-rails
   capistrano-rake
   capistrano-rvm
-  capistrano3-nginx
   capybara
   capybara-email
   codeclimate-test-reporter
   dalli
   database_rewinder
+  delayed_job_active_record
   devise
   dotenv-rails
   draper
@@ -489,6 +511,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   fast_gettext
+  foreman (~> 0.85)
   gettext
   gettext_i18n_rails
   git!
@@ -508,7 +531,7 @@ DEPENDENCIES
   pghero
   posix-spawn
   pry-rails
-  puma (~> 3.11)
+  puma (~> 3.12)
   puma_worker_killer
   rack-cors
   rack-force_domain
@@ -546,7 +569,7 @@ DEPENDENCIES
   whenever
 
 RUBY VERSION
-   ruby 2.5.4p106
+   ruby 2.5.5p157
 
 BUNDLED WITH
    2.0.1
