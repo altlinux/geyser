@@ -2144,12 +2144,12 @@ if BranchPath.where(name: 'p9').blank?
             'p9 x86_64' => %w(x86_64 /ALT/p9/files/x86_64/RPMS http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/branch/files/x86_64/RPMS/ p9-src),
             'p9 aarch64' => %w(aarch64 /ALT/p9/files/aarch64/RPMS http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/branch/files/aarch64/RPMS/ p9-src),
             'p9 noarch' => %w(noarch /ALT/p9/files/noarch/RPMS http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/branch/files/noarch/RPMS/ p9-src),
-            'p9-armh' => %w(src /mnt/p9/armh http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/armh/files/SRPMS/),
-            'p9 arch-armh' => %w(armh /mnt/p9/armh/arch http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/armh/files/armh/RPMS/ p9-armh),
-            'p9 noarch-armh' => %w(noarch /mnt/p9/armh/noarch http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/armh/files/noarch/RPMS/ p9-armh),
-            'p9-mipsel' => %w(src /mnt/p9/mipsel http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/mipsel/files/SRPMS/),
-            'p9 arch-mipsel' => %w(mipsel /mnt/p9/mipsel/arch http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/mipsel/files/mipsel/RPMS/ p9-mipsel),
-            'p9 noarch-mipsel' => %w(noarch /mnt/p9/mipsel/noarch http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/mipsel/files/noarch/RPMS/ p9-mipsel),
+            'p9-armh' => %w(src /ports/armh/p9/files/SRPMS/ http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/armh/files/SRPMS/),
+            'p9 arch-armh' => %w(armh /ports/armh/p9/files/armh/RPMS/ http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/armh/files/armh/RPMS/ p9-armh),
+            'p9 noarch-armh' => %w(noarch /ports/armh/p9/files/noarch/RPMS/ http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/armh/files/noarch/RPMS/ p9-armh),
+            'p9-mipsel' => %w(src /ports/mipsel/p9/files/SRPMS/ http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/mipsel/files/SRPMS/),
+            'p9 arch-mipsel' => %w(mipsel /ports/mipsel/p9/files/mipsel/RPMS/ http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/mipsel/files/mipsel/RPMS/ p9-mipsel),
+            'p9 noarch-mipsel' => %w(noarch /ports/mipsel/p9/files/noarch/RPMS/ http://ftp.altlinux.org/pub/distributions/ALTLinux/p9/ports/mipsel/files/noarch/RPMS/ p9-mipsel),
          },
       }.each do |name, arches|
          branch = Branch.find_or_create_by!(name: name, vendor: "ALT", slug: name)
