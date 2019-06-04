@@ -28,7 +28,7 @@
 
 <% @repos.each do |repo| %>
   <tr>
-    <td><%= _(repo.kind) %></td>
+    <td><%= _(repo.kind.gsub('gear', 'geared')) %></td>
     <td><%= repo.associative && link_to(_(repo.associative.name), maintainer_path(@branch, repo.associative.to_param), class: 'news', title: _('information about maintainer')) %>
  </td>
     <td><%= link_to repo.uri, repo.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('affiliated git repo') %></td>
