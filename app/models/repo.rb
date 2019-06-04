@@ -10,6 +10,8 @@ class Repo < ApplicationRecord
    has_many :exercises, -> { repo }, primary_key: :uri, foreign_key: :resource
    has_many :tasks, through: :exercises
    has_many :packages, through: :exercises, class_name: "Package::Src"
+   has_many :spkgs, primary_key: :name, foreign_key: :name, class_name: 'Package::Src'
+   has_many :srpms, through: :spkgs, class_name: 'Rpm', source: :rpms
 
    scope :alt, -> { where(kind: %w(srpm gear)) }
    scope :person, -> { where(kind: 'person') }
