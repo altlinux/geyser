@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-every 1.hour do
+every 1.day, at: '3:00' do
    rake 'update:branches update:lost[true]'
 end
 
