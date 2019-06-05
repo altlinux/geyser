@@ -46,7 +46,7 @@ class SearchesController < ApplicationController
       select = q.select_values.map { |x| x.split(/, ?/) }.flatten.reject { |x| on_filter.include?(x) }
 
       on = %w(packages.name) | order
-      rows = %w(packages.* branches.slug) | select
+      rows = select | %w(branches.slug packages.*)
 
       "DISTINCT on(#{on.join(', ')}) #{rows.join(', ')}"
    end

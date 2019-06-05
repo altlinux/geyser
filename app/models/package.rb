@@ -51,11 +51,12 @@ class Package < ApplicationRecord
          subquery = "SELECT DISTINCT src_id FROM packages WHERE packages.arch IN (?)"
 
          arches = [ arch_in, 'noarch' ]
-         self.select("packages.*").from('packages')
+         self.from('packages')
              .where("packages.id IN (#{subquery})", arches)
              .joins("INNER JOIN branch_paths AS branch_paths_a
                             ON rpms.branch_path_id = branch_paths_a.id")
              .merge(BranchPath.for(arch_in))
+             .select("packages.*")
       end
    end
    scope :by_evr, ->(evr) do
