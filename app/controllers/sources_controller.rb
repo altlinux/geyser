@@ -8,7 +8,7 @@ class SourcesController < ApplicationController
    before_action :fetch_bugs, only: :index
 
    def index
-      @sources = Source.where(package: @spkgs).uniq_by(:content)
+      @sources = Source.where(package: @spkgs).real.uniq_by(:content)
    end
 
    def download

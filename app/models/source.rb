@@ -5,7 +5,7 @@ class Source < ApplicationRecord
 
    scope :for_packages, ->(packages) { where(package_id: packages) }
    scope :uniq_by, ->(name) { select("DISTINCT ON(sources.#{name}) sources.*") }
-   scope :presented, -> { where.not(content: "") }
+   scope :real, -> { where.not(size: 0) }
 
    validates_presence_of :filename, :size
 
