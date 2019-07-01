@@ -7,15 +7,15 @@ class SourcesController < ApplicationController
    before_action :fetch_bugs, only: :index
 
    def index
-      @sources = Source.where(package: @spkg).select('filename, size, source')
+      @sources = Source.where(package: @spkgs).presented.uniq_by(:content)
    end
 
    protected
 
    def fetch_spkg
-      spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(params[:evrb]).order(buildtime: :desc)
+      @spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(params[:evrb]).order(buildtime: :desc)
 
-      @spkg = spkgs.first!.decorate
+      @spkg = @spkgs.first!
    end
 
    def fetch_spkgs_by_name

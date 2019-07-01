@@ -2,12 +2,13 @@
 
 class PatchesController < ApplicationController
    before_action :set_evrb, except: :download
-   before_action :fetch_spkg, except: :download
+   before_action :fetch_spkg, except: %i(show download)
    before_action :fetch_spkgs_by_name, only: %i(index)
    before_action :fetch_patch, only: %i(show download)
    before_action :fetch_bugs, only: :index
 
    def index
+      @patches = Patch.for_packages(@spkgs).presented.uniq_by(:patch)
    end
 
    def show
@@ -26,9 +27,9 @@ class PatchesController < ApplicationController
       }[action_name.to_sym]
 
       spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(params[:evrb]).order(buildtime: :desc)
-      spkgs = spkgs.includes(*includes) if includes
+      @spkgs = spkgs.includes(*includes) if includes
       
-      @spkg = spkgs.first!.decorate
+      @spkg = @spkgs.first!
    end
 
    def fetch_spkgs_by_name
@@ -67,8 +68,7 @@ class PatchesController < ApplicationController
 
    def fetch_patch
       attrs = { filename: params[:patch_name], packages: package_attrs }
-      @patch = Patch.joins(:package).where(attrs)&.first
-
-      @patch&.patch? && @patch || raise(ActiveRecord::RecordNotFound)
+      patches = Patch.joins(:package).where(attrs)
+      @patch = patches.find { |patch| patch.patch? } || raise(ActiveRecord::RecordNotFound)
    end
 end

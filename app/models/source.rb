@@ -3,6 +3,10 @@
 class Source < ApplicationRecord
    belongs_to :package, class_name: 'Package::Src'
 
+   scope :for_packages, ->(packages) { where(package_id: packages) }
+   scope :uniq_by, ->(name) { select("DISTINCT ON(sources.#{name}) sources.*") }
+   scope :presented, -> { where.not(content: "") }
+
    validates_presence_of :filename, :size
 
    def self.prep_attrs rpm, package
