@@ -27,6 +27,10 @@ class PackageSerializer < RecordSerializer
 
    def branch_paths
       scope = object.branch_paths.published
-      instance_options[:branch] && scope.in_branch(instance_options[:branch]) || scope
+      branch && scope.for_branch(branch) || scope
+   end
+
+   def branch
+      instance_options[:branch]
    end
 end

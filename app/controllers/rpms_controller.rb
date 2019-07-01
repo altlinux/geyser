@@ -8,18 +8,18 @@ class RpmsController < ApplicationController
 
    def index
       @mirrors = Mirror.where(branch_id: @branch.id).where("protocol != 'rsync'").order('mirrors.order_id ASC')
-      packages = @spkg.all_packages
-                      .group("packages.arch, packages.id")
-                      .order("packages.name ASC")
+      packages = Package.by_source(@spkgs)
+                        .in_branch(@branch)
+                        .group("packages.arch, packages.id")
+                        .order("packages.name ASC")
       @arched_packages_s = PackagesAsArchedPackagesSerializer.new(packages, branch: @branch)
    end
 
    protected
 
    def fetch_spkg
-      spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(@evrb).order(buildtime: :desc)
-
-      @spkg = spkgs.first!.decorate
+      @spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(@evrb).order(buildtime: :desc)
+      @spkg ||= @spkgs.first!
    end
 
    def fetch_spkgs_by_name

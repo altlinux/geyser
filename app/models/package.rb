@@ -72,6 +72,10 @@ class Package < ApplicationRecord
          end
       end
    end
+   scope :by_source, ->(packages) do
+      self.where(src_id: packages)
+          .order(Arel.sql("(CASE packages.arch WHEN 'src' THEN 0 ELSE 1 END)"))
+   end
    scope :query, ->(text_in) do
       text = text_in.to_s.gsub(/[ \._\-]+/, ' & ')
       tqs_from = Arel.sql(sanitize_sql_array(["packages, to_tsquery(?) AS q", text]))

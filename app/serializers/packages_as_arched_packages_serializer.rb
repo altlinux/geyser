@@ -14,7 +14,7 @@ class PackagesAsArchedPackagesSerializer < ActiveModel::Serializer::CollectionSe
       opts = options.merge(self.instance_variable_get(:@options) || {})
       object.reduce({}) do |sum, package|
          arch = package.arch
-         package_s = PackageSerializer.new(package).serializable_hash(adapter_opts, opts, adapter_instance)
+         package_s = PackageSerializer.new(package, opts).serializable_hash
 
          next sum if !package_s[:ftp_url]
 
