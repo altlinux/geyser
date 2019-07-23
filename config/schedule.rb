@@ -17,7 +17,7 @@ every 3.hours, at: '2:25 am' do
 end
 
 every 1.day, at: '3:00 am' do
-   rake 'update:branches update:lost[true]'
+   rake 'update:branches update:lost[true] update:upcache'
 end
 
 every 1.day, at: '1:00 am' do

@@ -52,6 +52,23 @@ namespace :update do
       ActionController::Base.cache_store.clear
    end
 
+   desc "Update caches"
+   task upcache: %i(environment) do |_, _|
+      include Rails.application.routes.url_helpers
+
+      # call to root for langs
+      I18n.available_locales.each do |locale|
+         (1..5).find do |_|
+            begin
+               response = Excon.get(root_url(locale: locale))
+               response.status == 200 && response || nil
+            rescue Excon::Error::Timeout
+               nil
+            end
+         end
+      end
+   end
+
   desc 'Drop imported at counter for specific branch'
   task :drop_counter, %i(branch_path) => %i(environment) do |t, args|
     puts "#{ Time.zone.now }: Drop updated counter for #{args[:branch_path]}"

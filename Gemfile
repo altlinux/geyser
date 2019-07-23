@@ -69,6 +69,9 @@ gem 'dotenv-rails'
 # worker
 gem 'delayed_job_active_record'
 
+# http/ftp
+gem 'excon'
+
 group :production, :staging do
   gem 'lograge'
   gem 'rack-timeout'

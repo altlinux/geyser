@@ -176,6 +176,7 @@ GEM
     exception_notification (4.2.2)
       actionmailer (>= 4.0, < 6)
       activesupport (>= 4.0, < 6)
+    excon (0.65.0)
     execjs (2.7.0)
     factory_bot (4.10.0)
       activesupport (>= 3.0.0)
@@ -508,6 +509,7 @@ DEPENDENCIES
   draper
   ed25519 (>= 1.2, < 2.0)
   exception_notification
+  excon
   factory_bot_rails
   faker
   fast_gettext
