@@ -223,11 +223,11 @@ class Package < ApplicationRecord
       package = Package.find_or_initialize_by(md5: rpm.md5) do |package|
          if rpm.sourcerpm
             spkgs = Rpm.where(filename: rpm.sourcerpm,
-                              branch_path_id: branch_path.source_path_id).src
+                              branch_path_id: branch_path.branch.branch_paths.src.select(:id)).src
 
             if spkgs.blank?
               spkgs = Rpm.where(filename: rpm.sourcerpm,
-                                branch_path_id: branch_path.branch.branch_paths.src.select(:id)).src
+                                branch_path_id: branch_path.source_path_id).src
             end
 
             spkg_id = spkgs.first&.package_id
