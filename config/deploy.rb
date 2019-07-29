@@ -67,7 +67,7 @@ set :puma_conf, "#{release_path}/config/puma.rb"
 set :foreman_use_sudo, true # Set to :rbenv for rbenv sudo, :rvm for rvmsudo or true for normal sudo
 set :foreman_roles, :all
 set :foreman_init_system, 'systemd'
-set :foreman_export_path, ->{ '/run/systemd/system/' }
+set :foreman_export_path, ->{ '/etc/systemd/system/' }
 set :foreman_app, -> { 'geyser' }
 set :foreman_app_name_systemd, -> { "#{ fetch(:foreman_app) }.target" }
 set :foreman_options, ->{ {
