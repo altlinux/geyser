@@ -11,3 +11,5 @@ sshfs -p 222 apache@packages.altlinux.org:/beehive/ /beehive/
 sshfs -p 222 apache@packages.altlinux.org:/roland/ /roland/
 sshfs -p 222 apache@packages.altlinux.org:/ports/ /ports/
 sshfs -p 222 apache@packages.altlinux.org:/tasks/ /tasks
+
+sshfs -p 222 apache@packages.altlinux.org:/home/nosrpm/e2k/ /home/nosrpm/e2k/

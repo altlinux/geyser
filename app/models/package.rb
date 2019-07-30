@@ -221,24 +221,6 @@ class Package < ApplicationRecord
 
       filepath = File.join(branch_path.path, rpm.file)
       package = Package.find_or_initialize_by(md5: rpm.md5) do |package|
-         if rpm.sourcerpm
-            spkgs = Rpm.where(filename: rpm.sourcerpm,
-                              branch_path_id: branch_path.branch.branch_paths.src.select(:id)).src
-
-            if spkgs.blank?
-              spkgs = Rpm.where(filename: rpm.sourcerpm,
-                                branch_path_id: branch_path.source_path_id).src
-            end
-
-            spkg_id = spkgs.first&.package_id
-
-            if spkg_id
-               package.src_id = spkg_id
-            else
-               raise SourceIsntFound.new(rpm.sourcerpm)
-            end
-         end
-
          package.name = rpm.name
          package.version = rpm.version
          package.release = rpm.release
@@ -282,6 +264,27 @@ class Package < ApplicationRecord
          end
       end
 
+      if rpm.sourcerpm
+         spkgs = Rpm.where(filename: rpm.sourcerpm, branch_path_id: branch_path.source_path)
+         if spkgs.blank?
+            spkgs = Rpm.where(filename: rpm.sourcerpm,
+                              branch_path_id: branch_path.branch.branch_paths.src.select(:id)).src
+
+            if spkgs.blank?
+               spkgs = Rpm.where(filename: rpm.sourcerpm,
+                                 branch_path_id: branch_path.source_path_id).src
+            end
+         end
+
+         spkg_id = spkgs.first&.package_id
+
+         if spkg_id
+            package.src_id = spkg_id
+         else
+            raise SourceIsntFound.new(rpm.sourcerpm)
+         end
+      end
+
       if !package.group
          group_name = rpm.group
          branch_group = ImportBranchGroup.new(branch: branch_path.branch, group_name: group_name).do
@@ -307,15 +310,15 @@ class Package < ApplicationRecord
             package.save!
          end
          
-         rpm = Rpm.unscope(:where)
-                  .find_or_initialize_by(branch_path_id: branch_path.id,
-                                         filename: rpm.filename,
-                                         package_id: package.id)
+         r = Rpm.unscope(:where)
+                .find_or_initialize_by(branch_path_id: branch_path.id,
+                                       filename: rpm.filename,
+                                       package_id: package.id)
 
-         if !rpm.obsoleted_at && rpm.persisted?
+         if !r.obsoleted_at && r.persisted?
             raise AlreadyExistError
          else
-            rpm.update!(obsoleted_at: nil) # NOTE sometimes rpms are appeared in a branch with the samecreds but obsoleted....
+            r.update!(obsoleted_at: nil) # NOTE sometimes rpms are appeared in a branch with the samecreds but obsoleted....
 
             raise AttachedNewBranchError
          end
@@ -361,6 +364,7 @@ class Package < ApplicationRecord
 
          current_list = `#{find}`.split("\n")
          stored_list = branch_path.rpms.where(filename: current_list).select(:filename).pluck(:filename)
+         Rails.logger.info "IMPORT: found in path: #{current_list.size}, and in database #{stored_list.count}"
 
          nonexist_list = current_list - stored_list
          Rails.logger.info "IMPORT: will be imported #{nonexist_list.size} files"
