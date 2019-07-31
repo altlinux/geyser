@@ -84,7 +84,7 @@ class Rpm::Base
         tag: tag,
         file: file)
 
-      output.split("\uFFFE").first
+      output.to_s.split("\uFFFE").first
    rescue ArgumentError
       output.unpack("C*").reject {|x| x > 127 }.pack("C*").force_encoding("UTF-8")
    end

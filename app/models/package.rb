@@ -237,7 +237,7 @@ class Package < ApplicationRecord
          package.buildtime = rpm.buildtime
          package.size = rpm.size
 
-         package.builder = Maintainer.import_from_changelogname(rpm.change_log.first[1])
+         package.builder = Maintainer.import_from_changelogname(rpm.change_log.first&.[](1))
 
          BranchingMaintainer.find_or_create_by!(maintainer: package.builder,
                                                 branch: branch_path.branch)
