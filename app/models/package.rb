@@ -197,7 +197,7 @@ class Package < ApplicationRecord
 
    # props
    def archive_uri
-      if branch.archive_uri 
+      if branch.archive_uri
          File.join(branch.archive_uri, name[0], name)
       end
    end
@@ -262,25 +262,25 @@ class Package < ApplicationRecord
          if rpm_ru.description.present? && rpm_ru.description != rpm.description
             package.descriptions << Lorem::Description.new(text: rpm_ru.description, codepage: "ru_RU.UTF-8")
          end
-      end
 
-      if rpm.sourcerpm
-         spkgs = Rpm.where(filename: rpm.sourcerpm, branch_path_id: branch_path.source_path)
-         if spkgs.blank?
+         if rpm.sourcerpm
             spkgs = Rpm.where(filename: rpm.sourcerpm,
                               branch_path_id: branch_path.branch.branch_paths.src.select(:id)).src
-
             if spkgs.blank?
                spkgs = Rpm.where(filename: rpm.sourcerpm,
                                  branch_path_id: branch_path.source_path_id).src
             end
+
+            package.src_id = spkgs.first&.package_id
+         end
+      end
+
+      if rpm.sourcerpm
+         if spkg_id = Rpm.where(filename: rpm.sourcerpm, branch_path_id: branch_path.source_path).first&.package_id
+            package.src_id = spkg_id
          end
 
-         spkg_id = spkgs.first&.package_id
-
-         if spkg_id
-            package.src_id = spkg_id
-         else
+         if !package.src_id
             raise SourceIsntFound.new(rpm.sourcerpm)
          end
       end
@@ -309,7 +309,7 @@ class Package < ApplicationRecord
          if package.changed?
             package.save!
          end
-         
+
          r = Rpm.unscope(:where)
                 .find_or_initialize_by(branch_path_id: branch_path.id,
                                        filename: rpm.filename,
