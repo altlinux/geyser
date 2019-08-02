@@ -96,7 +96,7 @@ class Maintainer < ApplicationRecord
             end
          end
 
-         at_in = changelogname&.scan(/ (\d+)(?: ([+-])(\d{2})(\d{2}))?/).first
+         at_in = changelogname&.scan(/ (\d+)(?: ([+-])(\d{2})(\d{2}))?/)&.first
          if at_in.present?
             seconds = at_in[0].to_i - "#{at_in[1]}#{(at_in[2].to_i * 60 + at_in[3].to_i) * 60}".to_i
             at = Time.at(seconds.to_i)
