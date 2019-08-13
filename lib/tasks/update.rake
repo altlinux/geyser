@@ -56,14 +56,16 @@ namespace :update do
    task upcache: %i(environment) do |_, _|
       include Rails.application.routes.url_helpers
 
-      # call to root for langs
-      I18n.available_locales.each do |locale|
-         (1..5).find do |_|
-            begin
-               response = Excon.get(root_url(locale: locale))
-               response.status == 200 && response || nil
-            rescue Excon::Error::Timeout
-               nil
+      Branch.find_each do |branch|
+         # call to root for langs
+         I18n.available_locales.each do |locale|
+            (1..5).find do |_|
+               begin
+                  response = Excon.get(home_url(locale: locale, branch: branch))
+                  response.status == 200 && response || nil
+               rescue Excon::Error::Timeout
+                  nil
+               end
             end
          end
       end
