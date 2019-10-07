@@ -103,7 +103,7 @@ group :development do
   gem 'capistrano-rvm', require: false
   gem 'capistrano-faster-assets', require: false
   gem 'capistrano-nginx', github: "majioa/capistrano-nginx", require: false
-  gem 'capistrano-foreman', github: "majioa/capistrano-foreman", require: false
+  gem 'capistrano-foreman', '~> 1.4.0'
   # gem 'capistrano3-puma', github: "seuros/capistrano-puma", require: false
   gem 'capistrano-rake'
   # gem 'xray-rails'
