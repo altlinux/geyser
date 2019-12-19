@@ -7,6 +7,8 @@ env:
   global:
     - DB=postgresql
     - TRAVIS=true
+    - RAILS_ENV=test
+    - RAKE_ENV=$RAILS_ENV
 addons:
   apt_packages:
     - rpm
@@ -22,17 +24,14 @@ before_install:
   - $($INIT)
   - rpm --version
   - env
-  - gem install bundler:2.0.1
-  - bundle install
+  - gem update --system <<< y
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
+  - bundle install
 
 before_script:
-  - gem update --system
-  - gem --version
-  - gem install bundler
   - psql -c 'create database prometheus_test;' -U postgres
-  - bundle exec rake db:migrate
+  - bundle exec rake db:create db:migrate
   - ./cc-test-reporter before-build
 
 script:
