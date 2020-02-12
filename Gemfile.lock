@@ -1,5 +1,5 @@
 GIT
-  remote: https://github.com/majioa/capistrano-nginx.git
+  remote: git://github.com/majioa/capistrano-nginx.git
   revision: f0095a4280872cd669aec3511fc05840bd8b0d62
   specs:
     capistrano-nginx (1.0.0)
