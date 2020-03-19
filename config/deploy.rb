@@ -24,7 +24,6 @@ set :conditionally_migrate, true
 append :linked_files, 'config/secrets.yml',
                       'config/newrelic.yml',
                       'config/database.yml',
-                      'config/initializers/devise.rb',
                       '.env'
 
 # Default value for linked_dirs is []
