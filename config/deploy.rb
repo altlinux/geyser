@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-lock '3.11.0'
+lock '3.12.1'
 
 set :application, 'geyser'
 set :deploy_user, 'apache'
 
 set :branch, ENV['BRANCH'] || "master"
+set :bundle_flags, '--quiet'
 
 # Defaults to false
 # Skip migration if files in db/migrate were not modified
