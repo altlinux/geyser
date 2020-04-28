@@ -21,7 +21,6 @@ services:
   - memcached
 
 before_install:
-  - $($INIT)
   - rpm --version
   - env
   - gem update --system <<< y
