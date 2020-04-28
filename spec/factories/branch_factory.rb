@@ -6,23 +6,20 @@ FactoryBot.define do
   end
 
   factory :branch do
-    name
+    name { Faker::Internet.name }
     slug { Faker::Internet.slug }
     vendor { Faker::App.name }
-    sequence(:order_id)
-    path '/Anything'
+    sequence( :order_id )
 
     transient do
-      arches nil
+      arches { false }
     end
 
-    trait :with_paths do
-      after(:create) do |b, e|
-        source_path = create(:src_branch_path, branch: b)
+    after(:create) do |b, e|
+      source_path = create(:src_branch_path, branch: b)
 
-        if e.arches
-          e.arches.each { |a| create(:branch_path, arch: a, branch: b, source_path: source_path)}
-        end
+      if e.arches
+        e.arches.each { |a| create(:branch_path, arch: a, branch: b, source_path: source_path)}
       end
     end
   end

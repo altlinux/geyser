@@ -24,6 +24,7 @@
 *.log
 *.out
 *.sql
+.ruby-*
 config/newrelic.yml
 public/sitemap*.xml.gz
 spec/examples.txt
@@ -33,5 +34,4 @@ config/development.sphinx.conf
 config/test.sphinx.conf
 coverage/
 .idea/
-.ruby-version
 vendor/cache

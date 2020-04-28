@@ -6,7 +6,7 @@ FactoryBot.define do
       sequence :login do |n|
          "#{ Faker::Internet.user_name }#{ n }"
       end
-      time_zone 'UTC'
+      time_zone { 'UTC' }
       jabber { "#{ login }@altlinux.org" }
       info { Faker::Lorem.paragraph }
       website { Faker::Internet.url }

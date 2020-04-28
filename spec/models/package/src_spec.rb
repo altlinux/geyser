@@ -7,7 +7,7 @@ describe Package::Src do
 
    let(:srpm) { create(:srpm, name: 'openbox') }
    let(:package) { srpm.package }
-   let(:branch) { create(:branch, :with_paths, name: 'Sisyphus', vendor: 'ALT Linux') }
+   let(:branch) { create(:branch, name: 'Sisyphus', vendor: 'ALT Linux') }
    let(:branch_path) { create(:src_branch_path, path: Rails.root.join("spec/data"), branch: branch) }
 
    context 'Associations' do

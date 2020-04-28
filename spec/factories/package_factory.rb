@@ -7,15 +7,16 @@ FactoryBot.define do
       release { 'alt' + Faker::App.semantic_version }
       buildtime { Time.zone.now }
       md5 { Digest::MD5.hexdigest("#{@instance.name}-#{@instance.version}-#{@instance.release}-#{@instance.buildtime}") }
-      groupname 'Graphical desktop/Other'
+      groupname { 'Graphical desktop/Other' }
       arch { %w(i586 x86_64 noarch aarch64 mipsel armh)[rand(6)] }
+      type { 'Package::Built' }
+
       association :builder, factory: :person
       group
-      type 'Package::Built'
 
       factory :spkg, class: 'Package::Src' do
-         arch 'src'
-         type 'Package::Src'
+         arch { 'src' }
+         type { 'Package::Src' }
       end
    end
 end

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Changelog do
-   let(:branch) { create(:branch, :with_paths) }
+   let(:branch) { create(:branch) }
    let(:group) { create(:group) }
    let(:srpm) { create(:srpm, branch: branch, group: group) }
    let(:maintainers) { Maintainer.joins(:changelogs).distinct.as_json(only: %i(name login)) }

@@ -39,7 +39,7 @@ describe Branch do
    end
 
    describe '#arches' do
-      subject { create(:branch, :with_paths, arches: %w(i586 x86_64 noarch aarch64 mipsel armh)) }
+      subject { create(:branch, arches: %w(i586 x86_64 noarch aarch64 mipsel armh)) }
 
       specify { expect(subject.arches).to match_array(%w(i586 x86_64 aarch64 mipsel armh)) }
    end

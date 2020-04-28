@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe Specfile do
-   let(:branch) { create(:branch, :with_paths) }
+   let(:branch) { create(:branch) }
    let(:group) { create(:group) }
    let(:srpm) { create(:srpm, branch: branch, group: group) }
    let(:package) { Package.find_by_id(srpm.package.id) }

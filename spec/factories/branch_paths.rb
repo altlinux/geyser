@@ -10,16 +10,16 @@ FactoryBot.define do
     end
 
     after(:build) do |o, e|
-      o.branch ||= create(:branch, name: e.branchname)
+      o.branch_id ||= create(:branch, name: e.branchname)&.id
 
       if o.arch != "src"
-         o.source_path ||= BranchPath.src.first || build(:src_branch_path, branchname: e.branchname)
+        o.source_path_id ||= BranchPath.src.first&.id || build(:src_branch_path, branchname: e.branchname)&.id
       end
     end
   end
 
   factory :src_branch_path, parent: :branch_path do
-    arch "src"
+    arch { "src" }
     path { Dir.mktmpdir(@cached_attributes[:branchname]) }
   end
 end
