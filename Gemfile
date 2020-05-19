@@ -74,7 +74,7 @@ gem 'excon'
 
 group :production, :staging do
   gem 'lograge'
-  gem 'rack-timeout'
+  gem 'rack-timeout', require: false
   gem 'rack-force_domain'
   gem 'exception_notification'
   gem 'puma_worker_killer'
