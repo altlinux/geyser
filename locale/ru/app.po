@@ -1484,7 +1484,7 @@ msgstr "отчёты repocop о найденных ошибках и замеч�
 msgid "repocop patch"
 msgstr "патч repocop"
 
-msgid "repocop brought patchset for the package"
+msgid "repocop joint patchset for the package"
 msgstr "сведённый набор патчей repocop для пакета"
 
 msgid "reporter"
