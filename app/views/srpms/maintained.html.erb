@@ -21,10 +21,10 @@
         <%= raw _('repo<br>cop') %>
       </th>
     <% end %>
-    <th class='name'><%= _('package') %></th>
+    <th class='name'><%= link_to _('package'), self_url_for(:name) %></th>
     <th class='version'><%= raw _('versions') %></th>
-    <th class='age'><%= _('age') %></th>
-    <th class='url'><%= _('Url') %></th>
+    <th class='age'><%= link_to _('age'), self_url_for(:buildtime) %></th>
+    <th class='url'><%= link_to _('Url'), self_url_for(:url) %></th>
     <th class='description'><%= _('Summary') %></th>
   </tr>
 

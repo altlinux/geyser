@@ -44,9 +44,9 @@ class SrpmsController < ApplicationController
       @all_bugs = BugDecorator.decorate_collection(Issue::Bug.for_maintainer_and_branch(@maintainer, @branch))
       @opened_bugs =  BugDecorator.decorate_collection(@all_bugs.object.opened)
       @spkgs = @branch.spkgs.for_maintainer(@maintainer)
-                            .aggregated
+                            .aggregated(select)
                             .includes(:repocop_patch)
-                            .order(:name, buildtime: :desc)
+                            .reorder(order)
                             .page(params[:page])
                             .per(100)
    end
@@ -56,6 +56,26 @@ class SrpmsController < ApplicationController
    end
 
    protected
+
+   def select
+     order.map { |x| x.is_a?(Hash) && x.keys.first.to_s || x.to_s }.uniq
+   end
+
+   def order
+      orderlist = [ :name ]
+
+      if params[:sort]
+         if params[:order]
+            orderlist.unshift(params[:sort] => params[:order])
+         else
+            orderlist.unshift(params[:sort])
+         end
+      end
+
+      @contraorder = params[:order] != :desc && :desc || :asc
+
+      orderlist
+   end
 
    #TODO makeonly created_at when migrate from time to created_at_time
    def fetch_changelogs

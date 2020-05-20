@@ -100,4 +100,9 @@ module SrpmsHelper
       [title, data]
     end.to_h
   end
+
+  def self_url_for name
+    url_for(sort: name,
+            order: (params[:sort].to_s =~ /^(#{name}|)$/ && params[:order] != 'desc') && 'desc' || 'asc')
+  end
 end

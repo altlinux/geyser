@@ -112,7 +112,7 @@ class Package < ApplicationRecord
       wsqls = %w(name description).map { |c| Arel.sql(sanitize_sql_array(["packages.#{c} ~ ?", "^#{text_re}$"])) }
       where(wsqls.join(" OR "))
    end
-   scope :aggregated, -> do
+   scope :aggregated, ->(select = [ "packages.name" ]) do
          qs_select = Arel.sql("packages.name,
                       array_agg(DISTINCT packages.id) AS src_ids,
                       jsonb_object_agg(DISTINCT packages.buildtime,
@@ -135,7 +135,7 @@ class Package < ApplicationRecord
 
          joins(:branch, "INNER JOIN (#{qs.to_sql}) AS qs ON packages.id = ANY (qs.src_ids)")
         .order("packages.name, branches.order_id DESC")
-        .select("DISTINCT on(packages.name) packages.*, branches.slug, qs.evrbes, qs.slugs")
+        .select("DISTINCT on(#{[ select ].flatten.join(",")}) packages.*, branches.slug, qs.evrbes, qs.slugs")
    end
    scope :counted_arches_for, ->(branch) do
       ases = Package.joins(:branches)
