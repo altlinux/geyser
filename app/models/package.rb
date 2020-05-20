@@ -77,7 +77,7 @@ class Package < ApplicationRecord
           .order(Arel.sql("(CASE packages.arch WHEN 'src' THEN 0 ELSE 1 END)"))
    end
    scope :query, ->(text_in) do
-      text = text_in.to_s.gsub(/[ \._\-]+/, ' & ')
+      text = text_in.to_s.split(/(?<=\w)[ \._\-]+(?=\w)/).reject { |x| x.blank? }.join(" & ")
       tqs_from = Arel.sql(sanitize_sql_array(["packages, to_tsquery(?) AS q", text]))
       tqs_select = Arel.sql(sanitize_sql_array(["DISTINCT name, src_id, CASE packages.name WHEN ? THEN 1 ELSE ts_rank_cd(tsv, q, 32) END AS rank", text_in]))
       tqs = Package.from(tqs_from).where("tsv @@ q").select(tqs_select)
