@@ -29,7 +29,9 @@
      <%= changelog.evr %>
   </b> <br>
   <ul class="change">
-    <%= simple_format(changelog.text) %>
+    <pre>
+<%= changelog.text %>
+    </pre>
   </ul>
 <% end %>
 
