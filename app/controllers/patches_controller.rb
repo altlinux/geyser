@@ -8,7 +8,7 @@ class PatchesController < ApplicationController
    before_action :fetch_bugs, only: :index
 
    def index
-      @patches = Patch.for_packages(@spkgs).presented.uniq_by(:patch)
+      @patches = @spkg.patches
    end
 
    def show
@@ -26,8 +26,15 @@ class PatchesController < ApplicationController
           index: %i(patches),
       }[action_name.to_sym]
 
-      spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(params[:evrb]).order(buildtime: :desc)
-      @spkgs = spkgs.includes(*includes) if includes
+      @spkgs = @branch.spkgs.by_name(params[:reponame])
+                            .by_evr(params[:evrb])
+                            .joins(:branches)
+                            .order({version: :desc,
+                                    release: :desc,
+                                    buildtime: :desc},
+                                   "branches.order_id")
+      # NOTE erroring by bullet
+      # @spkgs = spkgs.includes(*includes) if includes
       
       @spkg = @spkgs.first!
    end
