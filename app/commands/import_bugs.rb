@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'csv'
-require 'net/http'
+require 'excon'
 
 class ImportBugs
    attr_reader :url, :maintainer_ids
@@ -58,12 +58,19 @@ class ImportBugs
    end
 
    def import_issues
+      to_remove = []
+
       (assigned_tos, attrs) = parsed[1..-1].map do |l|
          attrs = [ATTR_NAMES, l].transpose.to_h
          if branch_path = branch_path_for(attrs.delete(:product))
             [ attrs.delete(:assigned_to), attrs.merge(type: 'Issue::Bug', branch_path_id: branch_path.id) ]
+         else
+            to_remove << attrs[:no]
+            nil
          end
       end.compact.transpose
+
+      Issue::Bug.where(no: to_remove).delete_all
 
       result = Issue.import!(attrs,
                     on_duplicate_key_update: {
@@ -90,13 +97,7 @@ class ImportBugs
       BranchPath.joins(:branch).where(primary: true, branches: { name: branch_name}).first
    end
 
-   def uri
-      URI.parse(url)
-   end
-
    def data
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      data = http.get(uri.request_uri).body
+      @data ||= Excon.get(url).body
    end
 end
