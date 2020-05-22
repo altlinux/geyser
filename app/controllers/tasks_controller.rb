@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TasksController < ApplicationController
+   include Srpmable
+
    before_action :fetch_maintainer, only: %i(index)
    before_action :fetch_bug_lists, only: %i(index)
    before_action :set_branches, only: %i(index)
@@ -31,21 +33,6 @@ class TasksController < ApplicationController
    def fetch_bug_lists
       @all_bugs = BugDecorator.decorate_collection(Issue::Bug.for_maintainer_and_branch(@maintainer, @branch))
       @opened_bugs =  BugDecorator.decorate_collection(@all_bugs.object.opened)
-   end
-
-   def fetch_spkg
-      spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(params[:evrb]).order(buildtime: :desc)
-
-      @spkg = spkgs.first!.decorate
-   end
-
-   def fetch_spkgs_by_name
-      @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
-                                                     .by_name(params[:reponame])
-                                                     .joins(:branch)
-                                                     .merge(Branch.published)
-                                                     .includes(:branch_path, :branch, :package)
-                                                     .order('packages.buildtime DESC, branches.order_id'))
    end
 
    def set_evrb

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SourcesController < ApplicationController
+   include Srpmable
+
    before_action :set_evrb, except: :download
    before_action :fetch_spkg, except: %i(download)
    before_action :fetch_spkgs_by_name, only: %i(index)
@@ -8,7 +10,7 @@ class SourcesController < ApplicationController
    before_action :fetch_bugs, only: :index
 
    def index
-      @sources = Source.where(package: @spkgs).real.uniq_by(:content)
+      @sources = @spkg.sources
    end
 
    def download
@@ -16,21 +18,6 @@ class SourcesController < ApplicationController
    end
 
    protected
-
-   def fetch_spkg
-      @spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(params[:evrb]).order(buildtime: :desc)
-
-      @spkg = @spkgs.first!
-   end
-
-   def fetch_spkgs_by_name
-      @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
-                                                     .by_name(params[:reponame])
-                                                     .joins(:branch)
-                                                     .merge(Branch.published)
-                                                     .includes(:branch_path, :branch, :package)
-                                                     .order('packages.buildtime DESC, branches.order_id'))
-   end
 
    def set_evrb
       @evrb = params[:evrb]

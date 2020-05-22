@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class IssuesController < ApplicationController
+   include Srpmable
+
    before_action :set_evrb, only: :index
    before_action :fetch_spkg, only: :index
    before_action :fetch_spkgs_by_name, only: :index
@@ -52,21 +54,6 @@ class IssuesController < ApplicationController
                          .order(at: :desc, evr: :desc, created_at: :desc)
    end
 
-   def fetch_spkg
-      spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(params[:evrb]).order(buildtime: :desc)
-
-      @spkg = spkgs.first!.decorate
-   end
-
-   def fetch_spkgs_by_name
-      @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
-                                                     .by_name(params[:reponame])
-                                                     .joins(:branch)
-                                                     .merge(Branch.published)
-                                                     .includes(:branch_path, :branch, :package)
-                                                     .order('packages.buildtime DESC, branches.order_id'))
-   end
-
    def set_evrb
       @evrb = params[:evrb]
    end
@@ -77,8 +64,8 @@ class IssuesController < ApplicationController
    end
 
    def fetch_bugs
-      @all_bugs = BugDecorator.decorate_collection(apply_scopes(Issue::Bug).s(@spkg))
-      @opened_bugs = BugDecorator.decorate_collection(@all_bugs.object.opened)
+      @all_bugs = BugDecorator.decorate_collection(apply_scopes(Issue::Bug).s(@spkg).includes(:branch))
+      @opened_bugs = BugDecorator.decorate_collection(@all_bugs.object.opened.includes(:branch))
    end
 
    def fetch_maintainer
@@ -86,7 +73,7 @@ class IssuesController < ApplicationController
    end
 
    def fetch_maintainer_bugs
-      @all_bugs = BugDecorator.decorate_collection(Issue::Bug.for_maintainer_and_branch(@maintainer, @branch))
-      @opened_bugs =  BugDecorator.decorate_collection(@all_bugs.object.opened)
+      @all_bugs = BugDecorator.decorate_collection(Issue::Bug.for_maintainer_and_branch(@maintainer, @branch).includes(:branch))
+      @opened_bugs =  BugDecorator.decorate_collection(@all_bugs.object.opened.includes(:branch))
    end
 end

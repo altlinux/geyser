@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class RepocopNotesController < ApplicationController
+   include Srpmable
+
    before_action :set_evrb, only: %i(index)
    before_action :fetch_spkg, only: %i(index)
    before_action :fetch_spkgs_by_name, only: %i(index)
@@ -22,21 +24,6 @@ class RepocopNotesController < ApplicationController
    def set_branches
       @branches_s = ActiveModel::Serializer::CollectionSerializer.new(Branch.published,
                                                                       serializer: BranchSerializer)
-   end
-
-   def fetch_spkg
-      spkgs = @branch.spkgs.by_name(params[:reponame]).by_evr(params[:evrb]).order(buildtime: :desc)
-
-      @spkg = spkgs.first!.decorate
-   end
-
-   def fetch_spkgs_by_name
-      @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
-                                                     .by_name(params[:reponame])
-                                                     .joins(:branch)
-                                                     .merge(Branch.published)
-                                                     .includes(:branch_path, :branch, :package)
-                                                     .order('packages.buildtime DESC, branches.order_id'))
    end
 
    def set_evrb

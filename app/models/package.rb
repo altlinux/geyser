@@ -61,7 +61,7 @@ class Package < ApplicationRecord
    end
    scope :by_evr, ->(evr) do
       if evr.blank?
-         all
+         self
       else
          evrs = evr.split(/[:\-]/)
 

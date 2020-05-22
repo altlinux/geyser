@@ -22,7 +22,7 @@
   <% @sources.each do |source| %>
   <tr>
     <td style="border-bottom: #aaa dotted 1px; padding-right:1em;">&middot;
-      <% if source.source %>
+      <% if source.source && source.package %>
         <%= link_to source.filename, download_source_path(branch: @branch, reponame: source.package.name, source_name: source.filename), class: 'news' %>
       <% else %>
         <%= source.filename %>
@@ -30,7 +30,7 @@
     </td>
     <td> <b><%= number_to_human_size(source.size) %></b> </td>
     <td>
-      <% if source.source %>
+      <% if source.source && source.package %>
         <%= link_to _('Download'), download_source_path(branch: @branch, reponame: source.package.name, source_name: source.filename), class: 'news' %>
       <% else %>
         &nbsp;

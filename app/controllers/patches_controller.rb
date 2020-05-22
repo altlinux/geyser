@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class PatchesController < ApplicationController
+   include Srpmable
+
    before_action :set_evrb, except: :download
    before_action :fetch_spkg, except: %i(show download)
    before_action :fetch_spkgs_by_name, only: %i(index)
@@ -20,33 +22,6 @@ class PatchesController < ApplicationController
    end
 
    protected
-
-   def fetch_spkg
-      includes = {
-          index: %i(patches),
-      }[action_name.to_sym]
-
-      @spkgs = @branch.spkgs.by_name(params[:reponame])
-                            .by_evr(params[:evrb])
-                            .joins(:branches)
-                            .order({version: :desc,
-                                    release: :desc,
-                                    buildtime: :desc},
-                                   "branches.order_id")
-      # NOTE erroring by bullet
-      # @spkgs = spkgs.includes(*includes) if includes
-      
-      @spkg = @spkgs.first!
-   end
-
-   def fetch_spkgs_by_name
-      @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
-                                                     .by_name(params[:reponame])
-                                                     .joins(:branch)
-                                                     .merge(Branch.published)
-                                                     .includes(:branch_path, :branch, :package)
-                                                     .order('packages.buildtime DESC, branches.order_id'))
-   end
 
    def set_evrb
       @evrb = params[:evrb]

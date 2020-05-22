@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SrpmsController < ApplicationController
+   include Srpmable
+
    before_action :set_evrb
    before_action :fetch_spkg, only: %i(show find_first)
    before_action :fetch_spkgs_by_name, only: %i(show)
@@ -82,29 +84,6 @@ class SrpmsController < ApplicationController
        @changelogs = @spkg.changelogs
                                     .includes(:maintainer)
                                     .order(at: :desc, evr: :desc, created_at: :desc)
-   end
-
-   def fetch_spkg
-      @includes = {
-          index: %i(packages),
-          rawspec: %i(group branch),
-          gear: [gears: :maintainer],
-      }[action_name.to_sym]
-
-      spkgs = Package::Src.in_branch(@branch).by_name(params[:reponame]).by_evr(@evrb).order(buildtime: :desc)
-
-      spkgs = spkgs.includes(*@includes) if @includes
-
-      @spkg = spkgs.first!.decorate
-   end
-
-   def fetch_spkgs_by_name
-      @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
-                                                     .by_name(params[:reponame])
-                                                     .joins(:branch)
-                                                     .merge(Branch.published)
-                                                     .includes(:branch_path, :branch, :package)
-                                                     .order('packages.buildtime DESC, branches.order_id'))
    end
 
    def set_evrb
