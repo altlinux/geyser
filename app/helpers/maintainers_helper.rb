@@ -13,7 +13,7 @@ module MaintainersHelper
       },
       gear: {
          args: {controller: :gears, action: :index, branch: branch.slug, login: maintainer.login},
-         popup: 'gear repositories which maintainer is involved in',
+         popup: 'gear repositories, which maintainer is involved in',
       },
       bugs: {
          title: _('Bugs') + ' (%s/%s)' % [opened_bugs.count, all_bugs.count],
@@ -23,12 +23,12 @@ module MaintainersHelper
       ftbfs: {
          title: 'FTBFS',
          args: {controller: :issues, action: :ftbfses, branch: branch.slug, login: maintainer.login},
-         popup: 'FTBFS',
+         popup: 'FTBFS list',
       },
       novelties: {
          title: 'Watch',
          args: {controller: :issues, action: :novelties, branch: branch.slug, login: maintainer.login},
-         popup: 'Watch novelties of the external packages monitoring',
+         popup: 'watch novelties of the external packages monitoring',
       },
       repocop: {
          args: {controller: :repocop_notes, action: :maintained, branch: branch.slug, login: maintainer.login},
@@ -37,7 +37,7 @@ module MaintainersHelper
       },
       tasks: {
          args: {controller: :tasks, action: :index, branch: branch.slug, login: maintainer.login},
-         popup: 'build tasks which maintainer have originated',
+         popup: 'build tasks, which maintainer have originated',
       },
     }
 
