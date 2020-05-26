@@ -1418,6 +1418,21 @@ msgstr "оставьте пустым, если вы не хотите внос�
 msgid "list of bugs and feature requests"
 msgstr "список ошибок и предложений по улучшению"
 
+msgid "packages, which was built by this maintainer"
+msgstr "собранные сопровождающим пакеты"
+
+msgid "gear repositories, which maintainer is involved in"
+msgstr "gear репозитории, в которых сопровождающий был вовлечён"
+
+msgid "build tasks, which maintainer have originated"
+msgstr "назначенные сопровождающим собранные задачи"
+
+msgid "watch novelties of the external packages monitoring"
+msgstr "надзор над новинами во внешних источниках пакетов"
+
+msgid "FTBFS list"
+msgstr "Список непересобирающихся пакетов"
+
 msgid "maintainers information"
 msgstr "информация о сопровождающих"
 
