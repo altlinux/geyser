@@ -9,18 +9,12 @@ class AllBugsForSrpm < Rectify::Query
   end
 
   def query
-    Issue::Bug.where(repo_name: reponames,
-                     branch_path_id: branch.branch_paths.select(:id))
+    Issue::Bug.s(spkg)
+              .where(branch_path_id: branch.branch_paths.select(:id))
               .order(Arel.sql("no::integer DESC"))
   end
 
   def decorate
-    BugDecorator.decorate_collection(query)
-  end
-
-  protected
-
-  def reponames
-    @reponames ||= spkg.packages.select(:name).distinct
+    BugDecorator.decorate_collection(query&.includes(:branch))
   end
 end

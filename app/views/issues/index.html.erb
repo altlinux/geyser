@@ -27,11 +27,11 @@
 
 <div style="text-align:left;margin-left:2em;margin-top:1.5em;">
 <%- if params[:q] == 'all' %>
-<span class="tabunsel">&nbsp;<%= link_to _('open'), url_for(q: nil, b: params[:b]), class: 'news' %>&nbsp;</span>
+<span class="tabunsel">&nbsp;<%= link_to _('open'), url_for(q: nil, b: params[:b], branch: @branch), class: 'news' %>&nbsp;</span>
 <span class="tabsel">&nbsp;<%= _('total') %>&nbsp;</span>
 <%- else %>
 <span class="tabsel">&nbsp;<%= _('open') %>&nbsp;</span>
-<span class="tabunsel">&nbsp;<%= link_to _('total'), url_for(q: 'all', b: params[:b]), class: 'news' %>&nbsp;</span>
+<span class="tabunsel">&nbsp;<%= link_to _('total'), url_for(q: 'all', b: params[:b], branch: @branch), class: 'news' %>&nbsp;</span>
 <%- end %>
 </div>
 
