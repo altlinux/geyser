@@ -15,18 +15,19 @@ describe AllBugsForSrpm do
    end
 
    describe '#query' do
-      let(:reponames) { Package.select(:name).distinct }
-      let(:branch_paths) { BranchPath.all }
-
-      before { expect(subject).to receive(:reponames).and_return(reponames) }
+      let(:branch_paths) { srpm.branch.branch_paths.select(:id) }
 
       before do
          #
          # Bug.where(repo_name: reponames).order(bug_id: :desc)
          #
-         expect(Issue::Bug).to receive(:where).with(repo_name: reponames, branch_path_id: branch_paths) do
+         expect(Issue::Bug).to receive(:s).with(srpm.package) do
             double.tap do |a|
-               expect(a).to receive(:order).with("no::integer DESC")
+               expect(a).to receive(:where).with(branch_path_id: branch_paths) do
+                  double.tap do |a|
+                     expect(a).to receive(:order).with(Arel.sql("no::integer DESC"))
+                  end
+               end
             end
          end
       end
@@ -43,26 +44,5 @@ describe AllBugsForSrpm do
       end
 
       specify { expect { subject.decorate }.not_to raise_error }
-   end
-
-   # private methods
-
-   describe '#reponames' do
-      before do
-         #
-         # srpm.packages.pluck(:name).flatten.sort.uniq
-         #
-         expect(srpm.package).to receive(:packages) do
-            double.tap do |a|
-               expect(a).to receive(:select).with(:name) do
-                  double.tap do |b|
-                     expect(b).to receive(:distinct)
-                  end
-               end
-            end
-         end
-      end
-
-      specify { expect { subject.send(:reponames) }.not_to raise_error }
    end
 end

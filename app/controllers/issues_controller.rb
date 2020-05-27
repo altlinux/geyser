@@ -64,8 +64,8 @@ class IssuesController < ApplicationController
    end
 
    def fetch_bugs
-      @all_bugs = BugDecorator.decorate_collection(apply_scopes(Issue::Bug).s(@spkg).includes(:branch))
-      @opened_bugs = BugDecorator.decorate_collection(@all_bugs.object.opened.includes(:branch))
+      @all_bugs = AllBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
+      @opened_bugs = OpenedBugsForSrpm.new(spkg: @spkg, branch: @branch).decorate
    end
 
    def fetch_maintainer
@@ -73,7 +73,7 @@ class IssuesController < ApplicationController
    end
 
    def fetch_maintainer_bugs
-      @all_bugs = BugDecorator.decorate_collection(Issue::Bug.for_maintainer_and_branch(@maintainer, @branch).includes(:branch))
-      @opened_bugs =  BugDecorator.decorate_collection(@all_bugs.object.opened.includes(:branch))
+      @all_bugs = BugDecorator.decorate_collection(Issue::Bug.for_maintainer_and_branch(@maintainer, @branch))
+      @opened_bugs =  BugDecorator.decorate_collection(@all_bugs.object.opened)
    end
 end

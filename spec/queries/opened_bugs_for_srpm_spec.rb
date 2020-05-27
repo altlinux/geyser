@@ -9,8 +9,6 @@ describe OpenedBugsForSrpm do
 
    it { is_expected.to be_a(Rectify::Query) }
 
-   it { expect(described_class::BUG_STATUSES).to eq(['NEW', 'ASSIGNED', 'VERIFIED', 'REOPENED']) }
-
    describe '#initialize' do
       let(:scope) { Issue::Bug.all }
 
@@ -22,8 +20,6 @@ describe OpenedBugsForSrpm do
       end
 
       its(:scope) { is_expected.to eq(scope) }
-      its(:spkg) { is_expected.to eq(srpm.package) }
-      its(:branch) { is_expected.to eq(srpm.branch) }
    end
 
    describe '#decorate' do
@@ -34,6 +30,7 @@ describe OpenedBugsForSrpm do
          # AllBugsForSrpm.new(srpm) => scope
          #
          expect(AllBugsForSrpm).to receive(:new).with(spkg: srpm.package, branch: srpm.branch).and_return(scope)
+
       end
 
       before do
