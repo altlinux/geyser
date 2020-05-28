@@ -12,11 +12,11 @@ class TasksController < ApplicationController
    before_action :fetch_bugs, only: %i(pkg_index)
 
    def index
-      @tasks = @maintainer.tasks.includes(:branch)
+      @tasks = TaskDecorator.decorate_collection(@maintainer.tasks.includes(:branch, :exercises))
    end
 
    def pkg_index
-      @tasks = @spkg.tasks.includes(:branch, :owner)
+      @tasks = TaskDecorator.decorate_collection(@spkg.tasks.includes(:branch, :owner, :exercises))
    end
 
    protected

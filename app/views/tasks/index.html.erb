@@ -21,6 +21,7 @@
     <th><%= _('try') %></th>
     <th><%= _('changed at') %></th>
     <th><%= _('branch') %></th>
+    <th><%= _('components') %></th>
   </tr>
   <% @tasks.each do |task| %>
     <tr>
@@ -28,9 +29,10 @@
     <td><%= _(task.state) %></td>
     <td><%= task.shared && _('shared') || _('private') %></td>
     <td><%= task.test && _('test') || _('prod') %></td>
-    <td><%= [ task.try, task.iteration != 1 && task.iteration || nil ].compact.join(".") %></td>
+    <td><%= [ task.object.try, task.object.iteration != 1 && task.object.iteration || nil ].compact.join(".") %></td>
     <td><%= time_ago_in_words(task.changed_at) %></td>
     <td><%= link_to _(task.branch.name), home_path(task.branch) %></td>
+    <td><%= _(task.exercise_links) %></td>
     </tr>
   <% end %>
 </table>

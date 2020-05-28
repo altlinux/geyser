@@ -1654,6 +1654,9 @@ msgstr "попытка"
 msgid "changed at"
 msgstr "изменено"
 
+msgid "components"
+msgstr "компоненты"
+
 msgid "owner"
 msgstr "владелец"
 
