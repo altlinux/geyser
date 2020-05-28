@@ -19,7 +19,10 @@ class BranchingMaintainer < ApplicationRecord
    end
 
    def update_count!
-      srpms_count = maintainer.acl_names.joins(:branch_path).where(branch_paths: { branch_id: branch }).count
+      srpms_count = maintainer.packages
+                              .joins(:branch_paths)
+                              .where(branch_paths: { branch_id: branch })
+                              .count
 
       self.update!(srpms_count: srpms_count)
    end

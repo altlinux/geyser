@@ -56,7 +56,7 @@
 <% end %>
 <br>
 <%- if @spkg.task %>
-<b><%= _('Task no:') %></b> <%= link_to @spkg.task.no, @spkg.task.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('task number and uri') %><br>
+<b><%= _('Task no') %>:</b> <%= link_to @spkg.task.no, @spkg.task.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('task number and uri') %><br>
 <%- end %>
 
 <% if @spkg.newer_gear %>
