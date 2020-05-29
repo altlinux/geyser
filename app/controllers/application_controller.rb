@@ -37,12 +37,14 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from ActiveRecord::RecordNotFound do |e|
-    Rails.logger.debug "E: #{e}"
+    Rails.logger.error "E: #{e.class}: #{e.message}\n\t#{e.backtrace.join("\n\t")}"
 
     render status: 404, file: "#{ Rails.root }/public/404.html", layout: false
   end
 
   rescue_from ActionController::BadRequest do
+    Rails.logger.error "E: #{e.class}: #{e.message}\n\t#{e.backtrace.join("\n\t")}"
+
     redirect_to root_url
   end
 
@@ -66,6 +68,8 @@ class ApplicationController < ActionController::Base
      @branch = Branch.find_by!(slug: params[:branch].blank? && 'sisyphus' || params[:branch]).decorate
      @default_branch = @branch
   rescue ActiveRecord::RecordNotFound
+    Rails.logger.error "E: #{e.class}: #{e.message}\n\t#{e.backtrace.join("\n\t")}"
+
     redirect_to root_path
   end
 

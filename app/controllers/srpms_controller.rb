@@ -130,7 +130,9 @@ class SrpmsController < ApplicationController
          serializer: PackageAsArchCountSerializer).as_json
    end
 
-   def redirect_to_home
+   def redirect_to_home e
+      Rails.logger.error "E: #{e.class}: #{e.message}\n\t#{e.backtrace.join("\n\t")}"
+
       redirect_to home_url(branch: @branch)
    end
 end
