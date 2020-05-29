@@ -14,7 +14,6 @@ module Srpmable
       @spkg = spkgs.in_branch(@branch).first&.decorate
 
       if !@spkg
-           binding.pry
          rpms = Rpm.joins(:package, :branch_path, :branch)
                    .by_name(params[:reponame])
                    .by_evr(@evrb)
@@ -23,7 +22,7 @@ module Srpmable
                            "packages.release": :desc,
                            "packages.buildtime": :desc},
                            "branches.order_id")
-         if branch = rpms.first.branch
+         if branch = rpms.first.branch && branch != @branch
             redirect_to url_for(branch: branch)
          else
             raise ActiveRecord::ActiveRecordError.new
