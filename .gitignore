@@ -24,6 +24,7 @@
 *.log
 *.out
 *.sql
+.env
 .ruby-*
 config/newrelic.yml
 public/sitemap*.xml.gz
