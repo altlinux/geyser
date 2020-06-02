@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-03 16:02+0300\n"
-"PO-Revision-Date: 2015-04-03 16:02+0300\n"
+"POT-Creation-Date: 2020-06-02 21:44+0300\n"
+"PO-Revision-Date: 2020-06-02 21:44+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -21,21 +21,21 @@ msgstr ""
 msgid " or "
 msgstr ""
 
+msgid "&quot; in all branches were found"
+msgstr ""
+
 msgid "&quot; in branch <b>%s</b> were found"
 msgstr ""
 
 msgid "<abbr title=\"Fails To Build From Source\">FTBFS:</abbr>"
 msgstr ""
 
-msgid "<b>A:</b> Create filter for rsync with the help of this"
-msgstr ""
-
-msgid "<b>Limit<br>by size:</b><br>"
+msgid "<b>A:</b> Create filter for rsync with the help of this "
 msgstr ""
 
 msgid ""
 "<b>Geyser</b> project is an attempt to create analytic site for developers and users of\n"
-"Sisyphus repository.<br><br>\n"
+"Alt repositories.<br><br>\n"
 "\n"
 "It is useful for developers due to ability to more closely interoperate with other\n"
 "developers and users of respective packages.  This site is especially valueable\n"
@@ -43,21 +43,26 @@ msgid ""
 "\"what status is\" in interesting field.<br><br>\n"
 "\n"
 "Sisyphus users can get full information about a package beforehand. There are\n"
-"handy links (site of origin, ALT Linux specific issues, wiki, etc.).<br><br>\n"
+"handy links (site of origin, ALT specific issues, wiki, etc.).<br><br>\n"
 "\n"
-"The project is useful for BaseALT Ltd. and ALT core team too, as it gives\n"
+"The project is useful for BaseALT SPO Ltd. and ALT Linux Team too, as it gives\n"
 "information about Sisyphus development, strong and weak aspects, actively\n"
 "supported and used groups of packages.<br><br>\n"
 "\n"
 "Another nice property of the project is posibility to use it together with\n"
 "any other package repository snapshot (not only Sisyphus itself), for local\n"
-"development within a small group or even one's self."
+"development within a small group or even one's self.<br><br>\n"
+"\n"
+"The <a class='news' href='https://github.com/altlinux/geyser'>Geyser</a> project is based on code from <a class='news' href='https://github.com/biow0lf/prometheus2.0'>Prometheus2.0</a>, which had been made available under the <a class='news'href='https://en.wikipedia.org/wiki/MIT_License'>MIT License.</a>"
+msgstr ""
+
+msgid "<b>Limit<br>by size:</b><br>"
 msgstr ""
 
 msgid "<b>Q:</b> How can I skip heap of packages if I even don't know why I need them?"
 msgstr ""
 
-msgid "<b>Sisyphus</b> is daily updated free software repository by <abbr title=\"Independent ALT Linux development team\" style=\"border-bottom: 1px dotted gray;\">ALT&nbsp;Linux&nbsp;Team</abbr>. Participation in Sisyphus project is open for anyone. This project is based upon software packaging and dependency tracking technologies as well as robust developer collaboration processes. Any ALT&nbsp;Linux distribution and <b>APT</b> package manager is sufficient to use Sisyphus. Sisyphus is a solution set constantly being under development which can be used to create universal or specialized <b>Linux distributions</b> or just <b>single systems</b>."
+msgid "<b>Sisyphus</b> is daily updated free software <b>repository</b> by <abbr title=\"Independent ALT development team\" style=\"border-bottom: 1px dotted gray;\">ALT&nbsp;Linux&nbsp;Team</abbr>. Participation in Sisyphus project is open for anyone. This project is based upon software packaging and dependency tracking technologies as well as robust developer collaboration processes. You can switch to Sisyphus from any ALT distribution using <b>APT</b> package manager. Sisyphus is a solution set constantly being under development which can be used to create universal or specialized <b>Linux distributions</b> or just <b>single systems</b>."
 msgstr ""
 
 msgid "ACL's"
@@ -66,10 +71,10 @@ msgstr ""
 msgid "ACL:"
 msgstr ""
 
-msgid "ALT Linux Planet"
+msgid "AEN"
 msgstr ""
 
-msgid "ALT Linux Team - Sisyphus packages info"
+msgid "ALT - package repositories info"
 msgstr ""
 
 msgid "ALT Linux Team - wiki"
@@ -78,13 +83,52 @@ msgstr ""
 msgid "ALT repositories"
 msgstr ""
 
+msgid "AWAITING"
+msgstr ""
+
 msgid "About"
 msgstr ""
 
 msgid "Accessibility"
 msgstr ""
 
+msgid "Aleksei Nikiforov"
+msgstr ""
+
+msgid "Alexander Makeenkov"
+msgstr ""
+
+msgid "Alexander Myltsev"
+msgstr ""
+
+msgid "Alexei Takaseev"
+msgstr ""
+
+msgid "Alexey Appolonov"
+msgstr ""
+
+msgid "Alexey Gladkov"
+msgstr ""
+
 msgid "Alexey Shabalin"
+msgstr ""
+
+msgid "Alexey Tourbin"
+msgstr ""
+
+msgid "All arches"
+msgstr ""
+
+msgid "All branches"
+msgstr ""
+
+msgid "Altlinux public wiki"
+msgstr ""
+
+msgid "Andrew Savchenko"
+msgstr ""
+
+msgid "Andrey Bychkov"
 msgstr ""
 
 msgid "Andrey Cherepanov"
@@ -96,7 +140,16 @@ msgstr ""
 msgid "Anton Farygin"
 msgstr ""
 
-msgid "Any ALT&nbsp;Linux distribution and <b>APT</b> package manager is sufficient to use Sisyphus <b><a href=\"http://en.altlinux.org/Regular\">regular LiveCD builds</a></b>."
+msgid "Anton Midyukov"
+msgstr ""
+
+msgid "Anton V. Boyarshinov"
+msgstr ""
+
+msgid "Architecture dependent srpms"
+msgstr ""
+
+msgid "Archive:"
 msgstr ""
 
 msgid "Archiving/Backup"
@@ -117,9 +170,6 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-msgid "Blog"
-msgstr ""
-
 msgid "Books/Computer books"
 msgstr ""
 
@@ -135,13 +185,22 @@ msgstr ""
 msgid "Books/Other"
 msgstr ""
 
-msgid "Broken changelog entry."
+msgid "Branches"
+msgstr ""
+
+msgid "Bugs"
 msgstr ""
 
 msgid "Bugs and FR"
 msgstr ""
 
 msgid "Bugs/FR statistics assigned to this maintainer"
+msgstr ""
+
+msgid "Bugzilla"
+msgstr ""
+
+msgid "Bugzilla - create a new issue"
 msgstr ""
 
 msgid "Build time:"
@@ -168,9 +227,6 @@ msgstr ""
 msgid "Changes:"
 msgstr ""
 
-msgid "Choose a mirror:"
-msgstr ""
-
 msgid "Click the link below to unlock your account:"
 msgstr ""
 
@@ -183,6 +239,9 @@ msgstr ""
 msgid "Confirm new password"
 msgstr ""
 
+msgid "Cronbuild Service"
+msgstr ""
+
 msgid "Current maintainer:"
 msgstr ""
 
@@ -192,7 +251,13 @@ msgstr ""
 msgid "Currently waiting confirmation for:"
 msgstr ""
 
+msgid "DONE"
+msgstr ""
+
 msgid "Databases"
+msgstr ""
+
+msgid "Denis Medvedev"
 msgstr ""
 
 msgid "Denis Nazarov"
@@ -282,13 +347,22 @@ msgstr ""
 msgid "Didn't receive unlock instructions?"
 msgstr ""
 
+msgid "Discussion forum"
+msgstr ""
+
 msgid "Dmitriy Kulik"
+msgstr ""
+
+msgid "Dmitry V. Levin"
 msgstr ""
 
 msgid "Documentation"
 msgstr ""
 
 msgid "Download"
+msgstr ""
+
+msgid "EPERM"
 msgstr ""
 
 msgid "Edit my maintainer profile"
@@ -318,13 +392,34 @@ msgstr ""
 msgid "Eugeny A. Rostovtsev"
 msgstr ""
 
+msgid "Evgenii Terechkov"
+msgstr ""
+
+msgid "FAILED"
+msgstr ""
+
+msgid "FAILING"
+msgstr ""
+
 msgid "FTBFS"
+msgstr ""
+
+msgid "FTBFS list"
+msgstr ""
+
+msgid "Facebook"
+msgstr ""
+
+msgid "Facebook ALTLinux page"
 msgstr ""
 
 msgid "File tools"
 msgstr ""
 
 msgid "Forgot your password?"
+msgstr ""
+
+msgid "Forum"
 msgstr ""
 
 msgid "Games/Adventure"
@@ -357,7 +452,112 @@ msgstr ""
 msgid "Gear"
 msgstr ""
 
+msgid "Gear:"
+msgstr ""
+
+msgid "George V. Kouryachy"
+msgstr ""
+
+msgid "Geyser - 404"
+msgstr ""
+
+msgid "Geyser - Group &laquo;%s&raquo;"
+msgstr ""
+
+msgid "Geyser - Group - Error!"
+msgstr ""
+
+msgid "Geyser - Groups"
+msgstr ""
+
+msgid "Geyser - Information about the project"
+msgstr ""
+
+msgid "Geyser - Intro"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo;"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - ACL"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs and FR"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - FTBFS"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Feature Requests"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Gear"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Packages"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Repocop"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Tasks"
+msgstr ""
+
+msgid "Geyser - Maintainers"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo;"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Bugs"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Changelog"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Download"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Gear"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Patches"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Repocop"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Sources"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Spec"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Tasks"
+msgstr ""
+
+msgid "Geyser - Rsync Exclude"
+msgstr ""
+
+msgid "Geyser - Search"
+msgstr ""
+
+msgid "Geyser - Security"
+msgstr ""
+
+msgid "Geyser - Team &laquo;%s&raquo;"
+msgstr ""
+
+msgid "Geyser - Teams"
+msgstr ""
+
+msgid "Git Repos"
+msgstr ""
+
 msgid "Git repo"
+msgstr ""
+
+msgid "Gleb Fotengauer-Malinovskiy"
 msgstr ""
 
 msgid "Graphical desktop/Enlightenment"
@@ -405,6 +605,12 @@ msgstr ""
 msgid "Graphics"
 msgstr ""
 
+msgid "Grigory Batalov"
+msgstr ""
+
+msgid "Grigory Ustinov"
+msgstr ""
+
 msgid "Group"
 msgstr ""
 
@@ -441,10 +647,31 @@ msgstr ""
 msgid "Information:"
 msgstr ""
 
+msgid "It is useful to estimate the current state of Sisyphus by <b><a href=\"http://en.altlinux.org/Regular\">the regular LiveCD builds</a></b>."
+msgstr ""
+
+msgid "Ivan A. Melnikov"
+msgstr ""
+
+msgid "Ivan Zakharyaschev"
+msgstr ""
+
 msgid "Jabber ID:"
 msgstr ""
 
-msgid "Last update:"
+msgid "Kernel Bot"
+msgstr ""
+
+msgid "Kiriil A. Shutemov"
+msgstr ""
+
+msgid "Konstantin A. Lepikhov"
+msgstr ""
+
+msgid "Last changes"
+msgstr ""
+
+msgid "Last updated at"
 msgstr ""
 
 msgid "Lenar Shakirov"
@@ -486,6 +713,12 @@ msgstr ""
 msgid "Michael Shigorin"
 msgstr ""
 
+msgid "Mikhail"
+msgstr ""
+
+msgid "Mikhail Efremov"
+msgstr ""
+
 msgid "Monitoring"
 msgstr ""
 
@@ -493,6 +726,9 @@ msgid "Motsyo Gennadi"
 msgstr ""
 
 msgid "Mykola Grechukh"
+msgstr ""
+
+msgid "NEW"
 msgstr ""
 
 msgid "Networking/Chat"
@@ -528,10 +764,16 @@ msgstr ""
 msgid "Networking/WWW"
 msgstr ""
 
-msgid "New SRPMs"
+msgid "New password"
 msgstr ""
 
-msgid "New password"
+msgid "Nikolai Kostrigin"
+msgstr ""
+
+msgid "Nikolay A. Fetisov"
+msgstr ""
+
+msgid "No files to download"
 msgstr ""
 
 msgid "No such branch!"
@@ -543,13 +785,10 @@ msgstr ""
 msgid "No such group!"
 msgstr ""
 
-msgid "No such package!"
-msgstr ""
-
-msgid "No such team!"
-msgstr ""
-
 msgid "Office"
+msgstr ""
+
+msgid "Oleg Solovyov"
 msgstr ""
 
 msgid "On your query &quot;"
@@ -561,13 +800,13 @@ msgstr ""
 msgid "Other repositories"
 msgstr ""
 
+msgid "PENDING"
+msgstr ""
+
 msgid "Package groups"
 msgstr ""
 
 msgid "Packages"
-msgstr ""
-
-msgid "Packages built by this maintainer:"
 msgstr ""
 
 msgid "Packages to rebuild:"
@@ -576,109 +815,25 @@ msgstr ""
 msgid "Page not found"
 msgstr ""
 
-msgid "Patch is too large."
-msgstr ""
-
 msgid "Patches"
 msgstr ""
 
-msgid "Planet"
+msgid "Paul Wolneykien"
+msgstr ""
+
+msgid "Pavel Moseev (Mars)"
+msgstr ""
+
+msgid "Pavel Skrylev"
 msgstr ""
 
 msgid "Project Geyser"
 msgstr ""
 
-msgid "Geyser - 404"
-msgstr ""
-
-msgid "Geyser - Group &laquo;%s&raquo;"
-msgstr ""
-
-msgid "Geyser - Group - Error!"
-msgstr ""
-
-msgid "Geyser - Groups"
-msgstr ""
-
-msgid "Geyser - Information about the project"
-msgstr ""
-
-msgid "Geyser - Intro"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo;"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - ACL"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs and FR"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs and FR (All)"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - FTBFS"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - Gear"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - Packages"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - Repocop"
-msgstr ""
-
-msgid "Geyser - Maintainers &amp; Teams"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo;"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - All bugs"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Bugs"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Changelog"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Download"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Gear"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Patches"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Repocop"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Sources"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Spec"
-msgstr ""
-
-msgid "Geyser - Rsync Exclude"
-msgstr ""
-
-msgid "Geyser - Search"
-msgstr ""
-
-msgid "Geyser - Security"
-msgstr ""
-
-msgid "Geyser - Team &laquo;%s&raquo;"
-msgstr ""
-
-msgid "Geyser - Team - Error!"
-msgstr ""
-
 msgid "Publishing"
+msgstr ""
+
+msgid "Quantity of source rpms resized in the branch source "
 msgstr ""
 
 msgid "RPM filter for rsync"
@@ -698,16 +853,28 @@ msgstr ""
 msgid "Raw spec file"
 msgstr ""
 
+msgid "Recent changes (last three changelog entries):"
+msgstr ""
+
 msgid "Repocop"
 msgstr ""
 
 msgid "Repocop messages:"
 msgstr ""
 
+msgid "Repocop status:"
+msgstr ""
+
 msgid "Resend confirmation instructions"
 msgstr ""
 
 msgid "Resend unlock instructions"
+msgstr ""
+
+msgid "Ruby Team"
+msgstr ""
+
+msgid "SRPMs in branches"
 msgstr ""
 
 msgid "SRPMs:"
@@ -746,6 +913,9 @@ msgstr ""
 msgid "Search is not available."
 msgstr ""
 
+msgid "Search over all branches..."
+msgstr ""
+
 msgid "Search..."
 msgstr ""
 
@@ -761,10 +931,16 @@ msgstr ""
 msgid "Security/Networking"
 msgstr ""
 
-msgid "Select branch:"
+msgid "Seen on building"
 msgstr ""
 
 msgid "Send me reset password instructions"
+msgstr ""
+
+msgid "Sergey Bolshakov"
+msgstr ""
+
+msgid "Sergey V Turchin"
 msgstr ""
 
 msgid "Shells"
@@ -779,7 +955,7 @@ msgstr ""
 msgid "Sign up"
 msgstr ""
 
-msgid "Sisyphus is not intended for end users and its usage may result in unpredictable behaviour. You might want to use ALT Linux distributions and their usual updates if you want to run a reliable system."
+msgid "Sisyphus is not intended for end users and its usage may result in unpredictable behaviour. You might want to use ALT distributions and their usual updates if you want to run a reliable system."
 msgstr ""
 
 msgid ""
@@ -792,9 +968,6 @@ msgid ""
 "\n"
 "This form helps you to create such file of exceptions. You can filter by group of packages and by size.<br><br>\n"
 "<b>Warning:</b> filters combined together with a logical &quot;AND&quot;"
-msgstr ""
-
-msgid "Sisyphus repository"
 msgstr ""
 
 msgid "Sisyphus sync"
@@ -828,6 +1001,12 @@ msgid "Specfile is not UTF-8 valid."
 msgstr ""
 
 msgid "Sphinx rebuild indexes. Please try again later."
+msgstr ""
+
+msgid "Srpm counts calculated per physical architecture for the current branch"
+msgstr ""
+
+msgid "Stanislav Levin"
 msgstr ""
 
 msgid "Summary"
@@ -893,10 +1072,19 @@ msgstr ""
 msgid "System/XFree86"
 msgstr ""
 
+msgid "TESTED"
+msgstr ""
+
 msgid "TOP RPMs"
 msgstr ""
 
 msgid "TOP maintainers"
+msgstr ""
+
+msgid "Task no"
+msgstr ""
+
+msgid "Tasks"
 msgstr ""
 
 msgid "Team leader:"
@@ -911,19 +1099,31 @@ msgstr ""
 msgid "Teams"
 msgstr ""
 
+msgid "Telegram channel"
+msgstr ""
+
 msgid "Terminals"
 msgstr ""
 
 msgid "Text tools"
 msgstr ""
 
+msgid "The <a class='news' href='https://github.com/altlinux/geyser'>Geyser</a> project is based on code from <a class='news' href='https://github.com/biow0lf/prometheus2.0'>Prometheus2.0</a>, which had been made available under the <a class='news'href='https://en.wikipedia.org/wiki/MIT_License'>MIT License.</a>"
+msgstr ""
+
 msgid "There are no bugreports against this package"
+msgstr ""
+
+msgid "This branch is supported by the Basealt SPO Team."
 msgstr ""
 
 msgid "Time"
 msgstr ""
 
 msgid "Time Zone:"
+msgstr ""
+
+msgid "Tips & tricks"
 msgstr ""
 
 msgid "Total records:"
@@ -950,16 +1150,40 @@ msgstr ""
 msgid "Url"
 msgstr ""
 
+msgid "VK"
+msgstr ""
+
+msgid "VKontakte ALTLinux page"
+msgstr ""
+
 msgid "Valentin Rosavitskiy"
+msgstr ""
+
+msgid "Valery Inozemtsev"
 msgstr ""
 
 msgid "Video"
 msgstr ""
 
+msgid "Vitaly Chikunov"
+msgstr ""
+
+msgid "Vitaly Kuznetsov"
+msgstr ""
+
 msgid "Vitaly Lipatov"
 msgstr ""
 
+msgid "Vladimir D. Seleznev"
+msgstr ""
+
 msgid "Vladimir Didenko"
+msgstr ""
+
+msgid "Vladimir Lettiev"
+msgstr ""
+
+msgid "Watch"
 msgstr ""
 
 msgid "Website/Blog:"
@@ -977,7 +1201,16 @@ msgstr ""
 msgid "Your password won't change until you access the link above and create a new one."
 msgstr ""
 
+msgid "Yuri N. Sedunov"
+msgstr ""
+
+msgid "about"
+msgstr ""
+
 msgid "about Geyser project"
+msgstr ""
+
+msgid "affiliated git repo"
 msgstr ""
 
 msgid "age"
@@ -992,7 +1225,7 @@ msgstr ""
 msgid "arch"
 msgstr ""
 
-msgid "blog"
+msgid "back"
 msgstr ""
 
 msgid "branch"
@@ -1001,13 +1234,25 @@ msgstr ""
 msgid "build"
 msgstr ""
 
+msgid "build tasks associated with the package"
+msgstr ""
+
+msgid "build tasks, which maintainer have originated"
+msgstr ""
+
 msgid "build time"
 msgstr ""
 
-msgid "community-en@"
+msgid "change time"
 msgstr ""
 
-msgid "current<br>version"
+msgid "changed at"
+msgstr ""
+
+msgid "components"
+msgstr ""
+
+msgid "current version"
 msgstr ""
 
 msgid "detailed information about RPM"
@@ -1031,22 +1276,16 @@ msgstr ""
 msgid "gear"
 msgstr ""
 
+msgid "gear repositories, which maintainer is involved in"
+msgstr ""
+
 msgid "generate"
 msgstr ""
 
+msgid "git repos associated with the package"
+msgstr ""
+
 msgid "hide window"
-msgstr ""
-
-msgid "http://en.altlinux.org/Sisyphus"
-msgstr ""
-
-msgid "http://lists.altlinux.org/mailman/listinfo/community-en/"
-msgstr ""
-
-msgid "http://planet.altlinux.org/"
-msgstr ""
-
-msgid "http://www.livejournal.com/userinfo.bml?user=ru_sisyphus"
 msgstr ""
 
 msgid "id"
@@ -1058,13 +1297,31 @@ msgstr ""
 msgid "information about maintainer"
 msgstr ""
 
+msgid "information about srpm"
+msgstr ""
+
+msgid "kind"
+msgstr ""
+
+msgid "lately updated gear or srpm git repo"
+msgstr ""
+
 msgid "leader"
 msgstr ""
 
 msgid "leave blank if you don't want to change it"
 msgstr ""
 
+msgid "link to archive task list for the source RPM"
+msgstr ""
+
 msgid "list of bugs and feature requests"
+msgstr ""
+
+msgid "log url"
+msgstr ""
+
+msgid "maintainer"
 msgstr ""
 
 msgid "maintainers information"
@@ -1073,25 +1330,43 @@ msgstr ""
 msgid "message"
 msgstr ""
 
+msgid "new version"
+msgstr ""
+
 msgid "open"
+msgstr ""
+
+msgid "owner"
 msgstr ""
 
 msgid "package"
 msgstr ""
 
-msgid "package id"
+msgid "package leader"
 msgstr ""
 
-msgid "package leader"
+msgid "packages built by this maintainer at all"
+msgstr ""
+
+msgid "packages built by this maintainer to the branch"
 msgstr ""
 
 msgid "packages information"
 msgstr ""
 
-msgid "packages which was built by this maintainer"
+msgid "packages, which was built by this maintainer"
 msgstr ""
 
 msgid "patches"
+msgstr ""
+
+msgid "private"
+msgstr ""
+
+msgid "prod"
+msgstr ""
+
+msgid "ptrnine"
 msgstr ""
 
 msgid "repo<br>cop"
@@ -1103,10 +1378,13 @@ msgstr ""
 msgid "repocop bugreports"
 msgstr ""
 
+msgid "repocop joint patchset for the package"
+msgstr ""
+
 msgid "repocop patch"
 msgstr ""
 
-msgid "repocop patch for the package"
+msgid "reported"
 msgstr ""
 
 msgid "reporter"
@@ -1115,16 +1393,16 @@ msgstr ""
 msgid "resolution"
 msgstr ""
 
-msgid "security fixes"
+msgid "search by arch "
 msgstr ""
 
-msgid "select branch"
+msgid "security fixes"
 msgstr ""
 
 msgid "severity"
 msgstr ""
 
-msgid "sisyphus public site"
+msgid "shared"
 msgstr ""
 
 msgid "site home page"
@@ -1142,22 +1420,25 @@ msgstr ""
 msgid "spec"
 msgstr ""
 
+msgid "state"
+msgstr ""
+
 msgid "status"
 msgstr ""
 
 msgid "summary"
 msgstr ""
 
-msgid "switch branch to it"
+msgid "task no"
+msgstr ""
+
+msgid "task number and uri"
+msgstr ""
+
+msgid "teams information"
 msgstr ""
 
 msgid "test"
-msgstr ""
-
-msgid "this package in gear repositories"
-msgstr ""
-
-msgid "tips &amp; tricks"
 msgstr ""
 
 msgid "tips and tricks"
@@ -1166,8 +1447,20 @@ msgstr ""
 msgid "total"
 msgstr ""
 
-msgid "we need your current password to confirm your changes"
+msgid "touched"
 msgstr ""
 
-msgid "weeks"
+msgid "try"
+msgstr ""
+
+msgid "url"
+msgstr ""
+
+msgid "versions"
+msgstr ""
+
+msgid "watch novelties of the external packages monitoring"
+msgstr ""
+
+msgid "we need your current password to confirm your changes"
 msgstr ""

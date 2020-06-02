@@ -36,3 +36,5 @@ config/test.sphinx.conf
 coverage/
 .idea/
 vendor/cache
+*.edit.po
+*.po.time_stamp

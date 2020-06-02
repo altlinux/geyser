@@ -22,6 +22,8 @@ class ImportBugs
          import_emails
          import_issues
       end
+
+      Rails.logger.info("#{ Time.zone.now }: IMPORT.BUGS > Done")
    end
 
    protected

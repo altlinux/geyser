@@ -47,48 +47,55 @@ module SrpmsHelper
   def menu_data branch, srpm, opened_bugs, all_bugs, evrb
     map = {
       main: {
+         popup: _('Main'),
          args: {controller: :srpms, action: :show, branch: branch.slug, reponame: srpm.name},
-         popup: 'information about SRPM'
+         popup: _('information about SRPM')
       },
       changelog: {
+         popup: _('Changelog'),
          args: {controller: :changelogs, action: :index, branch: branch.slug, reponame: srpm.name},
-         popup: 'full changelog',
+         popup: _('full changelog'),
       },
       spec: {
+         popup: _('Spec'),
          args: {controller: :specfiles, action: :show, branch: branch.slug, reponame: srpm.name},
-         popup: 'spec',
+         popup: _('spec'),
       },
       patches: {
+         popup: _('Patches'),
          args: {controller: :patches, action: :index, branch: branch.slug, reponame: srpm.name},
-         popup: 'patches',
+         popup: _('patches'),
       },
       sources: {
+         popup: _('Sources'),
          args: {controller: :sources, action: :index, branch: branch.slug, reponame: srpm.name},
-         popup: 'sources',
+         popup: _('sources'),
       },
       download: {
+         popup: _('Download'),
          args: {controller: :rpms, action: :index, branch: branch.slug, reponame: srpm.name},
-         popup: 'download latest version',
+         popup: _('download latest version'),
       },
       bugs: {
          title: _('Bugs') + ' (%s/%s)' % [opened_bugs.count, all_bugs.count],
          args: {controller: :issues, action: :index, branch: branch.slug, reponame: srpm.name, b: !branch.perpetual? && branch.slug},
-         popup: 'list of bugs and feature requests',
+         popup: _('list of bugs and feature requests'),
       },
       repocop: {
+         popup: _('Repocop'),
          args: {controller: :repocop_notes, action: :index, branch: branch.slug, reponame: srpm.name},
-         popup: 'repocop bugreports',
+         popup: _('repocop bugreports'),
          valid: 'perpetual?'
       },
       repos: {
          title: _('Git Repos'),
          args: {controller: :gears, action: :repos, branch: branch.slug, reponame: srpm.name},
-         popup: 'git repos associated with the package',
+         popup: _('git repos associated with the package'),
       },
       tasks: {
          title: _('Tasks'),
          args: {controller: :tasks, action: :pkg_index, branch: branch.slug, reponame: srpm.name},
-         popup: 'build tasks associated with the package',
+         popup: _('build tasks associated with the package'),
       }
     }
 

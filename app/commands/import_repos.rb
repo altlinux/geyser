@@ -6,10 +6,12 @@ require 'git'
 class ImportRepos
    DOMAINS = %w(basealt.ru altlinux.ru altlinux.org altlinux.com)
 
-   attr_reader :url, :path, :scope, :depth
+   attr_reader :url, :path, :scope, :depth, :force
    attr_reader :maintainer_ids, :tag_ids
 
    def do
+      Rails.logger.info("Import.Repo <<< #{self.inspect}")
+
       ApplicationRecord.transaction do
          import_repos
          import_maintainers
@@ -17,15 +19,18 @@ class ImportRepos
          import_tags
          import_repo_tags
       end
+
+      Rails.logger.info("Import.Repo >>>")
    end
 
    protected
 
-   def initialize url: nil, path: nil, scope: raise, depth: raise
+   def initialize url: nil, path: nil, scope: raise, depth: raise, force: false
       @url = url
       @path = path
       @scope = scope
       @depth = depth
+      @force = force
    end
 
    def parse result
@@ -54,7 +59,7 @@ class ImportRepos
    def tag_data
       @tag_data ||=
       Repo.send(scope).where(uri: repo_uris).map do |repo|
-         repo_path = repo.path_for(path)
+         repo_path = repo.path_for("")
 
          Rails.logger.info("Import.Repo: Maintainers for #{repo.name} to parse")
 
@@ -135,11 +140,16 @@ class ImportRepos
       end
    end
 
+   def mins
+      sub = force && Time.at(0) || Repo.changed_at(scope).to_i
+
+      (Time.zone.now - sub + 59).to_i / 60
+   end
+
    def repos
       @repos ||= (
          fullpath = File.expand_path(path)
 
-         mins = (Time.zone.now - Repo.changed_at(scope).to_i + 59).to_i / 60
          args = "#{fullpath}/ -maxdepth #{depth} -mmin -#{mins} -name *.git -type d -exec stat -c '%N %Y' {} \\;"
 
          Rails.logger.info("Import.Repo: find with args #{args}")

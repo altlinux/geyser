@@ -21,21 +21,21 @@ msgstr ""
 msgid " or "
 msgstr ""
 
+msgid "&quot; in all branches were found"
+msgstr ""
+
 msgid "&quot; in branch <b>%s</b> were found"
 msgstr ""
 
 msgid "<abbr title=\"Fails To Build From Source\">FTBFS:</abbr>"
 msgstr ""
 
-msgid "<b>A:</b> Create filter for rsync with the help of this"
+msgid "<b>A:</b> Create filter for rsync with the help of this "
 msgstr "<b>A:</b> Складіть фільтр для rsync, на основі даної"
-
-msgid "<b>Limit<br>by size:</b><br>"
-msgstr ""
 
 msgid ""
 "<b>Geyser</b> project is an attempt to create analytic site for developers and users of\n"
-"Sisyphus repository.<br><br>\n"
+"Alt repositories.<br><br>\n"
 "\n"
 "It is useful for developers due to ability to more closely interoperate with other\n"
 "developers and users of respective packages.  This site is especially valueable\n"
@@ -43,21 +43,26 @@ msgid ""
 "\"what status is\" in interesting field.<br><br>\n"
 "\n"
 "Sisyphus users can get full information about a package beforehand. There are\n"
-"handy links (site of origin, ALT Linux specific issues, wiki, etc.).<br><br>\n"
+"handy links (site of origin, ALT specific issues, wiki, etc.).<br><br>\n"
 "\n"
-"The project is useful for BaseALT SPO Ltd. and ALT core team too, as it gives\n"
+"The project is useful for BaseALT SPO Ltd. and ALT Linux Team too, as it gives\n"
 "information about Sisyphus development, strong and weak aspects, actively\n"
 "supported and used groups of packages.<br><br>\n"
 "\n"
 "Another nice property of the project is posibility to use it together with\n"
 "any other package repository snapshot (not only Sisyphus itself), for local\n"
-"development within a small group or even one's self."
+"development within a small group or even one's self.<br><br>\n"
+"\n"
+"The <a class='news' href='https://github.com/altlinux/geyser'>Geyser</a> project is based on code from <a class='news' href='https://github.com/biow0lf/prometheus2.0'>Prometheus2.0</a>, which had been made available under the <a class='news'href='https://en.wikipedia.org/wiki/MIT_License'>MIT License.</a>"
+msgstr "пакет"
+
+msgid "<b>Limit<br>by size:</b><br>"
 msgstr ""
 
 msgid "<b>Q:</b> How can I skip heap of packages if I even don't know why I need them?"
 msgstr "<b>Q:</b> Як уникнути копіювання безлічі пакетів, необхідність яких, особисто Вам, сумнівна?"
 
-msgid "<b>Sisyphus</b> is daily updated free software repository by <abbr title=\"Independent ALT Linux development team\" style=\"border-bottom: 1px dotted gray;\">ALT&nbsp;Linux&nbsp;Team</abbr>. Participation in Sisyphus project is open for anyone. This project is based upon software packaging and dependency tracking technologies as well as robust developer collaboration processes. Any ALT&nbsp;Linux distribution and <b>APT</b> package manager is sufficient to use Sisyphus. Sisyphus is a solution set constantly being under development which can be used to create universal or specialized <b>Linux distributions</b> or just <b>single systems</b>."
+msgid "<b>Sisyphus</b> is daily updated free software <b>repository</b> by <abbr title=\"Independent ALT development team\" style=\"border-bottom: 1px dotted gray;\">ALT&nbsp;Linux&nbsp;Team</abbr>. Participation in Sisyphus project is open for anyone. This project is based upon software packaging and dependency tracking technologies as well as robust developer collaboration processes. You can switch to Sisyphus from any ALT distribution using <b>APT</b> package manager. Sisyphus is a solution set constantly being under development which can be used to create universal or specialized <b>Linux distributions</b> or just <b>single systems</b>."
 msgstr "<b>Sisyphus</b> &mdash; репозиторій пакетів вільних програм, який щоденно оновлюється <abbr title=\"Незалежна команда розробників ALT Linux\" style=\"border-bottom: 1px dotted gray;\">ALT&nbsp;Linux&nbsp;Team</abbr>. Участь у Sisyphus відкрита для всіх бажаючих. В основі Sisyphus лежать технології збірки програм та обліку залежностей між ними, а також відпрацьовані процеси по взаємодії між розробниками. Для використання Sisyphus достатньо наявності будь-якого дистрибутива ALT&nbsp;Linux та засобів управління пакетами програм <b>APT</b>. Sisyphus &mdash; це набір рішень, що постійно розвиваються, на основі якого можливе створення універсальних чи спеціалізованих <b>дистрибутивів Linux</b> і <b>одиночних впроваджень</b>."
 
 msgid "ACL's"
@@ -66,16 +71,19 @@ msgstr ""
 msgid "ACL:"
 msgstr ""
 
-msgid "ALT Linux Planet"
+msgid "AEN"
 msgstr ""
 
-msgid "ALT Linux Team - Sisyphus packages info"
-msgstr ""
+msgid "ALT - package repositories info"
+msgstr "пакет"
 
 msgid "ALT Linux Team - wiki"
 msgstr ""
 
 msgid "ALT repositories"
+msgstr ""
+
+msgid "AWAITING"
 msgstr ""
 
 msgid "About"
@@ -84,7 +92,43 @@ msgstr "Про проект"
 msgid "Accessibility"
 msgstr "Доступність"
 
+msgid "Aleksei Nikiforov"
+msgstr ""
+
+msgid "Alexander Makeenkov"
+msgstr ""
+
+msgid "Alexander Myltsev"
+msgstr ""
+
+msgid "Alexei Takaseev"
+msgstr ""
+
+msgid "Alexey Appolonov"
+msgstr ""
+
+msgid "Alexey Gladkov"
+msgstr ""
+
 msgid "Alexey Shabalin"
+msgstr ""
+
+msgid "Alexey Tourbin"
+msgstr ""
+
+msgid "All arches"
+msgstr ""
+
+msgid "All branches"
+msgstr ""
+
+msgid "Altlinux public wiki"
+msgstr ""
+
+msgid "Andrew Savchenko"
+msgstr ""
+
+msgid "Andrey Bychkov"
 msgstr ""
 
 msgid "Andrey Cherepanov"
@@ -96,7 +140,16 @@ msgstr ""
 msgid "Anton Farygin"
 msgstr ""
 
-msgid "Any ALT&nbsp;Linux distribution and <b>APT</b> package manager is sufficient to use Sisyphus <b><a href=\"http://en.altlinux.org/Regular\">regular LiveCD builds</a></b>."
+msgid "Anton Midyukov"
+msgstr ""
+
+msgid "Anton V. Boyarshinov"
+msgstr ""
+
+msgid "Architecture dependent srpms"
+msgstr ""
+
+msgid "Archive:"
 msgstr ""
 
 msgid "Archiving/Backup"
@@ -117,9 +170,6 @@ msgstr ""
 msgid "Back"
 msgstr ""
 
-msgid "Blog"
-msgstr "Блог"
-
 msgid "Books/Computer books"
 msgstr "Документація/Комп'ютерна література"
 
@@ -135,7 +185,10 @@ msgstr "Документація/Література"
 msgid "Books/Other"
 msgstr "Документація/Інше"
 
-msgid "Broken changelog entry."
+msgid "Branches"
+msgstr ""
+
+msgid "Bugs"
 msgstr ""
 
 msgid "Bugs and FR"
@@ -143,6 +196,12 @@ msgstr ""
 
 msgid "Bugs/FR statistics assigned to this maintainer"
 msgstr "статистика по к-сті bugs/FR, адресованих даному майнтейнеру"
+
+msgid "Bugzilla"
+msgstr ""
+
+msgid "Bugzilla - create a new issue"
+msgstr ""
 
 msgid "Build time:"
 msgstr "Час збірки:"
@@ -162,14 +221,12 @@ msgstr ""
 msgid "Change your password"
 msgstr ""
 
+#, fuzzy
 msgid "Changelog"
-msgstr "Зміни"
+msgstr "Зміни:"
 
 msgid "Changes:"
 msgstr "Зміни:"
-
-msgid "Choose a mirror:"
-msgstr "Виберіть дзеркало:"
 
 msgid "Click the link below to unlock your account:"
 msgstr ""
@@ -183,6 +240,9 @@ msgstr ""
 msgid "Confirm new password"
 msgstr ""
 
+msgid "Cronbuild Service"
+msgstr ""
+
 msgid "Current maintainer:"
 msgstr "Поточний майнтейнер:"
 
@@ -192,8 +252,14 @@ msgstr "Поточна версія:"
 msgid "Currently waiting confirmation for:"
 msgstr ""
 
+msgid "DONE"
+msgstr ""
+
 msgid "Databases"
 msgstr "Бази даних"
+
+msgid "Denis Medvedev"
+msgstr ""
 
 msgid "Denis Nazarov"
 msgstr ""
@@ -282,14 +348,23 @@ msgstr ""
 msgid "Didn't receive unlock instructions?"
 msgstr ""
 
+msgid "Discussion forum"
+msgstr ""
+
 msgid "Dmitriy Kulik"
 msgstr "Дмитро Кулик"
+
+msgid "Dmitry V. Levin"
+msgstr ""
 
 msgid "Documentation"
 msgstr "Документація"
 
 msgid "Download"
 msgstr "Завантажити"
+
+msgid "EPERM"
+msgstr ""
 
 msgid "Edit my maintainer profile"
 msgstr ""
@@ -318,14 +393,35 @@ msgstr ""
 msgid "Eugeny A. Rostovtsev"
 msgstr ""
 
+msgid "Evgenii Terechkov"
+msgstr ""
+
+msgid "FAILED"
+msgstr ""
+
+msgid "FAILING"
+msgstr ""
+
 msgid "FTBFS"
 msgstr ""
+
+msgid "FTBFS list"
+msgstr ""
+
+msgid "Facebook"
+msgstr ""
+
+msgid "Facebook ALTLinux page"
+msgstr "вік"
 
 msgid "File tools"
 msgstr "Робота з файлами"
 
 msgid "Forgot your password?"
 msgstr ""
+
+msgid "Forum"
+msgstr "форми"
 
 msgid "Games/Adventure"
 msgstr "Ігри/Пригоди"
@@ -357,7 +453,112 @@ msgstr "Ігри/Стратегія"
 msgid "Gear"
 msgstr ""
 
+msgid "Gear:"
+msgstr "Команда:"
+
+msgid "George V. Kouryachy"
+msgstr ""
+
+msgid "Geyser - 404"
+msgstr ""
+
+msgid "Geyser - Group &laquo;%s&raquo;"
+msgstr ""
+
+msgid "Geyser - Group - Error!"
+msgstr ""
+
+msgid "Geyser - Groups"
+msgstr ""
+
+msgid "Geyser - Information about the project"
+msgstr "Geyser - Інформація про проект"
+
+msgid "Geyser - Intro"
+msgstr "Geyser - Intro"
+
+msgid "Geyser - Maintainer &laquo;%s&raquo;"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo;"
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - ACL"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - ACL"
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs and FR"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - FTBFS"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Feature Requests"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo;"
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Gear"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Packages"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Repocop"
+msgstr ""
+
+msgid "Geyser - Maintainer &laquo;%s&raquo; - Tasks"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo;"
+
+msgid "Geyser - Maintainers"
+msgstr "Майнтейнери"
+
+msgid "Geyser - Package &laquo;%s&raquo;"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Bugs"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Changelog"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Download"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Gear"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Patches"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Repocop"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Sources"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Spec"
+msgstr ""
+
+msgid "Geyser - Package &laquo;%s&raquo; - Tasks"
+msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - ACL"
+
+msgid "Geyser - Rsync Exclude"
+msgstr ""
+
+msgid "Geyser - Search"
+msgstr "Geyser - Пошук по сайту"
+
+msgid "Geyser - Security"
+msgstr ""
+
+msgid "Geyser - Team &laquo;%s&raquo;"
+msgstr "Geyser - Команда &laquo;%s&raquo;"
+
+msgid "Geyser - Teams"
+msgstr "Geyser - Пошук по сайту"
+
+msgid "Git Repos"
+msgstr ""
+
 msgid "Git repo"
+msgstr ""
+
+msgid "Gleb Fotengauer-Malinovskiy"
 msgstr ""
 
 msgid "Graphical desktop/Enlightenment"
@@ -405,6 +606,12 @@ msgstr "Графічні оболонки/XFce"
 msgid "Graphics"
 msgstr "Графіка"
 
+msgid "Grigory Batalov"
+msgstr ""
+
+msgid "Grigory Ustinov"
+msgstr ""
+
 msgid "Group"
 msgstr "Групa"
 
@@ -441,10 +648,31 @@ msgstr "Інформація"
 msgid "Information:"
 msgstr "Інформація:"
 
+msgid "It is useful to estimate the current state of Sisyphus by <b><a href=\"http://en.altlinux.org/Regular\">the regular LiveCD builds</a></b>."
+msgstr ""
+
+msgid "Ivan A. Melnikov"
+msgstr ""
+
+msgid "Ivan Zakharyaschev"
+msgstr ""
+
 msgid "Jabber ID:"
 msgstr ""
 
-msgid "Last update:"
+msgid "Kernel Bot"
+msgstr ""
+
+msgid "Kiriil A. Shutemov"
+msgstr ""
+
+msgid "Konstantin A. Lepikhov"
+msgstr ""
+
+msgid "Last changes"
+msgstr ""
+
+msgid "Last updated at"
 msgstr "Останнє оновлення:"
 
 msgid "Lenar Shakirov"
@@ -475,7 +703,7 @@ msgid "Mailing list"
 msgstr "Розсилка"
 
 msgid "Main"
-msgstr "Головна"
+msgstr ""
 
 msgid "Maintainer:"
 msgstr "Майнтейнер:"
@@ -486,6 +714,12 @@ msgstr "Майнтейнери"
 msgid "Michael Shigorin"
 msgstr "Михайло Шигорін"
 
+msgid "Mikhail"
+msgstr ""
+
+msgid "Mikhail Efremov"
+msgstr ""
+
 msgid "Monitoring"
 msgstr "Моніторинг"
 
@@ -494,6 +728,9 @@ msgstr "Моцьо Геннадій"
 
 msgid "Mykola Grechukh"
 msgstr "Микола Гречух"
+
+msgid "NEW"
+msgstr ""
 
 msgid "Networking/Chat"
 msgstr "Мережі/Chat"
@@ -528,10 +765,16 @@ msgstr "Мережі/Віддалений доступ"
 msgid "Networking/WWW"
 msgstr "Мережі/WWW"
 
-msgid "New SRPMs"
+msgid "New password"
 msgstr ""
 
-msgid "New password"
+msgid "Nikolai Kostrigin"
+msgstr ""
+
+msgid "Nikolay A. Fetisov"
+msgstr ""
+
+msgid "No files to download"
 msgstr ""
 
 msgid "No such branch!"
@@ -543,14 +786,11 @@ msgstr ""
 msgid "No such group!"
 msgstr ""
 
-msgid "No such package!"
-msgstr ""
-
-msgid "No such team!"
-msgstr "Немає такої команди!"
-
 msgid "Office"
 msgstr "Офіс"
+
+msgid "Oleg Solovyov"
+msgstr ""
 
 msgid "On your query &quot;"
 msgstr "За запитом &quot;"
@@ -561,14 +801,14 @@ msgstr "Інше"
 msgid "Other repositories"
 msgstr ""
 
+msgid "PENDING"
+msgstr ""
+
 msgid "Package groups"
 msgstr "Групи пакетів"
 
 msgid "Packages"
 msgstr "Пакети"
-
-msgid "Packages built by this maintainer:"
-msgstr "Усього пакетів, зібраних майнтейнером:"
 
 msgid "Packages to rebuild:"
 msgstr ""
@@ -576,110 +816,26 @@ msgstr ""
 msgid "Page not found"
 msgstr ""
 
-msgid "Patch is too large."
-msgstr ""
-
 msgid "Patches"
 msgstr ""
 
-msgid "Planet"
-msgstr "Планета"
+msgid "Paul Wolneykien"
+msgstr ""
+
+msgid "Pavel Moseev (Mars)"
+msgstr ""
+
+msgid "Pavel Skrylev"
+msgstr ""
 
 msgid "Project Geyser"
 msgstr "Проект Geyser"
 
-msgid "Geyser - 404"
-msgstr ""
-
-msgid "Geyser - Group &laquo;%s&raquo;"
-msgstr ""
-
-msgid "Geyser - Group - Error!"
-msgstr ""
-
-msgid "Geyser - Groups"
-msgstr ""
-
-msgid "Geyser - Information about the project"
-msgstr "Geyser - Інформація про проект"
-
-msgid "Geyser - Intro"
-msgstr "Geyser - Intro"
-
-msgid "Geyser - Maintainer &laquo;%s&raquo;"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo;"
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - ACL"
-msgstr "Geyser - Майнтейнер &laquo;%s&raquo; - ACL"
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs and FR"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - Bugs and FR (All)"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - FTBFS"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - Gear"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - Packages"
-msgstr ""
-
-msgid "Geyser - Maintainer &laquo;%s&raquo; - Repocop"
-msgstr ""
-
-msgid "Geyser - Maintainers &amp; Teams"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo;"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - All bugs"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Bugs"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Changelog"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Download"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Gear"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Patches"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Repocop"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Sources"
-msgstr ""
-
-msgid "Geyser - Package &laquo;%s&raquo; - Spec"
-msgstr ""
-
-msgid "Geyser - Rsync Exclude"
-msgstr ""
-
-msgid "Geyser - Search"
-msgstr "Geyser - Пошук по сайту"
-
-msgid "Geyser - Security"
-msgstr ""
-
-msgid "Geyser - Team &laquo;%s&raquo;"
-msgstr "Geyser - Команда &laquo;%s&raquo;"
-
-msgid "Geyser - Team - Error!"
-msgstr ""
-
 msgid "Publishing"
 msgstr "Видавництво"
+
+msgid "Quantity of source rpms resized in the branch source "
+msgstr ""
 
 msgid "RPM filter for rsync"
 msgstr ""
@@ -699,16 +855,28 @@ msgstr ""
 msgid "Raw spec file"
 msgstr ""
 
+msgid "Recent changes (last three changelog entries):"
+msgstr ""
+
 msgid "Repocop"
 msgstr ""
 
 msgid "Repocop messages:"
 msgstr "Повідомлення від repocop:"
 
+msgid "Repocop status:"
+msgstr "Повідомлення від repocop:"
+
 msgid "Resend confirmation instructions"
 msgstr ""
 
 msgid "Resend unlock instructions"
+msgstr ""
+
+msgid "Ruby Team"
+msgstr ""
+
+msgid "SRPMs in branches"
 msgstr ""
 
 msgid "SRPMs:"
@@ -747,6 +915,9 @@ msgstr "Пошук"
 msgid "Search is not available."
 msgstr ""
 
+msgid "Search over all branches..."
+msgstr "Пошук"
+
 msgid "Search..."
 msgstr "Пошук..."
 
@@ -762,10 +933,16 @@ msgstr "Безпека/Антивірус"
 msgid "Security/Networking"
 msgstr "Безпека/Мережі"
 
-msgid "Select branch:"
+msgid "Seen on building"
 msgstr ""
 
 msgid "Send me reset password instructions"
+msgstr ""
+
+msgid "Sergey Bolshakov"
+msgstr ""
+
+msgid "Sergey V Turchin"
 msgstr ""
 
 msgid "Shells"
@@ -780,7 +957,7 @@ msgstr ""
 msgid "Sign up"
 msgstr ""
 
-msgid "Sisyphus is not intended for end users and its usage may result in unpredictable behaviour. You might want to use ALT Linux distributions and their usual updates if you want to run a reliable system."
+msgid "Sisyphus is not intended for end users and its usage may result in unpredictable behaviour. You might want to use ALT distributions and their usual updates if you want to run a reliable system."
 msgstr "Sisyphus не направлений на задоволення потреб кінцевих користувачів, і його використання може призвести до непередбачуваних наслідків. Якщо Вам потрібна система, яка надійно працює, то слід використовувати тілько дистрибутиви ALT Linux та штатні обовлення до них."
 
 msgid ""
@@ -794,9 +971,6 @@ msgid ""
 "This form helps you to create such file of exceptions. You can filter by group of packages and by size.<br><br>\n"
 "<b>Warning:</b> filters combined together with a logical &quot;AND&quot;"
 msgstr ""
-
-msgid "Sisyphus repository"
-msgstr "Репозиторій Sisyphus"
 
 msgid "Sisyphus sync"
 msgstr "Синхронізація Sisyphus"
@@ -820,7 +994,7 @@ msgid "Sources"
 msgstr ""
 
 msgid "Spec"
-msgstr "Спек"
+msgstr ""
 
 msgid "Spec file not yet imported."
 msgstr ""
@@ -829,6 +1003,12 @@ msgid "Specfile is not UTF-8 valid."
 msgstr ""
 
 msgid "Sphinx rebuild indexes. Please try again later."
+msgstr ""
+
+msgid "Srpm counts calculated per physical architecture for the current branch"
+msgstr ""
+
+msgid "Stanislav Levin"
 msgstr ""
 
 msgid "Summary"
@@ -894,11 +1074,20 @@ msgstr "Система/X11"
 msgid "System/XFree86"
 msgstr "Система/XFree86"
 
+msgid "TESTED"
+msgstr ""
+
 msgid "TOP RPMs"
 msgstr "TOP пакети"
 
 msgid "TOP maintainers"
 msgstr "TOP майнтейнери"
+
+msgid "Task no"
+msgstr ""
+
+msgid "Tasks"
+msgstr ""
 
 msgid "Team leader:"
 msgstr "Лідер команди:"
@@ -912,13 +1101,22 @@ msgstr "Команда:"
 msgid "Teams"
 msgstr "Команди розробників"
 
+msgid "Telegram channel"
+msgstr ""
+
 msgid "Terminals"
 msgstr "Термінали"
 
 msgid "Text tools"
 msgstr "Робота з текстами"
 
+msgid "The <a class='news' href='https://github.com/altlinux/geyser'>Geyser</a> project is based on code from <a class='news' href='https://github.com/biow0lf/prometheus2.0'>Prometheus2.0</a>, which had been made available under the <a class='news'href='https://en.wikipedia.org/wiki/MIT_License'>MIT License.</a>"
+msgstr ""
+
 msgid "There are no bugreports against this package"
+msgstr ""
+
+msgid "This branch is supported by the Basealt SPO Team."
 msgstr ""
 
 msgid "Time"
@@ -926,6 +1124,9 @@ msgstr ""
 
 msgid "Time Zone:"
 msgstr ""
+
+msgid "Tips & tricks"
+msgstr "корисні поради"
 
 msgid "Total records:"
 msgstr "Усього записів:"
@@ -951,16 +1152,40 @@ msgstr ""
 msgid "Url"
 msgstr "Url"
 
+msgid "VK"
+msgstr ""
+
+msgid "VKontakte ALTLinux page"
+msgstr "вік"
+
 msgid "Valentin Rosavitskiy"
 msgstr "Валентин Росавіцький"
+
+msgid "Valery Inozemtsev"
+msgstr ""
 
 msgid "Video"
 msgstr "Відео"
 
+msgid "Vitaly Chikunov"
+msgstr ""
+
+msgid "Vitaly Kuznetsov"
+msgstr ""
+
 msgid "Vitaly Lipatov"
 msgstr ""
 
+msgid "Vladimir D. Seleznev"
+msgstr ""
+
 msgid "Vladimir Didenko"
+msgstr ""
+
+msgid "Vladimir Lettiev"
+msgstr ""
+
+msgid "Watch"
 msgstr ""
 
 msgid "Website/Blog:"
@@ -978,8 +1203,17 @@ msgstr ""
 msgid "Your password won't change until you access the link above and create a new one."
 msgstr ""
 
+msgid "Yuri N. Sedunov"
+msgstr ""
+
+msgid "about"
+msgstr "Про проект"
+
 msgid "about Geyser project"
 msgstr "проект Geyser"
+
+msgid "affiliated git repo"
+msgstr ""
 
 msgid "age"
 msgstr "вік"
@@ -993,8 +1227,8 @@ msgstr ""
 msgid "arch"
 msgstr ""
 
-msgid "blog"
-msgstr "блог про sisyphus"
+msgid "back"
+msgstr ""
 
 msgid "branch"
 msgstr ""
@@ -1002,14 +1236,28 @@ msgstr ""
 msgid "build"
 msgstr ""
 
+#, fuzzy
+msgid "build tasks associated with the package"
+msgstr "пакет"
+
+#, fuzzy
+msgid "build tasks, which maintainer have originated"
+msgstr "Майнтейнер:"
+
 msgid "build time"
 msgstr "час збірки"
 
-msgid "community-en@"
-msgstr "sisyphus@"
+msgid "change time"
+msgstr ""
 
-msgid "current<br>version"
-msgstr "поточна<br>версія"
+msgid "changed at"
+msgstr ""
+
+msgid "components"
+msgstr ""
+
+msgid "current version"
+msgstr "Поточна версія:"
 
 msgid "detailed information about RPM"
 msgstr "Детальна інформація про пакет"
@@ -1017,8 +1265,9 @@ msgstr "Детальна інформація про пакет"
 msgid "detailed information about the package"
 msgstr "детальна інформація про пакет"
 
+#, fuzzy
 msgid "download latest version"
-msgstr "завантажити останню версію пакета"
+msgstr "тест"
 
 msgid "find"
 msgstr "пошук"
@@ -1027,37 +1276,43 @@ msgid "form"
 msgstr "форми"
 
 msgid "full changelog"
-msgstr "переглянути повний changelog пакета"
+msgstr ""
 
 msgid "gear"
 msgstr ""
 
+#, fuzzy
+msgid "gear repositories, which maintainer is involved in"
+msgstr "Майнтейнер:"
+
 msgid "generate"
 msgstr ""
+
+#, fuzzy
+msgid "git repos associated with the package"
+msgstr "пакет"
 
 msgid "hide window"
 msgstr "згорнути вікно"
 
-msgid "http://en.altlinux.org/Sisyphus"
-msgstr "http://www.altlinux.org/Sisyphus"
-
-msgid "http://lists.altlinux.org/mailman/listinfo/community-en/"
-msgstr "http://lists.altlinux.org/mailman/listinfo/sisyphus/"
-
-msgid "http://planet.altlinux.org/"
-msgstr "http://planet.altlinux.org/"
-
-msgid "http://www.livejournal.com/userinfo.bml?user=ru_sisyphus"
-msgstr "http://www.livejournal.com/userinfo.bml?user=ru_sisyphus"
-
 msgid "id"
 msgstr ""
 
+#, fuzzy
 msgid "information about SRPM"
 msgstr "переглянути інформацію про пакет"
 
 msgid "information about maintainer"
 msgstr "переглянути інформацію про майнтейнера"
+
+msgid "information about srpm"
+msgstr "переглянути інформацію про пакет"
+
+msgid "kind"
+msgstr "пошук"
+
+msgid "lately updated gear or srpm git repo"
+msgstr ""
 
 msgid "leader"
 msgstr ""
@@ -1065,8 +1320,17 @@ msgstr ""
 msgid "leave blank if you don't want to change it"
 msgstr ""
 
+msgid "link to archive task list for the source RPM"
+msgstr ""
+
 msgid "list of bugs and feature requests"
-msgstr "перелік багів та пропозицій по покращенню"
+msgstr ""
+
+msgid "log url"
+msgstr ""
+
+msgid "maintainer"
+msgstr "Майнтейнер:"
 
 msgid "maintainers information"
 msgstr "інформація про майнтейнерів"
@@ -1074,25 +1338,44 @@ msgstr "інформація про майнтейнерів"
 msgid "message"
 msgstr "повідомлення"
 
+msgid "new version"
+msgstr ""
+
 msgid "open"
 msgstr "відкриті баги"
+
+msgid "owner"
+msgstr ""
 
 msgid "package"
 msgstr "пакет"
 
-msgid "package id"
-msgstr "id пакета"
-
 msgid "package leader"
 msgstr ""
+
+msgid "packages built by this maintainer at all"
+msgstr "Усього пакетів, зібраних майнтейнером:"
+
+msgid "packages built by this maintainer to the branch"
+msgstr "Усього пакетів, зібраних майнтейнером:"
 
 msgid "packages information"
 msgstr "інформація про пакети"
 
-msgid "packages which was built by this maintainer"
-msgstr "переглянути пакети, зібрані майнтейнером"
+#, fuzzy
+msgid "packages, which was built by this maintainer"
+msgstr "Перелік пакетів, зібраних майнтейнером:"
 
 msgid "patches"
+msgstr ""
+
+msgid "private"
+msgstr ""
+
+msgid "prod"
+msgstr ""
+
+msgid "ptrnine"
 msgstr ""
 
 msgid "repo<br>cop"
@@ -1104,11 +1387,14 @@ msgstr ""
 msgid "repocop bugreports"
 msgstr "звіти repocop про знайдені помилки та зауваження"
 
+msgid "repocop joint patchset for the package"
+msgstr "пакет"
+
 msgid "repocop patch"
 msgstr ""
 
-msgid "repocop patch for the package"
-msgstr ""
+msgid "reported"
+msgstr "повідомлено"
 
 msgid "reporter"
 msgstr "повідомлено"
@@ -1116,17 +1402,17 @@ msgstr "повідомлено"
 msgid "resolution"
 msgstr "дозвіл"
 
+msgid "search by arch "
+msgstr ""
+
 msgid "security fixes"
 msgstr "виправлення вразливостей"
-
-msgid "select branch"
-msgstr ""
 
 msgid "severity"
 msgstr "важливість"
 
-msgid "sisyphus public site"
-msgstr "громадський сайт sisyphus"
+msgid "shared"
+msgstr ""
 
 msgid "site home page"
 msgstr "головна сторінка сайта"
@@ -1141,7 +1427,10 @@ msgid "sources"
 msgstr ""
 
 msgid "spec"
-msgstr "переглянути spec пакета"
+msgstr ""
+
+msgid "state"
+msgstr "статус"
 
 msgid "status"
 msgstr "статус"
@@ -1149,17 +1438,17 @@ msgstr "статус"
 msgid "summary"
 msgstr "опис"
 
-msgid "switch branch to it"
+msgid "task no"
 msgstr ""
+
+msgid "task number and uri"
+msgstr ""
+
+msgid "teams information"
+msgstr "інформація про пакети"
 
 msgid "test"
 msgstr "тест"
-
-msgid "this package in gear repositories"
-msgstr "наявність пакета в репозитаріях gear"
-
-msgid "tips &amp; tricks"
-msgstr "корисні поради"
 
 msgid "tips and tricks"
 msgstr "корисні поради"
@@ -1167,8 +1456,21 @@ msgstr "корисні поради"
 msgid "total"
 msgstr "всі баги"
 
-msgid "we need your current password to confirm your changes"
+msgid "touched"
 msgstr ""
 
-msgid "weeks"
+msgid "try"
+msgstr ""
+
+msgid "url"
+msgstr "Url"
+
+msgid "versions"
+msgstr ""
+
+#, fuzzy
+msgid "watch novelties of the external packages monitoring"
+msgstr "пакет"
+
+msgid "we need your current password to confirm your changes"
 msgstr ""

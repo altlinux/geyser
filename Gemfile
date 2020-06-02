@@ -121,6 +121,8 @@ group :development do
   gem 'active_record_doctor'
   gem 'http_logger'
   gem 'cacheflow'
+
+  gem 'ruby_parser'
 end
 
 group :development, :test do
