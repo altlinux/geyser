@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-every 3.hours, at: '2:35 am' do
+every 3.hours, at: '2:35 am', roles: [:rake] do
    rake 'repo:gears repo:srpms repo:people'
 end
 
@@ -20,11 +20,11 @@ every 1.day, at: '3:00 am' do
    rake 'update:branches update:lost[true] update:upcache'
 end
 
-every 1.day, at: '1:00 am' do
+every 1.day, at: '1:00 am', roles: [:rake] do
    rake 'task:update'
 end
 
-every 1.day, at: '3:25 am' do # takes about 20 min
+every 1.day, at: '3:25 am', roles: [:rake] do # takes about 20 min
    rake 'repocop:update'
 end
 
