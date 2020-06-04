@@ -83,4 +83,21 @@ namespace :deploy do
   before 'foreman:restart', 'foreman:export'
   after 'foreman:restart', 'nginx:setup'
   after 'nginx:setup', 'nginx:enable_site'
+  before "foreman:restart", "deploy:kill"
+  after 'nginx:reload', :'deploy:reload'
+end
+
+
+namespace :deploy do
+  task :kill do
+    on roles(:web) do
+      execute :sudo, "killall -9 puma || true"
+    end
+  end
+
+  task :reload do
+    on roles(:web) do
+      execute :sudo, "/usr/sbin/geyser || true"
+    end
+  end
 end
