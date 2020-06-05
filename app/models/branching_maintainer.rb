@@ -22,7 +22,9 @@ class BranchingMaintainer < ApplicationRecord
       srpms_count = maintainer.packages
                               .joins(:branch_paths)
                               .where(branch_paths: { branch_id: branch })
-                              .count
+                              .merge(BranchPath.published)
+                              .select("DISTINCT ON(packages.name) packages.*")
+                              .size
 
       self.update!(srpms_count: srpms_count)
    end
