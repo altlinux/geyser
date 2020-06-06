@@ -6,7 +6,7 @@ set :deploy_to, '/var/www/geyser'
 
 set :rails_env, 'production'
 
-server 'packages.altlinux.org', user: 'apache', roles: ['app', 'db', 'web']
+server 'packages.altlinux.org', user: 'apache', roles: %w(app db web sysvinit)
 
 set :ssh_options, port: 222
 

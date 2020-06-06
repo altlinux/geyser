@@ -9,7 +9,7 @@ set :rails_env, 'staging'
 
 set :branch, ENV['BRANCH'] || "staging"
 
-server 'predvridlo.office.basealt.ru', user: 'apache', roles: ['app', 'db', 'web']
+server 'predvridlo.office.basealt.ru', user: 'apache', roles: %w(app db web systemd)
 
 set :ssh_options, port: 22
 

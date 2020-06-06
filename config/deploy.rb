@@ -45,7 +45,7 @@ set :nginx_template, 'config/nginx.conf.erb' # configuration template
 set :nginx_sites_available_subfolder, "sites-available.d"
 set :nginx_sites_enabled_subfolder, "sites-enabled.d"
 set :nginx_listen, 80 # optional, default is not set
-set :nginx_roles, :all
+set :nginx_roles, %i(web)
 
 #set :nginx_service_path, "/etc/init.d/nginx"
 #set :nginx_sites_available_dir, "/etc/nginx/sites-available.d"
@@ -59,13 +59,13 @@ set :app_server_port, 80
 # set :rvm_type, :user                      # Defaults to: :auto
 # set :rvm_ruby_version, 'ext-ruby-2.5.1'    # Defaults to: 'default'
 # set :rvm_custom_path, '~/.rvm'          # only needed if not detected
-set :rvm_roles, %i[app web]
+set :rvm_roles, %i[app web rake]
 
 set :puma_conf, "#{release_path}/config/puma.rb"
 
 # Default settings
 set :foreman_use_sudo, true # Set to :rbenv for rbenv sudo, :rvm for rvmsudo or true for normal sudo
-set :foreman_roles, :all
+set :foreman_roles, %i[systemd]
 set :foreman_init_system, 'systemd'
 set :foreman_export_path, ->{ '/etc/systemd/system/' }
 set :foreman_app, -> { 'geyser' }
@@ -76,28 +76,58 @@ set :foreman_options, ->{ {
   log: File.join(shared_path, 'log')
 } }
 
+set :whenever_roles, %i[web rake]
 
 namespace :deploy do
+  before 'deploy:check:linked_files', 'deploy:check:shared'
+  before 'deploy:check:linked_files', 'deploy:check:mounts'
   after :finishing, 'deploy:cleanup'
   after 'deploy:finishing', 'foreman:restart'
   before 'foreman:restart', 'foreman:export'
   after 'foreman:restart', 'nginx:setup'
   after 'nginx:setup', 'nginx:enable_site'
-  before "foreman:restart", "deploy:kill"
-  after 'nginx:reload', :'deploy:reload'
+  before "deploy:cleanup", "deploy:reload"
 end
 
 
 namespace :deploy do
-  task :kill do
-    on roles(:web) do
-      execute :sudo, "killall -9 puma || true"
+  task :reload do
+    on roles(:sysvinit) do
+      execute :sudo, "killall -9 ruby || true"
+      execute :sudo, "/usr/sbin/geyser || true"
     end
   end
 
-  task :reload do
-    on roles(:web) do
-      execute :sudo, "/usr/sbin/geyser || true"
+  namespace :check do
+    task :shared do
+      on roles(:all) do
+        execute "mkdir -p $HOME/geyser/shared/config"
+        execute "touch $HOME/geyser/shared/config/secrets.yml"
+        execute "touch $HOME/geyser/shared/config/database.yml"
+        execute "touch $HOME/geyser/shared/config/newrelic.yml"
+        execute "touch $HOME/geyser/shared/.env"
+      end
+    end
+  end
+
+  namespace :check do
+    task :mounts do
+      on roles(:systemd, :rake) do
+        execute :sudo, "mkdir -p /beehive/ /archive_git/ /people/ /ports/ /roland/ /tasks /gears /home/nosrpm/e2k/ /srpms /archive || true"
+        execute :sudo, "chmod 777 /archive_git/ /people/ /beehive/ /ports/ /roland/ /tasks /gears /home/nosrpm/e2k/ /srpms /archive || true"
+
+        execute "sshfs -p 222 apache@packages.altlinux.org:/srpms/ /srpms || true"
+        execute "sshfs -p 222 apache@packages.altlinux.org:/gears/ /gears || true"
+        execute "sshfs -p 222 apache@packages.altlinux.org:/people/ /people/ || true"
+
+        execute "sshfs -p 222 apache@packages.altlinux.org:/beehive/ /beehive/ || true"
+        execute "sshfs -p 222 apache@packages.altlinux.org:/roland/ /roland/ || true"
+        execute "sshfs -p 222 apache@packages.altlinux.org:/ports/ /ports/ || true"
+        execute "sshfs -p 222 apache@packages.altlinux.org:/tasks/ /tasks || true"
+        execute "sshfs -p 222 apache@packages.altlinux.org:/archive/ /archive || true"
+
+        execute "sshfs -p 222 apache@packages.altlinux.org:/home/nosrpm/e2k/ /home/nosrpm/e2k/ || true"
+      end
     end
   end
 end
