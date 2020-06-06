@@ -4,19 +4,19 @@ every 3.hours, at: '2:35 am', roles: [:rake] do
    rake 'repo:gears repo:srpms repo:people'
 end
 
-every 3.hours, at: '2:05 am' do
+every 3.hours, at: '2:05 am', roles: [:rake] do
    rake 'bugs:update'
 end
 
-every 3.hours, at: '2:15 am' do
+every 3.hours, at: '2:15 am', roles: [:rake] do
    rake 'ftbfs:update'
 end
 
-every 3.hours, at: '2:25 am' do
+every 3.hours, at: '2:25 am', roles: [:rake] do
    rake 'novelties:update'
 end
 
-every 1.day, at: '3:00 am' do
+every 1.day, at: '3:00 am', roles: [:rake] do
    rake 'update:branches update:lost[true] update:upcache'
 end
 
@@ -28,15 +28,15 @@ every 1.day, at: '3:25 am', roles: [:rake] do # takes about 20 min
    rake 'repocop:update'
 end
 
-every 1.day, at: '3:45 am' do # takes about 5 min
+every 1.day, at: '3:45 am', roles: [:rake] do # takes about 5 min
    rake 'fix:branching_maintainers'
 end
 
-every :sunday, at: '03:30 am' do
+every :sunday, at: '03:30 am', roles: [:web] do
   rake 'sitemap:clean sitemap:refresh'
 end
 
-every :sunday, at: '06:30 am' do
+every :sunday, at: '06:30 am', roles: [:rake] do
 #  rake 'perlwatch:update'
 end
 
