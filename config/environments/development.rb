@@ -18,10 +18,10 @@ Rails.application.configure do
   if ENV['CACHE']
     config.action_controller.perform_caching = true
 
-    config.cache_store = :dalli_store, {
+    config.cache_store = :dalli_store, ENV['CACHE'], {
                          memcache_server: %w(packages.altlinux.org),
                          namespace: 'sessions',
-                         key: ENV['CACHE'] }
+                         key: "#{Rails.env}_geyser_session" }
 
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{ 2.days.seconds.to_i }"

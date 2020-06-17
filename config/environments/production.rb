@@ -57,7 +57,7 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # Use a different cache store in production.
-  config.cache_store = :dalli_store, {
+  config.cache_store = :dalli_store, "packages.altlinux.org:11211", {
                        memcache_server: %w(packages.altlinux.org),
                        namespace: 'sessions',
                        key: "#{Rails.env}_geyser_session" }
