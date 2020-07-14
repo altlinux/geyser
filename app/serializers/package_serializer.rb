@@ -20,9 +20,7 @@ class PackageSerializer < RecordSerializer
    protected
 
    def rpm
-      @rpm ||= branch_paths.reduce(nil) do |res, bp|
-         res || object.rpms.by_branch_path(bp).find { |rpm| rpm.file_exists? }
-      end
+      @rpm ||= object.rpms.first
    end
 
    def branch_paths

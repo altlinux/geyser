@@ -2,7 +2,7 @@ module Srpmable
    extend ActiveSupport::Concern
 
    def fetch_spkg
-      spkgs = Package::Src.by_name(params[:reponame])
+      @spkgs = Package::Src.by_name(params[:reponame])
                           .by_evr(@evrb)
                           .joins(:branches, :branch_paths)
                           .merge(BranchPath.published)
@@ -11,7 +11,7 @@ module Srpmable
                                   buildtime: :desc},
                                  "branches.order_id")
 
-      @spkg = spkgs.in_branch(@branch).first&.decorate
+      @spkg = @spkgs.in_branch(@branch).first&.decorate
 
       if !@spkg
          rpms = Rpm.joins(:package, :branch_path, :branch)
