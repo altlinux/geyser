@@ -16,8 +16,6 @@ namespace :update do
          puts "#{ Time.zone.now }: import all groups for #{branch.name} branch to database"
          ImportTeams.new(branch: branch).do
       end
-
-      ActionController::Base.cache_store.clear
    end
 
    desc 'Remove lost srpms'
@@ -49,13 +47,13 @@ namespace :update do
       end
 
       RemoveOldRpms.new.do
-      ActionController::Base.cache_store.clear
    end
 
    desc "Update caches"
    task upcache: %i(environment) do |_, _|
       include Rails.application.routes.url_helpers
 
+      ActionController::Base.cache_store.clear
       Branch.find_each do |branch|
          # call to root for langs
          I18n.available_locales.each do |locale|
