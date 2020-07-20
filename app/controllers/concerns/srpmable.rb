@@ -22,7 +22,8 @@ module Srpmable
                            "packages.release": :desc,
                            "packages.buildtime": :desc},
                            "branches.order_id")
-         if branch = rpms.first&.branch && branch != @branch
+
+         if (branch = rpms.first&.branch) && branch != @branch
             redirect_to url_for(branch: branch)
          else
             redirect_to home_url
