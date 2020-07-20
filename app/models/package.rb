@@ -35,7 +35,7 @@ class Package < ApplicationRecord
    scope :built, -> { where.not(arch: 'src') }
    scope :for_maintainer, ->(maintainer) { where(name: maintainer.gear_names) }
    scope :in_branch, ->(branches) do
-      branches.present? && joins(:branch).where(branches: {id: branches}) || self
+      branches.present? && joins(:branch_paths).where(branch_paths: {branch_id: branches}) || self
    end
    scope :by_branch_slug, ->(slug) do
       if slug.blank?
