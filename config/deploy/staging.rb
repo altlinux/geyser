@@ -7,9 +7,9 @@ set :deploy_to, '/var/www/geyser'
 
 set :rails_env, 'staging'
 
-set :branch, ENV['BRANCH'] || "staging"
+set :branch, ENV['BRANCH'] || "master"
 
-server 'predvridlo.office.basealt.ru', user: 'apache', roles: %w(app db web systemd)
+server 'predvridlo.office.basealt.ru', user: 'apache', roles: %w(app db web rake systemd)
 
 set :ssh_options, port: 22
 
