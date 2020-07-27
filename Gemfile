@@ -72,6 +72,9 @@ gem 'delayed_job_active_record'
 # http/ftp
 gem 'excon'
 
+# assets
+gem 'webpacker'
+
 group :production, :staging do
   gem 'lograge'
   gem 'rack-timeout', require: false

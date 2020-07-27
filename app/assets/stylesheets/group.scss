@@ -2,7 +2,7 @@
    & > .group-title {
       cursor: pointer;
       padding-left: 20px;
-      background: url(<%= asset_path 'plus.gif' %>) 4px 4px no-repeat;
+      background: url('../images/plus.gif') 4px 4px no-repeat;
 
       &:only-child {
          background: none;
@@ -28,7 +28,7 @@
 
    &.open {
       & > .group-title {
-         background-image: url(<%= asset_path 'minus.gif' %>);
+         background-image: url('../images/minus.gif');
 
          &:only-child {
             background: none;

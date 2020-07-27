@@ -40,6 +40,7 @@ module Geyser0
       g.helper false
     end
 
+    config.assets.prefix = '/packs'
     config.i18n.available_locales = %i(en ru)
 
     # http://batsov.com/articles/2012/09/12/setting-up-fallback-locale-s-in-rails-3/

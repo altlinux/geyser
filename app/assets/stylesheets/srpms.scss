@@ -14,7 +14,7 @@
 
    .tab {
       a, span {
-         background: url(<%= asset_path "ramka.gif" %>) no-repeat top left #eaeaea;
+         background: url('../images/ramka.gif') no-repeat top left #eaeaea;
          border-bottom: solid #baccdd 2px;
          border-right: solid #baccdd 1px;
          padding: 0px 3px 0px 3px;

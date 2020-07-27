@@ -180,7 +180,7 @@ span.vk {
 #top-line {
     margin: 0px;
     padding: 6px 2px 1px 2px;
-    background: url(<%= asset_path "gradFon.png" %>) repeat-x top #eaeaea;
+    background: url('../images/gradFon.png') repeat-x top #eaeaea;
     font-size: 9pt;
     height: 18px;
 }
@@ -210,10 +210,10 @@ span.vk {
 div.headleft {
     margin-right: 4px;
     margin-left: 4px;
-    background: url(<%= asset_path "leftBorder.gif" %>) no-repeat left top #aabccd;
+    background: url('../images/leftBorder.gif') no-repeat left top #aabccd;
 }
 div.headright {
-    background: url(<%= asset_path "rightBorder.gif" %>) no-repeat right top #aabccd;
+    background: url('../images/rightBorder.gif') no-repeat right top #aabccd;
     font-size: 9pt;
     margin-right: 0px;
     margin-left: 10px;
@@ -239,13 +239,13 @@ img.close {
     background: #eaeaea;
 }
 #main-offset-l {
-    background: url(<%= asset_path "leftBorder.gif" %>) no-repeat top left #ffffff;
+    background: url('../images/leftBorder.gif') no-repeat top left #ffffff;
     margin-left: 12em;
     margin-right: 20em;
     padding-left: 10px;
 }
 #main-offset-r {
-    background: url(<%= asset_path "rightBorder.gif" %>) no-repeat top right #ffffff;
+    background: url('../images/rightBorder.gif') no-repeat top right #ffffff;
     text-align: center;
 }
 #main-content {
@@ -262,13 +262,13 @@ img.close {
     background-color: #eaeaea;
 }
 #bottom-offset-l {
-    background: url(<%= asset_path "leftBottomBorder.gif" %>) no-repeat bottom left #ffffff;
+    background: url('../images/leftBottomBorder.gif') no-repeat bottom left #ffffff;
     margin-left: 12em;
     margin-right: 20em;
     padding-left: 10px;
 }
 #bottom-offset-r {
-    background: url(<%= asset_path "rightBottomBorder.gif" %>) no-repeat bottom right #ffffff;
+    background: url('../images/rightBottomBorder.gif') no-repeat bottom right #ffffff;
 }
 
 /* news */
@@ -291,7 +291,7 @@ div.header {
     letter-spacing: 0.2em;
     font-weight: bold;
     color: #202040;
-    background: url(<%= asset_path "gradHeader.png" %>) repeat-x white;
+    background: url('../images/gradHeader.png') repeat-x white;
 }
 #news-archive{
     margin-top: 2em;
@@ -301,7 +301,7 @@ div.header {
 span.news-date {
     font-weight: bold;
     padding: 2px 4px 1px 4px;
-    background: url(<%= asset_path "ramka.gif" %>) no-repeat top left #f0f0ff;
+    background: url('../images/ramka.gif') no-repeat top left #f0f0ff;
     font-size: 12pt;
     border-right: solid #e0e0e0 1px;
     border-bottom: solid #e0e0e0 1px;
@@ -309,7 +309,7 @@ span.news-date {
 span.news-date-nmu {
     font-weight: bold;
     padding: 2px 4px 1px 4px;
-    background: url(<%= asset_path "ramka.gif" %>) no-repeat top left #e6e6e7;
+    background: url('../images/ramka.gif') no-repeat top left #e6e6e7;
     font-size: 12pt;
     border-right: solid #e0e0e0 1px;
     border-bottom: solid #e0e0e0 1px;
@@ -317,7 +317,7 @@ span.news-date-nmu {
 span.news-date-new, span.news-date-nmu-new {
     font-weight: bold;
     padding: 2px 4px 1px 4px;
-    background: url(<%= asset_path "ramka.gif" %>) no-repeat top left #baccdd;
+    background: url('../images/ramka.gif') no-repeat top left #baccdd;
     font-size: 12pt;
     border-right: solid #e0e0e0 1px;
     border-bottom: solid #e0e0e0 1px;
@@ -344,13 +344,13 @@ a.repocoplink:hover {
 }
 
 span.vkladka {
-    background: url(<%= asset_path "ramka.gif" %>) no-repeat top left #eaeaea;
+    background: url('../images/ramka.gif') no-repeat top left #eaeaea;
     border-bottom: solid #baccdd 2px;
     border-right: solid #baccdd 1px;
     font-size: 9pt;
 }
 span.current {
-    background: url(<%= asset_path "ramka.gif" %>) no-repeat top left #baccdd;
+    background: url('../images/ramka.gif') no-repeat top left #baccdd;
     border-right: solid gray 1px;
     border-bottom: solid #baccdd 2px;
     font-size: 10pt;
