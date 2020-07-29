@@ -32,7 +32,8 @@ append :linked_dirs, 'log',
                      'tmp/pids',
                      'tmp/cache',
                      'tmp/sockets',
-                     'public/system'
+                     'public/system',
+                     'node_modules'
 
 # Default value for keep_releases is 5
 set :keep_releases, 3
@@ -80,17 +81,27 @@ set :whenever_roles, %i[web rake]
 
 namespace :deploy do
   before 'deploy:check:linked_files', 'deploy:check:shared'
-  before 'deploy:check:linked_files', 'deploy:check:mounts'
+  after :finishing, 'deploy:check:mounts'
   after :finishing, 'deploy:cleanup'
   after 'deploy:finishing', 'foreman:restart'
   before 'foreman:restart', 'foreman:export'
   after 'foreman:restart', 'nginx:setup'
   after 'nginx:setup', 'nginx:enable_site'
   before "deploy:cleanup", "deploy:reload"
+  after "bundler:install", "deploy:install"
 end
 
+set :default_env, {
+  'NODE_ENV' => 'development'
+}
 
 namespace :deploy do
+  task :install do
+    on roles(:all) do
+      execute "yarn --cwd #{release_path} > ylog"
+    end
+  end
+
   task :reload do
     on roles(:sysvinit) do
       execute :sudo, "killall -9 ruby || true"
@@ -113,20 +124,7 @@ namespace :deploy do
   namespace :check do
     task :mounts do
       on roles(:systemd, :rake) do
-        execute :sudo, "mkdir -p /beehive/ /archive_git/ /people/ /ports/ /roland/ /tasks /gears /home/nosrpm/e2k/ /srpms /archive || true"
-        execute :sudo, "chmod 777 /archive_git/ /people/ /beehive/ /ports/ /roland/ /tasks /gears /home/nosrpm/e2k/ /srpms /archive || true"
-
-        execute "sshfs -p 222 apache@packages.altlinux.org:/srpms/ /srpms || true"
-        execute "sshfs -p 222 apache@packages.altlinux.org:/gears/ /gears || true"
-        execute "sshfs -p 222 apache@packages.altlinux.org:/people/ /people/ || true"
-
-        execute "sshfs -p 222 apache@packages.altlinux.org:/beehive/ /beehive/ || true"
-        execute "sshfs -p 222 apache@packages.altlinux.org:/roland/ /roland/ || true"
-        execute "sshfs -p 222 apache@packages.altlinux.org:/ports/ /ports/ || true"
-        execute "sshfs -p 222 apache@packages.altlinux.org:/tasks/ /tasks || true"
-        execute "sshfs -p 222 apache@packages.altlinux.org:/archive/ /archive || true"
-
-        execute "sshfs -p 222 apache@packages.altlinux.org:/home/nosrpm/e2k/ /home/nosrpm/e2k/ || true"
+        execute "cd #{release_path}; bin/setup.sh"
       end
     end
   end
