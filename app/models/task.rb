@@ -4,7 +4,7 @@ class Task < ApplicationRecord
 
    has_one :branch, through: :branch_path
 
-   has_many :exercises
+   has_many :exercises, dependent: :delete_all
 
    validates_presence_of :no, :state, :changed_at, :uri
 

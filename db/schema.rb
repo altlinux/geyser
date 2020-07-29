@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_24_174600) do
+ActiveRecord::Schema.define(version: 2020_07_29_200700) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "btree_gin"
@@ -584,7 +584,7 @@ ActiveRecord::Schema.define(version: 2019_06_24_174600) do
   add_foreign_key "changelogs", "packages", column: "spkg_id"
   add_foreign_key "changelogs", "packages", on_delete: :restrict
   add_foreign_key "exercise_approvers", "exercises", on_delete: :restrict
-  add_foreign_key "exercises", "tasks", on_delete: :restrict
+  add_foreign_key "exercises", "tasks", on_delete: :cascade
   add_foreign_key "ftbfs", "branches", on_delete: :cascade
   add_foreign_key "issue_assignees", "issues", on_delete: :cascade
   add_foreign_key "issue_assignees", "maintainers", on_delete: :restrict
