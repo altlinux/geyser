@@ -128,7 +128,7 @@ class ImportTasks
                Rails.logger.info("Import.Tasks: $ find with args #{args}")
                wrapper = Terrapin::CommandLine.new('find', args, environment: { 'LANG' => 'C', 'LC_ALL' => 'en_US.UTF-8' }, expected_outcodes: [ 0, 1 ])
                Dir.chdir(fullpath) do
-                  wrapper.run.split("\n").select { |n| n =~ /\/\d+$/ }.map { |f| f.split("/").last.to_i }
+                  wrapper.run.split("\n").select { |n| n =~ %r{/\d+$} }.map { |f| f.split("/").last.to_i }
                end
             end
 
