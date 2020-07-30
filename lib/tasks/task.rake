@@ -14,7 +14,7 @@ namespace :task do
                          }]).do
    end
 
-   desc 'Update all tasks to database'
+   desc 'Update all task rpms to database for range of tasks'
    task :link, %i(begin end) => %i(environment) do |_, args|
       range = Range.new(args.begin.to_i, args.end.to_i)
       ImportTaskRpms.new(range).do

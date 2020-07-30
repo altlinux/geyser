@@ -13,6 +13,7 @@ class ImportTasks
          import_exercises
          import_exercise_approvers
          import_task_rpms
+         cleanup_tasks
       end
    end
 
@@ -105,6 +106,46 @@ class ImportTasks
       []
    rescue Terrapin::ExitStatusError
       Rails.logger.error('Import.Repo: find exit status non zero')
+
+      []
+   end
+
+   def taskno_list
+      @taskno_list ||= (
+         taskno_list = sources.reduce([]) do |list, source|
+            path = source[:path]
+            depth = source[:depth]
+            file = source[:file]
+
+            parsed =
+            if file && File.file?(file)
+               IO.read(file).split("\n").map { |f| f.to_i }
+            else
+               fullpath = File.expand_path(path)
+
+               args = ". -maxdepth #{depth - 1} -mindepth #{depth - 1} -type d"
+
+               Rails.logger.info("Import.Tasks: $ find with args #{args}")
+               wrapper = Terrapin::CommandLine.new('find', args, environment: { 'LANG' => 'C', 'LC_ALL' => 'en_US.UTF-8' }, expected_outcodes: [ 0, 1 ])
+               Dir.chdir(fullpath) do
+                  wrapper.run.split("\n").select { |n| n =~ %r{/\d+$} }.map { |f| f.split("/").last.to_i }
+               end
+            end
+
+            list + parsed
+         end
+
+         if taskno_list.blank?
+            Rails.logger.error('Import.Repo: $ find exit status is zero, but result is blank')
+         end
+
+         taskno_list || [])
+   rescue Terrapin::CommandNotFoundError
+      Rails.logger.error('Import.Repo: $ find is not found')
+
+      []
+   rescue Terrapin::ExitStatusError
+      Rails.logger.error('Import.Repo: $ find exit status is non zero')
 
       []
    end
@@ -230,5 +271,9 @@ class ImportTasks
 
    def import_task_rpms
       TaskRpm.import!(task_rpm_data, on_duplicate_key_ignore: true)
+   end
+
+   def cleanup_tasks
+      Task.where.not(no: taskno_list).delete_all
    end
 end
