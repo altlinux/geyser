@@ -28,7 +28,7 @@ class Rpm < ApplicationRecord
    end
 
    def ftp_url
-      File.join(branch_path.ftp_url, self.filename)
+      branch_path.ftp_url && File.join(branch_path.ftp_url, self.filename) || nil
    end
 
    def is_obsoleted?
@@ -46,6 +46,14 @@ class Rpm < ApplicationRecord
 
    def file_exists?
       File.exists?(filepath)
+   end
+
+   def in_perpetual?
+      branch.perpetual?
+   end
+
+   def downloadable?
+      !branch_path.ftp_url.nil?
    end
 
    protected
