@@ -5,10 +5,9 @@ module Srpmable
       @spkgs = Package::Src.by_name(params[:reponame])
                           .by_evr(@evrb)
                           .joins(:branches, :branch_paths)
-                          .merge(BranchPath.published)
                           .order({version: :desc,
                                   release: :desc,
-                                  buildtime: :desc},
+                                  buildtime: :asc},
                                  "branches.order_id")
 
       @spkg = @spkgs.in_branch(@branch).first&.decorate
@@ -17,10 +16,9 @@ module Srpmable
          rpms = Rpm.joins(:package, :branch_path, :branch)
                    .by_name(params[:reponame])
                    .by_evr(@evrb)
-                   .merge(BranchPath.published)
                    .order({"packages.version": :desc,
                            "packages.release": :desc,
-                           "packages.buildtime": :desc},
+                           "packages.buildtime": :asc},
                            "branches.order_id")
 
          if (branch = rpms.first&.branch) && branch != @branch
@@ -35,11 +33,10 @@ module Srpmable
       @spkgs_by_name = SrpmBranchesSerializer.new(Rpm.src
                                                      .by_name(params[:reponame])
                                                      .joins(:branch, :branch_path)
-                                                     .merge(BranchPath.published)
                                                      .includes(:branch_path, :branch, :package)
                                                      .order({"branches.order_id": :desc,
                                                              "packages.version": :desc,
                                                              "packages.release": :desc,
-                                                             "packages.buildtime": :desc}))
+                                                             "packages.buildtime": :asc}))
    end
 end

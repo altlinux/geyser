@@ -65,16 +65,19 @@ module SrpmsHelper
          popup: _('Patches'),
          args: {controller: :patches, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: _('patches'),
+         valid: 'downloadable?'
       },
       sources: {
          popup: _('Sources'),
          args: {controller: :sources, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: _('sources'),
+         valid: 'downloadable?'
       },
       download: {
          popup: _('Download'),
          args: {controller: :rpms, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: _('download latest version'),
+         valid: 'downloadable?'
       },
       bugs: {
          title: _('Bugs') + ' (%s/%s)' % [opened_bugs.count, all_bugs.count],
@@ -85,7 +88,7 @@ module SrpmsHelper
          popup: _('Repocop'),
          args: {controller: :repocop_notes, action: :index, branch: branch.slug, reponame: srpm.name},
          popup: _('repocop bugreports'),
-         valid: 'perpetual?'
+         valid: 'in_perpetual?'
       },
       repos: {
          title: _('Git Repos'),

@@ -210,6 +210,10 @@ class Package < ApplicationRecord
       read_attribute(:count)
    end
 
+   def rpm_in_branch branch
+      rpms.joins(:branch_path).where(branch_paths: { branch_id: branch.id }).first
+   end
+
    def self.source
       @source ||= self.to_s.split('::').last
    end

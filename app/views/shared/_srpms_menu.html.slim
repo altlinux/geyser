@@ -1,6 +1,6 @@
 .page-menu
    - menu_data(branch, srpm, opened_bugs, all_bugs, evrb).each do |page, data|
-      - next if data[:valid] && !branch.send(data[:valid])
+      - next if data[:valid] && !srpm.rpm_in_branch(branch).send(data[:valid])
       .tab
          - if page == current_page
             span = _(data[:title])
