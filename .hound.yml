@@ -805,6 +805,11 @@ Layout/IndentationWidth:
                   Use 2 (not 3) spaces for indentation.
    Enabled: false
 
+Layout/SpaceInsideHashLiteralBraces:
+   Description: >-
+                 Space inside } missing.
+
+   Enabled: false
 #################### Lint ################################
 ### Warnings
 
@@ -1018,3 +1023,11 @@ Rails/Validation:
   Enabled: true
   Include:
     - app/models/**/*.rb
+
+#
+Metrics/LineLength:
+  Description: >-
+                 Favor modifier while/until usage when you have a
+                 single-line body.
+  Enabled: false
+  MaxLineLength: 130
