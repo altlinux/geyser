@@ -37,9 +37,9 @@ module Srpmable
                                                      .joins(:branch, :branch_path)
                                                      .merge(BranchPath.published)
                                                      .includes(:branch_path, :branch, :package)
-                                                     .order({"packages.version": :desc,
+                                                     .order({"branches.order_id": :desc,
+                                                             "packages.version": :desc,
                                                              "packages.release": :desc,
-                                                             "packages.buildtime": :desc},
-                                                             "branches.order_id"))
+                                                             "packages.buildtime": :desc}))
    end
 end
