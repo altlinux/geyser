@@ -627,6 +627,14 @@ msgstr "Головна"
 msgid "Home page:"
 msgstr "Домашня сторінка:"
 
+#, fuzzy
+msgid "Hurrah, with us a new maintainer"
+msgstr "Майнтейнер:"
+
+#, fuzzy
+msgid "Hurrah, with us new maintainers"
+msgstr "Майнтейнер:"
+
 msgid "If you didn't request this, please ignore this email."
 msgstr ""
 
@@ -764,6 +772,10 @@ msgstr "Мережі/Віддалений доступ"
 
 msgid "Networking/WWW"
 msgstr "Мережі/WWW"
+
+#, fuzzy
+msgid "New maintainers"
+msgstr "Майнтейнер:"
 
 msgid "New password"
 msgstr ""
@@ -1318,6 +1330,12 @@ msgid "leader"
 msgstr ""
 
 msgid "leave blank if you don't want to change it"
+msgstr ""
+
+msgid "let's greet him."
+msgstr ""
+
+msgid "let's greet them."
 msgstr ""
 
 msgid "link to archive task list for the source RPM"

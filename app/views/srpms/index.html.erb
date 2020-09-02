@@ -21,6 +21,21 @@
 
 <p class="break" />
 
+<%- if @new_maintainers.present? %>
+<p class="break"></p>
+<div class="header"><%= raw _("New maintainers") %></div>
+<p class="break" />
+
+<span class="news-text">
+<%- if @new_maintainers.size > 1 %>
+  <%= raw _("Hurrah, with us new maintainers") %> <%= @new_maintainers.map { |m| link_to _(m.shown_name), maintainer_path(@branch, m), class: 'news', title: _('information about maintainer') }.join(", ").html_safe %>, <%= raw _("let's greet them.") %>
+<%- else %>
+  <%= raw _("Hurrah, with us a new maintainer") %> <%= link_to _(@new_maintainers.first.shown_name), maintainer_path(@branch, @new_maintainers.first), class: 'news', title: _('information about maintainer').html_safe %>, <%= raw _("let's greet him.") %>
+<%- end %>
+</span>
+<p class="news"></p>
+<%- end %>
+
 <p class="news" />
 <div class="header"><%= _('Last changes') %></div>
 <p class="news" />

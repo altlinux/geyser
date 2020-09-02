@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: app 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-02 21:44+0300\n"
-"PO-Revision-Date: 2020-06-02 21:44+0300\n"
+"POT-Creation-Date: 2020-09-02 16:05+0300\n"
+"PO-Revision-Date: 2020-09-02 16:05+0300\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -626,6 +626,12 @@ msgstr ""
 msgid "Home page:"
 msgstr ""
 
+msgid "Hurrah, with us a new maintainer"
+msgstr ""
+
+msgid "Hurrah, with us new maintainers"
+msgstr ""
+
 msgid "If you didn't request this, please ignore this email."
 msgstr ""
 
@@ -762,6 +768,9 @@ msgid "Networking/Remote access"
 msgstr ""
 
 msgid "Networking/WWW"
+msgstr ""
+
+msgid "New maintainers"
 msgstr ""
 
 msgid "New password"
@@ -1310,6 +1319,12 @@ msgid "leader"
 msgstr ""
 
 msgid "leave blank if you don't want to change it"
+msgstr ""
+
+msgid "let's greet him."
+msgstr ""
+
+msgid "let's greet them."
 msgstr ""
 
 msgid "link to archive task list for the source RPM"

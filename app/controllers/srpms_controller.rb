@@ -20,6 +20,7 @@ class SrpmsController < ApplicationController
    rescue_from 'ActiveRecord::RecordNotFound', with: :redirect_to_home
 
    def index
+      @new_maintainers = Maintainer.person.where("created_at >= (now() - interval '30 days')::date")
       @spkgs = @branch.spkgs.published.uniq_named.includes(:builder, :changelog).ordered.page(params[:page]).per(40).decorate
    end
 
