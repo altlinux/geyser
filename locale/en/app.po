@@ -624,6 +624,12 @@ msgstr ""
 msgid "Home page:"
 msgstr ""
 
+msgid "Hurrah, with us a new maintainer"
+msgstr ""
+
+msgid "Hurrah, with us new maintainers"
+msgstr ""
+
 msgid "If you didn't request this, please ignore this email."
 msgstr ""
 
@@ -760,6 +766,9 @@ msgid "Networking/Remote access"
 msgstr ""
 
 msgid "Networking/WWW"
+msgstr ""
+
+msgid "New maintainers"
 msgstr ""
 
 msgid "New password"
@@ -1308,6 +1317,12 @@ msgid "leader"
 msgstr ""
 
 msgid "leave blank if you don't want to change it"
+msgstr ""
+
+msgid "let's greet him."
+msgstr ""
+
+msgid "let's greet them."
 msgstr ""
 
 msgid "link to archive task list for the source RPM"

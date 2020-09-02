@@ -624,6 +624,14 @@ msgstr "Home"
 msgid "Home page:"
 msgstr ""
 
+#, fuzzy
+msgid "Hurrah, with us a new maintainer"
+msgstr "Mantenedores"
+
+#, fuzzy
+msgid "Hurrah, with us new maintainers"
+msgstr "Mantenedores"
+
 msgid "If you didn't request this, please ignore this email."
 msgstr ""
 
@@ -761,6 +769,10 @@ msgstr ""
 
 msgid "Networking/WWW"
 msgstr ""
+
+#, fuzzy
+msgid "New maintainers"
+msgstr "Mantenedores"
 
 msgid "New password"
 msgstr ""
@@ -1311,6 +1323,12 @@ msgid "leader"
 msgstr ""
 
 msgid "leave blank if you don't want to change it"
+msgstr ""
+
+msgid "let's greet him."
+msgstr ""
+
+msgid "let's greet them."
 msgstr ""
 
 msgid "link to archive task list for the source RPM"
