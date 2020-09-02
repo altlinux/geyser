@@ -33,7 +33,7 @@ class Package < ApplicationRecord
    scope :published, -> { joins(:branch_paths).merge(BranchPath.published) }
    scope :src, -> { where(arch: 'src') }
    scope :built, -> { where.not(arch: 'src') }
-   scope :for_maintainer, ->(maintainer) { where(name: maintainer.gear_names) }
+   scope :for_maintainer, ->(maintainer) { where(name: maintainer.affected_repo_names) }
    scope :in_branch, ->(branches) do
       branches.present? && joins(:branch_paths).where(branch_paths: {branch_id: branches}) || self
    end

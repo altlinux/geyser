@@ -32,12 +32,22 @@ class Maintainer < ApplicationRecord
    has_many :tasks, -> { order(changed_at: :desc).distinct }, primary_key: :login, foreign_key: :owner_slug
 
    scope :top, ->(limit) { order(srpms_count: :desc).limit(limit) }
-   scope :person, -> { where("maintainers.login ~ '^[^@].*'", ) }
-   scope :team, -> { where("maintainers.login ~ '^@.*'", ) }
+   scope :person, -> { where("maintainers.login ~ '^[^@].*'") }
+   scope :team, -> { where("maintainers.login ~ '^@.*'") }
+   scope :with_login, ->(login) { where("maintainers.login ~ '^@\??'", login) }
+   scope :with_email, ->(email) { joins(:email).where({ recitals: { address: email }}) }
 
    alias_method(:srpms_names, :built_names) #TODO remove of compat
 
    validates_presence_of :name, :email
+
+   def affected_repo_names
+     Repo.left_outer_joins(:tags)
+         .where(holder_slug: self.login)
+         .or(Repo.where(tags: {author_id: self.id}))
+         .select(:name)
+         .distinct
+   end
 
    def slug
       to_param
