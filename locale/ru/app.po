@@ -897,6 +897,9 @@ msgstr "Радик Юсупов"
 msgid "Raw spec file"
 msgstr "Необработанный spec-файл"
 
+msgid "Rebuilt:"
+msgstr "Пересобрано:"
+
 msgid "Recent changes (last three changelog entries):"
 msgstr "Последние изменения (три последних записи журнала изменений):"
 

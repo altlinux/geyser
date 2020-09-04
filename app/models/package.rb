@@ -214,6 +214,18 @@ class Package < ApplicationRecord
       rpms.joins(:branch_path).where(branch_paths: { branch_id: branch.id }).first
    end
 
+   def was_rebuilt?
+      rebuilt_at.present? && rebuilt_at != buildtime
+   end
+
+   def rebuilt_at
+     @rebuilt_at ||= Package::Src.where(name: name, version: version, release: release, epoch: nil)
+                                 .where.not(id: id)
+                                 .order(buildtime: :desc)
+                                 .first
+                                 .buildtime
+   end
+
    def self.source
       @source ||= self.to_s.split('::').last
    end
