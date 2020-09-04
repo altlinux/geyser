@@ -215,15 +215,15 @@ class Package < ApplicationRecord
    end
 
    def was_rebuilt?
-      rebuilt_at.present? && rebuilt_at != buildtime
+      self.buildtime && rebuilt_at.present? && rebuilt_at != self.buildtime
    end
 
    def rebuilt_at
      @rebuilt_at ||= Package::Src.where(name: name, version: version, release: release, epoch: nil)
                                  .where.not(id: id)
-                                 .order(buildtime: :desc)
+                                 .order(self.buildtime: :desc)
                                  .first
-                                 .buildtime
+                                 &.buildtime
    end
 
    def self.source
