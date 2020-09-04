@@ -40,6 +40,9 @@
 
 <b><%= _('Current version:') %></b> <%= @spkg.evr %><br>
 <b><%= _('Built:') %></b> <abbr title="<%= @spkg.buildtime %>" style="border-bottom: 1px dotted gray;"><%= time_ago_in_words(@spkg.buildtime) %> <%= _('ago') %></abbr><br>
+<%- if @spkg.was_rebuilt? %>
+<b><%= _('Rebuilt:') %></b> <abbr title="<%= @spkg.rebuilt_at %>" style="border-bottom: 1px dotted gray;"><%= time_ago_in_words(@spkg.rebuilt_at) %> <%= _('ago') %></abbr><br>
+<%- end %>
 <% if @ftbfs.present? %>
   <b><%= _('<abbr title="Fails To Build From Source">FTBFS:</abbr>').html_safe %></b>
   <%- ftbfs_show = @ftbfs.group_by {|f| time_ago_in_words(f.reported_at) }.map do |time, ftbfses| %>

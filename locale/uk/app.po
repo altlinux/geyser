@@ -867,6 +867,9 @@ msgstr ""
 msgid "Raw spec file"
 msgstr ""
 
+msgid "Rebuilt:"
+msgstr ""
+
 msgid "Recent changes (last three changelog entries):"
 msgstr ""
 
