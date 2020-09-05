@@ -11,7 +11,6 @@ const TerserJSPlugin = require('terser-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = merge(sharedConfig, {
-   //output: { filename: '[name]-[chunkhash].js' },
    devtool: 'cheap-source-map',
 
    mode: "production",

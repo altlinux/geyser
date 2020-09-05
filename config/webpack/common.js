@@ -6,7 +6,7 @@ global.env = process.env.RAILS_ENV || process.env.NODE_ENV || 'development'
 
 const path = require('path');
 const join = path.join
-var PROD = global.env === 'production'
+var PROD = global.env === 'production' || global.env === 'staging'
 var DEBUG = !PROD
 
 if (__dirname.match(/config/)) {
@@ -102,7 +102,7 @@ module.exports = {
 
    output: {
       path: join(global.rootpath, 'vendor/assets'),
-      filename: DEBUG ? '[name].js' : '[name]-[hash].js',
+      filename: '[name].js',
       devtoolModuleFilenameTemplate: 'webpack:///[absolute-resource-path]'
    },
 
@@ -115,15 +115,15 @@ module.exports = {
    },
 
    plugins: [
-      new MiniCssExtractPlugin({ filename: DEBUG ? '[name].css' : '[name]-[hash].css',
-                                 chunkFilename: DEBUG ? '[id].css' : '[id]-[hash].css',
+      new MiniCssExtractPlugin({ filename: '[name].css',
+                                 chunkFilename: '[id].css',
                                  ignoreOrder: DEBUG ? false : true }),
 
       // Ignore locales because it's around 400kb
       // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new webpack.LoaderOptionsPlugin({
          test: /\.xxx$/, // may apply this only for some modules
-         debug: DEBUG ? true : false,
+         debug: DEBUG,
          options: {
             sassLoader: {
                includePaths: join(global.rootpath, 'node_modules'),
