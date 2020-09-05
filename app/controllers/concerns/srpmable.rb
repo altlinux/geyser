@@ -38,5 +38,11 @@ module Srpmable
                                                              "packages.version": :desc,
                                                              "packages.release": :desc,
                                                              "packages.buildtime": :asc}))
+      list = Rpm.src
+                .by_name(params[:reponame])
+                .joins(:package)
+                .group("rpms.id")
+                .select("MAX(packages.buildtime) as buildtime")
+      @spkgs_by_name_id = "#{params[:reponame]}-#{list.first.buildtime}"
    end
 end

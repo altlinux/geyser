@@ -4,9 +4,11 @@
 
 <div id='main-content'>
    <div class="rightbar">
+      <%- cache("#{params.to_json}-#{@spkgs_by_name_id}") do %>
       <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
+      <%- end %>
 
-<% if @perl_watch %>
+<%- if @perl_watch %>
 <div class="headleft">
   <div class="headright" title="<%= _('Other repositories') %>">
     <%= _('Other repositories') %>
@@ -23,7 +25,7 @@
   </tr>
 </table>
 </div><br>
-<% end %>
+<%- end %>
 
 </div>
 
@@ -38,12 +40,13 @@
 
 <%= render partial: "shared/srpms_menu", locals: { current_page: :main, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
 
+<%- cache("#{params.to_json}-#{@spkg.md5}") do %>
 <b><%= _('Current version:') %></b> <%= @spkg.evr %><br>
 <b><%= _('Built:') %></b> <abbr title="<%= @spkg.buildtime %>" style="border-bottom: 1px dotted gray;"><%= time_ago_in_words(@spkg.buildtime) %> <%= _('ago') %></abbr><br>
 <%- if @spkg.was_rebuilt? %>
 <b><%= _('Rebuilt:') %></b> <abbr title="<%= @spkg.rebuilt_at %>" style="border-bottom: 1px dotted gray;"><%= time_ago_in_words(@spkg.rebuilt_at) %> <%= _('ago') %></abbr><br>
 <%- end %>
-<% if @ftbfs.present? %>
+<%- if @ftbfs.present? %>
   <b><%= _('<abbr title="Fails To Build From Source">FTBFS:</abbr>').html_safe %></b>
   <%- ftbfs_show = @ftbfs.group_by {|f| time_ago_in_words(f.reported_at) }.map do |time, ftbfses| %>
      <%- about_ftbfs = ftbfses.map { |ftbfs| ftbfs.arch }.join(", ") %>
@@ -62,17 +65,17 @@
 <b><%= _('Task no') %>:</b> <%= link_to @spkg.task.no, @spkg.task.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('task number and uri') %><br>
 <%- end %>
 
-<% if @spkg.newer_gear %>
+<%- if @spkg.newer_gear %>
 <b><%= _('Gear:') %></b> &nbsp; <%= link_to @spkg.newer_gear.uri, @spkg.newer_gear.uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('lately updated gear or srpm git repo') %><br>
-<% end %>
+<%- end %>
 
-<% if @spkg.archive_uri %>
+<%- if @spkg.archive_uri %>
 <b><%= _('Archive:') %></b> &nbsp; <%= link_to @spkg.archive_uri, @spkg.archive_uri, target: '_blank', class: 'news', rel: 'nofollow', title: _('link to archive task list for the source RPM') %><br>
-<% end %>
+<%- end %>
 
-<% if @spkg.url %>
+<%- if @spkg.url %>
 <b><%= _('Home page:') %></b> &nbsp; <%= link_to @spkg.url, @spkg.url, target: '_blank', class: 'news', rel: 'nofollow' %><br><br>
-<% end %>
+<%- end %>
 
 <b><%= _('License:') %></b> <span class="news-text"><%= @spkg.license %></span><br>
 <!-- TODO:
@@ -83,13 +86,13 @@
 <b><%= _('Description:') %></b> <div class="para"><%= simple_format h(I18n.locale == :ru && @spkg.descriptions.first&.text || @spkg.description) %></div>
 <p class="news" />
 
-<% if @leader %>
+<%- if @leader %>
 <div class="maintainer"><b><%= _('Current maintainer:') %></b>
 <%= link_to _(@leader.name), @leader.is_a?(Maintainer::Team) && team_path(@branch, @leader.to_param) || maintainer_path(@branch, @leader.to_param), class: 'news', title: _('information about maintainer') %>
 </div><br>
-<% end %>
+<%- end %>
 
-<% if @spkg.contributors %>
+<%- if @spkg.contributors %>
 <b><%= _('List of contributors:').html_safe %></b>
 <div class="para" style="margin-left: 0em;">
   <ul>
@@ -105,9 +108,9 @@
     <% end %>
   </ul>
 </div>
-<% end %>
+<%- end %>
 
-<% if @maintainers || @teams %>
+<%- if @maintainers || @teams %>
 <b><%= _('ACL:') %></b>
 <div class="para" style="margin-left: 0em;">
   <ul>
@@ -124,9 +127,9 @@
   <% end %>
   </ul>
 </div>
-<% end %>
+<%- end %>
 
-<% if @spkg.packages.present? %>
+<%- if @spkg.packages.present? %>
 <b><%= _('List of rpms provided by this srpm:') %></b>
 <div class="para" style="margin-left: 0em;">
   <ul>
@@ -135,10 +138,10 @@
     <% end %>
   </ul>
 </div>
-<% end %>
+<%- end %>
 
 <b><%= _('Recent changes (last three changelog entries):') %></b>
-<% @changelogs.limit(3).each do |changelog| %>
+<%- @changelogs.limit(3).each do |changelog| %>
   <p class="news" />
   <b><%= changelog.date %>
      <%- if changelog.maintainer.has_login? %>
@@ -154,7 +157,8 @@
 <%= changelog.text %>
     </pre>
   </ul>
-<% end %>
+<%- end %>
+<%- end %>
 
 </div>
 

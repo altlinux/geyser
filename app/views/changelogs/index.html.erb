@@ -3,9 +3,11 @@
 <% keywords @spkg.summary %>
 
 <div id='main-content'>
-   <div class="rightbar">
-      <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
-   </div>
+    <div class="rightbar">
+      <%- cache("#{params.to_json}-#{@spkgs_by_name_id}") do %>
+        <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
+      <%- end %>
+    </div>
 
 <div style="height:3em;">
   <div id="rpmtop">
@@ -17,6 +19,7 @@
 <div>
 <%= render partial: "shared/srpms_menu", locals: { current_page: :changelog, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
 
+<%- cache("#{params.to_json}-#{@spkg.md5}") do %>
 <% @changelogs.each do |changelog| %>
   <p class="news" />
   <b><%= changelog.date %>
@@ -34,6 +37,7 @@
     </pre>
   </ul>
 <% end %>
+<%- end %>
 
 </div>
 

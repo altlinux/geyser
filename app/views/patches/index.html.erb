@@ -4,7 +4,9 @@
 
 <div id='main-content'>
    <div class="rightbar">
+      <%- cache("#{params.to_json}-#{@spkgs_by_name_id}") do %>
       <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
+      <%- end %>
    </div>
 
 <div style="height:3em;">
@@ -17,6 +19,7 @@
 <div>
 <%= render partial: "shared/srpms_menu", locals: { current_page: :patches, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
 
+<%- cache("#{params.to_json}-#{@spkg.md5}") do %>
 <% if @patches.any? %>
 <table style="pretty">
   <% @patches.each do |patch| %>
@@ -40,6 +43,7 @@
   <% end %>
 </table>
 <% end %>
+<%- end %>
 
 </div>
 

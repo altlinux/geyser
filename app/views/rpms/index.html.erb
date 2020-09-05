@@ -4,7 +4,9 @@
 
 <div id='main-content'>
    <div class="rightbar">
+      <%- cache("#{params.to_json}-#{@spkgs_by_name_id}") do %>
       <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
+      <%- end %>
    </div>
 
 <div style="height:3em;">
@@ -17,6 +19,7 @@
 <div>
 <%= render partial: "shared/srpms_menu", locals: { current_page: :download, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
 
+<%- cache("#{params.to_json}-#{@spkg.md5}") do %>
 <table class="sources">
   <%- if @arched_packages_s.present? %>
     <%= render partial: 'shared/arches', locals: { arches: @arched_packages_s.as_json } %>
@@ -25,6 +28,7 @@
   <%- end %>
 
 </table>
+<%- end %>
 </div>
 
 </div><div id="bottom-offset-l"><div id="bottom-offset-r">&nbsp;</div></div>

@@ -4,7 +4,9 @@
 
 <div id='main-content'>
    <div class="rightbar">
-      <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
+      <%- cache("#{params.to_json}-#{@spkgs_by_name_id}") do %>
+        <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
+      <%- end %>
    </div>
 
 <div style="height:3em;">

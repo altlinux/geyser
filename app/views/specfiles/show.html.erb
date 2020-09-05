@@ -4,7 +4,9 @@
 
 <div id='main-content'>
    <div class="rightbar">
+      <%- cache("#{params.to_json}-#{@spkgs_by_name_id}") do %>
       <%= render partial: "shared/tables/srpm_list", locals: { branched_srpms: @spkgs_by_name.as_json } %>
+      <%- end %>
    </div>
 
 <div style="height:3em;">
@@ -17,6 +19,7 @@
 <div>
 <%= render partial: "shared/srpms_menu", locals: { current_page: :spec, branch: @branch, srpm: @spkg, opened_bugs: @opened_bugs, all_bugs: @all_bugs, evrb: @evrb } %>
 
+<%- cache("#{params.to_json}-#{@spkg.md5}") do %>
 <% if @spkg.specfile %>
 <%= link_to _('Raw spec file'), raw_specfile_path(@branch, @spkg), class: 'news', title: _('Raw spec file') %>
 
@@ -32,6 +35,7 @@
 <% else %>
 No imported yet.
 <% end %>
+<%- end %>
 </div>
 
 </div><div id="bottom-offset-l"><div id="bottom-offset-r">&nbsp;</div></div>
