@@ -3,7 +3,7 @@
 class PackageSerializer < RecordSerializer
    include ActionView::Helpers::NumberHelper
 
-   attributes :name, :filename, :ftp_url, :md5, :human_size
+   attributes :name, :filename, :ftp_url, :md5, :human_size, :valid_url
 
    def human_size
       number_to_human_size(object.size)
@@ -11,6 +11,10 @@ class PackageSerializer < RecordSerializer
 
    def ftp_url
       rpm&.ftp_url
+   end
+
+   def valid_url
+      ftp_url && Excon.head(ftp_url).status == 200
    end
 
    def filename
