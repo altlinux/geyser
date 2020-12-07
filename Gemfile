@@ -3,8 +3,9 @@
 ruby '2.7.1'
 
 source 'https://rubygems.org'
+gem 'pry'
 
-gem 'rails', '~> 5.2.4.3'
+gem 'rails', '~> 5.2.4.4'
 gem 'pg', '~> 0.18'
 gem 'puma', '~> 3.12', '>= 3.12.6'
 gem 'sass-rails', '~> 5.0'
@@ -139,7 +140,7 @@ group :test do
   gem 'rspec-activemodel-mocks'
   gem 'shoulda-matchers', '~> 4.0.0.rc1'
   gem 'shoulda-callback-matchers'
-  gem 'rails-controller-testing'
+  #gem 'rails-controller-testing'
   gem 'rspec-matchers-controller_filters'
   gem 'capybara'
   gem 'capybara-email'
