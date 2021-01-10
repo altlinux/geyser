@@ -26,7 +26,9 @@
 <b><%= _('Jabber ID:') %></b> <%= @maintainer.jabber %><br>
 <%- end %>
 <b><%= _('Time Zone:') %></b> <%= @maintainer.time_zone %><br>
+<%- if @maintainer.last_built_at.present? %>
 <b><%= _('Seen on building') %></b> <%= time_ago_in_words(@maintainer.last_built_at) %> <%= _('back') %><br>
+<%- end %>
 <%- if @maintainer.info.present? %>
    <b><%= _('Information:') %></b>
    <div class="para"><%= simple_format(@maintainer.info) %></div>
