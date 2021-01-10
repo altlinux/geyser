@@ -29,21 +29,6 @@ if Rails.env.production? || Rails.env.staging?
    state_path "#{shared_dir}/tmp/pids/puma.state"
    activate_control_app
    daemonize false # required for foreman and systemd
-
-   before_fork do
-      require 'puma_worker_killer'
-
-      PumaWorkerKiller.config do |config|
-         config.ram           = 8192  # mb
-         config.frequency     = 60    # seconds
-         config.percent_usage = 0.98
-         config.rolling_restart_frequency = 12 * 3600 # 12 hours in seconds
-         config.reaper_status_logs = true
-         config.pre_term = -> (worker) { puts "Worker #{worker.inspect} being killed" }
-      end
-      PumaWorkerKiller.enable_rolling_restart
-      PumaWorkerKiller.start
-   end
 elsif Rails.env.development?
    shared_dir = '.'
    threads_count = Integer(ENV['MAX_THREADS'] || 1)

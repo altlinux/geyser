@@ -81,7 +81,6 @@ group :production, :staging do
   gem 'rack-timeout', require: false
   gem 'rack-force_domain'
   gem 'exception_notification'
-  gem 'puma_worker_killer'
   gem 'foreman', '~> 0.85'
 end
 
