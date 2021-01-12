@@ -1,8 +1,11 @@
 #!/bin/bash -l
 
+echo "Start mon scripts at $(date +%Y%m%d%H%M%S)" >> /tmp/up.log
+
 folders='/people /beehive /ports /roland /tasks /gears /home/nosrpm/e2k /srpms /archive'
+root=$(dirname "$(realpath $0)")
 
 for f in $folders; do
-    echo  bin/mon.sh $f >> /tmp/up.log
-    nohup bin/mon.sh $f >/dev/null 2>&1 &
+    echo  $root/mon.sh $f >> /tmp/up.log
+    nohup $root/mon.sh $f >> /tmp/up.log 2>&1 &
 done

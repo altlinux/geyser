@@ -31,7 +31,8 @@ or with a few lines:
     # apt-get install postgresql11-server postgresql11-contrib postgresql11 bzip2 \
                       gettext memcached /usr/bin/md5sum npm nodejs \
                       libruby-devel ruby zlib-devel postgresql11-devel ruby-bundler \
-                      yarn node libsass-devel libv8-devel npm node-gyp node-sass
+                      yarn node libsass-devel libv8-devel npm node-gyp node-sass \
+                      sshfs
 ### Post setup
 
     # service postgresql start

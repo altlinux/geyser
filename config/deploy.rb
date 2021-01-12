@@ -97,7 +97,7 @@ set :default_env, {
 
 namespace :deploy do
   task :install do
-    on roles(:all) do
+    on roles(:web) do
       execute "yarn --cwd #{release_path} > ylog"
     end
   end
@@ -123,8 +123,8 @@ namespace :deploy do
 
   namespace :check do
     task :mounts do
-      on roles(:systemd, :rake) do
-        execute "cd #{release_path}; bin/setup.sh"
+      on roles(:rake) do
+        execute "#{release_path}/bin/setup.sh"
       end
     end
   end
