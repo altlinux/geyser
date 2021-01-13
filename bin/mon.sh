@@ -14,7 +14,7 @@ echo Run monitor for folder "$folder" >> $log
 sudo mkdir -p $folder
 sudo chmod 777 $folder
 
-for i in $(seq 1 10); do
+while true; do
    if [ -z "$(ls $folder 2>/dev/null)" ]; then
       echo Try mounting "$folder" ...  >> $log
       sudo umount -l $folder
