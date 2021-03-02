@@ -2,16 +2,20 @@
 
 set :repo_url, 'git@github.com:altlinux/geyser.git'
 
-set :deploy_to, '/var/www/geyser'
+set :deploy_to, '/home/majioa/geyser'
 
 set :rails_env, 'production'
 
-server 'packages.altlinux.org', user: 'apache', roles: %w(app db web sysvinit)
+server '176.113.80.84', user: 'majioa', roles: %w(app db web sysvinit)
 
-set :ssh_options, port: 222
+set :ssh_options, port: 228
 
 set :rvm_type, :user
 
-set :app_server_host, "packages.altlinux.org"
+set :app_server_host, "176.113.80.84"
 
-set :nginx_domains, "packages.altlinux.org"
+set :nginx_domains, "176.113.80.84"
+
+set :deploy_user, 'majioa'
+set :nginx_sites_available_subfolder, "sites-available"
+set :nginx_sites_enabled_subfolder, "sites-enabled"
