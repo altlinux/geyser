@@ -6,7 +6,7 @@ set :deploy_to, '/home/majioa/geyser'
 
 set :rails_env, 'production'
 
-server '176.113.80.84', user: 'majioa', roles: %w(app db web sysvinit)
+server '176.113.80.84', user: 'majioa', roles: %w(app db web systemd)
 
 set :ssh_options, port: 228
 
