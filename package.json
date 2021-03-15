@@ -31,7 +31,6 @@
     "autoprefixer": "^9.6.5",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-es3-modules-literals": "^0.0.3",
-    "compression-webpack-plugin": "^5.0.2",
     "css-loader": "^3.2.0",
     "file-loader": "^4.2.0",
     "ignore-loader": "~0.1.2",

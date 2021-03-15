@@ -110,7 +110,7 @@ module.exports = merge(sharedConfig, {
       new webpack.optimize.OccurrenceOrderPlugin(),
       //new webpack.IgnorePlugin(/^\.\/locale$/, [/moment$/]),
       new CompressionPlugin({
-         asset: '[path].gz[query]',
+         filename: '[path].gz[query]',
          algorithm: 'gzip',
          test: /\.(js|css|html|json|ico|svg|eot|otf|ttf)$/,
          threshold: 10240,
