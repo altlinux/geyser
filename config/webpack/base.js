@@ -14,28 +14,6 @@ const customConfig = {
             loader: 'ignore-loader'
          },
          {
-            test: /\.(png|jpe?g|gif|svg)$/,
-            use: [
-               'file-loader?hash=sha512&digest=hex&name=[hash].[ext]',
-               {
-                  loader: 'image-webpack-loader?bypassOnDebug',
-                  options: {
-                     query: {
-                        mozjpeg: {
-                           progressive: true,
-                        },
-                        gifsicle: {
-                           interlaced: true,
-                        },
-                        optipng: {
-                           optimizationLevel: 7,
-                        }
-                     }
-                  }
-               }
-            ]
-         },
-         {
             test: /\.(woff|woff2|ttf|eot)$/,
             use: [{
                loader: 'file-loader',

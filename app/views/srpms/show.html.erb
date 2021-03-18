@@ -13,7 +13,7 @@
   <div class="headright" title="<%= _('Other repositories') %>">
     <%= _('Other repositories') %>
   </div>
-<%= image_tag('collapse.gif', id: 'otherREPO', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9') %>
+<%= image_pack_tag('collapse.gif', id: 'otherREPO', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9') %>
 </div>
 <div id="otherREPODiv" style="border: dotted gray 1px;margin: 0px 4px 4px 4px;">
 <table style="font-size:8pt;" width="100%">
@@ -56,9 +56,9 @@
 <%- end %>
 
 <b><%= _('Size:') %></b> <%= number_to_human_size(@spkg.size) %><br>
-<b><%= _('Repocop status:') %></b> <%= image_tag("#{ @spkg.repocop_status }.png", size: '20x20', alt: @spkg.repocop_status) %>
+<b><%= _('Repocop status:') %></b> <%= image_pack_tag("#{ @spkg.repocop_status }.png", size: '20x20', alt: @spkg.repocop_status) %>
 <% if @spkg.repocop_patch %>
-  <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(@spkg.repocop_patch), class: 'repocoplink', title: _('repocop joint patchset for the package') %>
+  <%= link_to image_pack_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(@spkg.repocop_patch), class: 'repocoplink', title: _('repocop joint patchset for the package') %>
 <% end %>
 <br>
 <%- if @spkg.task %>

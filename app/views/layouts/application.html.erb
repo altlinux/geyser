@@ -5,7 +5,7 @@
   <meta content='text/html;charset=UTF-8' http-equiv='content-type' />
   <meta content='<%= yield(:description) %>' name='description'>
   <meta content='<%= yield(:keywords) %>' name='keywords'>
-  <link href='/favicon.ico' rel='shortcut icon' type='image/x-icon'>
+  <%= favicon_pack_tag 'favicon.png', rel: 'shortcut icon', type: 'image/x-icon' %>
   <link href='/opensearch.xml' rel='search' title='packages.altlinux.org' type='application/opensearchdescription+xml'>
   <%= csrf_meta_tags %>
   <%= stylesheet_pack_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -20,7 +20,7 @@
   <div id='top'>
     <div id='top-logo'>
       <a href='http://www.altlinux.org/'>
-        <%= image_tag('altlinux.gif', style: 'border: 0px', alt: _('ALT Linux Team - wiki'), title: _('ALT Linux Team - wiki')) %>
+        <%= image_pack_tag('altlinux.gif', style: 'border: 0px', alt: _('ALT Linux Team - wiki'), title: _('ALT Linux Team - wiki')) %>
       </a>
     </div>
     <div id='top-menu'>

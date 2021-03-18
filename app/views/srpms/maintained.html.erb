@@ -32,10 +32,10 @@
   <tr>
     <% if @branch.perpetual? %>
       <td class='repocop'>
-        <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(reponame: spkg.name), class: 'repocoplink', title: 'repocop' %>
+        <%= link_to image_pack_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(reponame: spkg.name), class: 'repocoplink', title: 'repocop' %>
         <% if spkg.repocop_patch %>
           <br>
-          <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(spkg.repocop_patch.package_id), class: 'repocoplink', title: _('repocop joint patchset for the package') %>
+          <%= link_to image_pack_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(spkg.repocop_patch.package_id), class: 'repocoplink', title: _('repocop joint patchset for the package') %>
         <% end %>
       </td>
     <% end %>
