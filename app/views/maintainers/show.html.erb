@@ -11,7 +11,7 @@
 <%= render partial: "shared/maintainer_menu", locals: { current_page: :information, branch: @branch, maintainer: @maintainer, opened_bugs: @opened_bugs, all_bugs: @all_bugs } %>
 <p class="break" />
 
-<%= image_tag(@maintainer.avatar_url, size: '210x210', alt: _(@maintainer.name)) %>
+<%= image_pack_tag(@maintainer.avatar_url, size: '210x210', alt: _(@maintainer.name)) %>
 
 <p class="break" />
 

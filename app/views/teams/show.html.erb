@@ -7,7 +7,7 @@
 <div class="headright" title="<%= _('ALT repositories') %>">
   <%= _('ALT repositories') %>
 </div>
-<%= image_tag('collapse.gif', id: 'topRPM', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9') %>
+<%= image_pack_tag('collapse.gif', id: 'topRPM', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9') %>
 </div>
 <div id="topRPMDiv" style="border: dotted gray 1px; margin: 0px 4px 4px 4px;">
 <table style="font-size:8pt;" width="100%">
@@ -72,10 +72,10 @@
       <tr>
         <% if @branch.perpetual? %>
           <td class='repocop'>
-            <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(reponame: spkg.name, branch: @branch), class: 'repocoplink', title: _('repocop') %>
+            <%= link_to image_pack_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(reponame: spkg.name, branch: @branch), class: 'repocoplink', title: _('repocop') %>
             <% if spkg.repocop_patch %>
               <br>
-              <%= link_to image_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(spkg.repocop_patch), class: 'repocoplink', title: _('repocop joint patchset for the package') %>
+              <%= link_to image_pack_tag('patch.jpg', alt: _('repocop patch')), download_repocop_patch_url(spkg.repocop_patch), class: 'repocoplink', title: _('repocop joint patchset for the package') %>
             <% end %>
           </td>
         <% end %>

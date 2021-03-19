@@ -40,7 +40,7 @@
         <tr>
           <%- if @branch.perpetual? %>
             <td class='repocop'>
-              <%= link_to image_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(branch: @branch, reponame: spkg.name), class: 'repocoplink', title: _('repocop') %>
+              <%= link_to image_pack_tag("#{ spkg.repocop_status }.png", size: '20x20', alt: spkg.repocop_status), repocop_notes_path(branch: @branch, reponame: spkg.name), class: 'repocoplink', title: _('repocop') %>
             </td>
           <%- end %>
           <td class="name">

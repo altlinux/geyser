@@ -2,7 +2,7 @@
    .table
       .headleft
          .headright { title=_('sort maintainers by amount of packages') } = _('TOP maintainers')
-         = image_tag('collapse.gif', id: 'top-branches', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9')
+         = image_pack_tag('collapse.gif', id: 'top-branches', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9')
       .frame#top-maintainers
          table
             - maintainers.each do |maintainer|

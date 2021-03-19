@@ -2,7 +2,7 @@
    .table
       .headleft
          .headright { title=_('Srpm counts calculated per physical architecture for the current branch') } = _('Architecture dependent srpms')
-         = image_tag('collapse.gif', id: 'arch-counts', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9')
+         = image_pack_tag('collapse.gif', id: 'arch-counts', class: 'close', title: _('hide window'), alt: _('hide window'), size: '10x9')
       .frame#arch-counts
          table
             - arch_counts.each do |pkg|

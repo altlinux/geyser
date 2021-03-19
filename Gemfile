@@ -74,7 +74,7 @@ gem 'delayed_job_active_record'
 gem 'excon'
 
 # assets
-gem 'webpacker'
+gem 'webpacker', '~> 6.0.0.pre.2'
 
 group :production, :staging do
   gem 'lograge'

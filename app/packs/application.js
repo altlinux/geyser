@@ -1,0 +1,13 @@
+import 'core-js/stable'
+import 'regenerator-runtime/runtime'
+
+import './general.js'
+import './css/common.scss'
+import './css/alt.scss'
+import './css/group.scss'
+import './css/head.scss'
+import './css/menu.scss'
+import './css/right.scss'
+import './css/srpm.scss'
+import './css/srpms.scss'
+import './css/tables.scss'

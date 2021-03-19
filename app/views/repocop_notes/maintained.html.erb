@@ -32,7 +32,7 @@
           <td>
             <%= repocop_note.package_arch %>
           </td>
-          <td class='repocop-status'><%= image_tag("#{ repocop_note.status }.png", size: '20x20') %><br><%= repocop_note.status %></td>
+          <td class='repocop-status'><%= image_pack_tag("#{ repocop_note.status }.png", size: '20x20') %><br><%= repocop_note.status %></td>
           <td><%= repocop_note.kind %></td>
           <td style="text-align:left"><%= repocop_note.description %></td>
         </tr>

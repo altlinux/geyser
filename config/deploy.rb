@@ -37,6 +37,7 @@ append :linked_dirs, 'log',
 
 # Default value for keep_releases is 5
 set :keep_releases, 3
+set :shared_path, -> { "#{fetch :deploy_to}/shared/" }
 
 set :bundle_jobs, 4
 set :bundle_binstubs, -> { shared_path.join('bin') }
@@ -49,18 +50,15 @@ set :nginx_listen, 80 # optional, default is not set
 set :nginx_roles, %i(web)
 
 #set :nginx_service_path, "/etc/init.d/nginx"
-#set :nginx_sites_available_dir, "/etc/nginx/sites-available.d"
-#set :nginx_sites_enabled_dir, "/etc/nginx/sites-enabled.d"
 #set :nginx_application_name, "#{fetch :application}-#{fetch :stage}.conf"
-#set :nginx_template, "config/nginx.conf.erb"
-set :app_server_socket, "#{shared_path}/sockets/puma-#{fetch :application}.sock"
+set :app_server_socket, -> { "#{fetch :shared_path}/sockets/puma-#{fetch :application}.sock" }
 set :app_server_host, "localhost"
 set :app_server_port, 80
 
 # set :rvm_type, :user                      # Defaults to: :auto
 # set :rvm_ruby_version, 'ext-ruby-2.5.1'    # Defaults to: 'default'
 # set :rvm_custom_path, '~/.rvm'          # only needed if not detected
-set :rvm_roles, %i[app web rake]
+set :rvm_roles, %i[app web rake db]
 
 set :puma_conf, "#{release_path}/config/puma.rb"
 
@@ -103,6 +101,10 @@ namespace :deploy do
   end
 
   task :reload do
+    on roles(:db) do
+      execute :sudo, "systemctl restart postgresql"
+    end
+
     on roles(:sysvinit) do
       execute :sudo, "killall -9 ruby || true"
       execute :sudo, "/usr/sbin/geyser || true"
@@ -112,7 +114,7 @@ namespace :deploy do
   namespace :check do
     task :shared do
       on roles(:all) do
-        execute "mkdir -p $HOME/geyser/shared/config"
+        execute "mkdir -p $HOME/geyser/shared/config $HOME/geyser/shared/sockets"
         execute "touch $HOME/geyser/shared/config/secrets.yml"
         execute "touch $HOME/geyser/shared/config/database.yml"
         execute "touch $HOME/geyser/shared/config/newrelic.yml"

@@ -35,12 +35,14 @@ config/development.sphinx.conf
 config/test.sphinx.conf
 coverage/
 .idea/
-vendor/cache
+/vendor/**/*
+!/vendor/assets/.keep
 *.edit.po
 *.po.time_stamp
 
 vendor/
 
+/public/assets
 /public/packs
 /public/packs-test
 /node_modules
