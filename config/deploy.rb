@@ -58,7 +58,7 @@ set :app_server_port, 80
 # set :rvm_type, :user                      # Defaults to: :auto
 # set :rvm_ruby_version, 'ext-ruby-2.5.1'    # Defaults to: 'default'
 # set :rvm_custom_path, '~/.rvm'          # only needed if not detected
-set :rvm_roles, %i[app web rake]
+set :rvm_roles, %i[app web rake db]
 
 set :puma_conf, "#{release_path}/config/puma.rb"
 
@@ -101,6 +101,10 @@ namespace :deploy do
   end
 
   task :reload do
+    on roles(:db) do
+      execute :sudo, "systemctl restart postgresql"
+    end
+
     on roles(:sysvinit) do
       execute :sudo, "killall -9 ruby || true"
       execute :sudo, "/usr/sbin/geyser || true"
