@@ -280,7 +280,8 @@ GEM
       pry (~> 0.9)
       slop (~> 3.0)
     public_suffix (4.0.4)
-    puma (3.12.6)
+    puma (4.3.8)
+      nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
     rack-cors (1.1.1)
@@ -536,7 +537,7 @@ DEPENDENCIES
   pry
   pry-rails
   pry-remote
-  puma (~> 3.12, >= 3.12.6)
+  puma (~> 4.3)
   rack-cors
   rack-force_domain
   rack-health
