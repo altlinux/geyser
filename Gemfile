@@ -64,7 +64,7 @@ gem 'git', require: false, git: "https://github.com/majioa/ruby-git.git"
 gem 'dalli'
 
 # environment
-gem 'bundler', '~> 2.0'
+gem 'bundler', "2.2.10"
 gem 'dotenv-rails'
 
 # worker
